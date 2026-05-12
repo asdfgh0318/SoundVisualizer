@@ -63,6 +63,7 @@ Order chosen so the existing browser-only app kept working as a reference until 
 These were not in the original 2.md scope but came up during development:
 
 - **Realistic drone-noise synthesis** for `/dev/seed` and `/dev/fake_capture`: BPF + 11 harmonics + LF spreaded hump (around BPF) + HF broadband (1.5–5 kHz center). Elevation-dependent directivity per component (strong on BPF/harmonics, medium on LF, weak on HF). Matches the standard propeller-noise spectrum textbook breakdown.
+- **Fake capture runs through the full wizard.** "Run fake capture (no hardware)" goes through safety modal → simulated progress in the RunningView (animated step-by-step phase transitions over ~5 seconds per half) → reconfigure modal → bottom half → done — exactly the same UX as a real capture, just with synthetic data underneath. Useful for testing the wizard flow and exercising Results tools without the rig.
 - **Audio device filter** — only ALSA `(hw:…)` real devices shown (drops PulseAudio/PipeWire/SRC-plugin virtual entries).
 - **Polar top+bottom merge** — when the sidebar-selected PWM point has a sibling capture at the same PWM µs but opposite half, the polar tab can combine both mic sets into a single -90°→+90° plot. Toggled by a checkbox; defaults on when sibling exists.
 - **Refresh button** on the Results PWM-point sidebar to re-fetch from server after generating new data.

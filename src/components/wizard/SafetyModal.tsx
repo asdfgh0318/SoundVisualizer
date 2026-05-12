@@ -4,11 +4,39 @@ import { Modal } from './Modal';
 interface Props {
   half: 'top' | 'bottom';
   cutoffsConfigured: boolean;
+  fakeMode: boolean;
   onCancel: () => void;
   onConfirm: () => void;
 }
 
-export function SafetyModal({ half, cutoffsConfigured, onCancel, onConfirm }: Props) {
+export function SafetyModal({ half, cutoffsConfigured, fakeMode, onCancel, onConfirm }: Props) {
+  if (fakeMode) {
+    return (
+      <Modal
+        title="✦ Fake capture (no hardware)"
+        footer={
+          <>
+            <Button variant="ghost" onClick={onCancel}>
+              Cancel
+            </Button>
+            <Button onClick={onConfirm}>
+              Start fake {half} half
+            </Button>
+          </>
+        }
+      >
+        <p>
+          This skips the Tyto motor and the UMIK-2 inputs entirely. Synthetic drone-noise WAVs
+          and telemetry CSV will be generated for every PWM step, then the wizard plays out a
+          simulated progress animation so you can exercise the flow end-to-end.
+        </p>
+        <p className="text-gray-400 text-xs">
+          Use this to test the wizard UX, develop the Results tabs against realistic data, or
+          demo the app without the rig.
+        </p>
+      </Modal>
+    );
+  }
   return (
     <Modal
       title="⚠ Propeller will spin"
