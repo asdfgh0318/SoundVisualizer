@@ -102,11 +102,13 @@ function MicRow({
         className="col-span-2"
         value={mic.topElevationDeg}
         onChange={(v) => onChange({ topElevationDeg: v })}
+        values={TOP_ELEVATIONS}
       />
       <ElevationSelect
         className="col-span-2"
         value={mic.bottomElevationDeg}
         onChange={(v) => onChange({ bottomElevationDeg: v })}
+        values={BOTTOM_ELEVATIONS}
       />
 
       <select
@@ -137,13 +139,20 @@ function MicRow({
   );
 }
 
+// Top mics live above the prop plane → 0° to +90°. Bottom below → -90° to 0°.
+// 0° belongs in both since the equator mic may not be physically remounted.
+const TOP_ELEVATIONS = ELEVATION_VALUES.filter((v) => v >= 0);
+const BOTTOM_ELEVATIONS = ELEVATION_VALUES.filter((v) => v <= 0);
+
 function ElevationSelect({
   value,
   onChange,
+  values,
   className = '',
 }: {
   value: number | null;
   onChange: (v: number | null) => void;
+  values: readonly number[];
   className?: string;
 }) {
   return (
@@ -153,7 +162,7 @@ function ElevationSelect({
       onChange={(e) => onChange(e.target.value === '' ? null : Number(e.target.value))}
     >
       <option value="">— °</option>
-      {ELEVATION_VALUES.map((v) => (
+      {values.map((v) => (
         <option key={v} value={v}>
           {v > 0 ? `+${v}` : v}°
         </option>
