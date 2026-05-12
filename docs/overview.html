@@ -1,0 +1,333 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>SoundVisualizer — Build Overview</title>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<style>
+  :root {
+    --bg: #0f1115;
+    --panel: #161a22;
+    --panel-2: #1c2230;
+    --border: #262d3a;
+    --text: #e6e9ef;
+    --text-dim: #8b94a7;
+    --accent: #7cc4ff;
+    --accent-2: #ffd17c;
+    --green: #4ade80;
+    --amber: #fbbf24;
+    --red: #f87171;
+    --mono: ui-monospace, "JetBrains Mono", "SF Mono", Menlo, Consolas, monospace;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; background: var(--bg); color: var(--text);
+               font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+               line-height: 1.55; }
+  .wrap { max-width: 1180px; margin: 0 auto; padding: 48px 32px 96px; }
+
+  header { margin-bottom: 48px; }
+  header h1 { font-size: 2rem; margin: 0 0 8px; letter-spacing: -0.02em; }
+  header .sub { color: var(--text-dim); font-size: 1.05rem; }
+  header .status-pill { display: inline-block; margin-top: 12px; padding: 4px 12px;
+                        background: rgba(251,191,36,0.12); color: var(--amber);
+                        border: 1px solid rgba(251,191,36,0.3); border-radius: 999px;
+                        font-size: 0.85rem; }
+
+  h2 { font-size: 1.15rem; letter-spacing: 0.02em; text-transform: uppercase;
+       color: var(--text-dim); margin: 48px 0 16px; font-weight: 600; }
+
+  .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  @media (max-width: 760px) { .grid-2 { grid-template-columns: 1fr; } }
+
+  .card { background: var(--panel); border: 1px solid var(--border);
+          border-radius: 10px; padding: 20px; }
+  .card h3 { margin: 0 0 12px; font-size: 1rem; }
+  .card p { color: var(--text-dim); margin: 0 0 8px; font-size: 0.92rem; }
+
+  table { width: 100%; border-collapse: collapse; background: var(--panel);
+          border: 1px solid var(--border); border-radius: 10px; overflow: hidden; }
+  th, td { text-align: left; padding: 12px 16px; border-bottom: 1px solid var(--border);
+           font-size: 0.92rem; }
+  th { background: var(--panel-2); color: var(--text-dim); font-weight: 600;
+       font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.05em; }
+  tr:last-child td { border-bottom: none; }
+
+  .badge { display: inline-block; padding: 2px 8px; border-radius: 6px;
+           font-size: 0.78rem; font-weight: 500; }
+  .badge.ok    { background: rgba(74,222,128,0.12); color: var(--green);
+                 border: 1px solid rgba(74,222,128,0.3); }
+  .badge.wait  { background: rgba(251,191,36,0.12); color: var(--amber);
+                 border: 1px solid rgba(251,191,36,0.3); }
+  .badge.todo  { background: rgba(139,148,167,0.12); color: var(--text-dim);
+                 border: 1px solid var(--border); }
+  .badge.now   { background: rgba(124,196,255,0.15); color: var(--accent);
+                 border: 1px solid rgba(124,196,255,0.4); }
+
+  pre { background: var(--panel); border: 1px solid var(--border);
+        border-radius: 10px; padding: 16px 20px; overflow-x: auto;
+        font-family: var(--mono); font-size: 0.86rem; line-height: 1.6; margin: 0; }
+  code { font-family: var(--mono); font-size: 0.88em;
+         background: rgba(124,196,255,0.08); color: var(--accent);
+         padding: 1px 6px; border-radius: 4px; }
+  pre code { background: none; color: inherit; padding: 0; }
+
+  .arch { display: grid; grid-template-columns: 1fr auto 1.4fr; gap: 24px;
+          align-items: stretch; }
+  .arch-col { background: var(--panel); border: 1px solid var(--border);
+              border-radius: 10px; padding: 20px; }
+  .arch-col h4 { margin: 0 0 4px; font-size: 0.78rem; text-transform: uppercase;
+                 letter-spacing: 0.06em; color: var(--text-dim); }
+  .arch-col .title { font-size: 1.05rem; font-weight: 600; margin-bottom: 14px; }
+  .arch-col ul { margin: 0; padding-left: 18px; color: var(--text-dim);
+                 font-size: 0.9rem; }
+  .arch-col ul li { margin-bottom: 4px; }
+  .arch-arrow { display: flex; flex-direction: column; align-items: center;
+                justify-content: center; color: var(--text-dim); font-family: var(--mono);
+                font-size: 0.78rem; }
+  .arch-arrow .line { width: 1px; flex: 1; background: var(--border); }
+  .arch-arrow .label { padding: 4px 8px; }
+  @media (max-width: 760px) {
+    .arch { grid-template-columns: 1fr; }
+    .arch-arrow { flex-direction: row; height: 24px; }
+    .arch-arrow .line { width: auto; height: 1px; }
+  }
+
+  .phase { display: grid; grid-template-columns: 56px 1fr; gap: 16px;
+           padding: 16px 20px; background: var(--panel); border: 1px solid var(--border);
+           border-radius: 10px; margin-bottom: 10px; }
+  .phase.current { border-color: rgba(124,196,255,0.45);
+                   box-shadow: 0 0 0 3px rgba(124,196,255,0.08); }
+  .phase-num { font-family: var(--mono); font-size: 1.4rem; color: var(--text-dim);
+               align-self: center; text-align: center; }
+  .phase.current .phase-num { color: var(--accent); }
+  .phase-body h3 { margin: 0 0 4px; font-size: 1rem; display: flex;
+                   align-items: center; gap: 10px; }
+  .phase-body p { margin: 0; color: var(--text-dim); font-size: 0.9rem; }
+  .phase-body .meta { margin-top: 6px; display: flex; gap: 12px; flex-wrap: wrap;
+                      font-size: 0.78rem; color: var(--text-dim); }
+
+  .decisions { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  @media (max-width: 760px) { .decisions { grid-template-columns: 1fr; } }
+  .decision { padding: 14px 18px; background: var(--panel-2); border: 1px solid var(--border);
+              border-left: 3px solid var(--accent); border-radius: 6px;
+              font-size: 0.9rem; }
+  .decision strong { color: var(--accent); }
+  .decision.warn { border-left-color: var(--amber); }
+  .decision.warn strong { color: var(--amber); }
+
+  footer { margin-top: 64px; padding-top: 24px; border-top: 1px solid var(--border);
+           color: var(--text-dim); font-size: 0.82rem; }
+  footer a { color: var(--accent); text-decoration: none; }
+  footer a:hover { text-decoration: underline; }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header>
+  <h1>SoundVisualizer</h1>
+  <div class="sub">Drone-noise directivity measurement — 6× UMIK-2 vertical arc + Tyto 1585 thrust stand</div>
+  <span class="status-pill" style="background:rgba(74,222,128,0.12);color:var(--green);border-color:rgba(74,222,128,0.3);">MVP complete · 9/11 phases done · Norsonic + RPi packaging deferred (hardware pending)</span>
+</header>
+
+<h2>Hardware status</h2>
+<table>
+  <thead>
+    <tr><th>Device</th><th>Role</th><th>Connection</th><th>Status</th></tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>6× miniDSP UMIK-2</td>
+      <td>Acoustic capture (vertical arc)</td>
+      <td>USB hub on laptop → RPi later</td>
+      <td><span class="badge ok">Available</span></td>
+    </tr>
+    <tr>
+      <td>Tyto Robotics 1585</td>
+      <td>Thrust / torque / current / RPM</td>
+      <td>USB serial on laptop → RPi later</td>
+      <td><span class="badge ok">Available</span></td>
+    </tr>
+    <tr>
+      <td>Norsonic NOR-145</td>
+      <td>Class-1 SLM (optional cross-check)</td>
+      <td>WiFi (WS + FTP)</td>
+      <td><span class="badge wait">Pending delivery</span></td>
+    </tr>
+    <tr>
+      <td>Raspberry Pi 4</td>
+      <td>Production host (consolidates all hardware)</td>
+      <td>USB + WiFi to laptop browser</td>
+      <td><span class="badge wait">Pending</span></td>
+    </tr>
+  </tbody>
+</table>
+
+<h2>Architecture</h2>
+<div class="arch">
+  <div class="arch-col">
+    <h4>Frontend</h4>
+    <div class="title">Laptop browser</div>
+    <ul>
+      <li>React 19 + Vite 7 + TypeScript</li>
+      <li>Tailwind 4, Zustand 5</li>
+      <li>Plotly.js (FFT, polar, custom)</li>
+      <li>API client + WebSocket telemetry</li>
+    </ul>
+  </div>
+  <div class="arch-arrow">
+    <div class="line"></div>
+    <div class="label">HTTP + WS</div>
+    <div class="line"></div>
+  </div>
+  <div class="arch-col">
+    <h4>Backend</h4>
+    <div class="title">Laptop now → RPi 4 later</div>
+    <ul>
+      <li>Python 3.12 + FastAPI + asyncio</li>
+      <li><code>sounddevice</code> — 6× UMIK-2 capture</li>
+      <li><code>pyserial-asyncio</code> — Tyto MSP serial (Paweł's RE)</li>
+      <li><code>aioftp</code> + <code>websockets</code> — Norsonic (later)</li>
+      <li>Cutoff-trigger watchdog (current/V/RPM/thrust/torque/3× temp)</li>
+      <li>Filesystem JSON+WAV store under <code>data/</code></li>
+    </ul>
+  </div>
+</div>
+
+<h2>Data store layout</h2>
+<pre><code>data/
+  &lt;motor&gt;__&lt;propeller&gt;__&lt;shroud&gt;__&lt;notes&gt;/    # key dir, fields sluggified
+    key.json                                  # {motor, propeller, shroud, notes}
+    measurements/
+      2026-05-06T14-22-01__acoustic__top__mic-8100002/
+        meta.json    # type, t_start, t_end, mic_serial, elevation_deg,
+                     # azimuth_deg:null, sample_rate, calibration_file, pwm_setpoint
+        audio.wav
+      2026-05-06T14-22-01__performance/
+        meta.json    # type:"performance", t_start, t_end, pwm_setpoint
+        telemetry.csv
+      2026-05-06T14-22-01__norsonic/             # later
+        meta.json
+        norsonic.txt
+        norsonic.json</code></pre>
+
+<h2>Phased plan</h2>
+
+<div class="phase">
+  <div class="phase-num">0</div>
+  <div class="phase-body">
+    <h3>Repo split <span class="badge ok">Done</span></h3>
+    <p><code>server/</code> directory scaffolding alongside React frontend. Paweł's six Python modules vendored.</p>
+    <div class="meta"><span>No hardware needed</span></div>
+  </div>
+</div>
+
+<div class="phase">
+  <div class="phase-num">1</div>
+  <div class="phase-body">
+    <h3>Server skeleton + DB <span class="badge ok">Done</span></h3>
+    <p>FastAPI app, filesystem store, OpenAPI types, Pydantic schemas for setup config + measurement metadata.</p>
+    <div class="meta"><span>No hardware needed</span></div>
+  </div>
+</div>
+
+<div class="phase">
+  <div class="phase-num">4</div>
+  <div class="phase-body">
+    <h3>UMIK-2 capture <span class="badge ok">Done</span></h3>
+    <p><code>sounddevice</code> multi-stream, REW-format calibration parser, server-side trigger-onset sync, udev rule generator. Audio device list filtered to ALSA <code>(hw:…)</code> only.</p>
+    <div class="meta"><span>UMIKs (have)</span></div>
+  </div>
+</div>
+
+<div class="phase">
+  <div class="phase-num">3</div>
+  <div class="phase-body">
+    <h3>Tyto integration <span class="badge ok">Done</span></h3>
+    <p>Paweł's <code>msp.py</code>/<code>thrust_stand.py</code> wired up. Calibration constants overridden at runtime from <code>config.toml</code>. Cutoff watchdog (all 8 channels, latching). Live telemetry over <code>/tyto/ws/telemetry</code>.</p>
+    <div class="meta"><span>Tyto + UMIKs (have)</span></div>
+  </div>
+</div>
+
+<div class="phase">
+  <div class="phase-num">2</div>
+  <div class="phase-body">
+    <h3>Frontend rebuild <span class="badge ok">Done</span></h3>
+    <p>Legacy Web Audio + spinorama stripped. Rebuilt Setup page: manual USB-path picker, mic list with add/delete, per-mic cal upload, cutoff-trigger config UI, live Tyto status.</p>
+    <div class="meta"><span>No hardware needed</span></div>
+  </div>
+</div>
+
+<div class="phase">
+  <div class="phase-num">5</div>
+  <div class="phase-body">
+    <h3>Capture wizard <span class="badge ok">Done</span></h3>
+    <p>Motor/propeller/shroud/notes form → PWM ramp with <strong>live SVG visualization</strong> (per-step <code>recording_ms</code>) → safety modal → top → reconfigure modal → bottom → done. Top-only / bottom-only tickboxes. <strong>"Run fake capture (no hardware)" button</strong> for results-tool dev.</p>
+    <div class="meta"><span>Full stack</span></div>
+  </div>
+</div>
+
+<div class="phase">
+  <div class="phase-num">7</div>
+  <div class="phase-body">
+    <h3>Results — FFT tab <span class="badge ok">Done</span></h3>
+    <p>Per-PWM-point page with performance header strip and scrollable per-mic FFT rows. Settings popover for window/size/overlap.</p>
+    <div class="meta"><span>Data only</span></div>
+  </div>
+</div>
+
+<div class="phase">
+  <div class="phase-num">8</div>
+  <div class="phase-body">
+    <h3>Results — Polar tab <span class="badge ok">Done</span></h3>
+    <p>SPL-vs-elevation polar. 180°/360° toggle. <strong>Top+bottom merge</strong> combines sibling captures at the same PWM µs. Right rail: range + 1/3-octave + octave selectors with snap-to.</p>
+    <div class="meta"><span>Data only</span></div>
+  </div>
+</div>
+
+<div class="phase">
+  <div class="phase-num">9</div>
+  <div class="phase-body">
+    <h3>Results — Custom tab <span class="badge ok">Done</span></h3>
+    <p>Plotly.js port of Paweł's Bokeh viz. X/Y scatter with column pickers (PWM/thrust/torque/current/voltage/RPM/temp/SPL-in-band). Clicking a point snaps FFT and Polar tabs to that PWM step. Selected-point FFT overlay below the scatter.</p>
+    <div class="meta"><span>Data only</span></div>
+  </div>
+</div>
+
+<div class="phase">
+  <div class="phase-num">6</div>
+  <div class="phase-body">
+    <h3>Norsonic <span class="badge wait">Deferred</span></h3>
+    <p>Wire Paweł's <code>norsonic.py</code>/<code>norsonic_fetcher.py</code>/<code>norsonic_parser.py</code>. Capture flow integrates NOR start/stop into per-PWM windows.</p>
+    <div class="meta"><span>NOR-145 (pending delivery)</span></div>
+  </div>
+</div>
+
+<div class="phase">
+  <div class="phase-num">10</div>
+  <div class="phase-body">
+    <h3>RPi packaging <span class="badge wait">Deferred</span></h3>
+    <p>Systemd unit, mDNS <code>soundvis.local</code>, frontend bundle served by FastAPI static. udev rules for stable mic IDs. Powered USB-2 hub note + VL805 firmware update note for the bandwidth bug.</p>
+    <div class="meta"><span>RPi (pending)</span></div>
+  </div>
+</div>
+
+<h2>Locked decisions</h2>
+<div class="decisions">
+  <div class="decision"><strong>No azimuth.</strong> Tested objects are rotationally symmetric around the vertical axis. Elevation is the only spatial dimension. The 360° polar view is purely cosmetic mirroring of the 180° measured arc.</div>
+  <div class="decision"><strong>6 mics, 2 configurations.</strong> "Top half" / "bottom half", both fully user-defined per-mic in Setup. The user manually re-mounts mics between captures. No hardcoded pairing.</div>
+  <div class="decision"><strong>Filesystem JSON+WAV store.</strong> No SQL. Keys are <code>motor__propeller__shroud__notes</code> directories under <code>data/</code>.</div>
+  <div class="decision"><strong>Paweł's code is ours.</strong> Full permission granted by the user (2026-05-06) to copy/edit. <code>msp.py</code>, <code>thrust_stand.py</code>, <code>norsonic*.py</code> reused wholesale.</div>
+  <div class="decision warn"><strong>Calibration constants are unit-specific.</strong> Paweł's <code>HINGE_DISTANCE</code>, <code>CAL_*</code> values are correct for this user's 1585 but get exposed via <code>config.toml</code> rather than hardcoded.</div>
+  <div class="decision warn"><strong>Trigger-onset sync stays.</strong> UMIK-2s cannot be hardware-clock-locked. Existing JS implementation moves into Python server-side — no new alignment strategy.</div>
+  <div class="decision"><strong>Cutoff triggers: all 8 channels.</strong> Current, voltage, RPM, thrust, torque, temp0/1/2 — each tickbox-enabled with threshold. Server watchdog at ~33 Hz slams PWM to 1000µs on any trip.</div>
+  <div class="decision"><strong>FFT defaults.</strong> Hann window, 4096 size, 50% overlap, log-x 20 Hz–24 kHz, dBSPL after UMIK calibration (dBFS fallback). 48 kHz sample rate.</div>
+</div>
+
+<footer>
+  Reference docs: <a href="../CLAUDE.md">CLAUDE.md</a> · <a href="../PLAN.md">PLAN.md</a> · <a href="../2.md">2.md (original scope)</a>
+</footer>
+
+</div>
+</body>
+</html>

@@ -22,3 +22,21 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+.venv/
+venv/
+.env
+*.egg-info/
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+
+# Captured data — never commit measurements
+/data/
+
+# Per-host config (calibration constants for the specific Tyto unit, TTY paths, etc.)
+/config.toml

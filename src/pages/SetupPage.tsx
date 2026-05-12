@@ -1,37 +1,60 @@
-import { DeviceAssignment } from '../components/ui/DeviceAssignment.tsx';
-import { useAudioDevices } from '../hooks/useAudioDevices.ts';
-import { useDeviceStore } from '../stores/deviceStore.ts';
-import { useNavigate } from 'react-router-dom';
+import { AudioDeviceList } from '../components/setup/AudioDeviceList';
+import { CalibrationLibrary } from '../components/setup/CalibrationLibrary';
+import { CutoffsConfig } from '../components/setup/CutoffsConfig';
+import { DeferredCard } from '../components/setup/DeferredCard';
+import { MicList } from '../components/setup/MicList';
+import { TytoStatus } from '../components/setup/TytoStatus';
+import { Card } from '../components/ui/Card';
 
 export function SetupPage() {
-  useAudioDevices();
-  const assignments = useDeviceStore((s) => s.assignments);
-  const assignedCount = assignments.filter((a) => a.deviceId !== '').length;
-  const navigate = useNavigate();
-
   return (
-    <div className="max-w-2xl mx-auto space-y-6">
-      <div>
-        <h1 className="text-2xl font-bold text-white">Microphone Setup</h1>
+    <div className="max-w-6xl mx-auto space-y-6">
+      <header>
+        <h1 className="text-2xl font-bold text-white">Setup</h1>
         <p className="text-sm text-gray-400 mt-1">
-          Assign each UMIK-2 microphone to its elevation position in the measurement arc.
+          Configure microphones, calibration files, and Tyto safety cutoffs before starting captures.
         </p>
+      </header>
+
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <div className="lg:col-span-2">
+          <Card
+            title="Audio devices"
+            description="Read-only — pick the index when assigning a USB device to a microphone below."
+          >
+            <AudioDeviceList />
+          </Card>
+        </div>
+        <Card title="Tyto stand" description="Live connection state.">
+          <TytoStatus />
+        </Card>
       </div>
 
-      <DeviceAssignment />
+      <Card
+        title="Microphones"
+        description="Manual placement — one row per UMIK-2. Top and bottom elevations are independent; the user manually re-mounts mics between captures."
+      >
+        <MicList />
+      </Card>
 
-      <div className="flex items-center justify-between pt-4 border-t border-gray-700">
-        <span className="text-sm text-gray-400">
-          {assignedCount} of 5 microphones assigned
-        </span>
-        <button
-          onClick={() => navigate('/capture')}
-          disabled={assignedCount === 0}
-          className="px-6 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 text-sm font-medium disabled:opacity-50 disabled:cursor-not-allowed"
-        >
-          Continue to Capture
-        </button>
-      </div>
+      <Card
+        title="UMIK-2 calibration files"
+        description="Upload one .txt per mic. Stored on the server keyed by serial."
+      >
+        <CalibrationLibrary />
+      </Card>
+
+      <Card
+        title="Safety cutoffs (Tyto Robotics 1585)"
+        description="Watchdog reads telemetry at ~33 Hz and slams PWM to 1000 µs on the first tripped channel. Trip is latched until manually reset."
+      >
+        <CutoffsConfig />
+      </Card>
+
+      <DeferredCard
+        title="Norsonic NOR-145"
+        reason="Pending hardware delivery. Will integrate as an additional acoustic source in a later phase."
+      />
     </div>
   );
 }

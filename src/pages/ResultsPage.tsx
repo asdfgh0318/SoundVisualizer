@@ -1,183 +1,139 @@
-import { useMemo, useState } from 'react';
-import { PolarPlot } from '../components/visualization/PolarPlot.tsx';
-import { ContourPlot } from '../components/visualization/ContourPlot.tsx';
-import { FrequencyResponsePlot } from '../components/visualization/FrequencyResponsePlot.tsx';
-import { DirectivityIndexPlot } from '../components/visualization/DirectivityIndexPlot.tsx';
-import { PolarAtFrequency } from '../components/visualization/PolarAtFrequency.tsx';
-import { DirectivityBalloon } from '../components/visualization/DirectivityBalloon.tsx';
-import { ExportPanel } from '../components/ui/ExportPanel.tsx';
-import { useSessionStore } from '../stores/sessionStore.ts';
-import { computeAllSpl } from '../audio/spl.ts';
-import { computeAllSpectra } from '../audio/spectrum.ts';
-import { computeDirectivityMetrics } from '../audio/spinorama.ts';
+import { useEffect, useState } from 'react';
+import { api, ApiError } from '../api/client';
+import type { PWMPoint } from '../api/types';
+import { CustomTab } from '../components/results/CustomTab';
+import { FFTTab } from '../components/results/FFTTab';
+import { KeyPicker } from '../components/results/KeyPicker';
+import { PerformanceHeader } from '../components/results/PerformanceHeader';
+import { PolarTab } from '../components/results/PolarTab';
+import { PWMPointSidebar } from '../components/results/PWMPointSidebar';
 
-type Tab = 'contour' | 'polar' | 'frequency' | 'di' | 'balloon' | 'broadband';
-
-const TABS: { id: Tab; label: string }[] = [
-  { id: 'contour', label: 'Contour' },
-  { id: 'frequency', label: 'Freq Response' },
-  { id: 'polar', label: 'Polar @ Freq' },
-  { id: 'di', label: 'SP & DI' },
-  { id: 'balloon', label: '3D Balloon' },
-  { id: 'broadband', label: 'Broadband' },
-];
+type Tab = 'fft' | 'polar' | 'custom';
 
 export function ResultsPage() {
-  const measurements = useSessionStore((s) => s.measurements);
-  const [activeTab, setActiveTab] = useState<Tab>('contour');
-  const [selectedFreq, setSelectedFreq] = useState(1000);
-
-  const splData = useMemo(() => computeAllSpl(measurements), [measurements]);
-  const spectra = useMemo(() => computeAllSpectra(measurements), [measurements]);
-  const metrics = useMemo(() => computeDirectivityMetrics(splData), [splData]);
+  const [keySlug, setKeySlug] = useState<string | null>(null);
+  const [tab, setTab] = useState<Tab>('fft');
 
   return (
-    <div className="max-w-6xl mx-auto space-y-4">
-      <div className="flex items-center justify-between">
+    <div className="max-w-7xl mx-auto space-y-6">
+      <header>
         <h1 className="text-2xl font-bold text-white">Results</h1>
-        {measurements.length > 0 && (
-          <div className="flex items-center gap-4 text-sm text-gray-400">
-            <span>{measurements.length} positions</span>
-            <span>{splData.length} data points</span>
-          </div>
-        )}
+        <p className="text-sm text-gray-400 mt-1">
+          Group acoustic + performance measurements by PWM point and inspect spectra.
+        </p>
+      </header>
+
+      <div className="flex items-center justify-between gap-4 flex-wrap">
+        <KeyPicker value={keySlug} onChange={setKeySlug} />
+        <Tabs value={tab} onChange={setTab} />
       </div>
 
-      {/* Tab bar */}
-      <div className="flex gap-1 border-b border-gray-700 overflow-x-auto">
-        {TABS.map((tab) => (
+      {keySlug ? (
+        <ResultsBody keySlug={keySlug} tab={tab} />
+      ) : (
+        <div className="text-sm text-gray-400 italic">Pick a key to see results.</div>
+      )}
+    </div>
+  );
+}
+
+function ResultsBody({ keySlug, tab }: { keySlug: string; tab: Tab }) {
+  const [points, setPoints] = useState<PWMPoint[] | null>(null);
+  const [error, setError] = useState<Error | null>(null);
+  const [selectedT, setSelectedT] = useState<string | null>(null);
+  const [reloadKey, setReloadKey] = useState(0);
+
+  useEffect(() => {
+    let cancelled = false;
+    setPoints(null);
+    setError(null);
+    setSelectedT(null);
+    api.listPWMPoints(keySlug).then(
+      (p) => {
+        if (cancelled) return;
+        setPoints(p);
+        if (p.length > 0) setSelectedT(p[0].t_start);
+      },
+      (e: Error | ApiError) => !cancelled && setError(e),
+    );
+    return () => { cancelled = true; };
+  }, [keySlug, reloadKey]);
+
+  if (error) return <div className="text-sm text-red-400">Error: {error.message}</div>;
+  if (!points) return <div className="text-sm text-gray-400 italic">Loading PWM points…</div>;
+  if (points.length === 0) {
+    return (
+      <div className="text-sm text-gray-400 italic">
+        No measurements under this key yet.
+      </div>
+    );
+  }
+
+  const selected = points.find((p) => p.t_start === selectedT) ?? points[0];
+
+  return (
+    <div className="grid grid-cols-1 lg:grid-cols-[280px_1fr] gap-4">
+      <aside>
+        <div className="flex items-center justify-between mb-2 px-1">
+          <div className="text-xs uppercase tracking-wide text-gray-500">
+            PWM points ({points.length})
+          </div>
           <button
-            key={tab.id}
-            onClick={() => setActiveTab(tab.id)}
-            className={`px-4 py-2 text-sm font-medium whitespace-nowrap transition-colors ${
-              activeTab === tab.id
-                ? 'text-indigo-400 border-b-2 border-indigo-400'
-                : 'text-gray-400 hover:text-gray-200'
-            }`}
+            type="button"
+            onClick={() => setReloadKey((k) => k + 1)}
+            className="text-xs text-gray-400 hover:text-gray-200"
+            title="Refetch measurements from server"
           >
-            {tab.label}
+            ↻ refresh
           </button>
-        ))}
-      </div>
-
-      {/* Frequency selector for frequency-dependent views */}
-      {(activeTab === 'polar' || activeTab === 'balloon') && (
-        <div className="flex items-center gap-3 p-3 bg-gray-800 rounded-lg border border-gray-700">
-          <label htmlFor="freq-select" className="text-sm text-gray-300">
-            Frequency:
-          </label>
-          <input
-            id="freq-select"
-            type="range"
-            min={20}
-            max={20000}
-            step={1}
-            value={selectedFreq}
-            onChange={(e) => setSelectedFreq(Number(e.target.value))}
-            className="flex-1"
-          />
-          <input
-            type="number"
-            min={20}
-            max={20000}
-            value={selectedFreq}
-            onChange={(e) => setSelectedFreq(Number(e.target.value))}
-            className="w-24 bg-gray-700 text-gray-200 border border-gray-600 rounded px-2 py-1 text-sm"
-          />
-          <span className="text-sm text-gray-400">Hz</span>
-          {/* Quick presets */}
-          <div className="flex gap-1">
-            {[100, 500, 1000, 2000, 5000, 10000].map((f) => (
-              <button
-                key={f}
-                onClick={() => setSelectedFreq(f)}
-                className={`px-2 py-1 rounded text-xs ${
-                  selectedFreq === f
-                    ? 'bg-indigo-600 text-white'
-                    : 'bg-gray-700 text-gray-400 hover:bg-gray-600'
-                }`}
-              >
-                {f >= 1000 ? `${f / 1000}k` : f}
-              </button>
-            ))}
-          </div>
         </div>
-      )}
+        <PWMPointSidebar
+          points={points}
+          selectedT={selected.t_start}
+          onSelect={setSelectedT}
+        />
+      </aside>
 
-      {/* Tab content */}
-      <div className="p-4 bg-gray-800 rounded-lg border border-gray-700">
-        {activeTab === 'contour' && <ContourPlot spectra={spectra} />}
-        {activeTab === 'frequency' && (
-          <FrequencyResponsePlot spectra={spectra} showSoundPower />
+      <div className="space-y-4 min-w-0">
+        <PerformanceHeader keySlug={keySlug} point={selected} />
+        {tab === 'fft' && <FFTTab keySlug={keySlug} point={selected} />}
+        {tab === 'polar' && (
+          <PolarTab keySlug={keySlug} point={selected} allPoints={points} />
         )}
-        {activeTab === 'polar' && (
-          <PolarAtFrequency spectra={spectra} frequencyHz={selectedFreq} />
+        {tab === 'custom' && (
+          <CustomTab
+            keySlug={keySlug}
+            points={points}
+            selectedT={selected.t_start}
+            onSelectT={setSelectedT}
+          />
         )}
-        {activeTab === 'di' && <DirectivityIndexPlot spectra={spectra} />}
-        {activeTab === 'balloon' && (
-          <DirectivityBalloon spectra={spectra} frequencyHz={selectedFreq} />
-        )}
-        {activeTab === 'broadband' && <PolarPlot data={splData} size={500} />}
       </div>
+    </div>
+  );
+}
 
-      {/* CEA-2034 Metrics card */}
-      {metrics && (
-        <div className="p-4 bg-gray-800 rounded-lg border border-gray-700 space-y-3">
-          <h2 className="text-sm font-semibold text-gray-300 uppercase tracking-wide">
-            Approximate Directivity Metrics (CEA-2034)
-          </h2>
-          <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 text-sm">
-            <div className="p-3 bg-gray-900 rounded border border-gray-700">
-              <div className="text-gray-500 text-xs">On-Axis</div>
-              <div className="text-white font-mono">
-                {isFinite(metrics.onAxisDb) ? `${metrics.onAxisDb.toFixed(1)} dB` : '--'}
-              </div>
-            </div>
-            <div className="p-3 bg-gray-900 rounded border border-gray-700">
-              <div className="text-gray-500 text-xs">Listening Window</div>
-              <div className="text-white font-mono">
-                {isFinite(metrics.listeningWindowDb)
-                  ? `${metrics.listeningWindowDb.toFixed(1)} dB`
-                  : '--'}
-              </div>
-            </div>
-            <div className="p-3 bg-gray-900 rounded border border-gray-700">
-              <div className="text-gray-500 text-xs">Early Reflections</div>
-              <div className="text-white font-mono">
-                {isFinite(metrics.earlyReflectionsDb)
-                  ? `${metrics.earlyReflectionsDb.toFixed(1)} dB`
-                  : '--'}
-              </div>
-            </div>
-            <div className="p-3 bg-gray-900 rounded border border-gray-700">
-              <div className="text-gray-500 text-xs">Sound Power</div>
-              <div className="text-white font-mono">
-                {isFinite(metrics.soundPowerDb)
-                  ? `${metrics.soundPowerDb.toFixed(1)} dB`
-                  : '--'}
-              </div>
-            </div>
-            <div className="p-3 bg-gray-900 rounded border border-gray-700">
-              <div className="text-gray-500 text-xs">Directivity Index</div>
-              <div className="text-white font-mono">
-                {isFinite(metrics.directivityIndexDb)
-                  ? `${metrics.directivityIndexDb.toFixed(1)} dB`
-                  : '--'}
-              </div>
-            </div>
-            <div className="p-3 bg-gray-900 rounded border border-gray-700">
-              <div className="text-gray-500 text-xs">Data Points</div>
-              <div className="text-white font-mono">{metrics.measurementCount}</div>
-            </div>
-          </div>
-          <p className="text-xs text-gray-600">
-            Approximated from {measurements.length} azimuth positions x 5 elevations.
-            Full CEA-2034 requires 70-point sphere with frequency-dependent data.
-          </p>
-        </div>
-      )}
-
-      <ExportPanel />
+function Tabs({ value, onChange }: { value: Tab; onChange: (t: Tab) => void }) {
+  const tabs: { key: Tab; label: string }[] = [
+    { key: 'fft', label: 'FFT' },
+    { key: 'polar', label: 'Polar' },
+    { key: 'custom', label: 'Custom' },
+  ];
+  return (
+    <div className="flex bg-gray-800 border border-gray-700 rounded-md overflow-hidden">
+      {tabs.map((t) => (
+        <button
+          key={t.key}
+          onClick={() => onChange(t.key)}
+          className={`px-4 py-2 text-sm font-medium transition-colors ${
+            value === t.key
+              ? 'bg-indigo-600 text-white'
+              : 'text-gray-300 hover:bg-gray-700 hover:text-white'
+          }`}
+        >
+          {t.label}
+        </button>
+      ))}
     </div>
   );
 }

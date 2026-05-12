@@ -1,0 +1,17 @@
+# SoundVisualizer server configuration.
+# Copy to config.toml and edit. config.toml is gitignored.
+# Defaults match Paweł's calibration of OUR specific Tyto Robotics 1585 unit.
+
+[tyto]
+enabled = false              # set true once the stand is plugged in
+tty = "/dev/ttyUSB0"
+poll_period_seconds = 0.03   # ~33 Hz; matches Paweł's loop
+
+[tyto.calibration]
+hinge_distance = 0.07492
+cal_poles = 14
+cal_hinge_left = 1.2100092475098374
+cal_hinge_right = 1.2590952216896254
+cal_left = 0.9663293361785854
+cal_right = -0.9575068323376389
+cal_thrust = -0.9516456828857573
