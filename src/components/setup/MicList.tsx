@@ -4,6 +4,7 @@ import type { AudioDeviceInfo, CalibrationSummary, MicConfig } from '../../api/t
 import { ELEVATION_VALUES } from '../../api/types';
 import { useSetupStore } from '../../stores/setupStore';
 import { Button } from '../ui/Button';
+import { PresetControls } from './PresetControls';
 
 export function MicList() {
   const mics = useSetupStore((s) => s.mics);
@@ -25,6 +26,7 @@ export function MicList() {
 
   return (
     <div className="space-y-3">
+      <PresetControls />
       <div className="hidden sm:grid grid-cols-12 gap-3 text-[11px] uppercase tracking-wide text-gray-500 px-1">
         <div className="col-span-1">#</div>
         <div className="col-span-2">Serial</div>

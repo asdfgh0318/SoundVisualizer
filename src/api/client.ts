@@ -10,8 +10,10 @@ import type {
   FFTSettings,
   Key,
   MeasurementMeta,
+  MicPresetEntry,
   PerformanceSummary,
   PWMPoint,
+  SetupPreset,
   TytoStatus,
 } from './types';
 
@@ -82,6 +84,12 @@ export const api = {
   captureRunStatus: () => request<CaptureRunStatus>('/capture/run'),
   runFakeCapture: (body: CaptureHalfRunRequest) =>
     request<FakeCaptureResult>('/dev/fake_capture', json(body)),
+
+  listSetupPresets: () => request<SetupPreset[]>('/setup-presets'),
+  createSetupPreset: (name: string, mics: MicPresetEntry[]) =>
+    request<SetupPreset>('/setup-presets', json({ name, mics })),
+  deleteSetupPreset: (id: string) =>
+    request<void>(`/setup-presets/${encodeURIComponent(id)}`, { method: 'DELETE' }),
 
   listPWMPoints: (slug: string) =>
     request<PWMPoint[]>(`/keys/${encodeURIComponent(slug)}/pwm_points`),

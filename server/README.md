@@ -65,6 +65,10 @@ GET  /health
 GET  /devices/audio
 GET  /calibrations
 POST /calibrations             (multipart UMIK-2 .txt upload)
+GET  /setup-presets
+POST /setup-presets
+GET  /setup-presets/{id}
+DELETE /setup-presets/{id}
 GET  /keys
 POST /keys
 GET  /keys/{slug}

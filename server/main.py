@@ -13,6 +13,7 @@ from server.api import (
     keys,
     measurements,
     results,
+    setup_presets,
 )
 from server.api import thrust_stand as tyto_api
 from server.core.calibration_override import apply_calibration_config
@@ -70,6 +71,7 @@ app.include_router(calibration.router)
 app.include_router(capture.router)
 app.include_router(capture_run.router)
 app.include_router(results.router)
+app.include_router(setup_presets.router)
 app.include_router(tyto_api.router)
 app.include_router(dev.router)
 

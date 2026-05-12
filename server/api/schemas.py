@@ -131,3 +131,19 @@ class CaptureRunStatus(BaseModel):
     current_pwm_us: int | None = None
     measurement_ids: list[str] = []
     error: str | None = None
+
+
+class MicPresetEntry(BaseModel):
+    """Portable mic config — no USB device index since that shifts per machine/boot."""
+
+    serial: str
+    top_elevation_deg: float | None = None
+    bottom_elevation_deg: float | None = None
+    calibration_file_id: str | None = None
+
+
+class SetupPreset(BaseModel):
+    id: str
+    name: str
+    created_at: datetime
+    mics: list[MicPresetEntry]

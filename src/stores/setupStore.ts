@@ -35,6 +35,7 @@ interface SetupState {
   addMic: () => void;
   updateMic: (id: string, patch: Partial<MicConfig>) => void;
   removeMic: (id: string) => void;
+  replaceMics: (mics: MicConfig[]) => void;
   setCutoff: (channel: CutoffChannelName, patch: Partial<CutoffChannel>) => void;
   resetCutoffs: () => void;
   bumpCalibrations: () => void;
@@ -52,6 +53,7 @@ export const useSetupStore = create<SetupState>()(
           mics: s.mics.map((m) => (m.id === id ? { ...m, ...patch } : m)),
         })),
       removeMic: (id) => set((s) => ({ mics: s.mics.filter((m) => m.id !== id) })),
+      replaceMics: (mics) => set({ mics }),
       setCutoff: (channel, patch) =>
         set((s) => ({
           cutoffs: { ...s.cutoffs, [channel]: { ...s.cutoffs[channel], ...patch } },

@@ -94,6 +94,21 @@ export interface MicConfig {
   calibrationFileId: string | null;
 }
 
+// Server-stored mic preset entry — no USB device since it shifts per machine.
+export interface MicPresetEntry {
+  serial: string;
+  top_elevation_deg: number | null;
+  bottom_elevation_deg: number | null;
+  calibration_file_id: string | null;
+}
+
+export interface SetupPreset {
+  id: string;
+  name: string;
+  created_at: string;
+  mics: MicPresetEntry[];
+}
+
 export const ELEVATION_VALUES = [
   -90, -75, -60, -45, -30, -15, 0, 15, 30, 45, 60, 75, 90,
 ] as const;
