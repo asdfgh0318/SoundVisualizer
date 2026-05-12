@@ -1,3 +1,5 @@
+import sys
+
 import sounddevice as sd
 from pydantic import BaseModel
 
@@ -11,11 +13,22 @@ class AudioDeviceInfo(BaseModel):
 
 
 def list_input_devices() -> list[AudioDeviceInfo]:
-    """Real hardware inputs only — filters out ALSA virtual plugins (default,
-    pulse, pipewire, samplerate, etc.) by keeping only devices whose name
-    contains '(hw:' which is the canonical ALSA hardware marker."""
+    """List input audio devices.
+
+    On Linux, filters to ALSA `(hw:…)` hardware devices to drop the proliferation
+    of virtual ALSA plugins (default, pulse, pipewire, samplerate, speex, …).
+    On macOS and Windows the underlying audio frameworks (CoreAudio, WASAPI/MME)
+    don't have the same plugin layer, so we return all input devices.
+    """
     devices = sd.query_devices()
     hostapis = sd.query_hostapis()
+    is_linux = sys.platform.startswith("linux")
+
+    def keep(d: dict) -> bool:
+        if d["max_input_channels"] <= 0:
+            return False
+        return not (is_linux and "(hw:" not in d["name"])
+
     return [
         AudioDeviceInfo(
             index=i,
@@ -25,5 +38,5 @@ def list_input_devices() -> list[AudioDeviceInfo]:
             default_samplerate=d["default_samplerate"],
         )
         for i, d in enumerate(devices)
-        if d["max_input_channels"] > 0 and "(hw:" in d["name"]
+        if keep(d)
     ]

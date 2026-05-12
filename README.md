@@ -33,21 +33,57 @@ Browser and server are decoupled. The server owns the hardware and the data on d
 
 ## Quick start
 
+### Prerequisites
+
+| Platform | What you need |
+|----------|---------------|
+| **Linux** (Debian/Ubuntu) | `python3.12` + `python3.12-venv` · Node 22 (e.g. via `nvm` — `.nvmrc` is pinned) · `sudo apt install libportaudio2` |
+| **macOS** | `brew install python@3.12 node portaudio` |
+| **Windows** | Python 3.12 (python.org or `winget install Python.Python.3.12`) · Node 22 (nodejs.org or `winget install OpenJS.NodeJS.LTS`). Use PowerShell, not cmd. |
+
+Hardware integration (Tyto Robotics serial protocol, ALSA udev rules, multi-mic capture pinning) is **Linux-tested only**. Frontend dev, fake captures, and the Results tabs (FFT/Polar/Custom) work fully on macOS and Windows.
+
+### One-shot setup script
+
 ```bash
-# Install
+# Linux / macOS / WSL
+git clone https://github.com/asdfgh0318/SoundVisualizer.git
+cd SoundVisualizer
+bash scripts/setup.sh
+```
+
+```powershell
+# Windows PowerShell
+git clone https://github.com/asdfgh0318/SoundVisualizer.git
+cd SoundVisualizer
+.\scripts\setup.ps1
+```
+
+The script: detects platform · checks prereqs (warns about missing PortAudio etc.) · creates the Python venv · installs server + frontend deps · runs the pytest suite · builds the frontend bundle. About 60 seconds on a warm cache.
+
+### Run it
+
+```bash
+# Backend (terminal 1)
+.venv/bin/uvicorn server.main:app --reload --port 8000          # Linux/macOS
+.venv\Scripts\uvicorn.exe server.main:app --reload --port 8000  # Windows
+
+# Frontend (terminal 2)
+npm run dev          # → http://localhost:5173
+
+# Populate demo data without any hardware
+curl -X POST http://localhost:8000/dev/seed
+# Or use the Capture form's "Run fake capture (no hardware)" button
+```
+
+### Manual install (skip the script)
+
+```bash
 python3.12 -m venv .venv
 .venv/bin/pip install -e ".[dev]"
 npm install
-
-# Backend
-.venv/bin/uvicorn server.main:app --reload --port 8000
-
-# Frontend (separate terminal)
-npm run dev          # → http://localhost:5173
-
-# Populate demo data without hardware
-curl -X POST http://localhost:8000/dev/seed
-# Or use the Capture form's "Run fake capture (no hardware)" button
+.venv/bin/pytest server/tests/    # 63 tests should pass
+npm run build                      # type-check + bundle
 ```
 
 ## With real hardware
