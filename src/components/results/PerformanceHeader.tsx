@@ -1,52 +1,39 @@
-import { useEffect, useState } from 'react';
-import { api } from '../../api/client';
-import type { PerformanceSummary, PWMPoint } from '../../api/types';
+import type { MergedPWMPoint, PerformanceSummary } from '../../api/types';
 
 interface Props {
-  keySlug: string;
-  point: PWMPoint;
+  point: MergedPWMPoint;
+  drilldownTStart: string | null;
 }
 
-export function PerformanceHeader({ keySlug, point }: Props) {
-  const [summary, setSummary] = useState<PerformanceSummary | null>(null);
-  const [error, setError] = useState<Error | null>(null);
-
-  useEffect(() => {
-    setSummary(null);
-    setError(null);
-    if (!point.performance_id) return;
-    let cancelled = false;
-    api.getPerformanceSummary(keySlug, point.performance_id).then(
-      (s) => !cancelled && setSummary(s),
-      (e) => !cancelled && setError(e),
-    );
-    return () => { cancelled = true; };
-  }, [keySlug, point.performance_id]);
+export function PerformanceHeader({ point, drilldownTStart }: Props) {
+  // If drilled into a specific underlying capture, use its perf summary;
+  // otherwise use the group's averaged summary.
+  let summary: PerformanceSummary | null = point.avg_performance;
+  let label = 'Merged perf (mean across captures)';
+  if (drilldownTStart) {
+    const u = point.underlying.find((u) => u.t_start === drilldownTStart);
+    if (u) {
+      summary = u.performance_summary;
+      label = `Drilled into ${u.half} capture · ${u.t_start.slice(11, 19)}`;
+    }
+  } else if (point.underlying.length === 1) {
+    label = `${point.underlying[0].half} capture`;
+  }
 
   return (
     <div className="bg-gray-800 border border-gray-700 rounded-md p-4">
       <div className="flex items-baseline gap-3 mb-3">
         <span className="text-xs uppercase tracking-wide text-amber-400">PWM</span>
         <span className="text-2xl font-bold text-white font-mono">
-          {point.pwm_us ?? '—'} <span className="text-gray-400 text-base">µs</span>
+          {point.pwm_us} <span className="text-gray-400 text-base">µs</span>
         </span>
-        <span
-          className={`text-[10px] uppercase tracking-wide px-2 py-0.5 rounded ${
-            point.half === 'top'
-              ? 'bg-sky-500/20 text-sky-300'
-              : 'bg-rose-500/20 text-rose-300'
-          }`}
-        >
-          {point.half ?? '—'} half
-        </span>
+        <CompositionPill composition={point.composition} drilled={drilldownTStart !== null} />
       </div>
 
-      {!point.performance_id && (
+      <div className="text-xs text-gray-500 mb-2">{label}</div>
+
+      {!summary && (
         <div className="text-sm text-gray-500 italic">No performance measurement at this point.</div>
-      )}
-      {error && <div className="text-sm text-red-400">Error: {error.message}</div>}
-      {point.performance_id && !summary && !error && (
-        <div className="text-sm text-gray-400 italic">Loading…</div>
       )}
       {summary && (
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
@@ -61,6 +48,47 @@ export function PerformanceHeader({ keySlug, point }: Props) {
         </div>
       )}
     </div>
+  );
+}
+
+function CompositionPill({
+  composition, drilled,
+}: {
+  composition: Record<string, number>;
+  drilled: boolean;
+}) {
+  const top = composition.top ?? 0;
+  const bot = composition.bottom ?? 0;
+  const isSingle = (top + bot) === 1;
+  if (drilled) {
+    return (
+      <span className="text-[10px] uppercase tracking-wide px-2 py-0.5 rounded bg-amber-500/20 text-amber-300 border border-amber-500/40">
+        drilled-in
+      </span>
+    );
+  }
+  if (isSingle && (top === 0 || bot === 0)) {
+    const label = top > 0 ? 'TOP only' : 'BOTTOM only';
+    return (
+      <span className="text-[10px] uppercase tracking-wide px-2 py-0.5 rounded bg-amber-500/20 text-amber-300 border border-amber-500/40">
+        {label}
+      </span>
+    );
+  }
+  if (top === 1 && bot === 1) {
+    return (
+      <span className="text-[10px] uppercase tracking-wide px-2 py-0.5 rounded bg-indigo-500/20 text-indigo-300">
+        TOP + BOTTOM
+      </span>
+    );
+  }
+  const parts: string[] = [];
+  if (top > 0) parts.push(`${top} TOP`);
+  if (bot > 0) parts.push(`${bot} BOTTOM`);
+  return (
+    <span className="text-[10px] uppercase tracking-wide px-2 py-0.5 rounded bg-indigo-500/20 text-indigo-300">
+      {parts.join(' + ')}
+    </span>
   );
 }
 

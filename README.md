@@ -33,48 +33,88 @@ Browser and server are decoupled. The server owns the hardware and the data on d
 
 ## Quick start
 
-### Prerequisites
+Walks a colleague from "fresh laptop" to "app running with fake data" in ~5 minutes. No hardware needed.
 
-| Platform | What you need |
-|----------|---------------|
-| **Linux** (Debian/Ubuntu) | `python3.12` + `python3.12-venv` · Node 22 (e.g. via `nvm` — `.nvmrc` is pinned) · `sudo apt install libportaudio2` |
-| **macOS** | `brew install python@3.12 node portaudio` |
-| **Windows** | Python 3.12 (python.org or `winget install Python.Python.3.12`) · Node 22 (nodejs.org or `winget install OpenJS.NodeJS.LTS`). Use PowerShell, not cmd. |
+### 1. Check prerequisites
 
-Hardware integration (Tyto Robotics serial protocol, ALSA udev rules, multi-mic capture pinning) is **Linux-tested only**. Frontend dev, fake captures, and the Results tabs (FFT/Polar/Custom) work fully on macOS and Windows.
+You need three things on PATH:
 
-### One-shot setup script
+| Tool | Check with | Install if missing |
+|---|---|---|
+| **Git** | `git --version` | Linux `sudo apt install git` · macOS `xcode-select --install` · Windows [git-scm.com](https://git-scm.com) |
+| **Python 3.12+** | `python3.12 --version` (Linux/macOS) or `python --version` (Windows) | Linux `sudo apt install python3.12 python3.12-venv` · macOS `brew install python@3.12` · Windows `winget install Python.Python.3.12` |
+| **Node 22+** | `node --version` | Linux/macOS: install [nvm](https://github.com/nvm-sh/nvm), then `nvm install 22` · Windows `winget install OpenJS.NodeJS.LTS` |
 
-```bash
-# Linux / macOS / WSL
-git clone https://github.com/asdfgh0318/SoundVisualizer.git
-cd SoundVisualizer
-bash scripts/setup.sh
-```
+**Linux extra:** `sudo apt install libportaudio2` — needed for audio device enumeration.
 
-```powershell
-# Windows PowerShell
-git clone https://github.com/asdfgh0318/SoundVisualizer.git
-cd SoundVisualizer
-.\scripts\setup.ps1
-```
+Hardware integration (Tyto serial protocol, ALSA udev rules, multi-mic capture pinning) is Linux-tested only. Frontend dev, fake captures, and all Results tabs work fully on macOS and Windows.
 
-The script: detects platform · checks prereqs (warns about missing PortAudio etc.) · creates the Python venv · installs server + frontend deps · runs the pytest suite · builds the frontend bundle. About 60 seconds on a warm cache.
-
-### Run it
+### 2. Clone
 
 ```bash
-# Backend (terminal 1)
-.venv/bin/uvicorn server.main:app --reload --port 8000          # Linux/macOS
-.venv\Scripts\uvicorn.exe server.main:app --reload --port 8000  # Windows
-
-# Frontend (terminal 2)
-npm run dev          # → http://localhost:5173
-
-# Populate demo data without any hardware
-curl -X POST http://localhost:8000/dev/seed
-# Or use the Capture form's "Run fake capture (no hardware)" button
+git clone https://github.com/asdfgh0318/SoundVisualizer.git
+cd SoundVisualizer
 ```
+
+### 3. One-shot setup
+
+```bash
+bash scripts/setup.sh           # Linux / macOS / WSL
+.\scripts\setup.ps1             # Windows PowerShell
+```
+
+The script: detects your OS, warns about missing system packages, creates `.venv/`, installs Python + npm deps, runs the pytest suite (68 tests should pass), and builds the production bundle. Ends with `Setup complete!` and the run commands.
+
+### 4. Start the services
+
+**Terminal 1 — backend:**
+```bash
+.venv/bin/uvicorn server.main:app --reload --port 8000           # Linux/macOS
+.venv\Scripts\uvicorn.exe server.main:app --reload --port 8000   # Windows
+```
+You should see `Uvicorn running on http://127.0.0.1:8000`.
+
+**Terminal 2 — frontend:**
+```bash
+npm run dev
+```
+You should see `VITE … ready` and `Local: http://localhost:5173/`.
+
+### 5. Open the app
+
+Navigate to **http://localhost:5173**. You'll land on the **Setup** page. Tyto status will read "Not connected" — that's expected with no hardware.
+
+### 6. Try a fake capture (no hardware required)
+
+1. Click **Capture** in the nav.
+2. Fill in: Motor `Demo Motor` · Propeller `5x4` · Shroud `none` · Notes `first-test`.
+3. The PWM ramp comes pre-filled with 3 steps (1200 / 1500 / 1800 µs). Leave it.
+4. Click **Continue → Review** → **✦ Run fake capture (no hardware)**.
+5. Confirm the safety modal ("no motor will spin"). Wait ~5 s for top half, then click the reconfigure modal to continue to bottom half.
+6. Land on the **Done** summary.
+
+Now click **Results** and pick your `demo-motor__5x4__none__first-test` key. You should see:
+
+- **Sidebar:** 3 merged PWM points (each tagged `T+B`). Click `▸ 2 captures` to drill into a specific half.
+- **FFT tab:** one row per unique elevation, showing the synthesized blade-pass tone + harmonics + broadband.
+- **Polar tab:** directivity bubble that grows with PWM. Try the **1k Hz** or **2k Hz** 1/3-octave preset.
+- **Custom tab:** X = Thrust, Y = SPL band → 3 dots on a curve. Click one to drill into its FFT.
+
+You're set. To work with real hardware later, see **[With real hardware](#with-real-hardware)** below.
+
+### Common gotchas
+
+| Symptom | Fix |
+|---|---|
+| `bash: scripts/setup.sh: Permission denied` | `chmod +x scripts/setup.sh` |
+| Setup says `python3.12: command not found` but `python --version` shows 3.12+ | The script auto-fallbacks to `python` — re-run, it'll work |
+| Backend logs `OSError: PortAudio library not found` on Linux | `sudo apt install libportaudio2` |
+| Browser shows "Network Error" / red banners | Backend isn't running — check Terminal 1 |
+| Setup page shows zero audio devices (Linux) | No real mics plugged in; the filter only shows ALSA `hw:…` devices. Fake capture still works. |
+| Fake capture button is disabled | Fill in **Motor** + **Propeller** at minimum |
+| `npm run dev` is slow / OOM | `node -v` should be 22+; older Node may misbehave |
+
+For team workflow (branches, PRs, issues, the maintenance directive), see [CLAUDE.md](CLAUDE.md) → "Maintenance — standing instructions".
 
 ### Manual install (skip the script)
 
@@ -82,7 +122,7 @@ curl -X POST http://localhost:8000/dev/seed
 python3.12 -m venv .venv
 .venv/bin/pip install -e ".[dev]"
 npm install
-.venv/bin/pytest server/tests/    # 63 tests should pass
+.venv/bin/pytest server/tests/    # 68 tests should pass
 npm run build                      # type-check + bundle
 ```
 

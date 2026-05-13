@@ -3,8 +3,8 @@ import { useEffect, useMemo, useState } from 'react';
 import { api } from '../../api/client';
 import type {
   FFTResponse,
+  MergedPWMPoint,
   PerformanceSummary,
-  PWMPoint,
 } from '../../api/types';
 import { PlotlyChart } from '../ui/PlotlyChart';
 import {
@@ -15,9 +15,9 @@ import {
 
 interface Props {
   keySlug: string;
-  points: PWMPoint[];
-  selectedT: string | null;
-  onSelectT: (t: string) => void;
+  points: MergedPWMPoint[];
+  selectedId: string | null;
+  onSelectId: (id: string) => void;
 }
 
 const FFT_SETTINGS = { window: 'hann' as const, size: 4096, overlap: 0.5 };
@@ -46,49 +46,27 @@ const COLUMNS: { key: ColumnKey; label: string; unit: string }[] = [
 ];
 
 interface Row {
-  t_start: string;
-  pwm_us: number | null;
-  half: 'top' | 'bottom' | null;
+  id: string;
+  pwm_us: number;
+  composition: Record<string, number>;
   perf: PerformanceSummary | null;
   spl_band: number | null;
 }
 
-const COL_TOP = '#7dd3fc';     // sky-300
-const COL_BOTTOM = '#fda4af';  // rose-300
+const COL_MERGED = '#818cf8';  // indigo-400 — full T+B point
+const COL_SINGLE = '#fda4af';  // rose-300 — only-one-half point
 const COL_SELECTED = '#fbbf24'; // amber-400
 
-export function CustomTab({ keySlug, points, selectedT, onSelectT }: Props) {
-  const [perfs, setPerfs] = useState<Record<string, PerformanceSummary>>({});
+export function CustomTab({ keySlug, points, selectedId, onSelectId }: Props) {
   const [ffts, setFfts] = useState<Record<string, FFTResponse>>({});
-  const [perfError, setPerfError] = useState<Error | null>(null);
   const [fftError, setFftError] = useState<Error | null>(null);
 
   const [xCol, setXCol] = useState<ColumnKey>('thrust_n_mean');
   const [yCol, setYCol] = useState<ColumnKey>('spl_band');
   const [band, setBand] = useState<FreqBand>(DEFAULT_BAND);
 
-  // Fetch performance summaries for every point.
-  useEffect(() => {
-    let cancelled = false;
-    setPerfs({});
-    setPerfError(null);
-    const ids = points
-      .filter((p) => p.performance_id)
-      .map((p) => ({ t: p.t_start, id: p.performance_id! }));
-    Promise.all(
-      ids.map(({ t, id }) =>
-        api.getPerformanceSummary(keySlug, id).then(
-          (s): [string, PerformanceSummary] => [t, s],
-        ),
-      ),
-    )
-      .then((entries) => !cancelled && setPerfs(Object.fromEntries(entries)))
-      .catch((e: Error) => !cancelled && setPerfError(e));
-    return () => { cancelled = true; };
-  }, [keySlug, points]);
-
   // Fetch FFTs for every acoustic measurement (lazy: only if SPL column needed).
-  const splNeeded = xCol === 'spl_band' || yCol === 'spl_band' || selectedT !== null;
+  const splNeeded = xCol === 'spl_band' || yCol === 'spl_band' || selectedId !== null;
   useEffect(() => {
     if (!splNeeded) return;
     let cancelled = false;
@@ -107,7 +85,6 @@ export function CustomTab({ keySlug, points, selectedT, onSelectT }: Props) {
   const rows = useMemo<Row[]>(
     () =>
       points.map((p) => {
-        const perf = perfs[p.t_start] ?? null;
         const splByMic = p.acoustic
           .map((a) => {
             const fft = ffts[a.id];
@@ -117,24 +94,24 @@ export function CustomTab({ keySlug, points, selectedT, onSelectT }: Props) {
           .filter((v): v is number => v !== null);
         const spl = splByMic.length > 0 ? logMean(splByMic) : null;
         return {
-          t_start: p.t_start,
+          id: p.id,
           pwm_us: p.pwm_us,
-          half: p.half,
-          perf,
+          composition: p.composition,
+          perf: p.avg_performance,
           spl_band: spl,
         };
       }),
-    [points, perfs, ffts, band],
+    [points, ffts, band],
   );
 
-  const selectedRow = rows.find((r) => r.t_start === selectedT) ?? null;
-  const selectedPoint = points.find((p) => p.t_start === selectedT) ?? null;
+  const selectedRow = rows.find((r) => r.id === selectedId) ?? null;
+  const selectedPoint = points.find((p) => p.id === selectedId) ?? null;
 
   const onScatterClick = (e: PlotMouseEvent) => {
     const pt = e.points[0];
     if (!pt) return;
-    const t = pt.customdata as string;
-    if (typeof t === 'string') onSelectT(t);
+    const id = pt.customdata as string;
+    if (typeof id === 'string') onSelectId(id);
   };
 
   return (
@@ -155,24 +132,21 @@ export function CustomTab({ keySlug, points, selectedT, onSelectT }: Props) {
         <FrequencyBandSelector band={band} onChange={setBand} />
       )}
 
-      {perfError && (
-        <div className="text-sm text-red-400">Performance summary error: {perfError.message}</div>
-      )}
       {fftError && (
         <div className="text-sm text-red-400">FFT error: {fftError.message}</div>
       )}
 
       <div className="bg-gray-800 border border-gray-700 rounded-md p-3 space-y-2">
         <div className="flex items-center justify-end gap-4 text-xs px-1">
-          <LegendSwatch color={COL_TOP} label="top half (mics above prop plane)" />
-          <LegendSwatch color={COL_BOTTOM} label="bottom half" />
+          <LegendSwatch color={COL_MERGED} label="merged (T+B)" />
+          <LegendSwatch color={COL_SINGLE} label="single-half only" />
           <LegendSwatch color={COL_SELECTED} label="selected — click to change" big />
         </div>
         <ScatterPlot
           rows={rows}
           xCol={xCol}
           yCol={yCol}
-          selectedT={selectedT}
+          selectedId={selectedId}
           onClick={onScatterClick}
         />
       </div>
@@ -237,16 +211,12 @@ function AxisPicker({
 }
 
 function ScatterPlot({
-  rows,
-  xCol,
-  yCol,
-  selectedT,
-  onClick,
+  rows, xCol, yCol, selectedId, onClick,
 }: {
   rows: Row[];
   xCol: ColumnKey;
   yCol: ColumnKey;
-  selectedT: string | null;
+  selectedId: string | null;
   onClick: (e: PlotMouseEvent) => void;
 }) {
   const xLabel = COLUMNS.find((c) => c.key === xCol)!.label;
@@ -259,25 +229,36 @@ function ScatterPlot({
       return r.perf ? (r.perf[c] as number) : null;
     };
 
-    type Point = {
-      x: number; y: number; text: string; customdata: string;
+    const compositionLabel = (comp: Record<string, number>): string => {
+      const t = comp.top ?? 0;
+      const b = comp.bottom ?? 0;
+      if (t === 1 && b === 1) return 'T+B';
+      if (t === 0) return `${b}B`;
+      if (b === 0) return `${t}T`;
+      return `${t}T + ${b}B`;
     };
-    const buckets: Record<'top' | 'bottom' | 'selected', Point[]> = {
-      top: [], bottom: [], selected: [],
-    };
+
+    type Point = { x: number; y: number; text: string; customdata: string };
+    const merged: Point[] = [];
+    const single: Point[] = [];
+    const selected: Point[] = [];
 
     for (const r of rows) {
       const xv = value(r, xCol);
       const yv = value(r, yCol);
-      if (xv === null || yv === null || r.half === null) continue;
+      if (xv === null || yv === null) continue;
+      const t = r.composition.top ?? 0;
+      const b = r.composition.bottom ?? 0;
+      const isSingleHalf = t + b === 1;
       const point: Point = {
         x: xv,
         y: yv,
-        text: `PWM ${r.pwm_us ?? '?'} µs · ${r.half}`,
-        customdata: r.t_start,
+        text: `PWM ${r.pwm_us} µs · ${compositionLabel(r.composition)}`,
+        customdata: r.id,
       };
-      if (r.t_start === selectedT) buckets.selected.push(point);
-      else buckets[r.half].push(point);
+      if (r.id === selectedId) selected.push(point);
+      else if (isSingleHalf) single.push(point);
+      else merged.push(point);
     }
 
     const mk = (name: string, color: string, size: number, pts: Point[]): Data => ({
@@ -294,11 +275,11 @@ function ScatterPlot({
     });
 
     return [
-      mk('top', COL_TOP, 9, buckets.top),
-      mk('bottom', COL_BOTTOM, 9, buckets.bottom),
-      mk('selected', COL_SELECTED, 14, buckets.selected),
+      mk('merged', COL_MERGED, 9, merged),
+      mk('single-half', COL_SINGLE, 9, single),
+      mk('selected', COL_SELECTED, 14, selected),
     ];
-  }, [rows, xCol, yCol, selectedT]);
+  }, [rows, xCol, yCol, selectedId]);
 
   const layout = useMemo<Partial<Layout>>(
     () => ({
@@ -339,12 +320,12 @@ function SelectedPointFFTPanel({
   ffts,
 }: {
   row: Row;
-  point: PWMPoint;
+  point: MergedPWMPoint;
   ffts: Record<string, FFTResponse>;
 }) {
   const traces = useMemo<Data[]>(() => {
     const palette = ['#818cf8', '#a78bfa', '#f472b6', '#fb923c', '#34d399', '#22d3ee'];
-    return point.acoustic.map((a, i) => {
+    return point.acoustic.map((a: typeof point.acoustic[number], i: number) => {
       const fft = ffts[a.id];
       const color = palette[i % palette.length];
       return {
@@ -387,7 +368,7 @@ function SelectedPointFFTPanel({
     <div className="bg-gray-800 border border-gray-700 rounded-md p-3">
       <div className="flex items-baseline gap-3 mb-2 px-1">
         <span className="text-xs uppercase tracking-wide text-gray-500">Selected</span>
-        <span className="text-sm font-mono text-gray-200">PWM {row.pwm_us ?? '?'} µs · {row.half ?? '?'}</span>
+        <span className="text-sm font-mono text-gray-200">PWM {row.pwm_us} µs</span>
         {row.spl_band !== null && (
           <span className="text-xs text-gray-400">
             band SPL: <span className="font-mono text-gray-200">{row.spl_band.toFixed(1)} dB</span>

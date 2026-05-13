@@ -147,3 +147,19 @@ class SetupPreset(BaseModel):
     name: str
     created_at: datetime
     mics: list[MicPresetEntry]
+
+
+class CompatTolerance(BaseModel):
+    """Tolerance for a single performance channel. Two values are considered
+    compatible if `|a - b| <= max(abs, rel * mean(|a|, |b|))`."""
+
+    abs: float = Field(ge=0.0)
+    rel: float = Field(ge=0.0, le=1.0)
+
+
+class CompatibilityTolerances(BaseModel):
+    thrust_n: CompatTolerance = CompatTolerance(abs=0.5, rel=0.05)
+    torque_nm: CompatTolerance = CompatTolerance(abs=0.05, rel=0.10)
+    current_a: CompatTolerance = CompatTolerance(abs=0.5, rel=0.05)
+    voltage_v: CompatTolerance = CompatTolerance(abs=0.3, rel=0.0)
+    rpm_mean: CompatTolerance = CompatTolerance(abs=100.0, rel=0.02)

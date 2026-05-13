@@ -1,6 +1,6 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { api, ApiError } from '../api/client';
-import type { PWMPoint } from '../api/types';
+import type { MergedPWMPoint } from '../api/types';
 import { CustomTab } from '../components/results/CustomTab';
 import { FFTTab } from '../components/results/FFTTab';
 import { KeyPicker } from '../components/results/KeyPicker';
@@ -38,26 +38,47 @@ export function ResultsPage() {
 }
 
 function ResultsBody({ keySlug, tab }: { keySlug: string; tab: Tab }) {
-  const [points, setPoints] = useState<PWMPoint[] | null>(null);
+  const [points, setPoints] = useState<MergedPWMPoint[] | null>(null);
   const [error, setError] = useState<Error | null>(null);
-  const [selectedT, setSelectedT] = useState<string | null>(null);
+  const [selectedId, setSelectedId] = useState<string | null>(null);
+  const [drilldownTStart, setDrilldownTStart] = useState<string | null>(null);
   const [reloadKey, setReloadKey] = useState(0);
 
   useEffect(() => {
     let cancelled = false;
     setPoints(null);
     setError(null);
-    setSelectedT(null);
+    setSelectedId(null);
+    setDrilldownTStart(null);
     api.listPWMPoints(keySlug).then(
       (p) => {
         if (cancelled) return;
         setPoints(p);
-        if (p.length > 0) setSelectedT(p[0].t_start);
+        if (p.length > 0) setSelectedId(p[0].id);
       },
       (e: Error | ApiError) => !cancelled && setError(e),
     );
     return () => { cancelled = true; };
   }, [keySlug, reloadKey]);
+
+  // Build the "effective" point passed to the tabs. If drilled into a specific
+  // underlying capture, synthesize a single-capture point; else use the merged.
+  const effectivePoint = useMemo<MergedPWMPoint | null>(() => {
+    if (!points) return null;
+    const selected = points.find((p) => p.id === selectedId) ?? points[0];
+    if (!selected) return null;
+    if (!drilldownTStart) return selected;
+    const u = selected.underlying.find((u) => u.t_start === drilldownTStart);
+    if (!u) return selected;
+    return {
+      id: selected.id,
+      pwm_us: selected.pwm_us,
+      composition: { [u.half]: 1 },
+      underlying: [u],
+      acoustic: u.acoustic,
+      avg_performance: u.performance_summary,
+    };
+  }, [points, selectedId, drilldownTStart]);
 
   if (error) return <div className="text-sm text-red-400">Error: {error.message}</div>;
   if (!points) return <div className="text-sm text-gray-400 italic">Loading PWM points…</div>;
@@ -68,11 +89,10 @@ function ResultsBody({ keySlug, tab }: { keySlug: string; tab: Tab }) {
       </div>
     );
   }
-
-  const selected = points.find((p) => p.t_start === selectedT) ?? points[0];
+  if (!effectivePoint) return null;
 
   return (
-    <div className="grid grid-cols-1 lg:grid-cols-[280px_1fr] gap-4">
+    <div className="grid grid-cols-1 lg:grid-cols-[300px_1fr] gap-4">
       <aside>
         <div className="flex items-center justify-between mb-2 px-1">
           <div className="text-xs uppercase tracking-wide text-gray-500">
@@ -89,23 +109,23 @@ function ResultsBody({ keySlug, tab }: { keySlug: string; tab: Tab }) {
         </div>
         <PWMPointSidebar
           points={points}
-          selectedT={selected.t_start}
-          onSelect={setSelectedT}
+          selectedId={selectedId ?? points[0].id}
+          drilldownTStart={drilldownTStart}
+          onSelect={(id) => { setSelectedId(id); setDrilldownTStart(null); }}
+          onDrilldown={(_mergedId, t) => setDrilldownTStart(t)}
         />
       </aside>
 
       <div className="space-y-4 min-w-0">
-        <PerformanceHeader keySlug={keySlug} point={selected} />
-        {tab === 'fft' && <FFTTab keySlug={keySlug} point={selected} />}
-        {tab === 'polar' && (
-          <PolarTab keySlug={keySlug} point={selected} allPoints={points} />
-        )}
+        <PerformanceHeader point={effectivePoint} drilldownTStart={drilldownTStart} />
+        {tab === 'fft' && <FFTTab keySlug={keySlug} point={effectivePoint} />}
+        {tab === 'polar' && <PolarTab keySlug={keySlug} point={effectivePoint} />}
         {tab === 'custom' && (
           <CustomTab
             keySlug={keySlug}
             points={points}
-            selectedT={selected.t_start}
-            onSelectT={setSelectedT}
+            selectedId={selectedId ?? points[0].id}
+            onSelectId={(id) => { setSelectedId(id); setDrilldownTStart(null); }}
           />
         )}
       </div>

@@ -210,13 +210,49 @@ export interface AcousticInPoint {
   calibration_file_id: string | null;
 }
 
-export interface PWMPoint {
+export interface UnderlyingCapture {
   t_start: string;
-  half: MeasurementHalf | null;
-  pwm_us: number | null;
+  half: MeasurementHalf;
   performance_id: string | null;
   acoustic: AcousticInPoint[];
+  performance_summary: PerformanceSummary | null;
 }
+
+/** A "merged PWM point" — all captures at the same PWM µs that pass compatibility
+ *  check group into one of these. Incompatible captures end up in separate merged
+ *  points (each with its own composition). */
+export interface MergedPWMPoint {
+  id: string; // "<pwm_us>-<group_index>"
+  pwm_us: number;
+  composition: Record<string, number>; // e.g. { top: 1, bottom: 1 } or { top: 2 }
+  underlying: UnderlyingCapture[];
+  acoustic: AcousticInPoint[]; // combined from all underlying, sorted by elev desc
+  avg_performance: PerformanceSummary | null;
+}
+
+/** Legacy alias kept for the parts of the frontend that still expect the old name. */
+export type PWMPoint = MergedPWMPoint;
+
+export interface CompatTolerance {
+  abs: number;
+  rel: number;
+}
+
+export interface CompatibilityTolerances {
+  thrust_n: CompatTolerance;
+  torque_nm: CompatTolerance;
+  current_a: CompatTolerance;
+  voltage_v: CompatTolerance;
+  rpm_mean: CompatTolerance;
+}
+
+export const COMPAT_CHANNELS: { key: keyof CompatibilityTolerances; label: string; unit: string }[] = [
+  { key: 'thrust_n', label: 'Thrust', unit: 'N' },
+  { key: 'torque_nm', label: 'Torque', unit: 'N·m' },
+  { key: 'current_a', label: 'Current', unit: 'A' },
+  { key: 'voltage_v', label: 'Voltage', unit: 'V' },
+  { key: 'rpm_mean', label: 'RPM', unit: '' },
+];
 
 export interface FFTResponse {
   frequencies: number[];

@@ -8,6 +8,7 @@ from server.api import (
     calibration,
     capture,
     capture_run,
+    compat_tolerances,
     dev,
     devices,
     keys,
@@ -72,6 +73,7 @@ app.include_router(capture.router)
 app.include_router(capture_run.router)
 app.include_router(results.router)
 app.include_router(setup_presets.router)
+app.include_router(compat_tolerances.router)
 app.include_router(tyto_api.router)
 app.include_router(dev.router)
 

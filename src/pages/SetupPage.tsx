@@ -1,5 +1,6 @@
 import { AudioDeviceList } from '../components/setup/AudioDeviceList';
 import { CalibrationLibrary } from '../components/setup/CalibrationLibrary';
+import { CompatToleranceConfig } from '../components/setup/CompatToleranceConfig';
 import { CutoffsConfig } from '../components/setup/CutoffsConfig';
 import { DeferredCard } from '../components/setup/DeferredCard';
 import { MicList } from '../components/setup/MicList';
@@ -49,6 +50,13 @@ export function SetupPage() {
         description="Watchdog reads telemetry at ~33 Hz and slams PWM to 1000 µs on the first tripped channel. Trip is latched until manually reset."
       >
         <CutoffsConfig />
+      </Card>
+
+      <Card
+        title="PWM point compatibility tolerances"
+        description="Used to merge top + bottom captures at the same PWM into one Results-page PWM point. Captures whose performance metrics agree within these tolerances are grouped; incompatible captures show as separate sidebar entries."
+      >
+        <CompatToleranceConfig />
       </Card>
 
       <DeferredCard

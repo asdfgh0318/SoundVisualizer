@@ -4,15 +4,16 @@ import type {
   CalibrationSummary,
   CaptureHalfRunRequest,
   CaptureRunStatus,
+  CompatibilityTolerances,
   CutoffTriggers,
   FakeCaptureResult,
   FFTResponse,
   FFTSettings,
   Key,
   MeasurementMeta,
+  MergedPWMPoint,
   MicPresetEntry,
   PerformanceSummary,
-  PWMPoint,
   SetupPreset,
   TytoStatus,
 } from './types';
@@ -91,8 +92,16 @@ export const api = {
   deleteSetupPreset: (id: string) =>
     request<void>(`/setup-presets/${encodeURIComponent(id)}`, { method: 'DELETE' }),
 
+  getCompatTolerances: () => request<CompatibilityTolerances>('/compat-tolerances'),
+  putCompatTolerances: (t: CompatibilityTolerances) =>
+    request<CompatibilityTolerances>('/compat-tolerances', {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(t),
+    }),
+
   listPWMPoints: (slug: string) =>
-    request<PWMPoint[]>(`/keys/${encodeURIComponent(slug)}/pwm_points`),
+    request<MergedPWMPoint[]>(`/keys/${encodeURIComponent(slug)}/pwm_points`),
   getFFT: (slug: string, measId: string, settings: FFTSettings) =>
     request<FFTResponse>(
       `/keys/${encodeURIComponent(slug)}/measurements/${encodeURIComponent(measId)}/fft` +

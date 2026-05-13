@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from 'react';
 import { api } from '../../api/client';
-import type { AcousticInPoint, FFTResponse, PWMPoint } from '../../api/types';
+import type { FFTResponse, MergedPWMPoint } from '../../api/types';
 import {
   DEFAULT_BAND,
   FrequencyBandSelector,
@@ -10,51 +10,25 @@ import { type PolarPoint, PolarPolarPlot } from './PolarPlot';
 
 interface Props {
   keySlug: string;
-  point: PWMPoint;
-  allPoints: PWMPoint[];
+  point: MergedPWMPoint;
 }
 
 const FFT_SETTINGS = { window: 'hann' as const, size: 4096, overlap: 0.5 };
 
-function findSibling(point: PWMPoint, allPoints: PWMPoint[]): PWMPoint | null {
-  if (point.pwm_us === null || point.half === null) return null;
-  const otherHalf = point.half === 'top' ? 'bottom' : 'top';
-  const t = Date.parse(point.t_start);
-  const candidates = allPoints.filter(
-    (p) => p.pwm_us === point.pwm_us && p.half === otherHalf,
-  );
-  if (candidates.length === 0) return null;
-  candidates.sort(
-    (a, b) =>
-      Math.abs(Date.parse(a.t_start) - t) - Math.abs(Date.parse(b.t_start) - t),
-  );
-  return candidates[0];
-}
-
-export function PolarTab({ keySlug, point, allPoints }: Props) {
+export function PolarTab({ keySlug, point }: Props) {
   const [ffts, setFfts] = useState<Record<string, FFTResponse>>({});
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<Error | null>(null);
   const [band, setBand] = useState<FreqBand>(DEFAULT_BAND);
   const [rangeMode, setRangeMode] = useState<180 | 360>(180);
-  const [mergeSibling, setMergeSibling] = useState(true);
 
-  const sibling = useMemo(() => findSibling(point, allPoints), [point, allPoints]);
-  const merging = mergeSibling && sibling !== null;
-
-  const allAcoustic: AcousticInPoint[] = useMemo(
-    () => (merging && sibling ? [...point.acoustic, ...sibling.acoustic] : point.acoustic),
-    [point.acoustic, merging, sibling],
-  );
-
-  // Fetch FFT for every acoustic measurement in the combined set.
   useEffect(() => {
     let cancelled = false;
     setFfts({});
     setError(null);
     setLoading(true);
     Promise.all(
-      allAcoustic.map((a) =>
+      point.acoustic.map((a) =>
         api.getFFT(keySlug, a.id, FFT_SETTINGS).then(
           (r): [string, FFTResponse] => [a.id, r],
         ),
@@ -71,10 +45,10 @@ export function PolarTab({ keySlug, point, allPoints }: Props) {
         setLoading(false);
       });
     return () => { cancelled = true; };
-  }, [keySlug, allAcoustic]);
+  }, [keySlug, point.acoustic]);
 
   const polarPoints = useMemo<PolarPoint[]>(() => {
-    return allAcoustic
+    return point.acoustic
       .map((a) => {
         const fft = ffts[a.id];
         const spl = fft
@@ -87,12 +61,11 @@ export function PolarTab({ keySlug, point, allPoints }: Props) {
         };
       })
       .filter((p) => Number.isFinite(p.spl_db))
-      // Sort by elevation descending — required by PolarPlot.
       .sort((a, b) => b.elevation_deg - a.elevation_deg);
-  }, [allAcoustic, ffts, band]);
+  }, [point.acoustic, ffts, band]);
 
   const allCalibrated =
-    allAcoustic.length > 0 && allAcoustic.every((a) => ffts[a.id]?.calibrated);
+    point.acoustic.length > 0 && point.acoustic.every((a) => ffts[a.id]?.calibrated);
 
   return (
     <div className="space-y-4">
@@ -103,33 +76,20 @@ export function PolarTab({ keySlug, point, allPoints }: Props) {
           Band: <span className="font-mono text-gray-200">{Math.round(band.low_hz)}–{Math.round(band.high_hz)} Hz</span>
           {' · '}
           {polarPoints.length} mics
-          {merging && (
-            <span className="ml-2 px-1.5 py-0.5 rounded text-[10px] uppercase tracking-wide bg-indigo-500/20 text-indigo-300">
-              top + bottom merged
-            </span>
-          )}
           {allCalibrated && (
             <span className="ml-2 text-emerald-400 uppercase tracking-wide text-[10px]">
               calibrated
             </span>
           )}
         </div>
-        <div className="flex items-center gap-3">
-          <SiblingToggle
-            disabled={sibling === null}
-            value={mergeSibling}
-            onChange={setMergeSibling}
-            sibling={sibling}
-          />
-          <RangeModeToggle value={rangeMode} onChange={setRangeMode} />
-        </div>
+        <RangeModeToggle value={rangeMode} onChange={setRangeMode} />
       </div>
 
       <div className="bg-gray-800 border border-gray-700 rounded-md p-3">
         {error && <div className="text-sm text-red-400 p-3">FFT error: {error.message}</div>}
         {loading && !error && (
           <div className="text-sm text-gray-400 italic p-3">
-            Computing FFTs for {allAcoustic.length} mics…
+            Computing FFTs for {point.acoustic.length} mics…
           </div>
         )}
         {!loading && !error && polarPoints.length < 2 && (
@@ -145,44 +105,8 @@ export function PolarTab({ keySlug, point, allPoints }: Props) {
   );
 }
 
-function SiblingToggle({
-  disabled,
-  value,
-  onChange,
-  sibling,
-}: {
-  disabled: boolean;
-  value: boolean;
-  onChange: (v: boolean) => void;
-  sibling: PWMPoint | null;
-}) {
-  const tooltip = disabled
-    ? `No matching ${'top/bottom'} capture at this PWM µs`
-    : sibling
-      ? `Merge with ${sibling.half} capture at ${sibling.t_start.slice(11, 19)}`
-      : '';
-  return (
-    <label
-      className={`inline-flex items-center gap-2 text-xs ${
-        disabled ? 'text-gray-600 cursor-not-allowed' : 'text-gray-300 cursor-pointer'
-      }`}
-      title={tooltip}
-    >
-      <input
-        type="checkbox"
-        disabled={disabled}
-        checked={value && !disabled}
-        onChange={(e) => onChange(e.target.checked)}
-        className="accent-indigo-500 w-4 h-4 disabled:opacity-40"
-      />
-      Merge top + bottom
-    </label>
-  );
-}
-
 function RangeModeToggle({
-  value,
-  onChange,
+  value, onChange,
 }: {
   value: 180 | 360;
   onChange: (v: 180 | 360) => void;
@@ -205,7 +129,6 @@ function RangeModeToggle({
   );
 }
 
-/** Integrate PSD over [low, high] Hz. mag_db is 10*log10(PSD). Returns total band power in dB. */
 function bandPowerDb(freqs: number[], magsDb: number[], low: number, high: number): number {
   let totalPower = 0;
   for (let i = 0; i < freqs.length; i++) {
