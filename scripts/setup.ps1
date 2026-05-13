@@ -34,7 +34,7 @@ if (-not (Get-Command node -ErrorAction SilentlyContinue)) {
 $nodeVer = node -v
 Step "Node: $nodeVer"
 if ($nodeVer -notlike "v22.*") {
-    Warn ".nvmrc pins Node 22; you're on $nodeVer — frontend should still work but is untested."
+    Warn ".nvmrc pins Node 22; you're on $nodeVer - frontend should still work but is untested."
 }
 
 # --- Python venv + deps ---
