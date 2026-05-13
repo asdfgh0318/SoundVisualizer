@@ -1,0 +1,17 @@
+services:
+  soundvis:
+    build: .
+    image: soundvisualizer:latest
+    container_name: soundvisualizer
+    ports:
+      - "8000:8000"
+    volumes:
+      # Captured (or fake-generated) measurements persist on the host between
+      # `docker compose up` runs. Comment out if you want a clean slate each time.
+      - ./data:/app/data
+    restart: unless-stopped
+    environment:
+      # tyto.enabled stays false by default — this image is for UI/demo only.
+      # If you ever want to run the hardware path inside Docker, add
+      # config.toml + --device=/dev/ttyACM0 + --device=/dev/snd + --group-add audio.
+      PYTHONUNBUFFERED: "1"

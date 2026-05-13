@@ -69,6 +69,7 @@ These were not in the original 2.md scope but came up during development:
 - **Audio device filter** — only ALSA `(hw:…)` real devices shown (drops PulseAudio/PipeWire/SRC-plugin virtual entries). On macOS/Windows the filter is disabled (no equivalent virtual layer).
 - **Refresh button** on the Results PWM-point sidebar to re-fetch from server after generating new data.
 - **Idiot-proof Quick start in README** — step-by-step from `git clone` to fake-capture rendered in Results, with troubleshooting table for common gotchas.
+- **Psychoacoustics tab** — per-mic table with loudness (sone), sharpness (acum), roughness (asper), fluctuation strength (vacil, currently 0 — see report), and Psychoacoustic Annoyance (PA) for the selected PWM point. Computed server-side via `mosqito` (ISO 532-1 loudness, DIN 45692 sharpness, Daniel-Weber roughness) with PA from the Zwicker formula. Results cached in `psychoacoustics.json` next to each `audio.wav` so first-render cost (~1 s/mic) is amortized. Math reference: `docs/psychoacoustics_report.{tex,pdf}` (also PL translation in `psychoacoustics_report_pl.{tex,pdf}`).
 
 ## Open questions
 

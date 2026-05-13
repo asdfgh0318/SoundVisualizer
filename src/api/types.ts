@@ -233,6 +233,15 @@ export interface MergedPWMPoint {
 /** Legacy alias kept for the parts of the frontend that still expect the old name. */
 export type PWMPoint = MergedPWMPoint;
 
+export interface PsychoacousticMetrics {
+  loudness_sone: number;
+  sharpness_acum: number;
+  roughness_asper: number;
+  fluctuation_vacil: number;
+  annoyance: number;
+  fluctuation_assumed_zero: boolean;
+}
+
 export interface CompatTolerance {
   abs: number;
   rel: number;

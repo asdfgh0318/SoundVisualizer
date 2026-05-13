@@ -38,7 +38,9 @@ curl -X POST http://localhost:8000/dev/seed
 # Or use the Capture form's "Run fake capture (no hardware)" button
 ```
 
-Tests: `.venv/bin/pytest server/tests/` (58 passing). Lint: `.venv/bin/ruff check server/ scripts/`.
+Tests: `.venv/bin/pytest server/tests/` (76 passing). Lint: `.venv/bin/ruff check server/ scripts/`.
+
+Demo via Docker (no install needed): `docker compose up` → http://localhost:8000. Multi-stage Dockerfile bundles the React build into FastAPI's static mount; no hardware passthrough.
 
 ## Locked decisions
 
@@ -53,9 +55,11 @@ Tests: `.venv/bin/pytest server/tests/` (58 passing). Lint: `.venv/bin/ruff chec
 
 ## Tech stack
 
-**Server (`server/`):** Python 3.12 + FastAPI + asyncio. `sounddevice` (PortAudio) for UMIK-2 capture · `pyserial-asyncio` for Tyto MSP · `aioftp` + `websockets` for Norsonic (later) · `numpy` + `scipy` for FFT/Welch/calibration · `aiofiles` for the measurement store.
+**Server (`server/`):** Python 3.12 + FastAPI + asyncio. `sounddevice` (PortAudio) for UMIK-2 capture · `pyserial-asyncio` for Tyto MSP · `aioftp` + `websockets` for Norsonic (later) · `numpy` + `scipy` for FFT/Welch/calibration · `aiofiles` for the measurement store · `mosqito` for psychoacoustic SQM/PA computation.
 
 **Client (`src/`):** React 19 + Vite 7 + TypeScript + Tailwind 4 + Zustand 5 + Plotly.js.
+
+**Third-party attribution:** Psychoacoustic metrics are computed with [MOSQITO](https://github.com/Eomys/MoSQITo) (Green Forge Coop, BSD). When publishing results derived from those metrics, cite: *Green Forge Coop. MOSQITO [Computer software]. https://doi.org/10.5281/zenodo.5284054* (use GitHub's "Cite this repository" button for the release-pinned form).
 
 ## Conventions
 

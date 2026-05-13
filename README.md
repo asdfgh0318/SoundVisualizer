@@ -31,13 +31,42 @@ Browser and server are decoupled. The server owns the hardware and the data on d
 | **Results — Polar** | Polar SPL-vs-elevation plot. 180°/360° render toggle. **Top+bottom merge** combines sibling captures at the same PWM into a single full-sphere view. Right rail: freq-band selector (manual range + 1/3-octave + octave snap-to). |
 | **Results — Custom** | Plotly port of Paweł's Bokeh viz: X/Y scatter with column pickers (PWM / thrust / torque / current / voltage / RPM / temp / SPL-in-band) where each measurement point is clickable. Clicking a point also re-points the FFT and Polar tabs to that PWM step. |
 
-## Quick start
+## Quick start — pick your path
 
-Walks a colleague from "fresh laptop" to "app running with fake data" in ~5 minutes. No hardware needed.
+If you **just want to click around the UI**, use **path A** (Docker).
+If you want to **edit the code, run tests, or work with real hardware**, use **path B** (dev environment).
 
-### 1. Check prerequisites
+---
 
-You need three things on PATH:
+### Path A — Demo only (Docker, no install)
+
+For colleagues / reviewers / anyone evaluating the app. One command, ~5 minutes the first time, no Python or Node on your machine.
+
+**Prereqs:** Docker (Desktop on macOS/Windows, `sudo apt install docker.io docker-compose-v2` on Linux).
+
+```bash
+git clone https://github.com/asdfgh0318/SoundVisualizer.git
+cd SoundVisualizer
+docker compose up                  # first build ~3-5 min, ~680 MB image
+```
+
+Open **http://localhost:8000**. You'll land on the **Setup** page — Tyto status shows "Not connected" and audio devices are empty; that's expected (the demo image intentionally has no hardware passthrough).
+
+To populate test data:
+1. Click **Capture** → fill in Motor `Demo` · Propeller `5x4` (others optional).
+2. **Continue → Review → ✦ Run fake capture (no hardware)**.
+3. Confirm the safety modal ("no motor will spin"). Wait ~5 s per half.
+4. Go to **Results** — pick your key. Sidebar shows merged PWM points; the four tabs (FFT / Polar / Custom / Psychoacoustics) all work against the synthesized drone-noise data.
+
+Captured data persists in `./data/` between restarts. To reset, `rm -rf data/`. To stop, `Ctrl+C` or `docker compose down`.
+
+**Don't follow the Path B steps below if you just want to demo** — they install Python, Node, and PortAudio system-wide which you don't need.
+
+---
+
+### Path B — Dev environment (edit code, run tests, real hardware)
+
+#### B.1 Prerequisites
 
 | Tool | Check with | Install if missing |
 |---|---|---|
@@ -47,62 +76,49 @@ You need three things on PATH:
 
 **Linux extra:** `sudo apt install libportaudio2` — needed for audio device enumeration.
 
-Hardware integration (Tyto serial protocol, ALSA udev rules, multi-mic capture pinning) is Linux-tested only. Frontend dev, fake captures, and all Results tabs work fully on macOS and Windows.
+Hardware integration (Tyto serial protocol, ALSA udev rules, multi-mic capture pinning) is Linux-tested only. The Results tabs work fully on all OSes.
 
-### 2. Clone
+#### B.2 Clone + one-shot setup
 
 ```bash
 git clone https://github.com/asdfgh0318/SoundVisualizer.git
 cd SoundVisualizer
-```
-
-### 3. One-shot setup
-
-```bash
 bash scripts/setup.sh           # Linux / macOS / WSL
 .\scripts\setup.ps1             # Windows PowerShell
 ```
 
-The script: detects your OS, warns about missing system packages, creates `.venv/`, installs Python + npm deps, runs the pytest suite (68 tests should pass), and builds the production bundle. Ends with `Setup complete!` and the run commands.
+The script: detects your OS, warns about missing system packages, creates `.venv/`, installs Python + npm deps, runs the pytest suite (76 tests should pass), builds the production bundle. Ends with `Setup complete!`.
 
-### 4. Start the services
+#### B.3 Start the services (two terminals)
 
 **Terminal 1 — backend:**
 ```bash
 .venv/bin/uvicorn server.main:app --reload --port 8000           # Linux/macOS
 .venv\Scripts\uvicorn.exe server.main:app --reload --port 8000   # Windows
 ```
-You should see `Uvicorn running on http://127.0.0.1:8000`.
 
-**Terminal 2 — frontend:**
+**Terminal 2 — frontend (Vite dev with HMR):**
 ```bash
 npm run dev
 ```
-You should see `VITE … ready` and `Local: http://localhost:5173/`.
 
-### 5. Open the app
+#### B.4 Open the app
 
-Navigate to **http://localhost:5173**. You'll land on the **Setup** page. Tyto status will read "Not connected" — that's expected with no hardware.
+**http://localhost:5173** — the Vite dev server proxies API calls to `:8000`. Setup page loads; Tyto shows "Not connected".
 
-### 6. Try a fake capture (no hardware required)
+The fake-capture flow is the same as Path A above.
 
-1. Click **Capture** in the nav.
-2. Fill in: Motor `Demo Motor` · Propeller `5x4` · Shroud `none` · Notes `first-test`.
-3. The PWM ramp comes pre-filled with 3 steps (1200 / 1500 / 1800 µs). Leave it.
-4. Click **Continue → Review** → **✦ Run fake capture (no hardware)**.
-5. Confirm the safety modal ("no motor will spin"). Wait ~5 s for top half, then click the reconfigure modal to continue to bottom half.
-6. Land on the **Done** summary.
+#### Manual install (skip the script)
 
-Now click **Results** and pick your `demo-motor__5x4__none__first-test` key. You should see:
+```bash
+python3.12 -m venv .venv
+.venv/bin/pip install -e ".[dev]"
+npm install
+.venv/bin/pytest server/tests/    # 76 tests should pass
+npm run build                      # type-check + bundle
+```
 
-- **Sidebar:** 3 merged PWM points (each tagged `T+B`). Click `▸ 2 captures` to drill into a specific half.
-- **FFT tab:** one row per unique elevation, showing the synthesized blade-pass tone + harmonics + broadband.
-- **Polar tab:** directivity bubble that grows with PWM. Try the **1k Hz** or **2k Hz** 1/3-octave preset.
-- **Custom tab:** X = Thrust, Y = SPL band → 3 dots on a curve. Click one to drill into its FFT.
-
-You're set. To work with real hardware later, see **[With real hardware](#with-real-hardware)** below.
-
-### Common gotchas
+#### Common gotchas
 
 | Symptom | Fix |
 |---|---|
@@ -115,16 +131,6 @@ You're set. To work with real hardware later, see **[With real hardware](#with-r
 | `npm run dev` is slow / OOM | `node -v` should be 22+; older Node may misbehave |
 
 For team workflow (branches, PRs, issues, the maintenance directive), see [CLAUDE.md](CLAUDE.md) → "Maintenance — standing instructions".
-
-### Manual install (skip the script)
-
-```bash
-python3.12 -m venv .venv
-.venv/bin/pip install -e ".[dev]"
-npm install
-.venv/bin/pytest server/tests/    # 68 tests should pass
-npm run build                      # type-check + bundle
-```
 
 ## With real hardware
 
@@ -176,3 +182,9 @@ One performance + N acoustic measurements per PWM step share the same `t_start`,
 ## Acknowledgements
 
 The Tyto Robotics MSP serial protocol and the Norsonic NOR-145 WebSocket+FTP control code were reverse-engineered by **Paweł Sadowski** in his [ars_noise_measurement](https://git.swarozyn.pl/mtj/ars_noise_measurement.git) repo and reused here with permission. See `server/vendor/pawel/README.md` for the per-file attribution.
+
+Psychoacoustic metrics (loudness, sharpness, roughness, fluctuation strength, PA) are computed via [**MOSQITO**](https://github.com/Eomys/MoSQITo) by Green Forge Coop (BSD-licensed, ISO/DIN-compliant). If you publish results derived from this pipeline, please cite:
+
+> Green Forge Coop. *MOSQITO* [Computer software]. https://doi.org/10.5281/zenodo.5284054
+
+Use the *Cite this repository* button on the MOSQITO GitHub page for a release-specific citation.

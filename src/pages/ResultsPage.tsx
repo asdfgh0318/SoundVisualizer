@@ -6,9 +6,10 @@ import { FFTTab } from '../components/results/FFTTab';
 import { KeyPicker } from '../components/results/KeyPicker';
 import { PerformanceHeader } from '../components/results/PerformanceHeader';
 import { PolarTab } from '../components/results/PolarTab';
+import { PsychoacousticsTab } from '../components/results/PsychoacousticsTab';
 import { PWMPointSidebar } from '../components/results/PWMPointSidebar';
 
-type Tab = 'fft' | 'polar' | 'custom';
+type Tab = 'fft' | 'polar' | 'custom' | 'psy';
 
 export function ResultsPage() {
   const [keySlug, setKeySlug] = useState<string | null>(null);
@@ -128,6 +129,7 @@ function ResultsBody({ keySlug, tab }: { keySlug: string; tab: Tab }) {
             onSelectId={(id) => { setSelectedId(id); setDrilldownTStart(null); }}
           />
         )}
+        {tab === 'psy' && <PsychoacousticsTab keySlug={keySlug} point={effectivePoint} />}
       </div>
     </div>
   );
@@ -138,6 +140,7 @@ function Tabs({ value, onChange }: { value: Tab; onChange: (t: Tab) => void }) {
     { key: 'fft', label: 'FFT' },
     { key: 'polar', label: 'Polar' },
     { key: 'custom', label: 'Custom' },
+    { key: 'psy', label: 'Psychoacoustics' },
   ];
   return (
     <div className="flex bg-gray-800 border border-gray-700 rounded-md overflow-hidden">

@@ -1,0 +1,311 @@
+\documentclass[11pt,a4paper]{article}
+
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[polish]{babel}
+\usepackage{lmodern}
+\usepackage[margin=2.2cm]{geometry}
+\usepackage{amsmath, amssymb}
+\usepackage{mathtools}
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage{enumitem}
+\usepackage{xcolor}
+\usepackage[hidelinks]{hyperref}
+\usepackage{titlesec}
+\usepackage{tcolorbox}
+\tcbuselibrary{breakable, skins}
+
+% --- styl -----------------------------------------------------------------
+\definecolor{accent}{HTML}{4F46E5}
+\definecolor{soft}{HTML}{F3F4F6}
+\definecolor{rule}{HTML}{D1D5DB}
+
+\titleformat{\section}{\Large\bfseries\color{accent}}{\thesection}{0.6em}{}
+\titleformat{\subsection}{\large\bfseries}{\thesubsection}{0.6em}{}
+\setlist[itemize]{itemsep=2pt, topsep=2pt, leftmargin=1.4em}
+\setlist[description]{itemsep=2pt, topsep=2pt, leftmargin=1.4em}
+
+\newtcolorbox{paformula}[1][]{
+  colback=soft, colframe=accent, boxrule=0.4pt,
+  arc=2pt, left=10pt, right=10pt, top=8pt, bottom=8pt,
+  fonttitle=\bfseries,
+  #1
+}
+
+\title{\textbf{Metryki Psychoakustyczne dla Analizy Hałasu Dronów}\\
+       \large Raport matematyczny: SQM i Uciążliwość Psychoakustyczna (PA)}
+\author{Źródło: Vaiuso, Righi, Coretti, Apicella (ZHAW, 2024) ---
+        \href{https://arxiv.org/abs/2410.22208}{arXiv:2410.22208}}
+\date{Skompilowano \today}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+\noindent
+Dokument zawiera podstawy matematyczne potrzebne do dodania zakładki
+\textbf{Psychoakustyka} w SoundVisualizer. Obejmuje cztery metryki jakości
+dźwięku (SQM, \emph{Sound Quality Metrics}) --- \emph{głośność}, \emph{ostrość},
+\emph{chropowatość}, \emph{siłę fluktuacji} --- oraz złożony wskaźnik
+\emph{uciążliwości psychoakustycznej} (PA, \emph{Psychoacoustic Annoyance}),
+który łączy je w jedną liczbę. Same wzory pochodzą z modelu Zwickera i Fastla;
+przywoływany artykuł stosuje je do hałasu dronów. Wszystkie metryki opierają
+się na modelu \textbf{pasm krytycznych Bark} (24 pasma w zakresie słyszalnym).
+\end{abstract}
+
+% --- 1. Głośność ----------------------------------------------------------
+\section{Głośność \texorpdfstring{$L$}{L} (son)}
+
+\textit{Jak głośny jest dźwięk w odczuciu słuchacza.} Odniesienie:
+$1\ \text{son} = $ ton sinusoidalny 1\,kHz o poziomie 40\,dB SPL. Norma:
+ISO 532-1 / DIN 45631 (metoda Zwickera).
+
+\[
+  L = \int_{z=0}^{24} L'(z)\, \mathrm{d}z
+\]
+
+\begin{description}
+  \item[$L'(z)$] \emph{głośność właściwa} jako funkcja krytycznego pasma $z$ w
+                jednostkach Bark (jednostka: $\text{son}/\text{Bark}$).
+                Obliczana w każdym paśmie z poziomu SPL przez nieliniowe
+                prawo potęgowe z korekcjami maskowania międzypasmowego
+                (algorytm ISO 532B).
+  \item[$z$]    częstotliwość krytyczna pasma, $0 \le z \le 24$\,Bark.
+                Odwzorowanie na skalę częstotliwości jest nieliniowe:
+                $1$\,Bark~$\approx 100$\,Hz w zakresie niskich częstotliwości,
+                rośnie do $\approx 20$\,kHz przy $24$\,Bark.
+\end{description}
+
+\noindent\textbf{Dwa warianty} są dla nas istotne:
+\begin{itemize}
+  \item \textbf{Głośność stacjonarna} (ISO 532B / DIN 45631) --- pojedyncza
+        wartość dla całego nagrania.
+  \item \textbf{Głośność zmienna w czasie} $L(t)$ (DIN 45631/A) --- liczona
+        w odstępach $\sim 2$\,ms. Niezbędna do wyznaczenia PA, gdzie
+        wykorzystywany jest 5-ty percentyl $N_5$ (głośność przekroczona przez
+        5\,\% czasu trwania --- ujmuje krótkie szczyty, a nie poziom średni).
+\end{itemize}
+
+% --- 2. Ostrość -----------------------------------------------------------
+\section{Ostrość \texorpdfstring{$S$}{S} (acum)}
+
+\textit{Jak ostry, przeszywający odbierany jest dźwięk.} Odniesienie:
+$1\ \text{acum} = $ szum wąskopasmowy wycentrowany w 1\,kHz, poziom 60\,dB,
+szerokość pasma 160\,Hz. Artykuł stosuje wagi z DIN 45692 (rozwinięcie metody
+Auresa / Von Bismarcka).
+
+\[
+  S = \frac{k}{L} \int_{z=0}^{24} L'(z)\, g(z)\, z\, \mathrm{d}z
+\]
+
+\begin{description}
+  \item[$g(z)$] funkcja wagowa wzmacniająca wkład wysokich pasm krytycznych
+                (wysokie wartości $z$).
+  \item[$k$]    stała skalująca zależna od metody; dobierana tak, aby sygnał
+                odniesienia dawał dokładnie $1$\,acum.
+  \item[$L$]    całkowita głośność z poprzedniej sekcji.
+\end{description}
+
+\noindent
+Interpretacja geometryczna: $S$ to \emph{ważony środek ciężkości głośności
+właściwej na osi Bark}, przesunięty w stronę wysokich częstotliwości przez
+$g(z)$. Dźwięki z większą energią w wysokich pasmach mają wyższą ostrość.
+
+% --- 3. Chropowatość ------------------------------------------------------
+\section{Chropowatość \texorpdfstring{$R$}{R} (asper)}
+
+\textit{Jak chropowaty, agresywny w odbiorze jest dźwięk.} Powstaje wskutek
+modulacji amplitudy w zakresie $30$--$300$\,Hz --- szybkich fluktuacji, których
+ucho nie potrafi rozróżnić jako odrębnych zdarzeń. Odniesienie:
+$1\ \text{asper} = $ ton 60\,dB / 1\,kHz, w 100\,\% modulowany sinusoidą o
+częstotliwości 70\,Hz.
+
+\[
+  R = \mathrm{cal} \cdot \int_{z=0}^{24} f_{\text{mod}}\, \Delta L\, \mathrm{d}z
+\]
+
+\begin{description}
+  \item[$f_{\text{mod}}$] częstotliwość modulacji w każdym paśmie krytycznym
+                          (Hz), wyznaczana przez wykrywanie szczytów w widmie
+                          obwiedni sygnału.
+  \item[$\Delta L$]       głębokość modulacji w paśmie:
+                          $\max(\text{env}) - \min(\text{env})$ w dB.
+  \item[cal]              stała kalibracyjna gwarantująca, że sygnał
+                          odniesienia daje $1$\,asper.
+\end{description}
+
+\noindent
+Hałas dronów zazwyczaj wykazuje \emph{wysoką} chropowatość: częstotliwość
+przejścia łopaty (BPF) i jej harmoniczne wzajemnie się modulują, dając
+obwiednię w istotnym akustycznie zakresie 30--300\,Hz.
+
+% --- 4. Siła fluktuacji ---------------------------------------------------
+\section{Siła fluktuacji \texorpdfstring{$F$}{F} (vacil)}
+
+\textit{Jak "falujący" jest dźwięk.} Wynika z \emph{wolnej} modulacji
+amplitudy: $0$--$30$\,Hz, ze szczytem czułości przy $4$\,Hz. Odniesienie:
+$1\ \text{vacil} = $ ton 60\,dB / 1\,kHz, w 100\,\% modulowany sinusoidą
+o częstotliwości 4\,Hz.
+
+\[
+  F = \frac{0.008 \cdot \displaystyle\int_{z=0}^{24} \Delta L\, \mathrm{d}z}{\dfrac{f_{\text{mod}}}{4} + \dfrac{4}{f_{\text{mod}}}}
+\]
+
+\noindent
+Struktura wzoru jest taka sama jak dla chropowatości, ale mianownik
+$f_{\text{mod}}/4 + 4/f_{\text{mod}}$ osiąga \emph{minimum} (a $F$ swoje
+maksimum) w $f_{\text{mod}} = 4$\,Hz --- odpowiada to empirycznemu szczytowi
+czułości ucha na powolne fluktuacje.
+
+Dla dronów wartość $F$ jest typowo bliska zeru ($\sim 0.01$\,vacil w pomiarach
+zawisu w przywoływanym artykule) --- modulacje silnika wirnikowego leżą wyraźnie
+powyżej zakresu wolnych fluktuacji.
+
+% --- 5. PA ----------------------------------------------------------------
+\section{Uciążliwość psychoakustyczna \texorpdfstring{$PA$}{PA}}
+
+Złożony wskaźnik łączący cztery powyższe metryki w jedną liczbę. Postać
+Zwickera i Fastla:
+
+\begin{paformula}
+\[
+  PA = N_5 \left(1 + \sqrt{w_S^2 + w_{FR}^2}\right)
+\]
+\end{paformula}
+
+\noindent
+Szczytowa głośność $N_5$ jest mnożona przez bezwymiarowy "współczynnik
+nieprzyjemności" $(1 + \sqrt{w_S^2 + w_{FR}^2})$. Dwie wagi:
+
+\paragraph{Waga ostrości \boldmath$w_S$:}
+\[
+  w_S =
+  \begin{cases}
+    (S - 1.75) \cdot 0.25 \cdot \log_{10}(N_5 + 10), & \text{jeśli } S > 1.75 \\
+    0, & \text{jeśli } S \le 1.75
+  \end{cases}
+\]
+Poniżej progu 1.75\,acum ostrość nie wnosi wkładu. Powyżej progu wkład rośnie
+wraz z nadwyżką ostrości i całkowitą głośnością.
+
+\paragraph{Łączna waga chropowatości i fluktuacji \boldmath$w_{FR}$:}
+\[
+  w_{FR} = \frac{2.18}{N_5^{0.4}}\,(0.4\,F + 0.6\,R)
+\]
+Chropowatość waży 1{,}5$\times$ więcej niż siła fluktuacji. Czynnik
+$N_5^{-0.4}$ łagodzi wpływ tych składowych przy już głośnych dźwiękach.
+
+\paragraph{Model intuicyjny.}
+$PA \approx \text{głośność} \times \text{mnożnik nieprzyjemności barwy}$.
+Głośność dominuje; ostrość, chropowatość i fluktuacja ją modulują.
+
+% --- 6. Wartości typowe ---------------------------------------------------
+\section{Obserwowane wartości dla dronów}
+
+Artykuł podaje następujące wartości dla DJI Matrice 300 RTK w fazie zawisu:
+
+\begin{center}
+\begin{tabular}{lrrl}
+  \toprule
+  Metryka & Średnia & Maks. & Jednostka \\
+  \midrule
+  Głośność ($L$)         & 19{,}30 & 29{,}56 & son    \\
+  Ostrość ($S$)          & 1{,}85  & 3{,}69  & acum   \\
+  Chropowatość ($R$)     & 0{,}28  & 0{,}95  & asper  \\
+  Fluktuacja ($F$)       & 0{,}01  & 0{,}06  & vacil  \\
+  Uciążliwość ($PA$)     & 20{,}31 & 32{,}57 & ---    \\
+  \bottomrule
+\end{tabular}
+\end{center}
+
+\noindent
+Wnioski:
+\begin{itemize}
+  \item Ostrość leży \emph{tuż} powyżej progu aktywacji 1{,}75\,acum ---
+        wkład $w_S$ jest niewielki.
+  \item Siła fluktuacji praktycznie nie wpływa na $w_{FR}$.
+  \item Chropowatość jest dominującą składową barwy poprzez człon
+        $0{,}6 \cdot R$.
+  \item Wskutek tego $PA$ dla drona w zawisie wynosi około $L \times 1{,}05$
+        --- składowe barwowe podnoszą wskaźnik tylko o kilka procent ponad
+        samą głośność.
+\end{itemize}
+
+% --- 7. Implementacja -----------------------------------------------------
+\section{Ścieżka implementacji}
+
+W artykule obliczenia wykonano w MATLAB Audio Toolbox (oprogramowanie
+własnościowe). Otwartoźródłowe alternatywy w Pythonie:
+
+\begin{center}
+\renewcommand{\arraystretch}{1.2}
+\begin{tabular}{>{\bfseries}l p{6.5cm} p{4.5cm}}
+  \toprule
+  Biblioteka & Co udostępnia & Wady i zalety \\
+  \midrule
+  \texttt{mosqito} &
+    Wszystkie cztery SQM oraz PA, zgodne z ISO/DIN, licencja BSD,
+    instalacja przez pip &
+    Dodaje zależność ($\sim 10$\,MB), ale jest naturalnym wyborem \\
+
+  \texttt{scikit-maad}, \texttt{pyAudioAnalysis} &
+    Głośność i część SQM &
+    Mniej kompletne; PA brak \\
+
+  Implementacja własna &
+    Pełna kontrola i zrozumienie &
+    Tygodnie pracy; nietrywialne filtry i model maskowania
+    ISO 532B \\
+  \bottomrule
+\end{tabular}
+\end{center}
+
+\noindent
+\textbf{Rekomendacja:} dodać \texttt{mosqito} do \texttt{pyproject.toml}.
+Po stronie serwera obliczać pięć wartości raz na pomiar akustyczny i
+buforować je obok \texttt{meta.json}. Frontend tylko odczytuje liczby ---
+brak obliczeń w przeglądarce.
+
+\paragraph{Cytowanie.}
+Jeżeli publikujemy wyniki uzyskane z użyciem MOSQITO, cytujemy je w sposób
+wskazany przez autorów:
+\begin{quote}
+\small
+Green Forge Coop. \textit{MOSQITO} [Computer software].
+\href{https://doi.org/10.5281/zenodo.5284054}{https://doi.org/10.5281/zenodo.5284054}
+\end{quote}
+(Konkretne wydanie najwygodniej zacytować przyciskiem \emph{Cite this repository}
+na stronie projektu MOSQITO w GitHubie.)
+
+\paragraph{Proponowane widoki zakładki Psychoakustyka.}
+\begin{enumerate}
+  \item \textbf{Tabela per-mikrofon dla wybranego punktu PWM} --- jeden wiersz
+        na mikrofon, kolumny $L$, $S$, $R$, $F$, $PA$. Ten sam format co
+        nagłówek wydajnościowy w zakładce FFT, ale w rozbiciu na mikrofony.
+  \item \textbf{Metryki w funkcji elewacji} --- małe wykresy liniowe dla
+        każdej metryki w funkcji kąta elewacji. Ujawniają przestrzenny
+        wzorzec składowych nieprzyjemności, a nie tylko głośności.
+  \item \textbf{Metryki w funkcji PWM (lub RPM, ciągu)} --- analogicznie do
+        wykresu rozrzutu zakładki Custom, z dowolną metryką SQM lub $PA$
+        na osi Y. Odpowiada na pytania w stylu: „przy jakich obrotach prop
+        zaczyna brzmieć uciążliwie nie z powodu głośności?"
+\end{enumerate}
+
+\paragraph{Otwarte kwestie na etapie implementacji.}
+\begin{itemize}
+  \item \textbf{Kalibracja.} Jednostki son / acum / asper / vacil zakładają,
+        że sygnał wejściowy jest wyrażony w dB SPL, nie w dBFS. Wymagane
+        jest zastosowanie kalibracji UMIK-2 \emph{przed} przekazaniem audio
+        do \texttt{mosqito}. Działa tak, jeśli dla mikrofonu wgrano plik
+        kalibracyjny; w przeciwnym razie wartości bezwzględne będą
+        zafałszowane (porównania względne pozostają poprawne).
+  \item \textbf{Długość okna.} Dla głośności zmiennej w czasie $\to N_5$
+        potrzebujemy $\gtrsim 1$\,s nagrania. Nasze typowe okno akwizycji
+        to 1{,}5\,s na krok PWM --- marginalnie wystarczające.
+  \item \textbf{Porównanie z Norsonic.} Po dostawie NOR-145 jego wbudowane
+        odczyty głośności i ostrości będą służyć jako sanity-check
+        względem naszego potoku \texttt{mosqito}.
+\end{itemize}
+
+\end{document}

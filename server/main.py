@@ -1,8 +1,11 @@
 import logging
+import os
 from contextlib import asynccontextmanager
+from pathlib import Path
 
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.staticfiles import StaticFiles
 
 from server.api import (
     calibration,
@@ -81,3 +84,12 @@ app.include_router(dev.router)
 @app.get("/health")
 async def health() -> dict[str, str]:
     return {"status": "ok"}
+
+
+# When packaged as a Docker image, the React bundle is mounted here so port 8000
+# serves both the API and the SPA. The mount happens last so it doesn't shadow
+# any API or WebSocket routes registered above.
+_static_dir = os.environ.get("SOUNDVIS_STATIC")
+if _static_dir and Path(_static_dir).is_dir():
+    app.mount("/", StaticFiles(directory=_static_dir, html=True), name="frontend")
+    log.info("Serving frontend bundle from %s", _static_dir)

@@ -14,6 +14,7 @@ import type {
   MergedPWMPoint,
   MicPresetEntry,
   PerformanceSummary,
+  PsychoacousticMetrics,
   SetupPreset,
   TytoStatus,
 } from './types';
@@ -110,5 +111,9 @@ export const api = {
   getPerformanceSummary: (slug: string, measId: string) =>
     request<PerformanceSummary>(
       `/keys/${encodeURIComponent(slug)}/measurements/${encodeURIComponent(measId)}/performance_summary`,
+    ),
+  getPsychoacoustics: (slug: string, measId: string) =>
+    request<PsychoacousticMetrics>(
+      `/keys/${encodeURIComponent(slug)}/measurements/${encodeURIComponent(measId)}/psychoacoustics`,
     ),
 };

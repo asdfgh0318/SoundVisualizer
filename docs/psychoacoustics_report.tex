@@ -1,0 +1,286 @@
+\documentclass[11pt,a4paper]{article}
+
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage[margin=2.2cm]{geometry}
+\usepackage{amsmath, amssymb}
+\usepackage{mathtools}
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage{enumitem}
+\usepackage{xcolor}
+\usepackage[hidelinks]{hyperref}
+\usepackage{titlesec}
+\usepackage{tcolorbox}
+\tcbuselibrary{breakable, skins}
+
+% --- styling --------------------------------------------------------------
+\definecolor{accent}{HTML}{4F46E5}
+\definecolor{soft}{HTML}{F3F4F6}
+\definecolor{rule}{HTML}{D1D5DB}
+
+\titleformat{\section}{\Large\bfseries\color{accent}}{\thesection}{0.6em}{}
+\titleformat{\subsection}{\large\bfseries}{\thesubsection}{0.6em}{}
+\setlist[itemize]{itemsep=2pt, topsep=2pt, leftmargin=1.4em}
+\setlist[description]{itemsep=2pt, topsep=2pt, leftmargin=1.4em}
+
+\newtcolorbox{paformula}[1][]{
+  colback=soft, colframe=accent, boxrule=0.4pt,
+  arc=2pt, left=10pt, right=10pt, top=8pt, bottom=8pt,
+  fonttitle=\bfseries,
+  #1
+}
+
+\title{\textbf{Psychoacoustic Metrics for the Drone-Noise Pipeline}\\
+       \large Math report: SQM and Psychoacoustic Annoyance}
+\author{Source: Vaiuso, Righi, Coretti, Apicella (ZHAW, 2024) ---
+        \href{https://arxiv.org/abs/2410.22208}{arXiv:2410.22208}}
+\date{Compiled \today}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+\noindent
+This is the math we'd need to wire a \textbf{Psychoacoustics} tab into SoundVisualizer.
+Four sound-quality metrics (SQM) --- \emph{loudness}, \emph{sharpness}, \emph{roughness},
+\emph{fluctuation strength} --- and the composite \emph{Psychoacoustic Annoyance} (PA)
+index that combines them. The framework predates this paper; the paper applies it to
+drone propeller noise specifically. All metrics rest on the \textbf{Bark / critical-band}
+model of hearing (24 bands across the audible range).
+\end{abstract}
+
+% --- 1. Loudness ----------------------------------------------------------
+\section{Loudness \texorpdfstring{$L$}{L} (sone)}
+
+\textit{How loud the sound is perceived to be.} Reference: $1\ \text{sone} = $ a pure 1\,kHz
+tone at 40\,dB SPL. Standardized as ISO 532-1 / DIN 45631 (Zwicker method).
+
+\[
+  L = \int_{z=0}^{24} L'(z)\, \mathrm{d}z
+\]
+
+\begin{description}
+  \item[$L'(z)$] \emph{specific loudness} as a function of critical-band rate $z$ in
+                Bark (units: $\text{sone}/\text{Bark}$). Computed per Bark band from
+                the SPL via a non-linear power law plus inter-band masking corrections
+                (the ISO 532B algorithm).
+  \item[$z$]    critical-band rate, $0 \le z \le 24$\,Bark. Maps non-linearly to
+                frequency: $1$\,Bark~$\approx 100$\,Hz at low frequencies, scaling
+                up to $\approx 20$\,kHz at $24$\,Bark.
+\end{description}
+
+\noindent\textbf{Two flavours} matter for us:
+\begin{itemize}
+  \item \textbf{Stationary loudness} (ISO 532B / DIN 45631) --- one number per recording.
+  \item \textbf{Time-varying loudness} $L(t)$ (DIN 45631/A) --- computed in $\sim 2$\,ms
+        steps. Required for PA, which uses the 5th-percentile $N_5$ (i.e.\ "loudness
+        exceeded 5\,\% of the time" --- captures peaks, not steady-state).
+\end{itemize}
+
+% --- 2. Sharpness ---------------------------------------------------------
+\section{Sharpness \texorpdfstring{$S$}{S} (acum)}
+
+\textit{How shrill or piercing the sound is.} Reference: $1\ \text{acum} = $ narrow-band
+noise centered at 1\,kHz, 60\,dB, 160\,Hz bandwidth. Paper uses the DIN 45692 weighting
+(a refined Aures / Von Bismarck form).
+
+\[
+  S = \frac{k}{L} \int_{z=0}^{24} L'(z)\, g(z)\, z\, \mathrm{d}z
+\]
+
+\begin{description}
+  \item[$g(z)$] weighting function emphasizing high critical-band rates
+                (the high-Bark end of the spectrum).
+  \item[$k$]    method-dependent scaling constant; calibrated so that the
+                reference signal evaluates to exactly 1\,acum.
+  \item[$L$]    total loudness from the previous section.
+\end{description}
+
+\noindent
+Geometrically: $S$ is the \emph{loudness-weighted centroid of the Bark axis}, biased
+toward the high end by $g(z)$. Sounds with more energy at high frequencies have higher
+sharpness.
+
+% --- 3. Roughness ---------------------------------------------------------
+\section{Roughness \texorpdfstring{$R$}{R} (asper)}
+
+\textit{How rough / harsh the sound is.} Caused by amplitude modulation at
+$30$--$300$\,Hz --- fast fluctuations the ear cannot track individually. Reference:
+$1\ \text{asper} = $ 60\,dB 1\,kHz tone, 100\,\% modulated at 70\,Hz.
+
+\[
+  R = \mathrm{cal} \cdot \int_{z=0}^{24} f_{\text{mod}}\, \Delta L\, \mathrm{d}z
+\]
+
+\begin{description}
+  \item[$f_{\text{mod}}$] modulation frequency per Bark band (Hz), located by
+                          peak-picking the envelope spectrum.
+  \item[$\Delta L$]       modulation depth per band: $\max(\text{env}) - \min(\text{env})$ in dB.
+  \item[cal]              calibration constant so the reference signal evaluates to 1\,asper.
+\end{description}
+
+\noindent
+Drone noise tends to score \emph{high} on roughness because the blade-pass frequency
+and its harmonics modulate each other in the audible 30--300\,Hz envelope range.
+
+% --- 4. Fluctuation strength ---------------------------------------------
+\section{Fluctuation Strength \texorpdfstring{$F$}{F} (vacil)}
+
+\textit{How wobbly the sound is.} Driven by \emph{slow} amplitude modulation, $0$--$30$\,Hz,
+with peak sensitivity at 4\,Hz. Reference: $1\ \text{vacil} = $ 60\,dB 1\,kHz tone, 100\,\%
+modulated at 4\,Hz.
+
+\[
+  F = \frac{0.008 \cdot \displaystyle\int_{z=0}^{24} \Delta L\, \mathrm{d}z}{\dfrac{f_{\text{mod}}}{4} + \dfrac{4}{f_{\text{mod}}}}
+\]
+
+\noindent
+Same structural form as roughness, but the denominator $f_{\text{mod}}/4 + 4/f_{\text{mod}}$
+has its \emph{minimum} (and therefore $F$ its maximum) at $f_{\text{mod}} = 4$\,Hz ---
+matching the empirical ear-sensitivity peak.
+
+For drones, $F$ is typically near zero ($\sim 0.01$\,vacil mean in the paper's hover
+measurements) --- rotor modulations sit well above the slow-fluctuation regime.
+
+% --- 5. PA ----------------------------------------------------------------
+\section{Psychoacoustic Annoyance \texorpdfstring{$PA$}{PA}}
+
+The composite that ties the four SQMs into one number. Zwicker \& Fastl form:
+
+\begin{paformula}
+\[
+  PA = N_5 \left(1 + \sqrt{w_S^2 + w_{FR}^2}\right)
+\]
+\end{paformula}
+
+\noindent
+where the loudness peak $N_5$ is multiplied by a unitless "unpleasantness factor"
+$(1 + \sqrt{w_S^2 + w_{FR}^2})$. The two weights are:
+
+\paragraph{Sharpness weight \boldmath$w_S$:}
+\[
+  w_S =
+  \begin{cases}
+    (S - 1.75) \cdot 0.25 \cdot \log_{10}(N_5 + 10), & \text{if } S > 1.75 \\
+    0, & \text{if } S \le 1.75
+  \end{cases}
+\]
+Below 1.75\,acum, sharpness does not contribute. Above the threshold the contribution
+grows with both the sharpness excess and the overall loudness.
+
+\paragraph{Roughness + fluctuation weight \boldmath$w_{FR}$:}
+\[
+  w_{FR} = \frac{2.18}{N_5^{0.4}}\,(0.4\,F + 0.6\,R)
+\]
+Roughness gets 1.5$\times$ the weight of fluctuation strength. The $N_5^{-0.4}$ factor
+softens the impact of these terms for already-loud sounds.
+
+\paragraph{Mental model.}
+$PA \approx \text{loudness} \times \text{timbre-unpleasantness multiplier}$. Loudness
+dominates; sharpness and roughness modulate.
+
+% --- 6. Drone values ------------------------------------------------------
+\section{Observed values for drones}
+
+The paper reports the following for a DJI Matrice 300 RTK in steady hover:
+
+\begin{center}
+\begin{tabular}{lrrl}
+  \toprule
+  Metric & Mean & Max & Unit \\
+  \midrule
+  Loudness ($L$)        & 19.30 & 29.56 & sone   \\
+  Sharpness ($S$)       & 1.85  & 3.69  & acum   \\
+  Roughness ($R$)       & 0.28  & 0.95  & asper  \\
+  Fluctuation ($F$)     & 0.01  & 0.06  & vacil  \\
+  Annoyance ($PA$)      & 20.31 & 32.57 & ---    \\
+  \bottomrule
+\end{tabular}
+\end{center}
+
+\noindent
+Observations:
+\begin{itemize}
+  \item Sharpness sits \emph{just} above the 1.75\,acum activation threshold ---
+        the $w_S$ term contributes weakly.
+  \item Fluctuation strength is essentially noise-floor and contributes
+        almost nothing to $w_{FR}$.
+  \item Roughness is the dominant timbre contributor through the $0.6 \cdot R$ term.
+  \item Therefore $PA$ for a hovering drone is approximately $L \times 1.05$ ---
+        the timbre weights bump it up by a few percent above raw loudness.
+\end{itemize}
+
+% --- 7. Practical implementation -----------------------------------------
+\section{Implementation path}
+
+The paper computed these with MATLAB's Audio Toolbox (proprietary). Open-source Python
+options:
+
+\begin{center}
+\renewcommand{\arraystretch}{1.2}
+\begin{tabular}{>{\bfseries}l p{6.5cm} p{4.5cm}}
+  \toprule
+  Library & What it provides & Trade-off \\
+  \midrule
+  \texttt{mosqito} &
+    All four SQM + PA, ISO/DIN-compliant, BSD-licensed, pip-installable &
+    Adds $\sim 10$\,MB dependency, but the canonical choice \\
+
+  \texttt{scikit-maad}, \texttt{pyAudioAnalysis} &
+    Loudness and some SQM &
+    Less complete; PA not built in \\
+
+  Roll our own &
+    Full control + insight &
+    Weeks of work; non-trivial filter banks and ISO 532B masking model \\
+  \bottomrule
+\end{tabular}
+\end{center}
+
+\noindent
+\textbf{Recommendation:} add \texttt{mosqito} to \texttt{pyproject.toml}. Server-side,
+compute the five numbers once per acoustic measurement and cache them alongside
+\texttt{meta.json}. Frontend reads cached numbers; no computation in the browser.
+
+\paragraph{Citation.}
+If we ship results that rely on MOSQITO, we cite it as the authors request:
+\begin{quote}
+\small
+Green Forge Coop. \textit{MOSQITO} [Computer software].
+\href{https://doi.org/10.5281/zenodo.5284054}{https://doi.org/10.5281/zenodo.5284054}
+\end{quote}
+(Use the \emph{Cite this repository} button on the MOSQITO GitHub page to pin a
+specific release.)
+
+\paragraph{Suggested Psychoacoustics tab views.}
+\begin{enumerate}
+  \item \textbf{Per-mic table at the selected PWM point} --- one row per mic with
+        $L$, $S$, $R$, $F$, $PA$ columns. Same shape as the FFT-tab header strip
+        but per-mic.
+  \item \textbf{Metrics vs.\ elevation} --- small-multiple line plots of each metric
+        across elevation. Surfaces the spatial-radiation pattern of the unpleasantness
+        components, not just total loudness.
+  \item \textbf{Metrics vs.\ PWM (or RPM, or thrust)} --- mirror of the Custom-tab
+        scatter, with any SQM or $PA$ on the Y axis. Answers questions like
+        "at what RPM does this prop start sounding annoying for reasons other
+        than loudness?"
+\end{enumerate}
+
+\paragraph{Open questions for the implementation phase.}
+\begin{itemize}
+  \item \textbf{Calibration.} Sone / acum / asper / vacil all assume the input is
+        in dB SPL, not dBFS. We need the UMIK-2 calibration applied \emph{before}
+        feeding audio to \texttt{mosqito}. Already the case if a cal file is
+        uploaded for the mic; otherwise the absolute values will be off (relative
+        comparisons still work).
+  \item \textbf{Time window.} For time-varying loudness $\to N_5$, we need
+        $\gtrsim 1$\,s of audio. Our typical capture is 1.5\,s per PWM step;
+        marginal but workable.
+  \item \textbf{Norsonic comparison.} Once the NOR-145 lands, its built-in
+        loudness/sharpness reading is a sanity check against our \texttt{mosqito}
+        pipeline.
+\end{itemize}
+
+\end{document}

@@ -22,11 +22,14 @@ from server.api.schemas import (
 )
 from server.core.calibration import apply_calibration_to_spectrum
 from server.core.fft import compute_fft
+from server.core.psychoacoustics import PsychoacousticMetrics
+from server.core.psychoacoustics import compute_metrics as compute_psychoacoustic_metrics
 from server.core.wav import read_wav_float32
 from server.store import calibration as cal_store
 from server.store import compat_tolerances as tolerances_store
 from server.store import keys as keys_store
 from server.store import measurements as meas_store
+from server.store import psychoacoustics as psy_store
 from server.store.paths import measurement_dir
 
 router = APIRouter(prefix="/keys/{slug}", tags=["results"])
@@ -338,3 +341,38 @@ def get_fft(
         window=window,
         size=size,
     )
+
+
+# ----- Psychoacoustic metrics -------------------------------------------
+
+
+@router.get(
+    "/measurements/{meas_id}/psychoacoustics",
+    response_model=PsychoacousticMetrics,
+)
+def get_psychoacoustics(slug: str, meas_id: str) -> PsychoacousticMetrics:
+    """SQM + PA for one acoustic measurement.
+
+    First request crunches the audio through mosqito (~1 s per WAV); the result
+    is cached in `psychoacoustics.json` next to the audio so subsequent
+    requests return instantly.
+    """
+    _require_key(slug)
+    meta = meas_store.get_measurement(slug, meas_id)
+    if meta is None:
+        raise HTTPException(404, f"measurement {meas_id!r} not found")
+    if not isinstance(meta, AcousticMeasurementMeta):
+        raise HTTPException(400, "psychoacoustics is only available for acoustic measurements")
+
+    meas_path = measurement_dir(slug, meas_id)
+    cached = psy_store.load(meas_path)
+    if cached is not None:
+        return cached
+
+    audio_path = meas_path / "audio.wav"
+    if not audio_path.exists():
+        raise HTTPException(404, "audio.wav missing")
+    sr, audio = read_wav_float32(audio_path)
+    metrics = compute_psychoacoustic_metrics(audio, sr)
+    psy_store.save(meas_path, metrics)
+    return metrics
