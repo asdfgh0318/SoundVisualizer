@@ -46,6 +46,8 @@ export function PsychoacousticsTab({ keySlug, point }: Props) {
   const someAssumedZeroF =
     rows.some((r) => r.metrics?.fluctuation_assumed_zero);
 
+  const ranges = computeRanges(rows);
+
   return (
     <div className="space-y-4">
       <div className="bg-gray-800 border border-gray-700 rounded-md p-4">
@@ -69,7 +71,7 @@ export function PsychoacousticsTab({ keySlug, point }: Props) {
               <th className="py-2 px-3 font-medium text-right">Sharpness <span className="text-gray-500">acum</span></th>
               <th className="py-2 px-3 font-medium text-right">Roughness <span className="text-gray-500">asper</span></th>
               <th className="py-2 px-3 font-medium text-right">Fluctuation <span className="text-gray-500">vacil</span></th>
-              <th className="py-2 px-3 font-medium text-right text-amber-400">PA</th>
+              <th className="py-2 px-3 font-medium text-right">PA</th>
             </tr>
           </thead>
           <tbody>
@@ -92,16 +94,27 @@ export function PsychoacousticsTab({ keySlug, point }: Props) {
                 )}
                 {!r.error && r.metrics && (
                   <>
-                    <Cell value={r.metrics.loudness_sone.toFixed(2)} />
-                    <Cell value={r.metrics.sharpness_acum.toFixed(2)} />
-                    <Cell value={r.metrics.roughness_asper.toFixed(3)} />
+                    <Cell
+                      value={r.metrics.loudness_sone.toFixed(2)}
+                      color={gradientColor(r.metrics.loudness_sone, ranges.loudness)}
+                    />
+                    <Cell
+                      value={r.metrics.sharpness_acum.toFixed(2)}
+                      color={gradientColor(r.metrics.sharpness_acum, ranges.sharpness)}
+                    />
+                    <Cell
+                      value={r.metrics.roughness_asper.toFixed(3)}
+                      color={gradientColor(r.metrics.roughness_asper, ranges.roughness)}
+                    />
                     <Cell
                       value={r.metrics.fluctuation_vacil.toFixed(3)}
                       dim={r.metrics.fluctuation_assumed_zero}
                     />
-                    <td className="py-2 px-3 font-mono text-right text-amber-300 font-semibold">
-                      {r.metrics.annoyance.toFixed(2)}
-                    </td>
+                    <Cell
+                      value={r.metrics.annoyance.toFixed(2)}
+                      color={gradientColor(r.metrics.annoyance, ranges.annoyance)}
+                      bold
+                    />
                   </>
                 )}
               </tr>
@@ -119,21 +132,81 @@ export function PsychoacousticsTab({ keySlug, point }: Props) {
         </div>
       )}
 
-      <div className="text-xs text-gray-500">
-        Loudness / sharpness / roughness are derived from float32 audio in [-1, 1] — relative
-        comparisons within a key are valid; absolute sone values assume calibrated dB SPL input,
-        which only applies once a UMIK-2 calibration file is uploaded for each mic.
+      <div className="text-xs text-gray-500 flex items-center gap-2 flex-wrap">
+        <span>
+          Loudness / sharpness / roughness are derived from float32 audio in [-1, 1] — relative
+          comparisons within a key are valid; absolute sone values assume calibrated dB SPL input,
+          which only applies once a UMIK-2 calibration file is uploaded for each mic.
+        </span>
+        <span className="inline-flex items-center gap-2 ml-auto whitespace-nowrap">
+          <span>color scale per column:</span>
+          <span className="font-mono" style={{ color: 'hsl(140, 70%, 60%)' }}>best</span>
+          <span
+            className="h-2 w-24 rounded"
+            style={{
+              background:
+                'linear-gradient(to right, hsl(140,70%,45%), hsl(60,75%,50%), hsl(0,75%,55%))',
+            }}
+          />
+          <span className="font-mono" style={{ color: 'hsl(0, 75%, 62%)' }}>worst</span>
+        </span>
       </div>
     </div>
   );
 }
 
-function Cell({ value, dim = false }: { value: string; dim?: boolean }) {
+interface Range {
+  min: number;
+  max: number;
+}
+
+interface Ranges {
+  loudness: Range;
+  sharpness: Range;
+  roughness: Range;
+  annoyance: Range;
+}
+
+function computeRanges(rows: Row[]): Ranges {
+  const loaded = rows.map((r) => r.metrics).filter((m): m is PsychoacousticMetrics => !!m);
+  const pick = (sel: (m: PsychoacousticMetrics) => number): Range => {
+    if (loaded.length === 0) return { min: 0, max: 0 };
+    const vs = loaded.map(sel);
+    return { min: Math.min(...vs), max: Math.max(...vs) };
+  };
+  return {
+    loudness: pick((m) => m.loudness_sone),
+    sharpness: pick((m) => m.sharpness_acum),
+    roughness: pick((m) => m.roughness_asper),
+    annoyance: pick((m) => m.annoyance),
+  };
+}
+
+// Lower value = better = green. Higher = worse = red. Returns null when the
+// column is flat (single row, or all rows tied) so the cell falls back to neutral.
+function gradientColor(value: number, range: Range): string | null {
+  if (range.max === range.min) return null;
+  const t = (value - range.min) / (range.max - range.min); // 0 = best, 1 = worst
+  const hue = 140 * (1 - t); // 140 (green) → 0 (red), passing through ~70 (yellow)
+  return `hsl(${hue.toFixed(0)}, 75%, 62%)`;
+}
+
+function Cell({
+  value,
+  dim = false,
+  color = null,
+  bold = false,
+}: {
+  value: string;
+  dim?: boolean;
+  color?: string | null;
+  bold?: boolean;
+}) {
+  const fallback = dim ? 'text-gray-500' : 'text-gray-200';
   return (
     <td
-      className={`py-2 px-3 font-mono text-right ${
-        dim ? 'text-gray-500' : 'text-gray-200'
-      }`}
+      className={`py-2 px-3 font-mono text-right ${color ? '' : fallback} ${bold ? 'font-semibold' : ''}`}
+      style={color ? { color } : undefined}
     >
       {value}
     </td>
