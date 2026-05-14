@@ -99,3 +99,9 @@ The standard Anthropic safety rules still apply: don't commit secrets, don't `--
 - One issue per logical unit. Include scope, what's in/out, and acceptance criteria.
 - Reference the issue in the relevant commit messages (`closes #N`) so GitHub auto-links them and closes the issue on merge to `main`.
 - Quick bug fixes, doc tweaks, and small one-off changes don't need an issue.
+
+**4. Rebuild the demo Docker image after every code-touching commit.** The demo image bakes the React bundle in at build time (`COPY --from=frontend-build /app/dist /app/static`), so old images serve stale UI. After pushing a commit that touches `src/`, `server/`, `package*.json`, `pyproject.toml`, `index.html`, `vite.config.ts`, `tsconfig*.json`, `Dockerfile`, or `config.example.toml`:
+- `sudo docker compose build` (rebuilds Stage 1 / Stage 2 with current source).
+- Verify the rebuild succeeded; you don't need to start the container unless the user asks.
+- Skip the rebuild for docs-only commits (CLAUDE.md, PLAN.md, README.md, docs/), commits touching only `.gitignore` / `.dockerignore` exclusions, or test-only commits in `server/tests/` that don't change runtime behaviour.
+- The image is local-only (no registry push). Anyone cloning the repo gets a fresh build on their first `docker compose up`, so this step is for *your* local demo to stay current — not a release artifact.
