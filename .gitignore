@@ -43,5 +43,6 @@ venv/
 
 # Reference PDFs — research papers we read while building the project. Useful
 # locally but not worth bloating the repo. The two generated reports in docs/
-# (psychoacoustics_report{,_pl}.pdf) are tracked separately.
-docs/references/*.pdf
+# (psychoacoustics_report{,_pl}.pdf) are tracked separately. Recursive so
+# topic subfolders (shroud_comparison/, etc.) are also ignored.
+docs/references/**/*.pdf
