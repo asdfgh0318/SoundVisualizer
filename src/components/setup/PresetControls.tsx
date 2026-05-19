@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { api, ApiError } from '../../api/client';
 import type { MicConfig, MicPresetEntry, SetupPreset } from '../../api/types';
+import { localId } from '../../lib/uuid';
 import { useSetupStore } from '../../stores/setupStore';
 import { Button } from '../ui/Button';
 
@@ -19,7 +20,7 @@ function micsToPresetEntries(mics: MicConfig[]): MicPresetEntry[] {
 /** Convert preset entries → fresh MicConfig list with new local ids and blank devices. */
 function presetEntriesToMics(entries: MicPresetEntry[]): MicConfig[] {
   return entries.map((e) => ({
-    id: crypto.randomUUID(),
+    id: localId(),
     serial: e.serial,
     deviceIndex: null,
     topElevationDeg: e.top_elevation_deg,

@@ -6,6 +6,7 @@ import type {
   CutoffTriggers,
   MicConfig,
 } from '../api/types';
+import { localId } from '../lib/uuid';
 
 const defaultCutoffs = (): CutoffTriggers => ({
   current: { enabled: false, threshold: 30,    direction: 'above' },
@@ -19,7 +20,7 @@ const defaultCutoffs = (): CutoffTriggers => ({
 });
 
 const newMic = (): MicConfig => ({
-  id: crypto.randomUUID(),
+  id: localId(),
   serial: '',
   deviceIndex: null,
   topElevationDeg: null,

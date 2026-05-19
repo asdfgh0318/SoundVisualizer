@@ -3,9 +3,9 @@ import os
 from contextlib import asynccontextmanager
 from pathlib import Path
 
-from fastapi import FastAPI
+from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.staticfiles import StaticFiles
+from fastapi.responses import FileResponse
 
 from server.api import (
     calibration,
@@ -86,10 +86,27 @@ async def health() -> dict[str, str]:
     return {"status": "ok"}
 
 
-# When packaged as a Docker image, the React bundle is mounted here so port 8000
-# serves both the API and the SPA. The mount happens last so it doesn't shadow
-# any API or WebSocket routes registered above.
+# When packaged as a Docker image, the React bundle is served from here so
+# port 8000 hosts both the API and the SPA. Registered last so it doesn't
+# shadow API routes. A bare StaticFiles mount can't fall back to index.html
+# for client-side router paths (e.g. /setup, /capture), so direct loads or
+# refreshes of those paths 404. The catch-all below serves the requested
+# file when it exists and otherwise returns index.html — standard SPA hosting.
 _static_dir = os.environ.get("SOUNDVIS_STATIC")
 if _static_dir and Path(_static_dir).is_dir():
-    app.mount("/", StaticFiles(directory=_static_dir, html=True), name="frontend")
+    _static_path = Path(_static_dir).resolve()
+    _index_html = _static_path / "index.html"
+
+    @app.get("/{full_path:path}", include_in_schema=False)
+    async def spa_fallback(full_path: str) -> FileResponse:
+        if full_path:
+            candidate = (_static_path / full_path).resolve()
+            try:
+                candidate.relative_to(_static_path)
+            except ValueError:
+                raise HTTPException(status_code=404) from None
+            if candidate.is_file():
+                return FileResponse(candidate)
+        return FileResponse(_index_html)
+
     log.info("Serving frontend bundle from %s", _static_dir)
