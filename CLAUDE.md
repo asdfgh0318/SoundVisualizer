@@ -20,7 +20,7 @@ Reference docs: [PLAN.md](PLAN.md) · [2.md](2.md) (original scope) · [1.md](1.
 | 6× UMIK-2 USB mics | Available | Plug into laptop USB hub. Setup page filters audio devices to ALSA `(hw:…)` only. |
 | Tyto Robotics 1585 thrust stand | Available | USB serial, driven via Paweł's MSP protocol code. |
 | Norsonic NOR-145 SLM | Pending delivery | WiFi when delivered; phase 6. |
-| Raspberry Pi 5 | Available, **deployed & live** | Debian 13 Trixie, hostname `jama` → `http://jama.local:8000`. Native systemd service running on system Python 3.13. Deploy/update from the laptop via `scripts/deploy_to_pi.sh jama@jama.local`. (Replaced the originally-planned RPi 4; the Pi 5's RP1 chip has real USB 3.0, so no VL805 bandwidth workaround.) Mics + Tyto not yet plugged into the Pi. |
+| Raspberry Pi 5 | Available, **deployed & live** | Debian 13 Trixie, hostname `jama` → `http://jama.local:8000`. Native systemd service running on system Python 3.13. Deploy/update from the laptop via `scripts/deploy_to_pi.sh jama@jama.local`. SSH alias `ssh jama` (passwordless key). (Replaced the originally-planned RPi 4; the Pi 5's RP1 chip has real USB 3.0, so no VL805 bandwidth workaround.) **Integration-tested on the Pi:** 1× UMIK-2 enumerates + captures, Tyto on `/dev/ttyUSB0` connects + streams telemetry + cutoff watchdog + a full capture run all verified. Note: UMIK-2s report USB serial `00000` (so multi-mic udev naming needs port-paths, not serials); temps unused; ESC/battery not yet connected (no powered/prop run done). |
 
 Laptop is Linux (kernel 6.8). Same Python server runs on the RPi 5 with no code change — only the host moves.
 

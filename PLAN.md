@@ -70,10 +70,12 @@ These were not in the original 2.md scope but came up during development:
 - **Refresh button** on the Results PWM-point sidebar to re-fetch from server after generating new data.
 - **Idiot-proof Quick start in README** — step-by-step from `git clone` to fake-capture rendered in Results, with troubleshooting table for common gotchas.
 - **Psychoacoustics tab** — per-mic table with loudness (sone), sharpness (acum), roughness (asper), fluctuation strength (vacil, currently 0 — see report), and Psychoacoustic Annoyance (PA) for the selected PWM point. Computed server-side via `mosqito` (ISO 532-1 loudness, DIN 45692 sharpness, Daniel-Weber roughness) with PA from the Zwicker formula. Results cached in `psychoacoustics.json` next to each `audio.wav` so first-render cost (~1 s/mic) is amortized. Math reference: `docs/psychoacoustics_report.{tex,pdf}` (also PL translation in `psychoacoustics_report_pl.{tex,pdf}`).
+- **Live per-mic input-level meter** (Setup) — a "🎤 Listen" toggle per mic row opens a WebSocket (`/devices/audio/{index}/level`) streaming RMS/peak dBFS at ~15 Hz, shown as a level bar with peak-hold. Lets you tap a mic and see which device responds — the only way to tell UMIK-2s apart since they all report USB serial `00000`. One listener at a time (a device can't be opened twice).
+- **Tyto zero/tare** — "Zero stand" button (Setup) samples the at-rest load-cell baseline (`POST /tyto/zero`, idle-only) and subtracts it from thrust/torque/current in both live telemetry and the recorded `telemetry.csv`; clear restores raw. The load cell reads a non-zero resting offset (~4.6 N on our unit) that would otherwise contaminate every measurement.
 
 ## Open questions
 
-(none — all blockers cleared 2026-05-06)
+- **Multi-mic udev naming** — UMIK-2s report USB serial `00000`, so `scripts/generate_udev.py`'s serial-based rules collide for >1 mic. Needs port-path-based rules (which hub port → stable ALSA name). Deferred until the full 6-mic arc is wired so the real hub topology can be read. Single-mic naming works today.
 
 ## Notes
 
