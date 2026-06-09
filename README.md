@@ -8,7 +8,7 @@ For project context, architecture, and the phased plan, see [`CLAUDE.md`](CLAUDE
 
 ```
 ┌──────────────────┐  HTTP + WS  ┌──────────────────────────────────────────┐
-│  Laptop browser  │ ──────────► │  Laptop (now) → RPi 4 (later)            │
+│  Laptop browser  │ ──────────► │  Laptop (dev) → RPi 5 (production)       │
 │  React + Vite    │             │  Python 3.12 + FastAPI + asyncio         │
 │  Plotly.js + ZS  │             │  ├─ Tyto 1585 (Paweł's MSP serial code)  │
 └──────────────────┘             │  ├─ NOR-145 (Paweł's WS+FTP) [phase 6]   │
@@ -152,6 +152,21 @@ For team workflow (branches, PRs, issues, the maintenance directive), see [CLAUD
 8. Add 5–6 mics on the Setup page — one row per UMIK-2, picking the matching USB device, serial, top and bottom elevations, and cal file.
 9. Go to **Capture**, fill out motor/propeller/shroud/notes + PWM ramp + half selection → **Continue → Review → Start capture**.
 
+## Deploy to a Raspberry Pi 5 (production rig)
+
+The production target runs the same `server/` code as a `systemd` service on a
+Raspberry Pi 5, serving the API + bundled UI on `http://soundvis.local:8000`.
+One command on a fresh Pi:
+
+```bash
+git clone https://github.com/asdfgh0318/SoundVisualizer.git
+cd SoundVisualizer
+bash scripts/setup_rpi.sh
+```
+
+Full bring-up (PD supply, powered USB hub, mDNS, Tyto enable, operating the
+service): **[`deploy/README.md`](deploy/README.md)**.
+
 ## Data layout
 
 ```
@@ -177,7 +192,7 @@ One performance + N acoustic measurements per PWM step share the same `t_start`,
 
 **Client:** React 19 · Vite 7 · TypeScript · Tailwind 4 · Zustand 5 · Plotly.js (`plotly.js-dist-min`).
 
-**Tests:** pytest (58 passing) covering FFT, calibration, trigger-sync alignment, cutoff watchdog, config loading, capture orchestrator with a fake stand, results endpoints. Lint via ruff.
+**Tests:** pytest (76 passing) covering FFT, calibration, trigger-sync alignment, cutoff watchdog, config loading, capture orchestrator with a fake stand, results endpoints, psychoacoustics. Lint via ruff.
 
 ## Acknowledgements
 

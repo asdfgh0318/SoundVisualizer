@@ -1,0 +1,29 @@
+[Unit]
+Description=SoundVisualizer drone-noise measurement server
+# Wait for the network and USB devices to settle so mic/Tyto enumeration is stable.
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=pi
+Group=pi
+# Real-hardware access: ALSA mics (audio) + Tyto USB serial (dialout).
+SupplementaryGroups=audio dialout
+
+# %h is the service user's home. setup_rpi.sh clones to ~/SoundVisualizer and
+# builds the venv + frontend bundle there. Adjust if you cloned elsewhere.
+WorkingDirectory=%h/SoundVisualizer
+Environment=SOUNDVIS_STATIC=%h/SoundVisualizer/dist
+# python -m server reads [server] host/port from config.toml.
+ExecStart=%h/SoundVisualizer/.venv/bin/python -m server
+
+Restart=on-failure
+RestartSec=3
+
+# Light hardening — the app needs /dev (audio + serial) and ./data, so we
+# don't lock the filesystem down hard.
+NoNewPrivileges=true
+
+[Install]
+WantedBy=multi-user.target

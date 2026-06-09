@@ -22,7 +22,8 @@ Tests: `pytest server/tests/`. Lint: `ruff check server/ scripts/`.
 
 ```
 server/
-  main.py            # FastAPI app entry + lifespan (boots Tyto service & orchestrator)
+  main.py            # FastAPI app entry + lifespan (boots Tyto service & orchestrator); SPA fallback when SOUNDVIS_STATIC set
+  __main__.py        # `python -m server` — prod entrypoint, reads [server] host/port from config (used by the RPi systemd unit)
   api/               # HTTP + WS route handlers
     keys.py            # /keys CRUD
     measurements.py    # /keys/{slug}/measurements
@@ -31,7 +32,9 @@ server/
     capture.py         # /capture/acoustic (single-shot, no Tyto)
     capture_run.py     # /capture/run (orchestrated PWM-ramp + mics + WS)
     thrust_stand.py    # /tyto/{status,pwm,cutoffs,reset,ws/telemetry}
-    results.py         # /keys/{slug}/{pwm_points, .../fft, .../performance_summary}
+    results.py         # /keys/{slug}/{pwm_points, .../fft, .../performance_summary, .../psychoacoustics}
+    setup_presets.py   # /setup-presets — named mic-list snapshots
+    compat_tolerances.py # /compat-tolerances — PWM-point merge tolerances
     dev.py             # /dev/{seed, fake_capture} — synthetic drone-noise data
   core/              # Hardware orchestration + signal processing
     audio_devices.py   # sounddevice device enumeration (hw: only)
@@ -44,11 +47,13 @@ server/
     thrust_stand_service.py  # owns the Tyto connection + sample stream
     capture_orchestrator.py  # per-half PWM-ramp capture loop
     calibration_override.py  # applies config.toml to Paweł's vendored constants
-    config.py          # Pydantic config loader (config.toml)
+    config.py          # Pydantic config loader (config.toml) — [server], [tyto]
+    psychoacoustics.py # mosqito loudness/sharpness/roughness + Zwicker PA
   store/             # Filesystem JSON+WAV persistence
     paths.py keys.py measurements.py calibration.py
+    setup_presets.py compat_tolerances.py psychoacoustics.py
   vendor/pawel/      # Vendored — Paweł's Tyto MSP + Norsonic protocol code
-  tests/             # 58 passing tests
+  tests/             # 76 passing tests
 ```
 
 ## Conventions

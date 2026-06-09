@@ -4,11 +4,12 @@ Drone-noise directivity measurement tool. Captures audio from up to 6 miniDSP UM
 
 ## Status
 
-**Refactor MVP is built.** Phases 0/1/2/3/4/5/7/8/9 of [PLAN.md](PLAN.md) are complete. Server + frontend run end-to-end against either real hardware (when `tyto.enabled = true` in `config.toml`) or against synthesised "fake capture" data for results-tool development without the rig.
+**Refactor MVP is built.** Phases 0/1/2/3/4/5/7/8/9/10 of [PLAN.md](PLAN.md) are complete. Server + frontend run end-to-end against either real hardware (when `tyto.enabled = true` in `config.toml`) or against synthesised "fake capture" data for results-tool development without the rig.
 
 Remaining phases:
 - **Phase 6 — Norsonic NOR-145**: hardware pending delivery. Paweł's `norsonic*.py` is vendored and dormant in `server/vendor/pawel/`.
-- **Phase 10 — RPi packaging**: RPi 4 pending delivery. systemd unit, mDNS hostname, FastAPI-served prod bundle.
+
+Production deployment (Phase 10) targets a **Raspberry Pi 5** via `scripts/setup_rpi.sh` + `deploy/soundvis.service` — native systemd, pyenv-built CPython 3.12, FastAPI-served bundle on :8000 at `soundvis.local`. See [deploy/README.md](deploy/README.md).
 
 Reference docs: [PLAN.md](PLAN.md) · [2.md](2.md) (original scope) · [1.md](1.md) (kickoff) · [docs/overview.html](docs/overview.html).
 
@@ -19,9 +20,9 @@ Reference docs: [PLAN.md](PLAN.md) · [2.md](2.md) (original scope) · [1.md](1.
 | 6× UMIK-2 USB mics | Available | Plug into laptop USB hub. Setup page filters audio devices to ALSA `(hw:…)` only. |
 | Tyto Robotics 1585 thrust stand | Available | USB serial, driven via Paweł's MSP protocol code. |
 | Norsonic NOR-145 SLM | Pending delivery | WiFi when delivered; phase 6. |
-| Raspberry Pi 4 | Pending delivery | Production target; phase 10. Same Python server code runs on both. |
+| Raspberry Pi 5 | Available | Production target; phase 10 done. Native systemd install via `scripts/setup_rpi.sh`. Same Python server code as the laptop — only the host moves. (Replaced the originally-planned RPi 4; the Pi 5's RP1 chip has real USB 3.0, so no VL805 bandwidth workaround.) |
 
-Laptop is Linux (kernel 6.8). Same Python server runs on RPi later with no code change — only the host moves.
+Laptop is Linux (kernel 6.8). Same Python server runs on the RPi 5 with no code change — only the host moves.
 
 ## Running it
 

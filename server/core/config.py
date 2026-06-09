@@ -23,8 +23,14 @@ class TytoConfig(BaseModel):
     calibration: TytoCalibrationConfig = TytoCalibrationConfig()
 
 
+class ServerConfig(BaseModel):
+    host: str = "0.0.0.0"
+    port: int = Field(default=8000, gt=0, le=65535)
+
+
 class Config(BaseModel):
     tyto: TytoConfig = TytoConfig()
+    server: ServerConfig = ServerConfig()
 
 
 def load_config(path: Path | None = None) -> Config:

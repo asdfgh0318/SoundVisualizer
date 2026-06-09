@@ -6,7 +6,7 @@ Living plan. See [CLAUDE.md](CLAUDE.md) for project context and locked decisions
 
 ```
 ┌──────────────────┐  HTTP/WS  ┌─────────────────────────────────────────┐
-│  Laptop browser  │ ────────► │  Laptop (now) → RPi 4 (later)           │
+│  Laptop browser  │ ────────► │  Laptop (dev) → RPi 5 (production)       │
 │  React + Vite    │           │  Python 3.12 + FastAPI + asyncio        │
 │  Plotly.js + ZS  │           │  ├─ Tyto 1585 (Paweł's MSP serial)      │
 └──────────────────┘           │  ├─ NOR-145 (Paweł's WS+FTP) [later]    │
@@ -56,7 +56,7 @@ Order chosen so the existing browser-only app kept working as a reference until 
 | 8 | Results — Polar tab | ✅ Done | SPL-vs-elevation polar plot. 180°/360° toggle. **Top+bottom merge** combines sibling captures at same PWM. Right rail: range + 1/3-octave + octave columns with snap-to. |
 | 9 | Results — Custom tab | ✅ Done | Plotly port of Paweł's Bokeh viz. X/Y scatter with column pickers (PWM/thrust/torque/current/voltage/RPM/temp/SPL-in-band). Clicking a point snaps the FFT and Polar tabs to that PWM step via shared sidebar selection. |
 | 6 | Norsonic | ⏳ Deferred | Waiting on NOR-145 delivery. Paweł's `norsonic*.py` already vendored, dormant. Setup page shows deferred placeholder. |
-| 10 | RPi packaging | ⏳ Deferred | Waiting on RPi 4 delivery. Systemd unit, mDNS `soundvis.local`, FastAPI-served prod bundle, udev rules. README will document fresh-Pi setup (powered USB-2 hub, VL805 firmware update for bandwidth bug, 48 kHz cap). |
+| 10 | RPi packaging | ✅ Done | Raspberry Pi **5** (delivered; replaced the planned RPi 4). Native systemd + venv install via `scripts/setup_rpi.sh` (pyenv-built CPython 3.12, since Bookworm ships 3.11), `deploy/soundvis.service`, `python -m server` entrypoint reading `[server]` host/port from config, FastAPI-served prod bundle on :8000, mDNS `soundvis.local`, udev rules. Setup docs in `deploy/README.md` (5V/5A PD supply, powered USB hub). The old VL805 firmware-bandwidth caveat is gone — the Pi 5's RP1 chip has real USB 3.0. 48 kHz stays (locked decision for the drone band, not a bandwidth workaround). |
 
 ## Post-MVP enhancements delivered
 

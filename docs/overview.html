@@ -127,7 +127,7 @@
 <header>
   <h1>SoundVisualizer</h1>
   <div class="sub">Drone-noise directivity measurement — 6× UMIK-2 vertical arc + Tyto 1585 thrust stand</div>
-  <span class="status-pill" style="background:rgba(74,222,128,0.12);color:var(--green);border-color:rgba(74,222,128,0.3);">MVP complete · 9/11 phases done · Norsonic + RPi packaging deferred (hardware pending)</span>
+  <span class="status-pill" style="background:rgba(74,222,128,0.12);color:var(--green);border-color:rgba(74,222,128,0.3);">MVP complete · 10/11 phases done · RPi 5 packaging shipped · Norsonic deferred (hardware pending)</span>
 </header>
 
 <h2>Hardware status</h2>
@@ -139,13 +139,13 @@
     <tr>
       <td>6× miniDSP UMIK-2</td>
       <td>Acoustic capture (vertical arc)</td>
-      <td>USB hub on laptop → RPi later</td>
+      <td>USB hub → laptop or RPi 5</td>
       <td><span class="badge ok">Available</span></td>
     </tr>
     <tr>
       <td>Tyto Robotics 1585</td>
       <td>Thrust / torque / current / RPM</td>
-      <td>USB serial on laptop → RPi later</td>
+      <td>USB serial → laptop or RPi 5</td>
       <td><span class="badge ok">Available</span></td>
     </tr>
     <tr>
@@ -155,10 +155,10 @@
       <td><span class="badge wait">Pending delivery</span></td>
     </tr>
     <tr>
-      <td>Raspberry Pi 4</td>
+      <td>Raspberry Pi 5</td>
       <td>Production host (consolidates all hardware)</td>
       <td>USB + WiFi to laptop browser</td>
-      <td><span class="badge wait">Pending</span></td>
+      <td><span class="badge ok">Available</span></td>
     </tr>
   </tbody>
 </table>
@@ -182,7 +182,7 @@
   </div>
   <div class="arch-col">
     <h4>Backend</h4>
-    <div class="title">Laptop now → RPi 4 later</div>
+    <div class="title">Laptop (dev) → RPi 5 (production)</div>
     <ul>
       <li>Python 3.12 + FastAPI + asyncio</li>
       <li><code>sounddevice</code> — 6× UMIK-2 capture</li>
@@ -306,9 +306,9 @@
 <div class="phase">
   <div class="phase-num">10</div>
   <div class="phase-body">
-    <h3>RPi packaging <span class="badge wait">Deferred</span></h3>
-    <p>Systemd unit, mDNS <code>soundvis.local</code>, frontend bundle served by FastAPI static. udev rules for stable mic IDs. Powered USB-2 hub note + VL805 firmware update note for the bandwidth bug.</p>
-    <div class="meta"><span>RPi (pending)</span></div>
+    <h3>RPi 5 packaging <span class="badge ok">Done</span></h3>
+    <p>Native systemd service (<code>deploy/soundvis.service</code>) + one-shot installer (<code>scripts/setup_rpi.sh</code>): pyenv-built CPython 3.12 (Bookworm ships 3.11), <code>.venv</code>, FastAPI-served bundle on :8000, mDNS <code>soundvis.local</code>, udev rules. Pi 5's RP1 chip has real USB 3.0 — no VL805 workaround. Bring-up docs in <code>deploy/README.md</code>.</p>
+    <div class="meta"><span>RPi 5 (available)</span></div>
   </div>
 </div>
 
