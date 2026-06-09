@@ -82,6 +82,15 @@ export interface TytoStatus {
   connected: boolean;
   pwm_us: number | null;
   tripped: string | null;
+  tare_thrust_n: number;
+  tare_torque_nm: number;
+  tare_current_a: number;
+}
+
+export interface TareResponse {
+  tare_thrust_n: number;
+  tare_torque_nm: number;
+  tare_current_a: number;
 }
 
 // Frontend-only: per-mic config persisted in localStorage.

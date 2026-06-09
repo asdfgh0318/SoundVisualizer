@@ -25,6 +25,7 @@ from server.core.capture_orchestrator import (
 )
 from server.core.config import TytoCalibrationConfig
 from server.core.cutoff_watchdog import CutoffWatchdog
+from server.core.thrust_stand_service import TareOffsets
 from server.vendor.pawel.msp import PollResponse
 
 
@@ -64,6 +65,7 @@ class FakeService:
     def __init__(self):
         self.stand = FakeStand()
         self.watchdog = CutoffWatchdog(self.stand, CutoffTriggers())
+        self.tare = TareOffsets()
 
     def set_pwm(self, pwm_us: int) -> None:
         if self.watchdog.tripped:

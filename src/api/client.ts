@@ -16,6 +16,7 @@ import type {
   PerformanceSummary,
   PsychoacousticMetrics,
   SetupPreset,
+  TareResponse,
   TytoStatus,
 } from './types';
 
@@ -79,6 +80,8 @@ export const api = {
   setTytoPwm: (pwm_us: number) => request<void>('/tyto/pwm', json({ pwm_us })),
   setTytoCutoffs: (cutoffs: CutoffTriggers) => request<void>('/tyto/cutoffs', json(cutoffs)),
   resetTytoWatchdog: () => request<void>('/tyto/reset', { method: 'POST' }),
+  zeroTytoStand: () => request<TareResponse>('/tyto/zero', { method: 'POST' }),
+  clearTytoTare: () => request<void>('/tyto/zero/clear', { method: 'POST' }),
 
   startCaptureRun: (body: CaptureHalfRunRequest) =>
     request<CaptureRunStatus>('/capture/run', json(body)),

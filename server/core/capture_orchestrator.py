@@ -47,7 +47,7 @@ from server.vendor.pawel.msp import PollResponse
 from server.vendor.pawel.thrust_stand import raw_thrust, raw_torque
 
 if TYPE_CHECKING:
-    from server.core.thrust_stand_service import ThrustStandService
+    from server.core.thrust_stand_service import TareOffsets, ThrustStandService
 
 log = logging.getLogger(__name__)
 
@@ -78,7 +78,9 @@ class CaptureHalfRunRequest(BaseModel):
     trigger: TriggerSyncRun = TriggerSyncRun()
 
 
-def _telemetry_to_csv(samples: Sequence[PollResponse], poll_period_s: float) -> bytes:
+def _telemetry_to_csv(
+    samples: Sequence[PollResponse], poll_period_s: float, tare: "TareOffsets"
+) -> bytes:
     header = (
         "t_offset_s,thrust_n,torque_nm,current_a,voltage_v,rpm,"
         "temp0_c,temp1_c,temp2_c,vibration"
@@ -88,9 +90,9 @@ def _telemetry_to_csv(samples: Sequence[PollResponse], poll_period_s: float) -> 
         t = i * poll_period_s
         rows.append(
             f"{t:.3f},"
-            f"{raw_thrust(s.load_thrust):.4f},"
-            f"{raw_torque(s.load_left, s.load_right):.4f},"
-            f"{s.esc_current:.4f},"
+            f"{raw_thrust(s.load_thrust) - tare.thrust_n:.4f},"
+            f"{raw_torque(s.load_left, s.load_right) - tare.torque_nm:.4f},"
+            f"{s.esc_current - tare.current_a:.4f},"
             f"{s.esc_voltage:.4f},"
             f"{s.rot_e:.1f},"
             f"{s.temp0:.2f},{s.temp1:.2f},{s.temp2:.2f},"
@@ -247,7 +249,9 @@ class CaptureOrchestrator:
         perf_saved = meas_store.create_measurement(
             key_slug,
             perf_meta,
-            telemetry_csv=_telemetry_to_csv(raw_window, self._poll_period_s),
+            telemetry_csv=_telemetry_to_csv(
+                raw_window, self._poll_period_s, self._stand_service.tare
+            ),
         )
         self._status.measurement_ids.append(perf_saved.id)
 

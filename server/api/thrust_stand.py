@@ -19,6 +19,15 @@ class StatusResponse(BaseModel):
     connected: bool
     pwm_us: int | None = None
     tripped: str | None = None
+    tare_thrust_n: float = 0.0
+    tare_torque_nm: float = 0.0
+    tare_current_a: float = 0.0
+
+
+class TareResponse(BaseModel):
+    tare_thrust_n: float
+    tare_torque_nm: float
+    tare_current_a: float
 
 
 class SetPwmRequest(BaseModel):
@@ -34,7 +43,27 @@ def status(req: Request) -> StatusResponse:
         connected=True,
         pwm_us=svc.stand.mot_pwm,
         tripped=svc.watchdog.tripped,
+        tare_thrust_n=svc.tare.thrust_n,
+        tare_torque_nm=svc.tare.torque_nm,
+        tare_current_a=svc.tare.current_a,
     )
+
+
+@router.post("/zero", response_model=TareResponse)
+def zero_stand(req: Request) -> TareResponse:
+    svc = _service(req)
+    try:
+        t = svc.zero()
+    except RuntimeError as e:
+        raise HTTPException(409, str(e)) from e
+    return TareResponse(
+        tare_thrust_n=t.thrust_n, tare_torque_nm=t.torque_nm, tare_current_a=t.current_a
+    )
+
+
+@router.post("/zero/clear", status_code=204)
+def clear_tare(req: Request) -> None:
+    _service(req).clear_tare()
 
 
 @router.post("/pwm", status_code=204)

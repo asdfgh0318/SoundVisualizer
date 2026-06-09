@@ -16,6 +16,7 @@ The consumer task runs forever (until `stop()`). Each iteration:
 
 import asyncio
 import contextlib
+from dataclasses import dataclass
 from datetime import UTC, datetime
 from typing import Any
 
@@ -30,14 +31,27 @@ from server.vendor.pawel.thrust_stand import (
 )
 
 
-def _build_telemetry(stand: ThrustStand, watchdog: CutoffWatchdog) -> dict[str, Any]:
+@dataclass
+class TareOffsets:
+    """At-rest baselines subtracted from thrust/torque/current. The load cell
+    reads a non-zero resting value (~4.6 N on our unit); zeroing samples it and
+    stores it here so logged + displayed values are referenced to rest."""
+
+    thrust_n: float = 0.0
+    torque_nm: float = 0.0
+    current_a: float = 0.0
+
+
+def _build_telemetry(
+    stand: ThrustStand, watchdog: CutoffWatchdog, tare: TareOffsets
+) -> dict[str, Any]:
     raw = stand.samples_raw[-1]
     return {
         "t": datetime.now(UTC).isoformat(),
         "pwm_us": stand.mot_pwm,
-        "thrust_n": raw_thrust(raw.load_thrust),
-        "torque_nm": raw_torque(raw.load_left, raw.load_right),
-        "current_a": raw.esc_current,
+        "thrust_n": raw_thrust(raw.load_thrust) - tare.thrust_n,
+        "torque_nm": raw_torque(raw.load_left, raw.load_right) - tare.torque_nm,
+        "current_a": raw.esc_current - tare.current_a,
         "voltage_v": raw.esc_voltage,
         "rpm": raw.rot_e,
         "temp0_c": raw.temp0,
@@ -52,6 +66,7 @@ class ThrustStandService:
     def __init__(self, stand: ThrustStand, cutoffs: CutoffTriggers):
         self.stand = stand
         self.watchdog = CutoffWatchdog(stand, cutoffs)
+        self.tare = TareOffsets()
         self._subscribers: list[asyncio.Queue[dict[str, Any]]] = []
         self._consumer_task: asyncio.Task[None] | None = None
 
@@ -85,7 +100,7 @@ class ThrustStandService:
                 continue
             raw = self.stand.samples_raw[-1]
             self.watchdog.check_and_trip(raw)
-            msg = _build_telemetry(self.stand, self.watchdog)
+            msg = _build_telemetry(self.stand, self.watchdog, self.tare)
             dead: list[asyncio.Queue[dict[str, Any]]] = []
             for q in self._subscribers:
                 try:
@@ -110,6 +125,28 @@ class ThrustStandService:
 
     def reset_watchdog(self) -> None:
         self.watchdog.reset()
+
+    def zero(self, n: int = 30) -> TareOffsets:
+        """Set tare offsets from the mean of the last `n` at-rest samples.
+
+        Only valid at idle — taring while the motor spins would bake thrust into
+        the baseline. Raises if no samples yet or PWM is above idle.
+        """
+        if self.stand.mot_pwm != 1000:
+            raise RuntimeError("zero only at idle (pwm 1000); spool down first")
+        window = self.stand.samples_raw[-n:]
+        if not window:
+            raise RuntimeError("no samples yet")
+        k = len(window)
+        self.tare = TareOffsets(
+            thrust_n=sum(raw_thrust(s.load_thrust) for s in window) / k,
+            torque_nm=sum(raw_torque(s.load_left, s.load_right) for s in window) / k,
+            current_a=sum(s.esc_current for s in window) / k,
+        )
+        return self.tare
+
+    def clear_tare(self) -> None:
+        self.tare = TareOffsets()
 
     def subscribe(self) -> asyncio.Queue[dict[str, Any]]:
         q: asyncio.Queue[dict[str, Any]] = asyncio.Queue(maxsize=10)
