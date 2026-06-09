@@ -59,6 +59,14 @@ class ThrustStandService:
     async def start(cls, config: Config) -> "ThrustStandService":
         apply_calibration_config(config.tyto.calibration)
         stand = await ThrustStand.open_connection(config.tyto.tty)
+        # Paweł's ThrustStand declares tare_thrust/torque/current but never sets
+        # them in __init__; the capture path (finish_meas_series → sample_from_raw)
+        # reads them, so a run crashes with AttributeError without this. Zero =
+        # no tare; a future "zero stand" step can populate these with the at-rest
+        # offsets (the load cell reads a non-zero resting baseline).
+        stand.tare_thrust = 0.0
+        stand.tare_torque = 0.0
+        stand.tare_current = 0.0
         service = cls(stand, CutoffTriggers())
         service._consumer_task = asyncio.create_task(service._consume())
         return service
