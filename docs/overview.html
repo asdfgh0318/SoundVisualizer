@@ -306,9 +306,9 @@
 <div class="phase">
   <div class="phase-num">10</div>
   <div class="phase-body">
-    <h3>RPi 5 packaging <span class="badge ok">Done</span></h3>
-    <p>Native systemd service (<code>deploy/soundvis.service</code>) + one-shot installer (<code>scripts/setup_rpi.sh</code>): pyenv-built CPython 3.12 (Bookworm ships 3.11), <code>.venv</code>, FastAPI-served bundle on :8000, mDNS <code>soundvis.local</code>, udev rules. Pi 5's RP1 chip has real USB 3.0 — no VL805 workaround. Bring-up docs in <code>deploy/README.md</code>.</p>
-    <div class="meta"><span>RPi 5 (available)</span></div>
+    <h3>RPi 5 packaging <span class="badge ok">Done &amp; deployed</span></h3>
+    <p>Live on a Pi 5 (Debian 13 Trixie) at <code>http://jama.local:8000</code>. Native systemd service (<code>deploy/soundvis.service</code>) on <strong>system Python 3.13</strong> — no pyenv (all deps have aarch64 wheels). Deploy from the laptop via <code>scripts/deploy_to_pi.sh</code> (builds bundle locally, ships it — no Node on the Pi); <code>scripts/setup_rpi.sh</code> is the dist-aware on-device installer. Pi 5's RP1 chip has real USB 3.0 — no VL805 workaround. Bring-up docs in <code>deploy/README.md</code>.</p>
+    <div class="meta"><span>RPi 5 (live)</span></div>
   </div>
 </div>
 
