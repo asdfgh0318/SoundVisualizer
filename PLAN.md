@@ -75,7 +75,11 @@ These were not in the original 2.md scope but came up during development:
 
 ## Open questions
 
-- **Multi-mic udev naming** — UMIK-2s report USB serial `00000`, so `scripts/generate_udev.py`'s serial-based rules collide for >1 mic. Needs port-path-based rules (which hub port → stable ALSA name). Deferred until the full 6-mic arc is wired so the real hub topology can be read. Single-mic naming works today.
+(none currently)
+
+## Resolved
+
+- **Multi-mic udev naming** — UMIK-2s report USB serial `00000`, so serial-based udev rules collided. `scripts/generate_udev.py` now falls back to USB **port-path** rules (`KERNELS=="3-1.4.1"` → `ATTR{id}="umik_3_1_4_1"`) when serials aren't unique, and `/devices/audio` surfaces each device's `alsa_card_id` so the Setup picker shows the stable port-id per mic. Verified on the Pi with 4 UMIKs. The live level meter remains the physical-identify tool (tap a mic, watch its bar).
 
 ## Notes
 
