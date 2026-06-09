@@ -51,6 +51,7 @@ export interface AudioDeviceInfo {
   hostapi: string;
   max_input_channels: number;
   default_samplerate: number;
+  alsa_card_id: string | null;
 }
 
 export interface CalibrationSummary {

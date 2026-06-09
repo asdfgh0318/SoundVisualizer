@@ -1,4 +1,6 @@
+import re
 import sys
+from pathlib import Path
 
 import sounddevice as sd
 from pydantic import BaseModel
@@ -10,6 +12,23 @@ class AudioDeviceInfo(BaseModel):
     hostapi: str
     max_input_channels: int
     default_samplerate: float
+    alsa_card_id: str | None = None  # stable per-port id from udev (e.g. umik_3_1_2)
+
+
+_HW_RE = re.compile(r"\(hw:(\d+),")
+
+
+def _alsa_card_id(device_name: str) -> str | None:
+    """Map an ALSA device name like 'UMIK-2: USB Audio (hw:3,0)' to the card's
+    stable id (/sys/class/sound/card3/id), which our udev rules pin per USB port.
+    Lets the UI tell apart UMIK-2s that otherwise share the name + serial."""
+    m = _HW_RE.search(device_name)
+    if not m:
+        return None
+    try:
+        return Path(f"/sys/class/sound/card{m.group(1)}/id").read_text().strip() or None
+    except OSError:
+        return None
 
 
 def list_input_devices() -> list[AudioDeviceInfo]:
@@ -36,6 +55,7 @@ def list_input_devices() -> list[AudioDeviceInfo]:
             hostapi=hostapis[d["hostapi"]]["name"],
             max_input_channels=d["max_input_channels"],
             default_samplerate=d["default_samplerate"],
+            alsa_card_id=_alsa_card_id(d["name"]) if is_linux else None,
         )
         for i, d in enumerate(devices)
         if keep(d)

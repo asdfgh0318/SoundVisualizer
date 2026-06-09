@@ -118,7 +118,7 @@ function MicRow({
           <option value="">— pick device —</option>
           {devices.map((d) => (
             <option key={d.index} value={d.index}>
-              #{d.index} · {d.name}
+              {d.alsa_card_id ? `${d.alsa_card_id} · ` : ''}#{d.index} · {d.name}
             </option>
           ))}
         </select>
