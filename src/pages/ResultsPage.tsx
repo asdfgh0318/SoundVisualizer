@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from 'react';
 import { api, ApiError } from '../api/client';
 import type { MergedPWMPoint } from '../api/types';
+import { useCompareSeries } from '../components/results/compareSeries';
 import { CustomTab } from '../components/results/CustomTab';
 import { FFTTab } from '../components/results/FFTTab';
 import { KeyPicker } from '../components/results/KeyPicker';
@@ -81,6 +82,9 @@ function ResultsBody({ keySlug, tab }: { keySlug: string; tab: Tab }) {
     };
   }, [points, selectedId, drilldownTStart]);
 
+  // Lifted here so the compare-series list persists across the FFT/Polar tabs.
+  const compare = useCompareSeries(keySlug, effectivePoint);
+
   if (error) return <div className="text-sm text-red-400">Error: {error.message}</div>;
   if (!points) return <div className="text-sm text-gray-400 italic">Loading PWM points…</div>;
   if (points.length === 0) {
@@ -119,8 +123,8 @@ function ResultsBody({ keySlug, tab }: { keySlug: string; tab: Tab }) {
 
       <div className="space-y-4 min-w-0">
         <PerformanceHeader point={effectivePoint} drilldownTStart={drilldownTStart} />
-        {tab === 'fft' && <FFTTab keySlug={keySlug} point={effectivePoint} />}
-        {tab === 'polar' && <PolarTab keySlug={keySlug} point={effectivePoint} />}
+        {tab === 'fft' && <FFTTab compare={compare} />}
+        {tab === 'polar' && <PolarTab compare={compare} />}
         {tab === 'custom' && (
           <CustomTab
             keySlug={keySlug}
