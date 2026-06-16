@@ -119,10 +119,6 @@ export interface SetupPreset {
   mics: MicPresetEntry[];
 }
 
-export const ELEVATION_VALUES = [
-  -90, -75, -60, -45, -30, -15, 0, 15, 30, 45, 60, 75, 90,
-] as const;
-
 // Capture wizard
 
 export interface PWMStep {

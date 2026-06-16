@@ -2,7 +2,6 @@ import { useEffect, useState } from 'react';
 import { WS_BASE } from '../../api/base';
 import { api } from '../../api/client';
 import type { AudioDeviceInfo, CalibrationSummary, MicConfig } from '../../api/types';
-import { ELEVATION_VALUES } from '../../api/types';
 import { useWebSocketJson } from '../../hooks/useWebSocketJson';
 import { useSetupStore } from '../../stores/setupStore';
 import { Button } from '../ui/Button';
@@ -123,17 +122,17 @@ function MicRow({
           ))}
         </select>
 
-        <ElevationSelect
+        <ElevationInput
           className="col-span-2"
           value={mic.topElevationDeg}
           onChange={(v) => onChange({ topElevationDeg: v })}
-          values={TOP_ELEVATIONS}
+          half="top"
         />
-        <ElevationSelect
+        <ElevationInput
           className="col-span-2"
           value={mic.bottomElevationDeg}
           onChange={(v) => onChange({ bottomElevationDeg: v })}
-          values={BOTTOM_ELEVATIONS}
+          half="bottom"
         />
 
         <select
@@ -237,32 +236,37 @@ function LevelMeter({ deviceIndex }: { deviceIndex: number }) {
 
 // Top mics live above the prop plane → 0° to +90°. Bottom below → -90° to 0°.
 // 0° belongs in both since the equator mic may not be physically remounted.
-const TOP_ELEVATIONS = ELEVATION_VALUES.filter((v) => v >= 0);
-const BOTTOM_ELEVATIONS = ELEVATION_VALUES.filter((v) => v <= 0);
-
-function ElevationSelect({
+// Free-text degrees (decimals allowed) for non-standard rigs.
+function ElevationInput({
   value,
   onChange,
-  values,
+  half,
   className = '',
 }: {
   value: number | null;
   onChange: (v: number | null) => void;
-  values: readonly number[];
+  half: 'top' | 'bottom';
   className?: string;
 }) {
+  const min = half === 'top' ? 0 : -90;
+  const max = half === 'top' ? 90 : 0;
   return (
-    <select
-      className={`${className} input`}
+    <input
+      type="number"
+      step="any"
+      min={min}
+      max={max}
+      placeholder="°"
+      className={`${className} input text-right font-mono`}
       value={value ?? ''}
-      onChange={(e) => onChange(e.target.value === '' ? null : Number(e.target.value))}
-    >
-      <option value="">— °</option>
-      {values.map((v) => (
-        <option key={v} value={v}>
-          {v > 0 ? `+${v}` : v}°
-        </option>
-      ))}
-    </select>
+      onChange={(e) => {
+        const raw = e.target.value;
+        if (raw === '') return onChange(null);
+        const n = Number(raw);
+        if (!Number.isFinite(n)) return;
+        onChange(Math.min(max, Math.max(min, n)));
+      }}
+      title={`${half} mic elevation in degrees (${min} to ${max})`}
+    />
   );
 }
