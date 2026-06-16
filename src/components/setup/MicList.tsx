@@ -34,6 +34,24 @@ export function MicList() {
     api.listCalibrations().then(setCalibrations, () => setCalibrations([]));
   }, [calibrationsVersion]);
 
+  // Auto-link calibrations by serial: a mic whose serial matches an uploaded
+  // cal file (UMIK-2 serials are digits; tolerate dashes/spaces) gets that cal
+  // assigned automatically when it has none yet. Never overrides an explicit
+  // choice. This is why uploading the arc's cal files "just maps" to the rows.
+  useEffect(() => {
+    if (calibrations.length === 0) return;
+    const digits = (s: string) => s.replace(/\D/g, '');
+    for (const m of mics) {
+      if (m.calibrationFileId || !m.serial.trim()) continue;
+      const ms = digits(m.serial);
+      if (!ms) continue;
+      const match = calibrations.find(
+        (c) => digits(c.id) === ms || (c.serial && digits(c.serial) === ms),
+      );
+      if (match) updateMic(m.id, { calibrationFileId: match.id });
+    }
+  }, [calibrations, mics, updateMic]);
+
   return (
     <div className="space-y-3">
       <PresetControls />
@@ -136,6 +154,12 @@ function MicRow({
           }
         >
           <option value="">none</option>
+          {/* Always render the currently-linked cal, even if the fetched list
+              is empty/stale, so a set calibration never displays as "none". */}
+          {mic.calibrationFileId &&
+            !calibrations.some((c) => c.id === mic.calibrationFileId) && (
+              <option value={mic.calibrationFileId}>{mic.calibrationFileId}</option>
+            )}
           {calibrations.map((c) => (
             <option key={c.id} value={c.id}>
               {c.id}
