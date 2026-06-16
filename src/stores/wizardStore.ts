@@ -21,6 +21,10 @@ export interface WizardForm {
   stabilize_timeout_seconds: number;
   selected_mic_ids: string[];
   capture_mode: CaptureMode;
+  /** Optional duct-research-tree node this capture is linked to. When set,
+   *  the backend pushes the Results URL + status flip to that node on
+   *  successful completion. */
+  research_tree_node_id: string | null;
   trigger: {
     enabled: boolean;
     threshold_db: number;
@@ -45,6 +49,7 @@ const defaultForm = (): WizardForm => ({
   stabilize_timeout_seconds: 30.0,
   selected_mic_ids: [],
   capture_mode: 'single',
+  research_tree_node_id: null,
   trigger: { enabled: true, threshold_db: -40, block_size: 128, preroll_samples: 480 },
 });
 

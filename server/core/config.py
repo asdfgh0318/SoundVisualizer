@@ -28,9 +28,26 @@ class ServerConfig(BaseModel):
     port: int = Field(default=8000, gt=0, le=65535)
 
 
+class ResearchTreeConfig(BaseModel):
+    """Optional integration with the duct-research-tree editor (separate service,
+    typically running alongside this server on the same Pi). When `enabled`, the
+    Capture wizard surfaces an active-nodes picker and pushes the SoundVis
+    Results URL back into the picked node on a successful capture."""
+
+    enabled: bool = False
+    # URL the SoundVis backend uses to reach research-tree's serve.py.
+    # On the Pi: http://localhost:8123 (loopback to the local research-tree service).
+    base_url: str = "http://localhost:8123"
+    # Base URL that the SoundVis Results page is reachable at from the *browser*
+    # that opens the research-tree node — i.e. the URL pushed back as
+    # `soundVisualizerLink`. Defaults to the request's own origin if empty.
+    public_url: str = ""
+
+
 class Config(BaseModel):
     tyto: TytoConfig = TytoConfig()
     server: ServerConfig = ServerConfig()
+    research_tree: ResearchTreeConfig = ResearchTreeConfig()
 
 
 def load_config(path: Path | None = None) -> Config:

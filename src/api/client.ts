@@ -15,6 +15,7 @@ import type {
   MicPresetEntry,
   PerformanceSummary,
   PsychoacousticMetrics,
+  ResearchTreeNodesResponse,
   SetupPreset,
   TareResponse,
   TytoStatus,
@@ -119,4 +120,6 @@ export const api = {
     request<PsychoacousticMetrics>(
       `/keys/${encodeURIComponent(slug)}/measurements/${encodeURIComponent(measId)}/psychoacoustics`,
     ),
+
+  listResearchTreeNodes: () => request<ResearchTreeNodesResponse>('/research-tree/nodes'),
 };

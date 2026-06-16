@@ -16,6 +16,7 @@ from server.api import (
     devices,
     keys,
     measurements,
+    research_tree,
     results,
     setup_presets,
 )
@@ -31,6 +32,7 @@ log = logging.getLogger(__name__)
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     config = load_config()
+    app.state.config = config
     apply_calibration_config(config.tyto.calibration)
 
     if config.tyto.enabled:
@@ -43,8 +45,29 @@ async def lifespan(app: FastAPI):
     else:
         app.state.thrust_stand = None
 
+    # Capture-completion hook: push the SoundVis Results URL back into the
+    # linked research-tree node, if the run's request carries one.
+    def _on_capture_completed(req, status):
+        node_id = getattr(req, "research_tree_node_id", None)
+        if not node_id or not config.research_tree.enabled:
+            return
+        # Best-effort URL — picks public_url if configured, else leaves the
+        # browser path. The fragment lets Results auto-select the right key.
+        base = config.research_tree.public_url.rstrip("/")
+        results_url = (
+            f"{base}/results#key={status.key_slug}"
+            if base and status.key_slug
+            else f"/results#key={status.key_slug}"
+        )
+        research_tree.push_node_update(
+            config.research_tree,
+            node_id,
+            {"soundVisualizerLink": results_url, "status": "in-progress"},
+        )
+
     app.state.capture_orchestrator = CaptureOrchestrator(
-        poll_period_seconds=config.tyto.poll_period_seconds
+        poll_period_seconds=config.tyto.poll_period_seconds,
+        on_completed=_on_capture_completed,
     )
 
     try:
@@ -76,6 +99,7 @@ app.include_router(capture.router)
 app.include_router(capture_run.router)
 app.include_router(results.router)
 app.include_router(setup_presets.router)
+app.include_router(research_tree.router)
 app.include_router(compat_tolerances.router)
 app.include_router(tyto_api.router)
 app.include_router(dev.router)

@@ -2,7 +2,7 @@ import math
 from datetime import UTC, datetime, timedelta
 
 import numpy as np
-from fastapi import APIRouter
+from fastapi import APIRouter, Request
 
 from server.api.schemas import (
     AcousticMeasurementMeta,
@@ -221,10 +221,15 @@ def seed() -> dict[str, list[str] | str]:
 
 
 @router.post("/fake_capture", status_code=201)
-def fake_capture(body: CaptureRunRequest) -> dict[str, str | list[str]]:
+def fake_capture(
+    body: CaptureRunRequest, request: Request
+) -> dict[str, str | list[str]]:
     """Take a real CaptureRunRequest body but skip Tyto + mic acquisition.
 
     Synthesizes plausible drone-noise WAVs + telemetry CSV per PWM step.
+    Also fires the research-tree push if the request carries a node id —
+    fake-mode bypasses the orchestrator so the on_completed hook there never
+    runs, and we want the same UX (linked node updated) for fake captures.
     """
     key = Key(**body.key.model_dump())
     if not keys_store.get_key(key.slug):
@@ -264,5 +269,21 @@ def fake_capture(body: CaptureRunRequest) -> dict[str, str | list[str]]:
                 measurement_dir(key.slug, saved.id) / "audio.wav", wav, body.sample_rate
             )
             measurement_ids.append(saved.id)
+
+    # Mirror the orchestrator's on_completed hook for the fake-capture path.
+    if body.research_tree_node_id:
+        cfg = getattr(request.app.state, "config", None)
+        if cfg is not None and cfg.research_tree.enabled:
+            from server.api.research_tree import push_node_update
+
+            base = cfg.research_tree.public_url.rstrip("/")
+            results_url = (
+                f"{base}/results#key={key.slug}" if base else f"/results#key={key.slug}"
+            )
+            push_node_update(
+                cfg.research_tree,
+                body.research_tree_node_id,
+                {"soundVisualizerLink": results_url, "status": "in-progress"},
+            )
 
     return {"key": key.slug, "measurement_ids": measurement_ids}

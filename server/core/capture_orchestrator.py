@@ -21,7 +21,7 @@ import asyncio
 import contextlib
 import logging
 import uuid
-from collections.abc import Sequence
+from collections.abc import Callable, Sequence
 from datetime import UTC, datetime
 from typing import TYPE_CHECKING, Any
 
@@ -81,6 +81,9 @@ class CaptureRunRequest(BaseModel):
     stabilize_tolerance: float = 4.0
     stabilize_timeout_seconds: float = 30.0
     trigger: TriggerSyncRun = TriggerSyncRun()
+    # Optional duct-research-tree linkage. When set, the orchestrator pushes the
+    # SoundVis Results URL back to that node on successful completion.
+    research_tree_node_id: str | None = None
 
 
 def _telemetry_to_csv(
@@ -107,12 +110,21 @@ def _telemetry_to_csv(
 
 
 class CaptureOrchestrator:
-    def __init__(self, poll_period_seconds: float = 0.03):
+    def __init__(
+        self,
+        poll_period_seconds: float = 0.03,
+        on_completed: Callable[[CaptureRunRequest, CaptureRunStatus], None] | None = None,
+    ):
         self._poll_period_s = poll_period_seconds
         self._status = CaptureRunStatus(run_id="", state="idle")
         self._task: asyncio.Task[None] | None = None
         self._stand_service: ThrustStandService | None = None
         self._subscribers: list[asyncio.Queue[CaptureRunStatus]] = []
+        self._current_req: CaptureRunRequest | None = None
+        # External hook fired exactly once when a run terminates with state=completed.
+        # Used by the research-tree integration to push the SoundVis Results URL back.
+        # Synchronous best-effort — callable should never raise.
+        self._on_completed = on_completed
 
     def get_status(self) -> CaptureRunStatus:
         return self._status.model_copy()
@@ -142,6 +154,7 @@ class CaptureOrchestrator:
             raise ValueError("mics must not be empty")
 
         self._stand_service = stand_service
+        self._current_req = req
         self._status = CaptureRunStatus(
             run_id=uuid.uuid4().hex,
             state="running",
@@ -181,6 +194,12 @@ class CaptureOrchestrator:
             self._status.error = f"{type(e).__name__}: {e}"
             await self._safe_spool_down_slam()
         await self._broadcast()
+        # External completion hook — best-effort, never propagates errors.
+        if self._on_completed and self._status.state == "completed":
+            try:
+                self._on_completed(req, self.get_status())
+            except Exception:
+                log.exception("on_completed hook raised — swallowing to protect the run")
 
     async def _do_run(self, req: CaptureRunRequest) -> None:
         assert self._stand_service is not None

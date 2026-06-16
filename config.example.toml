@@ -19,3 +19,11 @@ cal_hinge_right = 1.2590952216896254
 cal_left = 0.9663293361785854
 cal_right = -0.9575068323376389
 cal_thrust = -0.9516456828857573
+
+[research_tree]
+# Surface the linked duct-research-tree editor as a node-preset picker in the
+# Capture wizard, and push the SoundVis Results URL back into that node on a
+# successful capture (status auto-flips to 'in-progress').
+enabled = false
+base_url = "http://localhost:8123"   # research-tree's serve.py, reachable to SoundVis
+public_url = ""                       # browser-side base for SoundVis Results — empty = same origin as the request

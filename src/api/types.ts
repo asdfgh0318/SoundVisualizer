@@ -193,6 +193,44 @@ export interface CaptureRunRequest {
   stabilize_tolerance: number;
   stabilize_timeout_seconds: number;
   trigger: CaptureTriggerConfig;
+  /** Optional duct-research-tree linkage: server pushes Results URL back to
+   *  this node on successful capture and flips status to 'in-progress'. */
+  research_tree_node_id?: string | null;
+}
+
+// Research-tree integration
+export interface ResearchTreePhase {
+  id: string;
+  title: string;
+  color: string;
+}
+
+export interface ResearchTreeNode {
+  id: string;
+  phaseId: string;
+  title: string;
+  description?: string;
+  type: 'test' | 'build' | 'synthesis' | 'decision' | string;
+  status: 'planned' | 'in-progress' | 'done' | 'blocked' | string;
+  parents: string[];
+  geometry: {
+    airGapMm?: number | null;
+    ductHeightMm?: number | null;
+    rodCountTop?: number | null;
+    rodCountBottom?: number | null;
+    weightG?: number | null;
+    propellerInches?: number | null;
+    motorSpacingMm?: number | null;
+  };
+  soundVisualizerLink?: string;
+  notes?: string;
+}
+
+export interface ResearchTreeNodesResponse {
+  enabled: boolean;
+  base_url: string;
+  phases: ResearchTreePhase[];
+  nodes: ResearchTreeNode[];
 }
 
 export interface FakeCaptureResult {

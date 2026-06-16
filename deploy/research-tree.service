@@ -1,0 +1,23 @@
+[Unit]
+Description=duct-research-tree editor (companion to SoundVisualizer)
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=pi
+Group=pi
+# Repo is cloned/updated by SoundVisualizer's scripts/setup_rpi.sh as a sibling
+# of SoundVisualizer/ in the user's home. setup_rpi.sh patches %h-based paths
+# to absolute paths during install so the unit works for any user.
+WorkingDirectory=%h/duct-research-tree
+# --bind 0.0.0.0 exposes the editor on the LAN (jama.local:8123). The
+# /api/node/<id> write endpoint is still loopback-only.
+ExecStart=/usr/bin/python3 %h/duct-research-tree/serve.py --port 8123 --bind 0.0.0.0
+
+Restart=on-failure
+RestartSec=3
+NoNewPrivileges=true
+
+[Install]
+WantedBy=multi-user.target

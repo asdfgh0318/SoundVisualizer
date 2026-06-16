@@ -91,6 +91,7 @@ export function CapturePage() {
     stabilize_tolerance: form.stabilize_tolerance,
     stabilize_timeout_seconds: form.stabilize_timeout_seconds,
     trigger: form.trigger,
+    research_tree_node_id: form.research_tree_node_id,
   });
 
   const buildBody = (): CaptureRunRequest => {

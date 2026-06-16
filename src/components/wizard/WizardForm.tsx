@@ -4,6 +4,7 @@ import { useWizardStore } from '../../stores/wizardStore';
 import { Button } from '../ui/Button';
 import { Card } from '../ui/Card';
 import { KeyFieldsForm } from './KeyFieldsForm';
+import { ResearchTreeNodePicker } from './ResearchTreeNodePicker';
 import { MicSelector } from './MicSelector';
 import { PWMRampEditor } from './PWMRampEditor';
 
@@ -43,8 +44,11 @@ export function WizardForm({ fakeRunning, onFakeRun }: WizardFormProps) {
 
   return (
     <div className="space-y-6">
-      <Card title="Test article" description="Becomes the storage key motor__propeller__shroud__notes.">
-        <KeyFieldsForm form={form} onChange={updateForm} />
+      <Card title="Test article" description="Becomes the storage key motor__propeller__shroud__notes. Optionally link to a research-tree node to autofill fields and push the Results URL back on success.">
+        <div className="space-y-4">
+          <ResearchTreeNodePicker form={form} onChange={updateForm} />
+          <KeyFieldsForm form={form} onChange={updateForm} />
+        </div>
       </Card>
 
       <Card title="PWM ramp" description="One acoustic + one performance measurement saved per step.">
