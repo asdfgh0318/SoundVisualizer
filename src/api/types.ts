@@ -8,7 +8,9 @@ export interface Key {
   slug: string;
 }
 
-export type MeasurementHalf = 'top' | 'bottom';
+/** 'full' = single-pass: all mics record simultaneously. 'top' / 'bottom' kept
+ *  for legacy two-pass data + any future two-pass capture client. */
+export type MeasurementHalf = 'top' | 'bottom' | 'full';
 
 export interface AcousticMeasurementMeta {
   type: 'acoustic';
@@ -94,21 +96,26 @@ export interface TareResponse {
   tare_current_a: number;
 }
 
-// Frontend-only: per-mic config persisted in localStorage.
+// Frontend-only: per-mic config persisted in localStorage. Single-pass: each
+// mic has ONE elevation in [-90, +90]. (Two-pass rigs still supported by the
+// backend; the wizard would issue two CaptureRunRequests with half=top/bottom
+// — not exposed in this UI yet.)
 export interface MicConfig {
   id: string;
   serial: string;
   deviceIndex: number | null;
-  topElevationDeg: number | null;
-  bottomElevationDeg: number | null;
+  elevationDeg: number | null;
   calibrationFileId: string | null;
 }
 
 // Server-stored mic preset entry — no USB device since it shifts per machine.
+// `elevation_deg` is the canonical field; `top_elevation_deg` /
+// `bottom_elevation_deg` are kept readable so legacy presets still round-trip.
 export interface MicPresetEntry {
   serial: string;
-  top_elevation_deg: number | null;
-  bottom_elevation_deg: number | null;
+  elevation_deg: number | null;
+  top_elevation_deg?: number | null;
+  bottom_elevation_deg?: number | null;
   calibration_file_id: string | null;
 }
 
@@ -174,8 +181,10 @@ export interface CaptureTriggerConfig {
   preroll_samples: number;
 }
 
-export interface CaptureHalfRunRequest {
+export interface CaptureRunRequest {
   key: KeyFields;
+  /** Single-pass rigs send 'full'. Two-pass clients can send 'top'/'bottom'
+   *  to label their measurements; the backend accepts all three. */
   half: MeasurementHalf;
   pwm_steps: PWMStep[];
   mics: CaptureMicSpecRun[];

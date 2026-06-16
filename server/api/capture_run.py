@@ -3,7 +3,7 @@ import asyncio
 from fastapi import APIRouter, HTTPException, Request, WebSocket, WebSocketDisconnect
 
 from server.api.schemas import CaptureRunStatus
-from server.core.capture_orchestrator import CaptureHalfRunRequest, CaptureOrchestrator
+from server.core.capture_orchestrator import CaptureOrchestrator, CaptureRunRequest
 
 router = APIRouter(prefix="/capture/run", tags=["capture-run"])
 
@@ -21,7 +21,7 @@ def get_status(req: Request) -> CaptureRunStatus:
 
 
 @router.post("", response_model=CaptureRunStatus, status_code=202)
-async def start_run(req: Request, body: CaptureHalfRunRequest) -> CaptureRunStatus:
+async def start_run(req: Request, body: CaptureRunRequest) -> CaptureRunStatus:
     orch = _orchestrator(req)
     stand = getattr(req.app.state, "thrust_stand", None)
     if stand is None:

@@ -10,7 +10,7 @@ from server.api.schemas import (
     MeasurementHalf,
     PerformanceMeasurementMeta,
 )
-from server.core.capture_orchestrator import CaptureHalfRunRequest
+from server.core.capture_orchestrator import CaptureRunRequest
 from server.core.wav import write_wav_float32
 from server.store import keys as keys_store
 from server.store import measurements as meas_store
@@ -221,8 +221,8 @@ def seed() -> dict[str, list[str] | str]:
 
 
 @router.post("/fake_capture", status_code=201)
-def fake_capture(body: CaptureHalfRunRequest) -> dict[str, str | list[str]]:
-    """Take a real CaptureHalfRunRequest body but skip Tyto + mic acquisition.
+def fake_capture(body: CaptureRunRequest) -> dict[str, str | list[str]]:
+    """Take a real CaptureRunRequest body but skip Tyto + mic acquisition.
 
     Synthesizes plausible drone-noise WAVs + telemetry CSV per PWM step.
     """

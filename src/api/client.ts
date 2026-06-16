@@ -2,7 +2,7 @@ import { API_BASE } from './base';
 import type {
   AudioDeviceInfo,
   CalibrationSummary,
-  CaptureHalfRunRequest,
+  CaptureRunRequest,
   CaptureRunStatus,
   CompatibilityTolerances,
   CutoffTriggers,
@@ -83,11 +83,11 @@ export const api = {
   zeroTytoStand: () => request<TareResponse>('/tyto/zero', { method: 'POST' }),
   clearTytoTare: () => request<void>('/tyto/zero/clear', { method: 'POST' }),
 
-  startCaptureRun: (body: CaptureHalfRunRequest) =>
+  startCaptureRun: (body: CaptureRunRequest) =>
     request<CaptureRunStatus>('/capture/run', json(body)),
   abortCaptureRun: () => request<void>('/capture/run', { method: 'DELETE' }),
   captureRunStatus: () => request<CaptureRunStatus>('/capture/run'),
-  runFakeCapture: (body: CaptureHalfRunRequest) =>
+  runFakeCapture: (body: CaptureRunRequest) =>
     request<FakeCaptureResult>('/dev/fake_capture', json(body)),
 
   listSetupPresets: () => request<SetupPreset[]>('/setup-presets'),

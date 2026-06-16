@@ -40,9 +40,8 @@ export function MicList() {
       <div className="hidden sm:grid grid-cols-12 gap-3 text-[11px] uppercase tracking-wide text-gray-500 px-1">
         <div className="col-span-1">#</div>
         <div className="col-span-2">Serial</div>
-        <div className="col-span-3">USB device</div>
-        <div className="col-span-2">Top elev.</div>
-        <div className="col-span-2">Bottom elev.</div>
+        <div className="col-span-4">USB device</div>
+        <div className="col-span-2">Elevation</div>
         <div className="col-span-2">Calibration</div>
       </div>
       {mics.length === 0 && (
@@ -108,7 +107,7 @@ function MicRow({
         />
 
         <select
-          className="col-span-3 input"
+          className="col-span-4 input"
           value={mic.deviceIndex ?? ''}
           onChange={(e) =>
             onChange({ deviceIndex: e.target.value === '' ? null : Number(e.target.value) })
@@ -124,15 +123,8 @@ function MicRow({
 
         <ElevationInput
           className="col-span-2"
-          value={mic.topElevationDeg}
-          onChange={(v) => onChange({ topElevationDeg: v })}
-          half="top"
-        />
-        <ElevationInput
-          className="col-span-2"
-          value={mic.bottomElevationDeg}
-          onChange={(v) => onChange({ bottomElevationDeg: v })}
-          half="bottom"
+          value={mic.elevationDeg}
+          onChange={(v) => onChange({ elevationDeg: v })}
         />
 
         <select
@@ -234,28 +226,26 @@ function LevelMeter({ deviceIndex }: { deviceIndex: number }) {
   );
 }
 
-// Top mics live above the prop plane → 0° to +90°. Bottom below → -90° to 0°.
-// 0° belongs in both since the equator mic may not be physically remounted.
-// Free-text degrees (decimals allowed) for non-standard rigs.
+// Free-text elevation in degrees: -90..+90, decimals allowed. Single value per
+// mic (single-pass rig). Two-pass rigs would set each mic's elevation per pass
+// and capture twice — that flow isn't surfaced in this UI today.
 function ElevationInput({
   value,
   onChange,
-  half,
   className = '',
 }: {
   value: number | null;
   onChange: (v: number | null) => void;
-  half: 'top' | 'bottom';
   className?: string;
 }) {
-  const min = half === 'top' ? 0 : -90;
-  const max = half === 'top' ? 90 : 0;
+  const MIN = -90;
+  const MAX = 90;
   return (
     <input
       type="number"
       step="any"
-      min={min}
-      max={max}
+      min={MIN}
+      max={MAX}
       placeholder="°"
       className={`${className} input text-right font-mono`}
       value={value ?? ''}
@@ -264,9 +254,9 @@ function ElevationInput({
         if (raw === '') return onChange(null);
         const n = Number(raw);
         if (!Number.isFinite(n)) return;
-        onChange(Math.min(max, Math.max(min, n)));
+        onChange(Math.min(MAX, Math.max(MIN, n)));
       }}
-      title={`${half} mic elevation in degrees (${min} to ${max})`}
+      title="Mic elevation in degrees (-90 to +90); 0° is prop plane, +90° overhead"
     />
   );
 }

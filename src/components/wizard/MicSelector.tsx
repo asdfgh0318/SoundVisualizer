@@ -51,7 +51,7 @@ export function MicSelector({ mics, selectedIds, onChange }: Props) {
               <span className="font-mono text-sm text-gray-200">{m.serial || '(no serial)'}</span>
               <span className="text-xs text-gray-500">device #{m.deviceIndex ?? '—'}</span>
               <span className="text-xs text-gray-500 ml-auto">
-                top {m.topElevationDeg ?? '—'}° · bottom {m.bottomElevationDeg ?? '—'}°
+                elev {m.elevationDeg ?? '—'}°
               </span>
               {!ready && (
                 <span className="text-xs text-amber-400">incomplete config</span>

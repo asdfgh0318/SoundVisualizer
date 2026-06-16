@@ -57,9 +57,6 @@ function CompositionPill({
   composition: Record<string, number>;
   drilled: boolean;
 }) {
-  const top = composition.top ?? 0;
-  const bot = composition.bottom ?? 0;
-  const isSingle = (top + bot) === 1;
   if (drilled) {
     return (
       <span className="text-[10px] uppercase tracking-wide px-2 py-0.5 rounded bg-amber-500/20 text-amber-300 border border-amber-500/40">
@@ -67,27 +64,46 @@ function CompositionPill({
       </span>
     );
   }
-  if (isSingle && (top === 0 || bot === 0)) {
-    const label = top > 0 ? 'TOP only' : 'BOTTOM only';
-    return (
-      <span className="text-[10px] uppercase tracking-wide px-2 py-0.5 rounded bg-amber-500/20 text-amber-300 border border-amber-500/40">
-        {label}
-      </span>
-    );
-  }
-  if (top === 1 && bot === 1) {
+  const full = composition.full ?? 0;
+  const top = composition.top ?? 0;
+  const bot = composition.bottom ?? 0;
+  const total = full + top + bot;
+
+  // New single-pass captures (full > 0): show simple "Nx" count or "single capture".
+  if (full > 0 && top === 0 && bot === 0) {
     return (
       <span className="text-[10px] uppercase tracking-wide px-2 py-0.5 rounded bg-indigo-500/20 text-indigo-300">
-        TOP + BOTTOM
+        {full === 1 ? 'single capture' : `${full}× captures`}
       </span>
     );
   }
-  const parts: string[] = [];
-  if (top > 0) parts.push(`${top} TOP`);
-  if (bot > 0) parts.push(`${bot} BOTTOM`);
+  // Legacy two-pass merge: same labels as before, for backward compatibility.
+  if (top > 0 && bot > 0) {
+    if (top === 1 && bot === 1) {
+      return (
+        <span className="text-[10px] uppercase tracking-wide px-2 py-0.5 rounded bg-indigo-500/20 text-indigo-300">
+          TOP + BOTTOM
+        </span>
+      );
+    }
+    return (
+      <span className="text-[10px] uppercase tracking-wide px-2 py-0.5 rounded bg-indigo-500/20 text-indigo-300">
+        {`${top} TOP + ${bot} BOTTOM`}
+      </span>
+    );
+  }
+  if (total === 1 && (top > 0 || bot > 0)) {
+    return (
+      <span className="text-[10px] uppercase tracking-wide px-2 py-0.5 rounded bg-amber-500/20 text-amber-300 border border-amber-500/40">
+        {top > 0 ? 'TOP only' : 'BOTTOM only'}
+      </span>
+    );
+  }
+  // Fallback: render whatever's there.
+  const parts = Object.entries(composition).map(([k, v]) => `${v} ${k.toUpperCase()}`);
   return (
     <span className="text-[10px] uppercase tracking-wide px-2 py-0.5 rounded bg-indigo-500/20 text-indigo-300">
-      {parts.join(' + ')}
+      {parts.join(' + ') || 'no data'}
     </span>
   );
 }

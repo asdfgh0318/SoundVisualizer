@@ -42,8 +42,11 @@ function PWMRow({
 }) {
   const [expanded, setExpanded] = useState(false);
   const isMerged = point.underlying.length > 1;
+  // "Only one half" warning only meaningful for legacy two-pass data — single-pass
+  // captures (composition.full > 0) are by definition complete in one shot.
   const onlyOneHalf =
     point.underlying.length === 1 &&
+    !point.composition.full &&
     (point.composition.top === 0 || point.composition.bottom === 0);
 
   return (
@@ -159,10 +162,20 @@ function CompositionChip({
 }) {
   const top = composition.top ?? 0;
   const bot = composition.bottom ?? 0;
+  const full = composition.full ?? 0;
+
+  // Single-pass captures: keep the chip quiet for the common one-capture case.
+  if (full > 0 && top === 0 && bot === 0) {
+    if (full === 1) return null;
+    return (
+      <span className="text-[10px] uppercase tracking-wide px-1.5 py-0.5 rounded bg-indigo-500/20 text-indigo-300">
+        {`${full}×`}
+      </span>
+    );
+  }
 
   if (singleHalf) {
-    // A single capture from one half — flag explicitly so the user notices that
-    // the other half is missing (or was split off as incompatible).
+    // Legacy two-pass — only one half captured. Flag so user notices missing half.
     const label = top > 0 ? 'TOP only' : 'BOT only';
     return (
       <span className="text-[10px] uppercase tracking-wide px-1.5 py-0.5 rounded bg-amber-500/20 text-amber-300 border border-amber-500/40">
@@ -171,7 +184,7 @@ function CompositionChip({
     );
   }
 
-  // Standard merged case
+  // Legacy merged case
   if (top === 1 && bot === 1) {
     return (
       <span className="text-[10px] uppercase tracking-wide px-1.5 py-0.5 rounded bg-indigo-500/20 text-indigo-300">
@@ -180,10 +193,11 @@ function CompositionChip({
     );
   }
 
-  // Non-standard composition — show explicit counts
+  // Non-standard composition — explicit counts
   const parts: string[] = [];
   if (top > 0) parts.push(`${top}T`);
   if (bot > 0) parts.push(`${bot}B`);
+  if (full > 0) parts.push(`${full}×`);
   return (
     <span className="text-[10px] uppercase tracking-wide px-1.5 py-0.5 rounded bg-indigo-500/20 text-indigo-300">
       {parts.join(' + ')}

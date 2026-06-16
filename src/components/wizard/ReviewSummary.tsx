@@ -25,7 +25,6 @@ export function ReviewSummary({
   const selectedMics = mics.filter(
     (m) => m.serial && m.deviceIndex !== null && form.selected_mic_ids.includes(m.id),
   );
-  const halves = [form.run_top && 'top', form.run_bottom && 'bottom'].filter(Boolean) as string[];
   const totalRecordingS =
     form.pwm_steps.reduce((sum, s) => sum + s.recording_ms, 0) / 1000;
 
@@ -39,8 +38,10 @@ export function ReviewSummary({
               .join(' · ')}
           </div>
         </Section>
-        <Section label="Halves">
-          <div className="text-gray-200">{halves.join(' + ') || '— (none selected)'}</div>
+        <Section label="Capture mode">
+          <div className="text-gray-200">
+            Single-pass <span className="text-gray-500">(all mics record simultaneously)</span>
+          </div>
         </Section>
         <Section label="PWM ramp">
           <ul className="text-gray-300 space-y-0.5">
@@ -55,15 +56,14 @@ export function ReviewSummary({
           <div className="text-gray-300">
             {form.sample_rate} Hz sample rate
             <br />
-            {totalRecordingS.toFixed(2)}s total recording per half (+ stabilize time per step)
+            {totalRecordingS.toFixed(2)}s total recording (+ stabilize time per step)
           </div>
         </Section>
         <Section label={`Microphones (${selectedMics.length})`}>
           <ul className="text-gray-300 text-xs space-y-0.5">
             {selectedMics.map((m) => (
               <li key={m.id} className="font-mono">
-                {m.serial} · device #{m.deviceIndex} · top {m.topElevationDeg ?? '—'}° / bot{' '}
-                {m.bottomElevationDeg ?? '—'}°
+                {m.serial} · device #{m.deviceIndex} · elev {m.elevationDeg ?? '—'}°
               </li>
             ))}
           </ul>

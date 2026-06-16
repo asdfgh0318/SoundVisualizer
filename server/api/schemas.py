@@ -20,8 +20,17 @@ class Key(BaseModel):
 
 
 class MeasurementHalf(StrEnum):
+    """Which half-config the mics were in during this capture.
+
+    `FULL` is the default for single-pass rigs where mics simultaneously span
+    the entire arc. `TOP` / `BOTTOM` remain for two-pass rigs that physically
+    remount mics between halves — both old data and any future two-pass client
+    still parse and merge correctly.
+    """
+
     TOP = "top"
     BOTTOM = "bottom"
+    FULL = "full"
 
 
 class _BaseMeasurementMeta(BaseModel):
@@ -134,9 +143,15 @@ class CaptureRunStatus(BaseModel):
 
 
 class MicPresetEntry(BaseModel):
-    """Portable mic config — no USB device index since that shifts per machine/boot."""
+    """Portable mic config — no USB device index since that shifts per machine/boot.
+
+    Single-pass rigs use `elevation_deg`. The legacy `top_elevation_deg` /
+    `bottom_elevation_deg` fields stay readable so old presets round-trip; the
+    frontend folds whichever was set into `elevation_deg` on load.
+    """
 
     serial: str
+    elevation_deg: float | None = None
     top_elevation_deg: float | None = None
     bottom_elevation_deg: float | None = None
     calibration_file_id: str | None = None

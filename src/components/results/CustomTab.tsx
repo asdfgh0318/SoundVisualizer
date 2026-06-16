@@ -138,8 +138,8 @@ export function CustomTab({ keySlug, points, selectedId, onSelectId }: Props) {
 
       <div className="bg-gray-800 border border-gray-700 rounded-md p-3 space-y-2">
         <div className="flex items-center justify-end gap-4 text-xs px-1">
-          <LegendSwatch color={COL_MERGED} label="merged (T+B)" />
-          <LegendSwatch color={COL_SINGLE} label="single-half only" />
+          <LegendSwatch color={COL_MERGED} label="full / merged" />
+          <LegendSwatch color={COL_SINGLE} label="single-half only (legacy)" />
           <LegendSwatch color={COL_SELECTED} label="selected — click to change" big />
         </div>
         <ScatterPlot
@@ -232,10 +232,16 @@ function ScatterPlot({
     const compositionLabel = (comp: Record<string, number>): string => {
       const t = comp.top ?? 0;
       const b = comp.bottom ?? 0;
+      const f = comp.full ?? 0;
+      if (f > 0 && t === 0 && b === 0) return f === 1 ? 'full' : `${f}× full`;
       if (t === 1 && b === 1) return 'T+B';
-      if (t === 0) return `${b}B`;
-      if (b === 0) return `${t}T`;
-      return `${t}T + ${b}B`;
+      if (t === 0 && b > 0) return `${b}B`;
+      if (b === 0 && t > 0) return `${t}T`;
+      const parts: string[] = [];
+      if (t > 0) parts.push(`${t}T`);
+      if (b > 0) parts.push(`${b}B`);
+      if (f > 0) parts.push(`${f}×`);
+      return parts.join(' + ');
     };
 
     type Point = { x: number; y: number; text: string; customdata: string };
@@ -249,7 +255,9 @@ function ScatterPlot({
       if (xv === null || yv === null) continue;
       const t = r.composition.top ?? 0;
       const b = r.composition.bottom ?? 0;
-      const isSingleHalf = t + b === 1;
+      const f = r.composition.full ?? 0;
+      // "single-half" badge only meaningful for legacy two-pass data.
+      const isSingleHalf = f === 0 && t + b === 1;
       const point: Point = {
         x: xv,
         y: yv,

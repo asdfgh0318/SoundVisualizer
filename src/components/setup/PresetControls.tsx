@@ -11,20 +11,21 @@ function micsToPresetEntries(mics: MicConfig[]): MicPresetEntry[] {
     .filter((m) => m.serial.trim() !== '')
     .map((m) => ({
       serial: m.serial,
-      top_elevation_deg: m.topElevationDeg,
-      bottom_elevation_deg: m.bottomElevationDeg,
+      elevation_deg: m.elevationDeg,
       calibration_file_id: m.calibrationFileId,
     }));
 }
 
-/** Convert preset entries → fresh MicConfig list with new local ids and blank devices. */
+/** Convert preset entries → fresh MicConfig list with new local ids and blank devices.
+ *  Legacy presets (with `top_elevation_deg` / `bottom_elevation_deg` instead of
+ *  `elevation_deg`) fold the first non-null value into the single elevation slot. */
 function presetEntriesToMics(entries: MicPresetEntry[]): MicConfig[] {
   return entries.map((e) => ({
     id: localId(),
     serial: e.serial,
     deviceIndex: null,
-    topElevationDeg: e.top_elevation_deg,
-    bottomElevationDeg: e.bottom_elevation_deg,
+    elevationDeg:
+      e.elevation_deg ?? e.top_elevation_deg ?? e.bottom_elevation_deg ?? null,
     calibrationFileId: e.calibration_file_id,
   }));
 }

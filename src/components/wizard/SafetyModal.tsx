@@ -2,26 +2,21 @@ import { Button } from '../ui/Button';
 import { Modal } from './Modal';
 
 interface Props {
-  half: 'top' | 'bottom';
   cutoffsConfigured: boolean;
   fakeMode: boolean;
   onCancel: () => void;
   onConfirm: () => void;
 }
 
-export function SafetyModal({ half, cutoffsConfigured, fakeMode, onCancel, onConfirm }: Props) {
+export function SafetyModal({ cutoffsConfigured, fakeMode, onCancel, onConfirm }: Props) {
   if (fakeMode) {
     return (
       <Modal
         title="✦ Fake capture (no hardware)"
         footer={
           <>
-            <Button variant="ghost" onClick={onCancel}>
-              Cancel
-            </Button>
-            <Button onClick={onConfirm}>
-              Start fake {half} half
-            </Button>
+            <Button variant="ghost" onClick={onCancel}>Cancel</Button>
+            <Button onClick={onConfirm}>Start fake capture</Button>
           </>
         }
       >
@@ -42,23 +37,17 @@ export function SafetyModal({ half, cutoffsConfigured, fakeMode, onCancel, onCon
       title="⚠ Propeller will spin"
       footer={
         <>
-          <Button variant="ghost" onClick={onCancel}>
-            Cancel
-          </Button>
-          <Button variant="danger" onClick={onConfirm}>
-            I understand — start {half} half
-          </Button>
+          <Button variant="ghost" onClick={onCancel}>Cancel</Button>
+          <Button variant="danger" onClick={onConfirm}>I understand — start capture</Button>
         </>
       }
     >
-      <p>
-        The Tyto stand will drive the motor through the configured PWM ramp. Make sure:
-      </p>
+      <p>The Tyto stand will drive the motor through the configured PWM ramp. Make sure:</p>
       <ul className="list-disc pl-5 space-y-1 text-gray-300">
         <li>The test rig is mechanically secure and clamped down.</li>
         <li>No loose objects, hands, or persons are within prop sweep distance.</li>
         <li>Eye protection is on.</li>
-        <li>Mics are mounted at their <strong>{half}</strong>-half positions.</li>
+        <li>All mics are mounted at their configured elevation positions.</li>
       </ul>
       {!cutoffsConfigured && (
         <div className="mt-2 p-3 rounded-md border border-amber-700/60 bg-amber-900/20 text-amber-300 text-xs">

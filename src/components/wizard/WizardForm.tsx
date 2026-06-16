@@ -33,8 +33,7 @@ export function WizardForm({ fakeRunning, onFakeRun }: WizardFormProps) {
   const baseFilled =
     form.motor.trim() !== '' &&
     form.propeller.trim() !== '' &&
-    form.pwm_steps.length > 0 &&
-    (form.run_top || form.run_bottom);
+    form.pwm_steps.length > 0;
 
   // Real capture requires fully-configured mics (USB device + serial).
   const canContinue = baseFilled && usableMics.length > 0;
@@ -67,23 +66,10 @@ export function WizardForm({ fakeRunning, onFakeRun }: WizardFormProps) {
               <option value={44100}>44 100</option>
             </select>
           </Labeled>
-          <Labeled label="Halves to run">
-            <div className="flex items-center gap-4 pt-1">
-              <CheckboxLabel
-                label="Top"
-                checked={form.run_top}
-                onChange={(v) => updateForm({ run_top: v })}
-              />
-              <CheckboxLabel
-                label="Bottom"
-                checked={form.run_bottom}
-                onChange={(v) => updateForm({ run_bottom: v })}
-              />
-            </div>
-          </Labeled>
         </div>
         <p className="text-xs text-gray-500 mt-3">
-          Recording duration per step is configured in the PWM ramp above.
+          Single-pass capture: every configured mic records simultaneously. Recording duration
+          per step is configured in the PWM ramp above.
         </p>
       </Card>
 

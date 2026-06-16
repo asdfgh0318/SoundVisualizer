@@ -3,7 +3,6 @@ import { Button } from '../ui/Button';
 import { LiveTelemetry } from './LiveTelemetry';
 
 interface Props {
-  half: 'top' | 'bottom';
   status: CaptureRunStatus | null;
   onAbort: () => void;
 }
@@ -21,7 +20,7 @@ const PHASE_LABELS: Record<string, string> = {
   idle: 'Idle',
 };
 
-export function RunningView({ half, status, onAbort }: Props) {
+export function RunningView({ status, onAbort }: Props) {
   const stepLabel = status
     ? status.total_steps > 0
       ? `Step ${status.current_step} of ${status.total_steps}`
@@ -35,9 +34,7 @@ export function RunningView({ half, status, onAbort }: Props) {
       <div className="bg-gray-800 border border-gray-700 rounded-lg p-6">
         <div className="flex items-center justify-between gap-4">
           <div>
-            <div className="text-xs uppercase tracking-wide text-amber-400">
-              Recording — {half} half
-            </div>
+            <div className="text-xs uppercase tracking-wide text-amber-400">Recording</div>
             <div className="text-2xl font-bold text-white mt-1">{stepLabel}</div>
             <div className="text-sm text-gray-400 mt-1">
               {phaseLabel} {pwmLabel && <span className="text-gray-500">· {pwmLabel}</span>}

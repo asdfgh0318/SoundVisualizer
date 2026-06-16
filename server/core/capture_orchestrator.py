@@ -66,9 +66,14 @@ class TriggerSyncRun(BaseModel):
     preroll_samples: int = 480
 
 
-class CaptureHalfRunRequest(BaseModel):
+class CaptureRunRequest(BaseModel):
+    """A single capture pass. `half` defaults to FULL (single-pass: mics span
+    the whole arc in one shot). Two-pass clients can send half="top"/"bottom"
+    to label their measurements explicitly — the orchestrator treats them all
+    the same way at the data level."""
+
     key: KeyFields
-    half: MeasurementHalf
+    half: MeasurementHalf = MeasurementHalf.FULL
     pwm_steps: list[PWMStep]
     mics: list[MicSpecRun]
     sample_rate: int = 48000
@@ -127,7 +132,7 @@ class CaptureOrchestrator:
     async def start_run(
         self,
         stand_service: "ThrustStandService",
-        req: CaptureHalfRunRequest,
+        req: CaptureRunRequest,
     ) -> CaptureRunStatus:
         if self.is_running():
             raise RuntimeError("a capture run is already in progress")
@@ -158,7 +163,7 @@ class CaptureOrchestrator:
             with contextlib.suppress(asyncio.CancelledError):
                 await self._task
 
-    async def _run(self, req: CaptureHalfRunRequest) -> None:
+    async def _run(self, req: CaptureRunRequest) -> None:
         try:
             await self._do_run(req)
             self._status.state = "completed"
@@ -177,7 +182,7 @@ class CaptureOrchestrator:
             await self._safe_spool_down_slam()
         await self._broadcast()
 
-    async def _do_run(self, req: CaptureHalfRunRequest) -> None:
+    async def _do_run(self, req: CaptureRunRequest) -> None:
         assert self._stand_service is not None
 
         key = Key(**req.key.model_dump())
@@ -209,7 +214,7 @@ class CaptureOrchestrator:
 
     async def _capture_step(
         self,
-        req: CaptureHalfRunRequest,
+        req: CaptureRunRequest,
         key_slug: str,
         step: PWMStep,
     ) -> None:

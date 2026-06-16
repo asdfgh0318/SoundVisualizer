@@ -2,14 +2,12 @@ import { useEffect, useRef } from 'react';
 import { WS_BASE } from '../api/base';
 import { api, ApiError } from '../api/client';
 import type {
-  CaptureHalfRunRequest,
   CaptureMicSpecRun,
   CaptureRunPhase,
+  CaptureRunRequest,
   CaptureRunStatus,
-  MeasurementHalf,
 } from '../api/types';
 import { DoneSummary } from '../components/wizard/DoneSummary';
-import { ReconfigureModal } from '../components/wizard/ReconfigureModal';
 import { ReviewSummary } from '../components/wizard/ReviewSummary';
 import { RunningView } from '../components/wizard/RunningView';
 import { SafetyModal } from '../components/wizard/SafetyModal';
@@ -37,10 +35,8 @@ export function CapturePage() {
   const status = useWizardStore((s) => s.status);
   const activeRunId = useWizardStore((s) => s.activeRunId);
   const setActiveRunId = useWizardStore((s) => s.setActiveRunId);
-  const topIds = useWizardStore((s) => s.topMeasurementIds);
-  const bottomIds = useWizardStore((s) => s.bottomMeasurementIds);
-  const setTopIds = useWizardStore((s) => s.setTopIds);
-  const setBottomIds = useWizardStore((s) => s.setBottomIds);
+  const measurementIds = useWizardStore((s) => s.measurementIds);
+  const setMeasurementIds = useWizardStore((s) => s.setMeasurementIds);
   const errorMessage = useWizardStore((s) => s.errorMessage);
   const setError = useWizardStore((s) => s.setError);
   const fakeMode = useWizardStore((s) => s.fakeMode);
@@ -52,7 +48,7 @@ export function CapturePage() {
   const cutoffsConfigured = Object.values(cutoffs).some((c) => c.enabled);
 
   // WS only used for real captures — fake mode drives status manually.
-  const isLiveRunning = (phase === 'running_top' || phase === 'running_bottom') && !fakeMode;
+  const isLiveRunning = phase === 'running' && !fakeMode;
   const wsUrl = isLiveRunning ? `${WS_BASE}/capture/run/ws` : null;
   const { message: wsStatus } = useWebSocketJson<CaptureRunStatus>(wsUrl, isLiveRunning);
   const lastHandledRunIdRef = useRef<string | null>(null);
@@ -77,14 +73,8 @@ export function CapturePage() {
       setPhase('failed');
       return;
     }
-    if (phase === 'running_top') {
-      setTopIds(wsStatus.measurement_ids);
-      if (form.run_bottom) setPhase('reconfigure');
-      else setPhase('done');
-    } else if (phase === 'running_bottom') {
-      setBottomIds(wsStatus.measurement_ids);
-      setPhase('done');
-    }
+    setMeasurementIds(wsStatus.measurement_ids);
+    setPhase('done');
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [wsStatus]);
 
@@ -103,33 +93,37 @@ export function CapturePage() {
     trigger: form.trigger,
   });
 
-  const buildBody = (half: MeasurementHalf): CaptureHalfRunRequest => {
+  const buildBody = (): CaptureRunRequest => {
     const usableMics: CaptureMicSpecRun[] = mics
-      .filter(
-        (m) => m.serial && m.deviceIndex !== null && form.selected_mic_ids.includes(m.id),
-      )
+      .filter((m) => m.serial && m.deviceIndex !== null && form.selected_mic_ids.includes(m.id))
       .map((m) => ({
         serial: m.serial,
         device_index: m.deviceIndex as number,
-        elevation_deg:
-          (half === 'top' ? m.topElevationDeg : m.bottomElevationDeg) ?? 0,
+        elevation_deg: m.elevationDeg ?? 0,
         calibration_file_id: m.calibrationFileId,
       }));
-    return { key: keyFields(), half, pwm_steps: form.pwm_steps, mics: usableMics, ...commonBodyFields() };
+    return {
+      key: keyFields(),
+      half: 'full',
+      pwm_steps: form.pwm_steps,
+      mics: usableMics,
+      ...commonBodyFields(),
+    };
   };
 
-  const buildFakeBody = (half: MeasurementHalf): CaptureHalfRunRequest => {
+  const buildFakeBody = (): CaptureRunRequest => {
     const selected = form.selected_mic_ids.length > 0
       ? mics.filter((m) => form.selected_mic_ids.includes(m.id))
       : mics;
     let fakeMics: CaptureMicSpecRun[] = selected.map((m, i) => ({
       serial: m.serial || `fake-mic-${i + 1}`,
       device_index: m.deviceIndex ?? 0,
-      elevation_deg: (half === 'top' ? m.topElevationDeg : m.bottomElevationDeg) ?? 0,
+      elevation_deg: m.elevationDeg ?? 0,
       calibration_file_id: m.calibrationFileId,
     }));
     if (fakeMics.length === 0) {
-      const defaults = half === 'top' ? [0, 30, 60, 90] : [0, -30, -60, -90];
+      // Default to a symmetric 9-mic arc covering the whole hemisphere.
+      const defaults = [-90, -60, -30, -15, 0, 15, 30, 60, 90];
       fakeMics = defaults.map((e, i) => ({
         serial: `fake-mic-${i + 1}`,
         device_index: 0,
@@ -137,41 +131,44 @@ export function CapturePage() {
         calibration_file_id: null,
       }));
     }
-    return { key: keyFields(), half, pwm_steps: form.pwm_steps, mics: fakeMics, ...commonBodyFields() };
+    return {
+      key: keyFields(),
+      half: 'full',
+      pwm_steps: form.pwm_steps,
+      mics: fakeMics,
+      ...commonBodyFields(),
+    };
   };
 
-  const startHalf = async (half: 'top' | 'bottom') => {
+  const startCapture = async () => {
     setError(null);
     try {
-      const r = await api.startCaptureRun(buildBody(half));
+      const r = await api.startCaptureRun(buildBody());
       setActiveRunId(r.run_id);
       lastHandledRunIdRef.current = null;
-      setPhase(half === 'top' ? 'running_top' : 'running_bottom');
+      setPhase('running');
     } catch (e) {
       setError((e as ApiError).message);
       setPhase('failed');
     }
   };
 
-  /** Fake-mode half: writes synthetic data + plays a simulated progress animation
-   *  through the same RunningView the real flow uses. */
-  const startFakeHalf = async (half: 'top' | 'bottom') => {
+  const startFakeCapture = async () => {
     setError(null);
     setActiveRunId('fake');
-    setPhase(half === 'top' ? 'running_top' : 'running_bottom');
+    setPhase('running');
 
-    const body = buildFakeBody(half);
+    const body = buildFakeBody();
     const totalSteps = body.pwm_steps.length;
 
     // Kick off the data write in parallel with the simulated progress UI.
     const dataPromise = api.runFakeCapture(body);
 
     try {
-      // Animate through each step's lifecycle.
       for (let i = 0; i < totalSteps; i++) {
         for (const { phase: ph, ms } of FAKE_PHASE_TIMINGS) {
           setStatus({
-            run_id: 'fake', state: 'running', phase: ph, half,
+            run_id: 'fake', state: 'running', phase: ph, half: 'full',
             key_slug: null,
             current_step: i + 1, total_steps: totalSteps,
             current_pwm_us: body.pwm_steps[i].pwm_us,
@@ -181,7 +178,7 @@ export function CapturePage() {
         }
       }
       setStatus({
-        run_id: 'fake', state: 'running', phase: 'spooling_down', half,
+        run_id: 'fake', state: 'running', phase: 'spooling_down', half: 'full',
         key_slug: null,
         current_step: totalSteps, total_steps: totalSteps,
         current_pwm_us: null,
@@ -189,24 +186,17 @@ export function CapturePage() {
       });
       await wait(300);
 
-      // Data was written while we were animating — collect IDs.
       const r = await dataPromise;
-      if (half === 'top') setTopIds(r.measurement_ids);
-      else setBottomIds(r.measurement_ids);
+      setMeasurementIds(r.measurement_ids);
 
       setStatus({
-        run_id: 'fake', state: 'completed', phase: 'completed', half,
+        run_id: 'fake', state: 'completed', phase: 'completed', half: 'full',
         key_slug: r.key,
         current_step: totalSteps, total_steps: totalSteps,
         current_pwm_us: null,
         measurement_ids: r.measurement_ids, error: null,
       });
-
-      if (half === 'top' && form.run_bottom) {
-        setPhase('reconfigure');
-      } else {
-        setPhase('done');
-      }
+      setPhase('done');
     } catch (e) {
       setError((e as ApiError).message);
       setPhase('failed');
@@ -214,19 +204,12 @@ export function CapturePage() {
   };
 
   const onSafetyConfirm = () => {
-    const firstHalf = form.run_top ? 'top' : form.run_bottom ? 'bottom' : null;
-    if (!firstHalf) {
-      setError('No half selected.');
-      setPhase('failed');
-      return;
-    }
-    if (fakeMode) startFakeHalf(firstHalf);
-    else startHalf(firstHalf);
+    if (fakeMode) startFakeCapture();
+    else startCapture();
   };
 
   const onAbort = async () => {
     if (fakeMode) {
-      // Fake aborts are trivial — just bail to failed state.
       setError('Fake capture aborted.');
       setPhase('failed');
       return;
@@ -238,18 +221,11 @@ export function CapturePage() {
     }
   };
 
-  const onReconfigureConfirm = () => {
-    if (fakeMode) startFakeHalf('bottom');
-    else startHalf('bottom');
-  };
-
   const onFakeRun = () => {
     setError(null);
     setFakeMode(true);
     setPhase('safety');
   };
-
-  const onSkipBottom = () => setPhase('done');
 
   const onNew = () => reset();
 
@@ -267,10 +243,8 @@ export function CapturePage() {
             )}
           </p>
         </div>
-        {phase !== 'form' && phase !== 'running_top' && phase !== 'running_bottom' && (
-          <Button variant="ghost" onClick={() => reset()}>
-            Start over
-          </Button>
+        {phase !== 'form' && phase !== 'running' && (
+          <Button variant="ghost" onClick={() => reset()}>Start over</Button>
         )}
       </header>
 
@@ -290,7 +264,6 @@ export function CapturePage() {
 
       {phase === 'safety' && (
         <SafetyModal
-          half={form.run_top ? 'top' : 'bottom'}
           cutoffsConfigured={cutoffsConfigured}
           fakeMode={fakeMode}
           onCancel={() => setPhase('review')}
@@ -298,24 +271,12 @@ export function CapturePage() {
         />
       )}
 
-      {phase === 'running_top' && <RunningView half="top" status={status} onAbort={onAbort} />}
-      {phase === 'running_bottom' && (
-        <RunningView half="bottom" status={status} onAbort={onAbort} />
-      )}
-
-      {phase === 'reconfigure' && (
-        <ReconfigureModal
-          mics={mics.filter((m) => form.selected_mic_ids.includes(m.id))}
-          onCancel={onSkipBottom}
-          onConfirm={onReconfigureConfirm}
-        />
-      )}
+      {phase === 'running' && <RunningView status={status} onAbort={onAbort} />}
 
       {phase === 'done' && (
         <DoneSummary
           keySlug={status?.key_slug ?? null}
-          topIds={topIds}
-          bottomIds={bottomIds}
+          measurementIds={measurementIds}
           onNew={onNew}
         />
       )}
@@ -325,9 +286,7 @@ export function CapturePage() {
           <div className="text-red-300 mb-4">{errorMessage ?? 'Unknown error.'}</div>
           <div className="flex items-center gap-3">
             <Button onClick={() => setPhase('form')}>Back to form</Button>
-            <Button variant="ghost" onClick={onNew}>
-              Reset everything
-            </Button>
+            <Button variant="ghost" onClick={onNew}>Reset everything</Button>
           </div>
         </Card>
       )}

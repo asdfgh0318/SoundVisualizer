@@ -1,15 +1,13 @@
 import { create } from 'zustand';
 import type { CaptureRunStatus } from '../api/types';
 
-export type WizardPhase =
-  | 'form'
-  | 'review'
-  | 'safety'
-  | 'running_top'
-  | 'reconfigure'
-  | 'running_bottom'
-  | 'done'
-  | 'failed';
+export type WizardPhase = 'form' | 'review' | 'safety' | 'running' | 'done' | 'failed';
+
+/** Single-pass: one capture covers all configured mics simultaneously. Two-pass
+ *  (legacy: physically remount mics between halves) is supported by the
+ *  backend but not surfaced in this UI yet. The captureMode slot is kept so a
+ *  future toggle can branch into the two-pass flow without re-shaping state. */
+export type CaptureMode = 'single' | 'two-pass';
 
 export interface WizardForm {
   motor: string;
@@ -21,9 +19,8 @@ export interface WizardForm {
   stabilize_window: number;
   stabilize_tolerance: number;
   stabilize_timeout_seconds: number;
-  run_top: boolean;
-  run_bottom: boolean;
   selected_mic_ids: string[];
+  capture_mode: CaptureMode;
   trigger: {
     enabled: boolean;
     threshold_db: number;
@@ -46,9 +43,8 @@ const defaultForm = (): WizardForm => ({
   stabilize_window: 10,
   stabilize_tolerance: 4.0,
   stabilize_timeout_seconds: 30.0,
-  run_top: true,
-  run_bottom: true,
   selected_mic_ids: [],
+  capture_mode: 'single',
   trigger: { enabled: true, threshold_db: -40, block_size: 128, preroll_samples: 480 },
 });
 
@@ -57,8 +53,7 @@ interface WizardState {
   form: WizardForm;
   status: CaptureRunStatus | null;
   activeRunId: string | null;
-  topMeasurementIds: string[];
-  bottomMeasurementIds: string[];
+  measurementIds: string[];
   errorMessage: string | null;
   fakeMode: boolean;
   setPhase: (p: WizardPhase) => void;
@@ -67,8 +62,7 @@ interface WizardState {
   resetForm: () => void;
   setStatus: (s: CaptureRunStatus | null) => void;
   setActiveRunId: (id: string | null) => void;
-  setTopIds: (ids: string[]) => void;
-  setBottomIds: (ids: string[]) => void;
+  setMeasurementIds: (ids: string[]) => void;
   setError: (msg: string | null) => void;
   setFakeMode: (v: boolean) => void;
   reset: () => void;
@@ -79,8 +73,7 @@ export const useWizardStore = create<WizardState>((set) => ({
   form: defaultForm(),
   status: null,
   activeRunId: null,
-  topMeasurementIds: [],
-  bottomMeasurementIds: [],
+  measurementIds: [],
   errorMessage: null,
   fakeMode: false,
   setPhase: (p) => set({ phase: p }),
@@ -89,8 +82,7 @@ export const useWizardStore = create<WizardState>((set) => ({
   resetForm: () => set({ form: defaultForm() }),
   setStatus: (s) => set({ status: s }),
   setActiveRunId: (id) => set({ activeRunId: id }),
-  setTopIds: (ids) => set({ topMeasurementIds: ids }),
-  setBottomIds: (ids) => set({ bottomMeasurementIds: ids }),
+  setMeasurementIds: (ids) => set({ measurementIds: ids }),
   setError: (msg) => set({ errorMessage: msg }),
   setFakeMode: (v) => set({ fakeMode: v }),
   reset: () =>
@@ -98,8 +90,7 @@ export const useWizardStore = create<WizardState>((set) => ({
       phase: 'form',
       status: null,
       activeRunId: null,
-      topMeasurementIds: [],
-      bottomMeasurementIds: [],
+      measurementIds: [],
       errorMessage: null,
       fakeMode: false,
     }),

@@ -18,8 +18,8 @@ from server.api.schemas import (
 )
 from server.core.calibration_override import apply_calibration_config
 from server.core.capture_orchestrator import (
-    CaptureHalfRunRequest,
     CaptureOrchestrator,
+    CaptureRunRequest,
     MicSpecRun,
     TriggerSyncRun,
 )
@@ -99,8 +99,8 @@ def fake_capture(monkeypatch):
 
 
 @pytest.fixture
-def request_body() -> CaptureHalfRunRequest:
-    return CaptureHalfRunRequest(
+def request_body() -> CaptureRunRequest:
+    return CaptureRunRequest(
         key=KeyFields(motor="M", propeller="P", shroud="S", notes="N"),
         half=MeasurementHalf.TOP,
         pwm_steps=[PWMStep(pwm_us=1100, recording_ms=100), PWMStep(pwm_us=1200, recording_ms=100)],
