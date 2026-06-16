@@ -48,6 +48,12 @@ def parse_umik_calibration(text: str) -> UmikCalibration:
             sm = _SERNO_RE.search(line)
             if sm:
                 serial = sm.group(1)
+            # Real UMIK-2 files put AGain on the SAME line as Sens Factor + SERNO
+            # (e.g. `Sens Factor =-12dB, AGain =18dB, SERNO: 8108897`), so scan
+            # this line for it too before moving on.
+            am = _AGAIN_RE.search(line)
+            if am:
+                again = float(am.group(1))
             continue
 
         m = _AGAIN_RE.search(line)
