@@ -119,13 +119,21 @@ def main() -> int:
             continue
         if args.dry_run:
             print(f"  would upload {tag}: {f.name}")
-            mics.append({"serial": serial, "elevation_deg": elev, "calibration_file_id": serial})
+            label = f"{serial[:3]}-{serial[3:]}" if len(serial) == 7 else serial
+            mics.append(
+                {"serial": label, "elevation_deg": elev, "calibration_file_id": serial}
+            )
             continue
         try:
             summ = _post_multipart(f"{base}/calibrations?serial={serial}", f)
             cal_id = summ["id"]
             print(f"  uploaded {tag}: {f.name} -> cal id {cal_id} ({summ.get('n_points')} pts)")
-            mics.append({"serial": serial, "elevation_deg": elev, "calibration_file_id": cal_id})
+            # Display serial in sticker format (810-8897) so rows match the
+            # physical labels; the cal still links by numeric id.
+            label = f"{serial[:3]}-{serial[3:]}" if len(serial) == 7 else serial
+            mics.append(
+                {"serial": label, "elevation_deg": elev, "calibration_file_id": cal_id}
+            )
         except Exception as e:  # noqa: BLE001
             print(f"  ERROR    {tag}: upload failed: {e}", file=sys.stderr)
 
