@@ -40,9 +40,10 @@ export function MicList() {
       <div className="hidden sm:grid grid-cols-12 gap-3 text-[11px] uppercase tracking-wide text-gray-500 px-1">
         <div className="col-span-1">#</div>
         <div className="col-span-2">Serial</div>
-        <div className="col-span-4">USB device</div>
+        <div className="col-span-3">USB device</div>
         <div className="col-span-2">Elevation</div>
-        <div className="col-span-2">Calibration</div>
+        <div className="col-span-3">Calibration</div>
+        <div className="col-span-1"></div>
       </div>
       {mics.length === 0 && (
         <p className="text-sm text-gray-400 italic">
@@ -107,7 +108,7 @@ function MicRow({
         />
 
         <select
-          className="col-span-4 input"
+          className="col-span-3 input"
           value={mic.deviceIndex ?? ''}
           onChange={(e) =>
             onChange({ deviceIndex: e.target.value === '' ? null : Number(e.target.value) })
@@ -128,7 +129,7 @@ function MicRow({
         />
 
         <select
-          className="col-span-1 input"
+          className="col-span-3 input"
           value={mic.calibrationFileId ?? ''}
           onChange={(e) =>
             onChange({ calibrationFileId: e.target.value === '' ? null : e.target.value })
