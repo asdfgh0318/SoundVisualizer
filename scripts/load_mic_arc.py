@@ -42,7 +42,7 @@ ARC: list[tuple[float, str]] = [
     (-36.0, "8108900"),
     (-54.0, "8108903"),
     (-72.0, "8111896"),
-    # (-90.0, "????"),  # fill in once that mic's serial is read
+    (-90.0, "8108904"),
 ]
 
 
