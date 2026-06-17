@@ -13,6 +13,7 @@ function micsToPresetEntries(mics: MicConfig[]): MicPresetEntry[] {
       serial: m.serial,
       elevation_deg: m.elevationDeg,
       calibration_file_id: m.calibrationFileId,
+      alsa_card_id: m.alsaCardId,
     }));
 }
 
@@ -23,8 +24,10 @@ function presetEntriesToMics(entries: MicPresetEntry[]): MicConfig[] {
   return entries.map((e) => ({
     id: localId(),
     serial: e.serial,
+    // deviceIndex is resolved from alsaCardId by MicList's reconcile effect
+    // once the live device list loads (the numeric index shifts per boot).
     deviceIndex: null,
-    alsaCardId: null,
+    alsaCardId: e.alsa_card_id ?? null,
     elevationDeg:
       e.elevation_deg ?? e.top_elevation_deg ?? e.bottom_elevation_deg ?? null,
     calibrationFileId: e.calibration_file_id,
@@ -93,6 +96,14 @@ export function PresetControls() {
     setSaving(true);
     setError(null);
     try {
+      // Upsert by name: if a preset with this name exists, replace it (avoids
+      // confusing duplicates with the same name).
+      const existing = presets.find((p) => p.name === name);
+      if (existing) {
+        const ok = confirm(`Preset "${name}" already exists — overwrite it with the current ${portable.length} mics (including device bindings)?`);
+        if (!ok) { setSaving(false); return; }
+        await api.deleteSetupPreset(existing.id);
+      }
       await api.createSetupPreset(name, portable);
       setVersion((v) => v + 1);
     } catch (e) {

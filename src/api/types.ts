@@ -122,6 +122,9 @@ export interface MicPresetEntry {
   top_elevation_deg?: number | null;
   bottom_elevation_deg?: number | null;
   calibration_file_id: string | null;
+  /** Stable ALSA card id (udev port-path). Restores the mic→device binding on
+   *  load, as long as mics stay in the same physical ports. */
+  alsa_card_id?: string | null;
 }
 
 export interface SetupPreset {

@@ -155,6 +155,10 @@ class MicPresetEntry(BaseModel):
     top_elevation_deg: float | None = None
     bottom_elevation_deg: float | None = None
     calibration_file_id: str | None = None
+    # Stable ALSA card id (udev port-path, e.g. "umik_3_1_4_1"). Lets a preset
+    # restore the physical mic→device binding too — valid as long as mics stay
+    # in the same hub ports. Ignored gracefully if it doesn't match on load.
+    alsa_card_id: str | None = None
 
 
 class SetupPreset(BaseModel):
