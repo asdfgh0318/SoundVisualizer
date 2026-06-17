@@ -61,14 +61,20 @@ export function PresetControls() {
       if (!ok) return;
     }
     // Carry over existing physical bindings (deviceIndex + alsaCardId) by serial,
-    // so re-loading the preset doesn't make you re-identify every mic. Match on
-    // digits-only serial to tolerate dashed/numeric variants.
-    const digits = (s: string) => s.replace(/\D/g, '');
+    // so re-loading the preset doesn't make you re-identify every mic. Key on
+    // digits when present (tolerates 810-8897 vs 8108897), else the raw serial
+    // (labels like "a"/"b" have no digits — must NOT collapse to one key).
+    const key = (s: string) => {
+      const d = s.replace(/\D/g, '');
+      return d || s.trim().toLowerCase();
+    };
     const priorBySerial = new Map(
-      mics.filter((m) => m.alsaCardId || m.deviceIndex !== null).map((m) => [digits(m.serial), m]),
+      mics
+        .filter((m) => (m.alsaCardId || m.deviceIndex !== null) && key(m.serial))
+        .map((m) => [key(m.serial), m]),
     );
     const loaded = presetEntriesToMics(selected.mics).map((m) => {
-      const prior = priorBySerial.get(digits(m.serial));
+      const prior = key(m.serial) ? priorBySerial.get(key(m.serial)) : undefined;
       return prior
         ? { ...m, deviceIndex: prior.deviceIndex, alsaCardId: prior.alsaCardId }
         : m;

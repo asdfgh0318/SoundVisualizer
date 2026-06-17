@@ -30,6 +30,22 @@ export function MicList() {
     api.listAudioDevices().then(setDevices, () => setDevices([]));
   }, []);
 
+  // A USB device backs exactly one mic. If two+ rows claim the same device
+  // index, they can't all be right (a stale/buggy assignment smeared one
+  // device across rows) — clear the duplicates so they're re-picked. Also
+  // auto-cleans any previously-corrupted state on load.
+  useEffect(() => {
+    const counts = new Map<number, number>();
+    for (const m of mics) {
+      if (m.deviceIndex !== null) counts.set(m.deviceIndex, (counts.get(m.deviceIndex) ?? 0) + 1);
+    }
+    for (const m of mics) {
+      if (m.deviceIndex !== null && (counts.get(m.deviceIndex) ?? 0) > 1) {
+        updateMic(m.id, { deviceIndex: null, alsaCardId: null });
+      }
+    }
+  }, [mics, updateMic]);
+
   // Re-bind device assignments by stable ALSA card id. PortAudio indices
   // shuffle across reboots/replugs, but `alsaCardId` (udev port-path) is fixed
   // for a given physical port — so re-resolve each assigned mic's deviceIndex
