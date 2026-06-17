@@ -28,6 +28,7 @@ export function ResearchTreeNodePicker({ form, onChange }: Props) {
   const [nodes, setNodes] = useState<ResearchTreeNode[]>([]);
   const [enabled, setEnabled] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
+  const [refresh, setRefresh] = useState(0);
 
   useEffect(() => {
     let cancelled = false;
@@ -42,6 +43,14 @@ export function ResearchTreeNodePicker({ form, onChange }: Props) {
       (e: Error | ApiError) => !cancelled && setError(e.message),
     );
     return () => { cancelled = true; };
+  }, [refresh]);
+
+  // Re-fetch when the user returns to this tab — they likely just edited the
+  // tree in the research-tree editor (other tab/window), so pick up changes.
+  useEffect(() => {
+    const onFocus = () => setRefresh((n) => n + 1);
+    window.addEventListener('focus', onFocus);
+    return () => window.removeEventListener('focus', onFocus);
   }, []);
 
   if (!enabled) {
@@ -98,6 +107,14 @@ export function ResearchTreeNodePicker({ form, onChange }: Props) {
         <span className="text-xs uppercase tracking-wide text-gray-400">
           Linked research-tree node{' '}
           <span className="normal-case text-gray-500 text-[10px]">(optional)</span>
+          <button
+            type="button"
+            onClick={(e) => { e.preventDefault(); setRefresh((n) => n + 1); }}
+            className="ml-2 normal-case text-indigo-400 hover:text-indigo-300 text-[10px]"
+            title="Re-fetch nodes from the research tree"
+          >
+            ↻ refresh
+          </button>
         </span>
         <select
           className="input w-full mt-1"
