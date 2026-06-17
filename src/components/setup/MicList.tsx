@@ -30,6 +30,24 @@ export function MicList() {
     api.listAudioDevices().then(setDevices, () => setDevices([]));
   }, []);
 
+  // Re-bind device assignments by stable ALSA card id. PortAudio indices
+  // shuffle across reboots/replugs, but `alsaCardId` (udev port-path) is fixed
+  // for a given physical port — so re-resolve each assigned mic's deviceIndex
+  // from the current device list. If the card is gone (mic unplugged/moved),
+  // clear the index so a row never silently points at the wrong mic.
+  useEffect(() => {
+    if (devices.length === 0) return;
+    for (const m of mics) {
+      if (!m.alsaCardId) continue;
+      const dev = devices.find((d) => d.alsa_card_id === m.alsaCardId);
+      if (dev) {
+        if (dev.index !== m.deviceIndex) updateMic(m.id, { deviceIndex: dev.index });
+      } else if (m.deviceIndex !== null) {
+        updateMic(m.id, { deviceIndex: null });
+      }
+    }
+  }, [devices, mics, updateMic]);
+
   useEffect(() => {
     api.listCalibrations().then(setCalibrations, () => setCalibrations([]));
   }, [calibrationsVersion]);
@@ -128,9 +146,17 @@ function MicRow({
         <select
           className="col-span-3 input"
           value={mic.deviceIndex ?? ''}
-          onChange={(e) =>
-            onChange({ deviceIndex: e.target.value === '' ? null : Number(e.target.value) })
-          }
+          onChange={(e) => {
+            if (e.target.value === '') {
+              onChange({ deviceIndex: null, alsaCardId: null });
+              return;
+            }
+            const idx = Number(e.target.value);
+            const dev = devices.find((d) => d.index === idx);
+            // Remember the stable card id alongside the index so the assignment
+            // survives PortAudio re-indexing on the next boot/replug.
+            onChange({ deviceIndex: idx, alsaCardId: dev?.alsa_card_id ?? null });
+          }}
         >
           <option value="">— pick device —</option>
           {devices.map((d) => (

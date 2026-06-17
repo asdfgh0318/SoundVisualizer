@@ -23,6 +23,7 @@ const newMic = (): MicConfig => ({
   id: localId(),
   serial: '',
   deviceIndex: null,
+  alsaCardId: null,
   elevationDeg: null,
   calibrationFileId: null,
 });
@@ -44,6 +45,7 @@ function migrateMic(m: unknown): MicConfig {
     id: typeof x.id === 'string' ? x.id : localId(),
     serial: typeof x.serial === 'string' ? x.serial : '',
     deviceIndex: typeof x.deviceIndex === 'number' ? x.deviceIndex : null,
+    alsaCardId: typeof x.alsaCardId === 'string' ? x.alsaCardId : null,
     elevationDeg: elev,
     calibrationFileId: typeof x.calibrationFileId === 'string' ? x.calibrationFileId : null,
   };
@@ -86,7 +88,7 @@ export const useSetupStore = create<SetupState>()(
     {
       name: 'soundvis-setup',
       partialize: (s) => ({ mics: s.mics, cutoffs: s.cutoffs }),
-      version: 2,
+      version: 3,
       migrate: (persistedState) => {
         const s = (persistedState ?? {}) as { mics?: unknown[]; cutoffs?: CutoffTriggers };
         return {

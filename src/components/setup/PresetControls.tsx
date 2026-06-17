@@ -24,6 +24,7 @@ function presetEntriesToMics(entries: MicPresetEntry[]): MicConfig[] {
     id: localId(),
     serial: e.serial,
     deviceIndex: null,
+    alsaCardId: null,
     elevationDeg:
       e.elevation_deg ?? e.top_elevation_deg ?? e.bottom_elevation_deg ?? null,
     calibrationFileId: e.calibration_file_id,
@@ -55,11 +56,24 @@ export function PresetControls() {
     if (!selected) return;
     if (mics.length > 0) {
       const ok = confirm(
-        `Replace ${mics.length} mic${mics.length === 1 ? '' : 's'} in the current list with preset "${selected.name}" (${selected.mics.length} mic${selected.mics.length === 1 ? '' : 's'})? Local USB device assignments will be cleared.`,
+        `Replace ${mics.length} mic${mics.length === 1 ? '' : 's'} with preset "${selected.name}" (${selected.mics.length} mic${selected.mics.length === 1 ? '' : 's'})? Any USB-device bindings you've made will be carried over by matching serial.`,
       );
       if (!ok) return;
     }
-    replaceMics(presetEntriesToMics(selected.mics));
+    // Carry over existing physical bindings (deviceIndex + alsaCardId) by serial,
+    // so re-loading the preset doesn't make you re-identify every mic. Match on
+    // digits-only serial to tolerate dashed/numeric variants.
+    const digits = (s: string) => s.replace(/\D/g, '');
+    const priorBySerial = new Map(
+      mics.filter((m) => m.alsaCardId || m.deviceIndex !== null).map((m) => [digits(m.serial), m]),
+    );
+    const loaded = presetEntriesToMics(selected.mics).map((m) => {
+      const prior = priorBySerial.get(digits(m.serial));
+      return prior
+        ? { ...m, deviceIndex: prior.deviceIndex, alsaCardId: prior.alsaCardId }
+        : m;
+    });
+    replaceMics(loaded);
   };
 
   const onSave = async () => {

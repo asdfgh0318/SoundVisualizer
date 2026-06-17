@@ -104,6 +104,11 @@ export interface MicConfig {
   id: string;
   serial: string;
   deviceIndex: number | null;
+  /** Stable ALSA card id (e.g. "umik_3_1_4_1") of the assigned device, from udev
+   *  port-path rules. PortAudio `deviceIndex` shuffles across reboots/replugs; this
+   *  is the durable handle the app re-binds to so assignments survive. Null when
+   *  no device is assigned or the platform has no stable id. */
+  alsaCardId: string | null;
   elevationDeg: number | null;
   calibrationFileId: string | null;
 }
