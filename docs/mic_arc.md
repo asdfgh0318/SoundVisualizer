@@ -29,5 +29,5 @@ Notes:
 1. In a normal browser tab, open <https://www.minidsp.com/products/acoustic-measurement/umik-2> → **Unique Calibration File Download**. Enter each serial (with dash, e.g. `810-8897`), submit; it downloads `<serial>.txt` + `<serial>_90deg.txt`.
    Serials: `811-1897 811-1892 810-8901 810-8893 811-2321 810-8897 811-2310 810-8900 810-8903 811-1896 810-8904`
 2. From the laptop: `python3 scripts/load_mic_arc.py --dir ~/Pobrane` (or wherever they downloaded). Add `--dry-run` first to preview.
-   This uploads each cal file to the Pi and creates a Setup preset **"Arc 11-mic 18° (top-down)"**.
+   This uploads each cal file to the Pi and creates a Setup preset **"11-mic preset"**.
 3. On the Setup page → Microphones → presets bar → load that preset. Then assign each physical mic to its USB device with the 🎤 Listen meter.

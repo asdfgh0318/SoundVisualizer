@@ -98,7 +98,7 @@ def main() -> int:
     ap.add_argument("--dir", required=True, help="folder containing the downloaded cal .txt files")
     ap.add_argument("--base-url", default="http://jama.local:8000", help="SoundVis base URL")
     ap.add_argument("--ninety", action="store_true", help="use the _90deg cal files")
-    ap.add_argument("--name", default="Arc 11-mic 18° (top-down)", help="preset name")
+    ap.add_argument("--name", default="11-mic preset", help="preset name")
     ap.add_argument("--dry-run", action="store_true", help="report only; no uploads")
     args = ap.parse_args()
 
