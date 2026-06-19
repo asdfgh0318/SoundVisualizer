@@ -151,6 +151,7 @@ export interface KeyFields {
 export type CaptureRunPhase =
   | 'idle'
   | 'starting'
+  | 'taring'
   | 'setting_pwm'
   | 'stabilizing'
   | 'recording'

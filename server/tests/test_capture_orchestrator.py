@@ -66,11 +66,19 @@ class FakeService:
         self.stand = FakeStand()
         self.watchdog = CutoffWatchdog(self.stand, CutoffTriggers())
         self.tare = TareOffsets()
+        self.zero_calls: list[int] = []  # records PWM at the moment zero() is called
 
     def set_pwm(self, pwm_us: int) -> None:
         if self.watchdog.tripped:
             raise RuntimeError(f"watchdog tripped on {self.watchdog.tripped}")
         self.stand.mot_pwm = pwm_us
+
+    def zero(self, n: int = 30) -> TareOffsets:
+        if self.stand.mot_pwm != 1000:
+            raise RuntimeError("zero only at idle (pwm 1000)")
+        self.zero_calls.append(self.stand.mot_pwm)
+        self.tare = TareOffsets()
+        return self.tare
 
 
 @pytest.fixture(autouse=True)
@@ -122,7 +130,7 @@ async def _wait_until_done(orch: CaptureOrchestrator, timeout: float = 5.0):
 
 
 async def test_run_completes_and_writes_measurements(fake_capture, request_body):
-    orch = CaptureOrchestrator()
+    orch = CaptureOrchestrator(settle_before_tare_s=0.0)
     svc = FakeService()
     status = await orch.start_run(svc, request_body)
     assert status.state == "running"
@@ -139,7 +147,7 @@ async def test_run_completes_and_writes_measurements(fake_capture, request_body)
 
 
 async def test_concurrent_run_rejected(fake_capture, request_body):
-    orch = CaptureOrchestrator()
+    orch = CaptureOrchestrator(settle_before_tare_s=0.0)
     svc = FakeService()
     await orch.start_run(svc, request_body)
     with pytest.raises(RuntimeError, match="already in progress"):
@@ -149,7 +157,7 @@ async def test_concurrent_run_rejected(fake_capture, request_body):
 
 async def test_empty_pwm_steps_rejected(fake_capture, request_body):
     request_body.pwm_steps = []
-    orch = CaptureOrchestrator()
+    orch = CaptureOrchestrator(settle_before_tare_s=0.0)
     svc = FakeService()
     with pytest.raises(ValueError, match="pwm_steps"):
         await orch.start_run(svc, request_body)
@@ -157,7 +165,7 @@ async def test_empty_pwm_steps_rejected(fake_capture, request_body):
 
 async def test_abort_stops_run_and_slams_pwm(fake_capture, request_body):
     request_body.pwm_steps = [PWMStep(pwm_us=1500, recording_ms=5000)]  # long step so we can abort mid-run
-    orch = CaptureOrchestrator()
+    orch = CaptureOrchestrator(settle_before_tare_s=0.0)
     svc = FakeService()
     await orch.start_run(svc, request_body)
     await asyncio.sleep(0.1)  # let it advance to capturing
@@ -168,7 +176,7 @@ async def test_abort_stops_run_and_slams_pwm(fake_capture, request_body):
 
 
 async def test_subscribe_receives_status_updates(fake_capture, request_body):
-    orch = CaptureOrchestrator()
+    orch = CaptureOrchestrator(settle_before_tare_s=0.0)
     svc = FakeService()
     queue = orch.subscribe()
     await orch.start_run(svc, request_body)
@@ -180,3 +188,15 @@ async def test_subscribe_receives_status_updates(fake_capture, request_body):
     states = {s.phase for s in statuses}
     assert CaptureRunPhase.STARTING in states or CaptureRunPhase.SETTING_PWM in states
     assert CaptureRunPhase.COMPLETED in states
+
+
+async def test_tare_runs_once_before_motor_spin(fake_capture, request_body):
+    """Tare must run exactly once per run, at idle, before the motor first spins."""
+    orch = CaptureOrchestrator(settle_before_tare_s=0.0)
+    svc = FakeService()
+    await orch.start_run(svc, request_body)
+    await _wait_until_done(orch)
+
+    assert len(svc.zero_calls) == 1
+    # FakeService.zero raises unless PWM=1000 — so 1000 in the call log proves idle.
+    assert svc.zero_calls[0] == 1000

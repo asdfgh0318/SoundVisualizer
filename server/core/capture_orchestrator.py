@@ -1,5 +1,11 @@
 """End-to-end capture run for one half (top or bottom).
 
+Before any PWM step runs, tare the stand once: motor is already at idle, so
+the load cells just need a moment to settle before re-zeroing. This guards
+against false thrust/torque/current readings caused by load-cell drift
+between runs. Re-taring between PWM steps would require spooling the motor
+down and back up each time — not worth the wear and time.
+
 Per PWM step:
   1. Set Tyto PWM (refuses if watchdog tripped).
   2. Wait for RPM stabilization (with timeout).
@@ -114,8 +120,12 @@ class CaptureOrchestrator:
         self,
         poll_period_seconds: float = 0.03,
         on_completed: Callable[[CaptureRunRequest, CaptureRunStatus], None] | None = None,
+        settle_before_tare_s: float = 1.0,
+        tare_window_samples: int = 30,
     ):
         self._poll_period_s = poll_period_seconds
+        self._settle_before_tare_s = settle_before_tare_s
+        self._tare_window_samples = tare_window_samples
         self._status = CaptureRunStatus(run_id="", state="idle")
         self._task: asyncio.Task[None] | None = None
         self._stand_service: ThrustStandService | None = None
@@ -209,6 +219,10 @@ class CaptureOrchestrator:
             keys_store.create_key(key)
         self._status.key_slug = key.slug
         await self._broadcast()
+
+        # One tare before the motor first spins. Re-taring between PWM steps
+        # would force a spool-down/spool-up per step — not worth the wear.
+        await self._tare_before_spin_up()
 
         for i, step in enumerate(req.pwm_steps):
             self._status.current_step = i + 1
@@ -307,6 +321,23 @@ class CaptureOrchestrator:
             )
             self._status.measurement_ids.append(saved.id)
 
+        await self._broadcast()
+
+    async def _tare_before_spin_up(self) -> None:
+        """Re-zero the stand at idle before the motor spins for the first step.
+
+        The motor is at PWM=1000 (idle, no thrust). After a short settling
+        window, average the latest at-rest samples and set them as the tare
+        baseline so the run's thrust/torque/current readings aren't skewed by
+        sensor drift from earlier work.
+        """
+        assert self._stand_service is not None
+        self._status.phase = CaptureRunPhase.TARING
+        await self._broadcast()
+        # Spool down (no-op if already idle) so the load cells genuinely sit at zero.
+        await self._spool_down_gentle()
+        await asyncio.sleep(self._settle_before_tare_s)
+        self._stand_service.zero(n=self._tare_window_samples)
         await self._broadcast()
 
     async def _spool_down_gentle(self) -> None:

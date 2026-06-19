@@ -119,6 +119,7 @@ class KeyFields(BaseModel):
 class CaptureRunPhase(StrEnum):
     IDLE = "idle"
     STARTING = "starting"
+    TARING = "taring"
     SETTING_PWM = "setting_pwm"
     STABILIZING = "stabilizing"
     RECORDING = "recording"

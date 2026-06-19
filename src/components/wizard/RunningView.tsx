@@ -9,6 +9,7 @@ interface Props {
 
 const PHASE_LABELS: Record<string, string> = {
   starting: 'Starting…',
+  taring: 'Taring stand (zeroing at idle)',
   setting_pwm: 'Setting PWM',
   stabilizing: 'Waiting for RPM to stabilize',
   recording: 'Recording audio',
@@ -72,7 +73,8 @@ export function RunningView({ status, onAbort }: Props) {
 function phasePct(phase: string): number {
   return (
     {
-      setting_pwm: 10,
+      taring: 5,
+      setting_pwm: 15,
       stabilizing: 30,
       recording: 70,
       writing: 95,
