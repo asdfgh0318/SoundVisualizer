@@ -46,21 +46,24 @@ async def lifespan(app: FastAPI):
         app.state.thrust_stand = None
 
     # Capture-completion hook: push the SoundVis Results URL back into the
-    # linked research-tree node, if the run's request carries one.
+    # linked research-tree node, if the run's request carries one. The push
+    # is routed to whichever configured tree owns the node id.
     def _on_capture_completed(req, status):
         node_id = getattr(req, "research_tree_node_id", None)
-        if not node_id or not config.research_tree.enabled:
+        trees = [t for t in config.research_trees if t.enabled]
+        if not node_id or not trees:
             return
-        # Best-effort URL — picks public_url if configured, else leaves the
-        # browser path. The fragment lets Results auto-select the right key.
-        base = config.research_tree.public_url.rstrip("/")
+        # `public_url` is per-tree (might differ if trees front different
+        # SoundVis instances), but in our setup all trees point at the same
+        # SoundVis — so the first enabled tree's public_url is the right base.
+        base = trees[0].public_url.rstrip("/")
         results_url = (
             f"{base}/results#key={status.key_slug}"
             if base and status.key_slug
             else f"/results#key={status.key_slug}"
         )
         research_tree.push_node_update(
-            config.research_tree,
+            config.research_trees,
             node_id,
             {"soundVisualizerLink": results_url, "status": "in-progress"},
         )

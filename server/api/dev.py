@@ -273,15 +273,16 @@ def fake_capture(
     # Mirror the orchestrator's on_completed hook for the fake-capture path.
     if body.research_tree_node_id:
         cfg = getattr(request.app.state, "config", None)
-        if cfg is not None and cfg.research_tree.enabled:
+        trees = [t for t in cfg.research_trees if t.enabled] if cfg is not None else []
+        if trees:
             from server.api.research_tree import push_node_update
 
-            base = cfg.research_tree.public_url.rstrip("/")
+            base = trees[0].public_url.rstrip("/")
             results_url = (
                 f"{base}/results#key={key.slug}" if base else f"/results#key={key.slug}"
             )
             push_node_update(
-                cfg.research_tree,
+                cfg.research_trees,
                 body.research_tree_node_id,
                 {"soundVisualizerLink": results_url, "status": "in-progress"},
             )

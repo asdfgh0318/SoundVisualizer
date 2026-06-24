@@ -124,38 +124,53 @@ sudo systemctl daemon-reload
 sudo systemctl enable soundvis.service
 sudo systemctl restart soundvis.service
 
-# --- duct-research-tree companion -------------------------------------------
-# Clone/update the duct-research-tree editor as a sibling of SoundVisualizer/,
-# and install its systemd unit. Idempotent; running on a host without git
-# access just leaves a warning — SoundVis still runs without it.
-RT_DIR="$HOME/duct-research-tree"
-if [ -d "$RT_DIR/.git" ]; then
-  step "Updating duct-research-tree (git pull)"
-  git -C "$RT_DIR" pull --ff-only 2>&1 | tail -3 || warn "git pull failed; using current copy"
-else
-  step "Cloning duct-research-tree to $RT_DIR"
-  git clone --depth 1 https://github.com/asdfgh0318/duct-research-tree.git "$RT_DIR" 2>&1 | tail -3 \
-    || warn "clone failed; research-tree integration disabled until you set it up"
-fi
-if [ -d "$RT_DIR" ]; then
+# --- research-tree companions ----------------------------------------------
+# Clone/update each research-tree editor as a sibling of SoundVisualizer/,
+# and install one systemd unit per tree. Idempotent; running on a host without
+# git access just leaves a warning — SoundVis still runs without these.
+#
+# Trees are defined inline: "<dir-name>:<port>:<git-remote>" entries.
+RESEARCH_TREES=(
+  "duct-research-tree:8123:https://github.com/asdfgh0318/duct-research-tree.git"
+  "drone-paczek-research-tree:8124:https://github.com/asdfgh0318/drone-paczek-research-tree.git"
+)
+INSTALLED_RT_DIRS=()
+INSTALLED_RT_PORTS=()
+for entry in "${RESEARCH_TREES[@]}"; do
+  IFS=':' read -r RT_NAME RT_PORT RT_REMOTE <<< "$entry"
+  RT_DIR="$HOME/$RT_NAME"
+  RT_SVC="${RT_NAME}.service"
+  if [ -d "$RT_DIR/.git" ]; then
+    step "Updating $RT_NAME (git pull)"
+    git -C "$RT_DIR" pull --ff-only 2>&1 | tail -3 || warn "git pull failed; using current copy"
+  else
+    step "Cloning $RT_NAME to $RT_DIR"
+    git clone --depth 1 "$RT_REMOTE" "$RT_DIR" 2>&1 | tail -3 \
+      || { warn "clone of $RT_NAME failed; skipping (integration disabled until you set it up)"; continue; }
+  fi
+  if [ ! -d "$RT_DIR" ]; then continue; fi
+
   # The research-tree writer (serve.py /api/node/<id>) auto-commits each push.
   # Without a local git author, the commit silently fails. Set a benign one
   # scoped to this clone so pushes from SoundVisualizer land in the log.
-  step "Configuring research-tree git author"
+  step "Configuring $RT_NAME git author"
   git -C "$RT_DIR" config user.email "soundvis@${HOSTNAME_GUESS:-localhost}" >/dev/null
   git -C "$RT_DIR" config user.name "SoundVis on $(hostname)" >/dev/null
 
-  step "Installing research-tree systemd unit (sudo)"
+  step "Installing $RT_SVC systemd unit (sudo)"
   sed -e "s/^User=.*/User=${RUN_USER}/" \
       -e "s/^Group=.*/Group=${RUN_GROUP}/" \
       -e "s#^WorkingDirectory=.*#WorkingDirectory=${RT_DIR}#" \
-      -e "s#^ExecStart=.*#ExecStart=/usr/bin/python3 ${RT_DIR}/serve.py --port 8123 --bind 0.0.0.0#" \
-      deploy/research-tree.service > /tmp/research-tree.service
-  sudo cp /tmp/research-tree.service /etc/systemd/system/research-tree.service
+      -e "s#^ExecStart=.*#ExecStart=/usr/bin/python3 ${RT_DIR}/serve.py --port ${RT_PORT} --bind 0.0.0.0#" \
+      -e "s/^Description=.*/Description=${RT_NAME} editor (companion to SoundVisualizer)/" \
+      deploy/research-tree.service > "/tmp/${RT_SVC}"
+  sudo cp "/tmp/${RT_SVC}" "/etc/systemd/system/${RT_SVC}"
   sudo systemctl daemon-reload
-  sudo systemctl enable research-tree.service
-  sudo systemctl restart research-tree.service
-fi
+  sudo systemctl enable "$RT_SVC"
+  sudo systemctl restart "$RT_SVC"
+  INSTALLED_RT_DIRS+=("$RT_DIR")
+  INSTALLED_RT_PORTS+=("$RT_PORT")
+done
 
 # --- done ------------------------------------------------------------------
 sleep 2
@@ -165,19 +180,19 @@ printf "\n"
 printf "  Service:   ${GREEN}systemctl status soundvis${NC}\n"
 printf "  Logs:      ${GREEN}journalctl -u soundvis -f${NC}\n"
 printf "  URL (LAN): ${GREEN}http://%s.local:8000${NC}  (or http://<pi-ip>:8000)\n" "$HOSTNAME_NOW"
-if [ -d "$RT_DIR" ]; then
-  printf "  Research tree: ${GREEN}http://%s.local:8123${NC}\n" "$HOSTNAME_NOW"
-fi
+for port in "${INSTALLED_RT_PORTS[@]}"; do
+  printf "  Research tree: ${GREEN}http://%s.local:%s${NC}\n" "$HOSTNAME_NOW" "$port"
+done
 printf "\n"
 if curl -fs -m 5 http://localhost:8000/health >/dev/null 2>&1; then
   printf "  SoundVis health: ${GREEN}OK${NC}\n"
 else
   warn "SoundVis health check didn't respond yet — check: journalctl -u soundvis -e"
 fi
-if [ -d "$RT_DIR" ]; then
-  if curl -fs -m 5 http://localhost:8123/data.json >/dev/null 2>&1; then
-    printf "  Research tree:   ${GREEN}OK${NC}\n"
+for port in "${INSTALLED_RT_PORTS[@]}"; do
+  if curl -fs -m 5 "http://localhost:${port}/data.json" >/dev/null 2>&1; then
+    printf "  Research tree (:%s):   ${GREEN}OK${NC}\n" "$port"
   else
-    warn "Research-tree didn't respond yet — check: journalctl -u research-tree -e"
+    warn "Research-tree on :${port} didn't respond — check: journalctl -u <name>.service -e"
   fi
-fi
+done

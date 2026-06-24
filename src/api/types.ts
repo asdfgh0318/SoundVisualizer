@@ -207,11 +207,13 @@ export interface CaptureRunRequest {
   research_tree_node_id?: string | null;
 }
 
-// Research-tree integration
+// Research-tree integration (multi-tree)
 export interface ResearchTreePhase {
   id: string;
   title: string;
   color: string;
+  /** Which configured tree this phase belongs to (matches ResearchTreeConfig.name). */
+  treeKey: string;
 }
 
 export interface ResearchTreeNode {
@@ -230,14 +232,23 @@ export interface ResearchTreeNode {
     weightG?: number | null;
     propellerInches?: number | null;
     motorSpacingMm?: number | null;
+    /** drone-paczek + future trees: free-form material tag. */
+    material?: string | null;
   };
   soundVisualizerLink?: string;
   notes?: string;
+  /** Which configured tree this node belongs to (matches ResearchTreeConfig.name). */
+  treeKey: string;
+}
+
+export interface ResearchTreeRef {
+  name: string;
+  base_url: string;
 }
 
 export interface ResearchTreeNodesResponse {
   enabled: boolean;
-  base_url: string;
+  trees: ResearchTreeRef[];
   phases: ResearchTreePhase[];
   nodes: ResearchTreeNode[];
 }

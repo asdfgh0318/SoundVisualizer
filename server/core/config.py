@@ -29,25 +29,34 @@ class ServerConfig(BaseModel):
 
 
 class ResearchTreeConfig(BaseModel):
-    """Optional integration with the duct-research-tree editor (separate service,
-    typically running alongside this server on the same Pi). When `enabled`, the
-    Capture wizard surfaces an active-nodes picker and pushes the SoundVis
-    Results URL back into the picked node on a successful capture."""
+    """Optional integration with a research-tree editor service (separate process,
+    typically running alongside this server on the same host). When any configured
+    tree is `enabled`, the Capture wizard surfaces an active-nodes picker and pushes
+    the SoundVis Results URL back into the picked node on a successful capture.
 
+    Multiple trees are supported via repeated `[[research_trees]]` tables — each
+    becomes one entry. Node IDs are assumed unique across trees (e.g. duct uses
+    `p1-*`, drone-paczek uses `dp1-*`), which is how the backend routes a push to
+    the right tree."""
+
+    # Stable key for this tree (e.g. "duct", "drone-paczek"). Surfaced to the
+    # frontend so the picker can group/label by tree. Required.
+    name: str = "default"
     enabled: bool = False
-    # URL the SoundVis backend uses to reach research-tree's serve.py.
-    # On the Pi: http://localhost:8123 (loopback to the local research-tree service).
+    # URL the SoundVis backend uses to reach this tree's serve.py.
+    # On the Pi: http://localhost:8123 (duct) / http://localhost:8124 (drone-paczek).
     base_url: str = "http://localhost:8123"
     # Base URL that the SoundVis Results page is reachable at from the *browser*
-    # that opens the research-tree node — i.e. the URL pushed back as
-    # `soundVisualizerLink`. Defaults to the request's own origin if empty.
+    # that opens the tree node — i.e. the URL pushed back as `soundVisualizerLink`.
+    # Defaults to the request's own origin if empty.
     public_url: str = ""
 
 
 class Config(BaseModel):
     tyto: TytoConfig = TytoConfig()
     server: ServerConfig = ServerConfig()
-    research_tree: ResearchTreeConfig = ResearchTreeConfig()
+    # List of configured research trees. Empty list = integration off everywhere.
+    research_trees: list[ResearchTreeConfig] = []
 
 
 def load_config(path: Path | None = None) -> Config:
@@ -55,4 +64,11 @@ def load_config(path: Path | None = None) -> Config:
     if not p.exists():
         return Config()
     with p.open("rb") as f:
-        return Config.model_validate(tomllib.load(f))
+        raw = tomllib.load(f)
+    # Back-compat: accept the legacy singular `[research_tree]` table by folding
+    # it into the new list. New configs use `[[research_trees]]` directly.
+    legacy = raw.pop("research_tree", None)
+    if legacy is not None and "research_trees" not in raw:
+        legacy.setdefault("name", "default")
+        raw["research_trees"] = [legacy]
+    return Config.model_validate(raw)
