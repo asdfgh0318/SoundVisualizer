@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { api } from '../../api/client';
 import type { TytoStatus as TytoStatusT } from '../../api/types';
 import { Button } from '../ui/Button';
+import { MotorTest } from './MotorTest';
 
 export function TytoStatus() {
   const [status, setStatus] = useState<TytoStatusT | null>(null);
@@ -9,13 +10,18 @@ export function TytoStatus() {
   const [reload, setReload] = useState(0);
   const [busy, setBusy] = useState(false);
 
+  // Poll once on mount, then every 1s — keeps PWM / tare / tripped readouts
+  // live so the motor-test progress + cutoff state stay accurate.
   useEffect(() => {
     let cancelled = false;
-    api.tytoStatus().then(
-      (s) => !cancelled && setStatus(s),
-      (e) => !cancelled && setError(e),
-    );
-    return () => { cancelled = true; };
+    const fetchOnce = () =>
+      api.tytoStatus().then(
+        (s) => !cancelled && setStatus(s),
+        (e) => !cancelled && setError(e),
+      );
+    fetchOnce();
+    const id = setInterval(fetchOnce, 1000);
+    return () => { cancelled = true; clearInterval(id); };
   }, [reload]);
 
   const onReset = async () => {
@@ -122,6 +128,24 @@ export function TytoStatus() {
           Reset watchdog
         </Button>
       )}
+
+      {/* Direction-check: 4 gentle spool-ups so the user can confirm
+          prop-rotation direction matches the expected wiring. */}
+      <div className="border-t border-gray-700 pt-2">
+        <div className="text-xs uppercase tracking-wide text-gray-500 mb-1">
+          Direction check
+        </div>
+        <MotorTest
+          ready={!tripped && status.pwm_us === 1000}
+          readyReason={
+            tripped
+              ? 'Watchdog tripped — reset before running the direction check.'
+              : status.pwm_us !== 1000
+                ? 'Motor not at idle (PWM ≠ 1000) — spool down before running the direction check.'
+                : ''
+          }
+        />
+      </div>
     </div>
   );
 }
