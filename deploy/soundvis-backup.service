@@ -1,0 +1,16 @@
+[Unit]
+Description=Mirror SoundVisualizer measurements to GitHub
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=oneshot
+User=pi
+Group=pi
+# setup_rpi.sh patches User/Group + ExecStart to the absolute path on install.
+ExecStart=%h/SoundVisualizer/scripts/backup_data.sh
+# Don't pile up if a previous run was slow.
+TimeoutStartSec=600
+Nice=10
+IOSchedulingClass=best-effort
+IOSchedulingPriority=7

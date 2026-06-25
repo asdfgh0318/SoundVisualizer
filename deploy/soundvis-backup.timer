@@ -1,0 +1,15 @@
+[Unit]
+Description=Mirror SoundVisualizer measurements to GitHub (every 15 min)
+
+[Timer]
+# First run 5 min after boot to avoid clobbering captures that start at startup,
+# then every 15 min while the unit-mtime didn't trigger a sooner fire.
+OnBootSec=5min
+OnUnitActiveSec=15min
+AccuracySec=30s
+# If the Pi was off when a fire was due, run once on next boot.
+Persistent=true
+Unit=soundvis-backup.service
+
+[Install]
+WantedBy=timers.target
