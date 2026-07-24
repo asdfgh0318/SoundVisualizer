@@ -2,14 +2,15 @@ import { useEffect, useRef, useState } from 'react';
 import { api, ApiError } from '../../api/client';
 import { Button } from '../ui/Button';
 
-/** Direction-check sequence: 4 short spool-ups to a low PWM, with a hold and
+/** Direction-check sequence: short spool-ups to a low PWM, with a hold and
  *  spool-down between each. The visible accel/decel reveals which way the
  *  prop is spinning (the asymmetric prop shape looks different attacking vs
  *  trailing-edge-first), so you can confirm or fix wiring before any real run. */
-const TEST_PWM_US = 1080;       // gentle — well below any reasonable cutoff
+const TEST_PWM_US = 1120;       // gentle — well below any reasonable cutoff
 const HOLD_AT_TEST_MS = 900;    // long enough to see the prop steady
 const REST_AT_IDLE_MS = 1200;   // gap between ramps
-const RAMP_COUNT = 4;
+const RAMP_COUNT = 8;
+const START_DELAY_S = 3;        // countdown after Start so hands clear the prop
 
 interface Props {
   /** True when Tyto is connected, not tripped, and at idle (pwm=1000). The
@@ -23,7 +24,8 @@ type Phase = 'idle' | 'confirming' | 'running' | 'aborting';
 export function MotorTest({ ready, readyReason }: Props) {
   const [phase, setPhase] = useState<Phase>('idle');
   const [step, setStep] = useState(0);
-  const [subPhase, setSubPhase] = useState<'spool-up' | 'spool-down' | 'idle'>('idle');
+  const [countdown, setCountdown] = useState(0);
+  const [subPhase, setSubPhase] = useState<'countdown' | 'spool-up' | 'spool-down' | 'idle'>('idle');
   const [error, setError] = useState<string | null>(null);
   // Latched cancel flag — checked between steps. Cancelling sets it; the
   // sequence loop sees it and bails. PWM gets force-set to 1000 either way.
@@ -47,6 +49,15 @@ export function MotorTest({ ready, readyReason }: Props) {
     setError(null);
     setPhase('running');
     try {
+      // Grace countdown so hands are clear of the prop before the first ramp.
+      setSubPhase('countdown');
+      for (let s = START_DELAY_S; s > 0; s--) {
+        if (cancelRef.current) break;
+        setCountdown(s);
+        await sleep(1000);
+      }
+      setCountdown(0);
+
       for (let i = 1; i <= RAMP_COUNT; i++) {
         if (cancelRef.current) break;
         setStep(i);
@@ -86,7 +97,8 @@ export function MotorTest({ ready, readyReason }: Props) {
   };
 
   const subPhaseLabel =
-    subPhase === 'spool-up' ? 'spooling up'
+    subPhase === 'countdown' ? `starting in ${countdown}s — clear the prop!`
+    : subPhase === 'spool-up' ? 'spooling up'
     : subPhase === 'spool-down' ? 'spooling down'
     : 'resting at idle';
 
@@ -115,8 +127,8 @@ export function MotorTest({ ready, readyReason }: Props) {
       {phase === 'confirming' && (
         <div className="bg-amber-500/10 border border-amber-500/40 rounded p-3 space-y-2">
           <p className="text-xs text-amber-200">
-            <strong>Prop clear?</strong> The motor will spool to PWM {TEST_PWM_US} µs {RAMP_COUNT} times.
-            Make sure nothing is in the prop arc.
+            <strong>Prop clear?</strong> After a {START_DELAY_S}s countdown the motor will spool to
+            PWM {TEST_PWM_US} µs {RAMP_COUNT} times. Make sure nothing is in the prop arc.
           </p>
           <div className="flex gap-2">
             <Button onClick={runSequence}>Start</Button>
@@ -128,7 +140,10 @@ export function MotorTest({ ready, readyReason }: Props) {
       {(phase === 'running' || phase === 'aborting') && (
         <div className="bg-gray-900/40 border border-gray-700 rounded p-3 space-y-2">
           <div className="text-xs text-gray-300">
-            Ramp <span className="font-mono">{step}/{RAMP_COUNT}</span> · <span className="text-amber-300">{subPhaseLabel}</span>
+            {subPhase !== 'countdown' && (
+              <>Ramp <span className="font-mono">{step}/{RAMP_COUNT}</span> · </>
+            )}
+            <span className="text-amber-300">{subPhaseLabel}</span>
             {phase === 'aborting' && <span className="ml-2 text-red-300">(aborting…)</span>}
           </div>
           <Button variant="danger" onClick={onAbort} disabled={phase === 'aborting'}>
