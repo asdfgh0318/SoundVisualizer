@@ -58,6 +58,12 @@ if TYPE_CHECKING:
 log = logging.getLogger(__name__)
 
 
+class TytoLinkLost(Exception):
+    """Raised when the Tyto serial link drops mid-run. Everything after the drop
+    is garbage — no telemetry, no PWM transmission, no cutoff watchdog — so the
+    run has to die loudly instead of recording empty CSVs."""
+
+
 class MicSpecRun(BaseModel):
     serial: str
     device_index: int
@@ -122,10 +128,12 @@ class CaptureOrchestrator:
         on_completed: Callable[[CaptureRunRequest, CaptureRunStatus], None] | None = None,
         settle_before_tare_s: float = 1.0,
         tare_window_samples: int = 30,
+        link_check_period_s: float = 0.2,
     ):
         self._poll_period_s = poll_period_seconds
         self._settle_before_tare_s = settle_before_tare_s
         self._tare_window_samples = tare_window_samples
+        self._link_check_period_s = link_check_period_s
         self._status = CaptureRunStatus(run_id="", state="idle")
         self._task: asyncio.Task[None] | None = None
         self._stand_service: ThrustStandService | None = None
@@ -188,7 +196,7 @@ class CaptureOrchestrator:
 
     async def _run(self, req: CaptureRunRequest) -> None:
         try:
-            await self._do_run(req)
+            await self._do_run_watched(req)
             self._status.state = "completed"
             self._status.phase = CaptureRunPhase.COMPLETED
         except asyncio.CancelledError:
@@ -210,6 +218,47 @@ class CaptureOrchestrator:
                 self._on_completed(req, self.get_status())
             except Exception:
                 log.exception("on_completed hook raised — swallowing to protect the run")
+
+    async def _do_run_watched(self, req: CaptureRunRequest) -> None:
+        """Run the capture alongside a link watcher; whichever finishes first wins.
+
+        Needed because a dead serial link doesn't raise anywhere the run can see:
+        `stabilize_rpm` would simply wait forever on a sample that never comes.
+        """
+        run_task = asyncio.create_task(self._do_run(req))
+        watch_task = asyncio.create_task(self._watch_link())
+        try:
+            done, _ = await asyncio.wait(
+                {run_task, watch_task}, return_when=asyncio.FIRST_COMPLETED
+            )
+        except asyncio.CancelledError:
+            watch_task.cancel()
+            run_task.cancel()
+            with contextlib.suppress(asyncio.CancelledError):
+                await run_task
+            raise
+
+        if run_task in done:
+            watch_task.cancel()
+            with contextlib.suppress(asyncio.CancelledError):
+                await watch_task
+            run_task.result()
+            return
+
+        run_task.cancel()
+        with contextlib.suppress(asyncio.CancelledError, Exception):
+            await run_task
+        watch_task.result()  # raises TytoLinkLost
+
+    async def _watch_link(self) -> None:
+        assert self._stand_service is not None
+        while True:
+            if not self._stand_service.connected:
+                raise TytoLinkLost(
+                    f"Tyto serial link dropped mid-run ({self._stand_service.link_error}) — "
+                    "telemetry, PWM and the cutoff watchdog were all lost; run aborted"
+                )
+            await asyncio.sleep(self._link_check_period_s)
 
     async def _do_run(self, req: CaptureRunRequest) -> None:
         assert self._stand_service is not None

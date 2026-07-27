@@ -1,4 +1,5 @@
 import asyncio
+from typing import Literal
 
 from fastapi import APIRouter, HTTPException, Request, WebSocket, WebSocketDisconnect
 from pydantic import BaseModel, Field
@@ -17,6 +18,11 @@ def _service(req: Request):
 
 class StatusResponse(BaseModel):
     connected: bool
+    # "absent" = no stand configured/started at all; "reconnecting" = the serial
+    # link dropped mid-session and the service is retrying. The UI needs the
+    # difference — the first is a config problem, the second is a live fault.
+    link_state: Literal["absent", "connected", "reconnecting"] = "absent"
+    link_error: str | None = None
     pwm_us: int | None = None
     tripped: str | None = None
     tare_thrust_n: float = 0.0
@@ -38,9 +44,11 @@ class SetPwmRequest(BaseModel):
 def status(req: Request) -> StatusResponse:
     svc = getattr(req.app.state, "thrust_stand", None)
     if svc is None:
-        return StatusResponse(connected=False)
+        return StatusResponse(connected=False, link_state="absent")
     return StatusResponse(
-        connected=True,
+        connected=svc.connected,
+        link_state=svc.link_state,
+        link_error=svc.link_error,
         pwm_us=svc.stand.mot_pwm,
         tripped=svc.watchdog.tripped,
         tare_thrust_n=svc.tare.thrust_n,
@@ -94,6 +102,10 @@ async def telemetry_ws(ws: WebSocket) -> None:
     await ws.accept()
     queue = svc.subscribe()
     try:
+        # Without this a client connecting during an outage sees nothing at all
+        # until the link comes back — indistinguishable from a healthy idle rig.
+        if not svc.connected:
+            await ws.send_json(svc.link_frame())
         while True:
             msg = await queue.get()
             await ws.send_json(msg)

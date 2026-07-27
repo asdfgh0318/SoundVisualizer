@@ -51,6 +51,31 @@ export function TytoStatus() {
   }
   if (!status) return <div className="text-sm text-gray-400 italic">Loading…</div>;
 
+  // A mid-session USB drop is a different animal from "never configured" — the
+  // config hint would be actively misleading, so split the two states.
+  if (status.link_state === 'reconnecting') {
+    return (
+      <div className="text-sm space-y-1">
+        <div className="flex items-center gap-2">
+          <span className="inline-block w-2 h-2 rounded-full bg-red-500 animate-pulse"></span>
+          <span className="text-red-300">Serial link dropped — reconnecting…</span>
+        </div>
+        <p className="text-xs text-amber-300">
+          Telemetry, PWM output and the cutoff watchdog are all down until the link is back.
+          Any running capture has been failed.
+        </p>
+        {status.link_error && (
+          <p className="text-[11px] font-mono text-gray-500">{status.link_error}</p>
+        )}
+        <p className="text-[11px] text-gray-500">
+          Retrying <code className="font-mono">config.toml</code>&apos;s{' '}
+          <code className="font-mono">tyto.tty</code> automatically. Check the USB cable/hub if it
+          doesn&apos;t recover.
+        </p>
+      </div>
+    );
+  }
+
   if (!status.connected) {
     return (
       <div className="text-sm space-y-1">
@@ -136,9 +161,11 @@ export function TytoStatus() {
           Direction check
         </div>
         <MotorTest
-          ready={!tripped && status.pwm_us === 1000}
+          ready={status.connected && !tripped && status.pwm_us === 1000}
           readyReason={
-            tripped
+            !status.connected
+              ? 'Tyto serial link is down — wait for it to reconnect.'
+              : tripped
               ? 'Watchdog tripped — reset before running the direction check.'
               : status.pwm_us !== 1000
                 ? 'Motor not at idle (PWM ≠ 1000) — spool down before running the direction check.'

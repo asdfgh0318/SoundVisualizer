@@ -66,6 +66,8 @@ class FakeService:
         self.stand = FakeStand()
         self.watchdog = CutoffWatchdog(self.stand, CutoffTriggers())
         self.tare = TareOffsets()
+        self.connected = True
+        self.link_error: str | None = None
         self.zero_calls: list[int] = []  # records PWM at the moment zero() is called
 
     def set_pwm(self, pwm_us: int) -> None:
@@ -188,6 +190,39 @@ async def test_subscribe_receives_status_updates(fake_capture, request_body):
     states = {s.phase for s in statuses}
     assert CaptureRunPhase.STARTING in states or CaptureRunPhase.SETTING_PWM in states
     assert CaptureRunPhase.COMPLETED in states
+
+
+async def test_link_drop_fails_run_and_slams_pwm(fake_capture, request_body):
+    """A serial drop mid-run must fail the run loudly — continuing would record
+    empty telemetry with no cutoff watchdog behind it."""
+    request_body.pwm_steps = [PWMStep(pwm_us=1500, recording_ms=5000)]
+    orch = CaptureOrchestrator(settle_before_tare_s=0.0, link_check_period_s=0.01)
+    svc = FakeService()
+    await orch.start_run(svc, request_body)
+    await asyncio.sleep(0.1)  # let it get past tare + set_pwm
+
+    svc.connected = False
+    svc.link_error = "OSError: device disconnected"
+    await _wait_until_done(orch)
+
+    final = orch.get_status()
+    assert final.state == "failed"
+    assert final.phase == CaptureRunPhase.FAILED
+    assert "link dropped" in (final.error or "")
+    assert svc.stand.mot_pwm == 1000
+
+
+async def test_link_down_at_start_fails_before_writing_anything(fake_capture, request_body):
+    orch = CaptureOrchestrator(settle_before_tare_s=0.0, link_check_period_s=0.01)
+    svc = FakeService()
+    svc.connected = False
+    await orch.start_run(svc, request_body)
+    await _wait_until_done(orch)
+
+    final = orch.get_status()
+    assert final.state == "failed"
+    assert final.measurement_ids == []
+    assert svc.stand.mot_pwm == 1000
 
 
 async def test_tare_runs_once_before_motor_spin(fake_capture, request_body):

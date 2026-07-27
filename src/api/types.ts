@@ -81,8 +81,14 @@ export type CutoffChannelName =
 
 export type CutoffTriggers = Record<CutoffChannelName, CutoffChannel>;
 
+/** 'absent' = no stand configured/started; 'reconnecting' = the serial link
+ *  dropped mid-session and the server is retrying it. */
+export type TytoLinkState = 'absent' | 'connected' | 'reconnecting';
+
 export interface TytoStatus {
   connected: boolean;
+  link_state: TytoLinkState;
+  link_error: string | null;
   pwm_us: number | null;
   tripped: string | null;
   tare_thrust_n: number;
@@ -260,6 +266,7 @@ export interface FakeCaptureResult {
 
 export interface TelemetryFrame {
   t: string;
+  connected?: true;
   pwm_us: number;
   thrust_n: number;
   torque_nm: number;
@@ -272,6 +279,16 @@ export interface TelemetryFrame {
   vibration: number;
   tripped: string | null;
 }
+
+/** Sent instead of a data frame when the serial link drops (and again when it
+ *  comes back), so a live view can tell "dead link" from "nothing happening". */
+export interface TelemetryLinkFrame {
+  t: string;
+  connected: false;
+  link_error: string | null;
+}
+
+export type TelemetryMessage = TelemetryFrame | TelemetryLinkFrame;
 
 // Results
 

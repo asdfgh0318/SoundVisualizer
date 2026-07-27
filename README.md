@@ -88,7 +88,7 @@ bash scripts/setup.sh           # Linux / macOS / WSL
 .\scripts\setup.ps1             # Windows PowerShell
 ```
 
-The script: detects your OS, warns about missing system packages, creates `.venv/`, installs Python + npm deps, runs the pytest suite (76 tests should pass), builds the production bundle. Ends with `Setup complete!`.
+The script: detects your OS, warns about missing system packages, creates `.venv/`, installs Python + npm deps, runs the pytest suite (94 tests should pass), builds the production bundle. Ends with `Setup complete!`.
 
 #### B.3 Start the services (two terminals)
 
@@ -115,7 +115,7 @@ The fake-capture flow is the same as Path A above.
 python3.12 -m venv .venv
 .venv/bin/pip install -e ".[dev]"
 npm install
-.venv/bin/pytest server/tests/    # 76 tests should pass
+.venv/bin/pytest server/tests/    # 94 tests should pass
 npm run build                      # type-check + bundle
 ```
 
@@ -148,6 +148,10 @@ For team workflow (branches, PRs, issues, the maintenance directive), see [CLAUD
    cp config.example.toml config.toml
    # In config.toml: set tyto.enabled = true and tyto.tty = "/dev/ttyACM0"
    ```
+   Prefer the stable `/dev/serial/by-id/...` path: the USB link occasionally drops and
+   re-enumerates under a different `ttyUSB*` number. The server detects the drop, fails
+   any in-flight capture run, and reopens that same path automatically (PWM always comes
+   back at idle) — but only the by-id path survives the renumbering.
 6. Restart the server. The Setup page should now show **Tyto stand · Connected, armed**.
 7. Configure safety cutoffs in Setup (current, voltage, RPM, thrust, torque, temps) and **Push to Tyto**.
 8. Add 5–6 mics on the Setup page — one row per UMIK-2, picking the matching USB device, serial, top and bottom elevations, and cal file.
@@ -193,7 +197,7 @@ One performance + N acoustic measurements per PWM step share the same `t_start`,
 
 **Client:** React 19 · Vite 7 · TypeScript · Tailwind 4 · Zustand 5 · Plotly.js (`plotly.js-dist-min`).
 
-**Tests:** pytest (76 passing) covering FFT, calibration, trigger-sync alignment, cutoff watchdog, config loading, capture orchestrator with a fake stand, results endpoints, psychoacoustics. Lint via ruff.
+**Tests:** pytest (94 passing) covering FFT, calibration, trigger-sync alignment, cutoff watchdog, config loading, capture orchestrator with a fake stand, results endpoints, psychoacoustics. Lint via ruff.
 
 ## Acknowledgements
 

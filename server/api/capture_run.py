@@ -26,6 +26,8 @@ async def start_run(req: Request, body: CaptureRunRequest) -> CaptureRunStatus:
     stand = getattr(req.app.state, "thrust_stand", None)
     if stand is None:
         raise HTTPException(503, "Tyto stand not connected (config.tyto.enabled = false)")
+    if not stand.connected:
+        raise HTTPException(503, f"Tyto serial link is down ({stand.link_error}); reconnecting")
     try:
         return await orch.start_run(stand, body)
     except RuntimeError as e:

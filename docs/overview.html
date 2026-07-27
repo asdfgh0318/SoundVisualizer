@@ -244,7 +244,7 @@
   <div class="phase-num">3</div>
   <div class="phase-body">
     <h3>Tyto integration <span class="badge ok">Done</span></h3>
-    <p>Paweł's <code>msp.py</code>/<code>thrust_stand.py</code> wired up. Calibration constants overridden at runtime from <code>config.toml</code>. Cutoff watchdog (all 8 channels, latching). Live telemetry over <code>/tyto/ws/telemetry</code>.</p>
+    <p>Paweł's <code>msp.py</code>/<code>thrust_stand.py</code> wired up. Calibration constants overridden at runtime from <code>config.toml</code>. Cutoff watchdog (all 8 channels, latching). Live telemetry over <code>/tyto/ws/telemetry</code>. Serial-link drops are detected and reconnected automatically — PWM returns at idle, in-flight capture runs fail loudly.</p>
     <div class="meta"><span>Tyto + UMIKs (have)</span></div>
   </div>
 </div>

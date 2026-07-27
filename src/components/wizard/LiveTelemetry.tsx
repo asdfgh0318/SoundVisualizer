@@ -1,5 +1,5 @@
 import { WS_BASE } from '../../api/base';
-import type { TelemetryFrame } from '../../api/types';
+import type { TelemetryFrame, TelemetryMessage } from '../../api/types';
 import { useWebSocketJson } from '../../hooks/useWebSocketJson';
 
 interface Props {
@@ -8,7 +8,12 @@ interface Props {
 
 export function LiveTelemetry({ active }: Props) {
   const url = active ? `${WS_BASE}/tyto/ws/telemetry` : null;
-  const { message, state } = useWebSocketJson<TelemetryFrame>(url, active);
+  const { message: raw, state } = useWebSocketJson<TelemetryMessage>(url, active);
+
+  // The server sends a link frame (no readings) when the serial link drops;
+  // data frames resume by themselves once it reconnects.
+  const linkDown = raw !== null && raw.connected === false;
+  const message: TelemetryFrame | null = raw && raw.connected !== false ? raw : null;
 
   return (
     <div className="bg-gray-900/60 border border-gray-700 rounded-md overflow-hidden">
@@ -17,14 +22,16 @@ export function LiveTelemetry({ active }: Props) {
         <span className="flex items-center gap-2">
           <span
             className={`inline-block w-2 h-2 rounded-full ${
-              state === 'open'
-                ? 'bg-green-500'
-                : state === 'connecting'
-                  ? 'bg-amber-500 animate-pulse'
-                  : 'bg-gray-500'
+              linkDown
+                ? 'bg-red-500 animate-pulse'
+                : state === 'open'
+                  ? 'bg-green-500'
+                  : state === 'connecting'
+                    ? 'bg-amber-500 animate-pulse'
+                    : 'bg-gray-500'
             }`}
           />
-          <span className="text-gray-400">{state}</span>
+          <span className="text-gray-400">{linkDown ? 'serial link down' : state}</span>
         </span>
       </div>
       <div className="p-3 grid grid-cols-2 sm:grid-cols-4 gap-3 text-sm">
@@ -37,6 +44,17 @@ export function LiveTelemetry({ active }: Props) {
         <Cell label="Temp 0" value={message ? message.temp0_c.toFixed(1) : '—'} unit="°C" />
         <Cell label="Vibration" value={message ? `${message.vibration}` : '—'} unit="" />
       </div>
+      {linkDown && (
+        <div className="px-3 py-2 border-t border-red-700/60 bg-red-900/30 text-red-300 text-xs">
+          Tyto serial link dropped — reconnecting. No telemetry, no PWM output and{' '}
+          <strong>no cutoff watchdog</strong> until it&apos;s back.
+          {raw && 'link_error' in raw && raw.link_error && (
+            <span className="block font-mono text-[11px] text-red-400/80 mt-1">
+              {raw.link_error}
+            </span>
+          )}
+        </div>
+      )}
       {message?.tripped && (
         <div className="px-3 py-2 border-t border-red-700/60 bg-red-900/30 text-red-300 text-xs">
           Tripped on <strong>{message.tripped}</strong> — PWM forced to 1000 µs.

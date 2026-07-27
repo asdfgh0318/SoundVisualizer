@@ -44,7 +44,7 @@ server/
     fft.py             # Welch PSD → dB
     calibration.py     # REW-format UMIK-2 cal parser + spectrum correction
     cutoff_watchdog.py # Tyto safety latching
-    thrust_stand_service.py  # owns the Tyto connection + sample stream
+    thrust_stand_service.py  # owns the Tyto connection + sample stream; detects link loss and reconnects
     capture_orchestrator.py  # per-half PWM-ramp capture loop
     calibration_override.py  # applies config.toml to Paweł's vendored constants
     config.py          # Pydantic config loader (config.toml) — [server], [tyto]
@@ -53,7 +53,7 @@ server/
     paths.py keys.py measurements.py calibration.py
     setup_presets.py compat_tolerances.py psychoacoustics.py
   vendor/pawel/      # Vendored — Paweł's Tyto MSP + Norsonic protocol code
-  tests/             # 76 passing tests
+  tests/             # 94 passing tests
 ```
 
 ## Conventions
@@ -88,11 +88,11 @@ POST /capture/run              (orchestrated PWM-ramp capture)
 GET  /capture/run
 DELETE /capture/run            (abort, slams PWM=1000)
 WS   /capture/run/ws           (live capture status stream)
-GET  /tyto/status
+GET  /tyto/status              (live link_state: absent | connected | reconnecting)
 POST /tyto/pwm
 POST /tyto/cutoffs
 POST /tyto/reset
-WS   /tyto/ws/telemetry        (~33 Hz Tyto poll stream)
+WS   /tyto/ws/telemetry        (~33 Hz Tyto poll stream; link-down frames on serial drop)
 POST /dev/seed                 (creates a demo key with synthetic drone-noise data)
 POST /dev/fake_capture         (real capture-run body, bypasses hardware)
 ```
