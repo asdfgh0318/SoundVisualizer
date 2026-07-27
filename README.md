@@ -191,6 +191,22 @@ data/
 
 One performance + N acoustic measurements per PWM step share the same `t_start`, which is how the Results page groups them into "PWM points".
 
+### Backup + reviewing results away from the rig
+
+The Pi mirrors `data/` to the private repo [`SoundVisualizer-data`](https://github.com/asdfgh0318/SoundVisualizer-data) every 15 min (`soundvis-backup.timer` → `scripts/backup_data.sh`). Since the store is just files, any clone of that repo is a complete dataset — point a local server at it and you get the full Results UI (FFT, polar, psychoacoustics, compare-overlay) with no Pi involved:
+
+```bash
+git clone git@github.com:asdfgh0318/SoundVisualizer-data.git ../SoundVisualizer-data
+# later: cd ../SoundVisualizer-data && git pull
+
+SOUNDVIS_DATA=../SoundVisualizer-data/data .venv/bin/uvicorn server.main:app --port 8000
+npm run dev     # → http://localhost:5173/results
+```
+
+`SOUNDVIS_DATA` is what the store reads for its root (`server/store/paths.py`), so this works on any machine that can clone the repo — nothing is hardcoded to the Pi.
+
+Caveat: the timer runs every 15 min, so a capture from the last few minutes may not be pushed yet. Force one with `ssh jama '~/SoundVisualizer/scripts/backup_data.sh'`.
+
 ## Tech stack
 
 **Server:** Python 3.12 · FastAPI · uvicorn · `sounddevice` (PortAudio) · `pyserial-asyncio` · `numpy` · `scipy` (Welch PSD, filters) · `aiofiles` · `aioftp` + `websockets` (Norsonic, later).
