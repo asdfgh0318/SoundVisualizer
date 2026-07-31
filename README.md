@@ -88,7 +88,7 @@ bash scripts/setup.sh           # Linux / macOS / WSL
 .\scripts\setup.ps1             # Windows PowerShell
 ```
 
-The script: detects your OS, warns about missing system packages, creates `.venv/`, installs Python + npm deps, runs the pytest suite (94 tests should pass), builds the production bundle. Ends with `Setup complete!`.
+The script: detects your OS, warns about missing system packages, creates `.venv/`, installs Python + npm deps, runs the pytest suite (111 tests should pass), builds the production bundle. Ends with `Setup complete!`.
 
 #### B.3 Start the services (two terminals)
 
@@ -115,7 +115,7 @@ The fake-capture flow is the same as Path A above.
 python3.12 -m venv .venv
 .venv/bin/pip install -e ".[dev]"
 npm install
-.venv/bin/pytest server/tests/    # 94 tests should pass
+.venv/bin/pytest server/tests/    # 111 tests should pass
 npm run build                      # type-check + bundle
 ```
 
@@ -213,7 +213,7 @@ Caveat: the timer runs every 15 min, so a capture from the last few minutes may 
 
 **Client:** React 19 · Vite 7 · TypeScript · Tailwind 4 · Zustand 5 · Plotly.js (`plotly.js-dist-min`).
 
-**Tests:** pytest (101 passing) covering FFT, calibration, trigger-sync alignment, cutoff watchdog, config loading, capture orchestrator with a fake stand, results endpoints, psychoacoustics. Lint via ruff.
+**Tests:** pytest (111 passing) covering FFT, calibration, trigger-sync alignment, cutoff watchdog, config loading, capture orchestrator with a fake stand, results endpoints, psychoacoustics. Lint via ruff.
 
 ## Acknowledgements
 

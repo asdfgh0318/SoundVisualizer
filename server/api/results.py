@@ -20,7 +20,11 @@ from server.api.schemas import (
     MeasurementHalf,
     PerformanceMeasurementMeta,
 )
-from server.core.calibration import apply_calibration_to_spectrum, is_absolute_spl
+from server.core.calibration import (
+    apply_calibration_to_spectrum,
+    is_absolute_spl,
+    pascals_per_full_scale,
+)
 from server.core.fft import compute_fft
 from server.core.psychoacoustics import PsychoacousticMetrics
 from server.core.psychoacoustics import compute_metrics as compute_psychoacoustic_metrics
@@ -371,15 +375,23 @@ def get_psychoacoustics(slug: str, meas_id: str) -> PsychoacousticMetrics:
     if not isinstance(meta, AcousticMeasurementMeta):
         raise HTTPException(400, "psychoacoustics is only available for acoustic measurements")
 
+    pa_scalar: float | None = None
+    if meta.calibration_file_id:
+        cal = cal_store.get_calibration(meta.calibration_file_id)
+        if cal is not None:
+            pa_scalar = pascals_per_full_scale(cal)
+
     meas_path = measurement_dir(slug, meas_id)
     cached = psy_store.load(meas_path)
-    if cached is not None:
+    # A cal file uploaded after the capture flips the scale — don't keep serving
+    # the relative numbers cached before it existed.
+    if cached is not None and cached.absolute == (pa_scalar is not None):
         return cached
 
     audio_path = meas_path / "audio.wav"
     if not audio_path.exists():
         raise HTTPException(404, "audio.wav missing")
     sr, audio = read_wav_float32(audio_path)
-    metrics = compute_psychoacoustic_metrics(audio, sr)
+    metrics = compute_psychoacoustic_metrics(audio, sr, pa_per_full_scale=pa_scalar)
     psy_store.save(meas_path, metrics)
     return metrics

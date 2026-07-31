@@ -42,18 +42,18 @@ server/
     trigger_sync.py    # dBFS onset alignment (port from src/audio/triggerSync.ts)
     wav.py             # float32 WAV read/write via scipy
     fft.py             # Welch PSD → dB
-    calibration.py     # REW-format UMIK-2 cal parser + response curve + dBFS→dB SPL
+    calibration.py     # REW-format UMIK-2 cal parser + response curve + dBFS→dB SPL + Pa scalar
     cutoff_watchdog.py # Tyto safety latching
     thrust_stand_service.py  # owns the Tyto connection + sample stream; detects link loss and reconnects
     capture_orchestrator.py  # per-half PWM-ramp capture loop
     calibration_override.py  # applies config.toml to Paweł's vendored constants
     config.py          # Pydantic config loader (config.toml) — [server], [tyto]
-    psychoacoustics.py # mosqito loudness/sharpness/roughness + Zwicker PA
+    psychoacoustics.py # mosqito loudness/sharpness/roughness + Zwicker PA (audio scaled to Pa)
   store/             # Filesystem JSON+WAV persistence
     paths.py keys.py measurements.py calibration.py
-    setup_presets.py compat_tolerances.py psychoacoustics.py
+    setup_presets.py compat_tolerances.py psychoacoustics.py (versioned metrics cache)
   vendor/pawel/      # Vendored — Paweł's Tyto MSP + Norsonic protocol code
-  tests/             # 101 passing tests
+  tests/             # 111 passing tests
 ```
 
 ## Conventions

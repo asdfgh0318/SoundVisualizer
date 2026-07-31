@@ -1,12 +1,14 @@
 """Smoke tests for the psychoacoustics pipeline. We don't try to hit absolute
-sone/acum/asper targets — those depend on dB SPL calibration we don't apply
-here. Instead we verify:
+sone/acum/asper targets — mosqito itself is the thing under test there. Instead
+we verify:
   - The pipeline returns finite, non-negative values.
-  - Loudness scales monotonically with amplitude.
+  - Loudness scales monotonically with amplitude (and with the Pa scalar).
   - PA scales monotonically with amplitude.
-  - Cache on disk avoids recomputation.
+  - Metrics are flagged absolute only when the audio was scaled to Pa.
+  - Cache on disk avoids recomputation, and stale-schema cache files don't.
 """
 
+import json
 from datetime import UTC, datetime, timedelta
 
 import numpy as np
@@ -14,12 +16,14 @@ import pytest
 from fastapi.testclient import TestClient
 
 from server.api.schemas import AcousticMeasurementMeta, Key, MeasurementHalf
+from server.core.calibration import parse_umik_calibration
 from server.core.psychoacoustics import (
     compute_metrics,
     psychoacoustic_annoyance,
 )
 from server.core.wav import write_wav_float32
 from server.main import app
+from server.store import calibration as cal_store
 from server.store import keys as keys_store
 from server.store import measurements as meas_store
 from server.store import psychoacoustics as psy_store
@@ -65,7 +69,7 @@ def test_pa_zero_loudness_returns_zero():
 
 def test_compute_metrics_returns_finite_values():
     audio = _sine(0.1)
-    m = compute_metrics(audio, 48000)
+    m = compute_metrics(audio, 48000, pa_per_full_scale=None)
     assert m.loudness_sone > 0
     assert m.sharpness_acum > 0
     assert m.roughness_asper >= 0
@@ -78,20 +82,20 @@ def test_compute_metrics_returns_finite_values():
 
 
 def test_loudness_scales_with_amplitude():
-    quiet = compute_metrics(_sine(0.05), 48000)
-    loud = compute_metrics(_sine(0.5), 48000)
+    quiet = compute_metrics(_sine(0.05), 48000, pa_per_full_scale=None)
+    loud = compute_metrics(_sine(0.5), 48000, pa_per_full_scale=None)
     assert loud.loudness_sone > quiet.loudness_sone
     assert loud.annoyance > quiet.annoyance
 
 
 def test_compute_metrics_handles_too_short_audio():
     audio = np.zeros(100, dtype=np.float32)
-    m = compute_metrics(audio, 48000)
+    m = compute_metrics(audio, 48000, pa_per_full_scale=None)
     assert m.loudness_sone == 0
     assert m.annoyance == 0
 
 
-def _make_acoustic(slug: str, audio: np.ndarray, fs: int = 48000):
+def _make_acoustic(slug: str, audio: np.ndarray, fs: int = 48000, cal_id: str | None = None):
     t = datetime.now(UTC)
     meta = AcousticMeasurementMeta(
         t_start=t,
@@ -101,6 +105,7 @@ def _make_acoustic(slug: str, audio: np.ndarray, fs: int = 48000):
         elevation_deg=0.0,
         half=MeasurementHalf.TOP,
         sample_rate=fs,
+        calibration_file_id=cal_id,
     )
     saved = meas_store.create_measurement(slug, meta)
     write_wav_float32(measurement_dir(slug, saved.id) / "audio.wav", audio, fs)
@@ -135,3 +140,89 @@ def test_endpoint_404_on_missing(client):
     keys_store.create_key(k)
     r = client.get(f"/keys/{k.slug}/measurements/nope/psychoacoustics")
     assert r.status_code == 404
+
+
+def test_pa_scaling_flags_absolute_and_raises_loudness():
+    audio = _sine(0.1, duration_s=0.5)
+    rel = compute_metrics(audio, 48000, pa_per_full_scale=None)
+    absolute = compute_metrics(audio, 48000, pa_per_full_scale=3.6394)
+    assert rel.absolute is False
+    assert absolute.absolute is True
+    # Same clip, larger pressure → more sone. Guards against the scalar being dropped.
+    assert absolute.loudness_sone > rel.loudness_sone
+
+
+def test_too_short_audio_still_reports_scale():
+    short = np.zeros(100, dtype=np.float32)
+    assert compute_metrics(short, 48000, pa_per_full_scale=3.6).absolute is True
+    assert compute_metrics(short, 48000, pa_per_full_scale=None).absolute is False
+
+
+def _legacy_cache_payload(loudness: float = 999.0) -> str:
+    """A v1 (pre-Pa-scaling) cache file: bare metrics, no version envelope."""
+    return json.dumps({
+        "loudness_sone": loudness,
+        "sharpness_acum": 9.0,
+        "roughness_asper": 9.0,
+        "fluctuation_vacil": 0.0,
+        "annoyance": 999.0,
+        "fluctuation_assumed_zero": True,
+    })
+
+
+def test_cache_load_rejects_unversioned_payload(tmp_path):
+    d = tmp_path / "m"
+    d.mkdir()
+    psy_store.cache_path(d).write_text(_legacy_cache_payload())
+    assert psy_store.load(d) is None
+
+
+def test_cache_load_rejects_older_version(tmp_path):
+    d = tmp_path / "m"
+    d.mkdir()
+    payload = json.loads(_legacy_cache_payload())
+    payload["absolute"] = False
+    psy_store.cache_path(d).write_text(
+        json.dumps({"version": psy_store.CACHE_VERSION - 1, "metrics": payload})
+    )
+    assert psy_store.load(d) is None
+
+
+def test_cache_roundtrips_current_version(tmp_path):
+    d = tmp_path / "m"
+    d.mkdir()
+    m = compute_metrics(_sine(0.1, duration_s=0.5), 48000, pa_per_full_scale=3.6394)
+    psy_store.save(d, m)
+    assert psy_store.load(d) == m
+
+
+def test_endpoint_recomputes_stale_unversioned_cache(client):
+    k = Key(motor="m", propeller="p", shroud="s", notes="n")
+    keys_store.create_key(k)
+    saved = _make_acoustic(k.slug, _sine(0.1, duration_s=0.5))
+
+    cache = psy_store.cache_path(measurement_dir(k.slug, saved.id))
+    cache.write_text(_legacy_cache_payload())
+
+    r = client.get(f"/keys/{k.slug}/measurements/{saved.id}/psychoacoustics")
+    assert r.status_code == 200, r.text
+    assert r.json()["loudness_sone"] != 999.0
+    assert r.json()["loudness_sone"] > 0
+    assert json.loads(cache.read_text())["version"] == psy_store.CACHE_VERSION
+
+
+def test_endpoint_applies_calibration_when_present(client):
+    k = Key(motor="m", propeller="p", shroud="s", notes="n")
+    keys_store.create_key(k)
+    cal_text = '"Sens Factor =-11.2dB, SERNO: 8100111"\n20.0 0.0\n20000.0 0.0\n'
+    cal_store.save_calibration("8100111", cal_text, parse_umik_calibration(cal_text))
+
+    audio = _sine(0.1, duration_s=0.5)
+    with_cal = _make_acoustic(k.slug, audio, cal_id="8100111")
+    without_cal = _make_acoustic(k.slug, audio)
+
+    a = client.get(f"/keys/{k.slug}/measurements/{with_cal.id}/psychoacoustics").json()
+    b = client.get(f"/keys/{k.slug}/measurements/{without_cal.id}/psychoacoustics").json()
+    assert a["absolute"] is True
+    assert b["absolute"] is False
+    assert a["loudness_sone"] > b["loudness_sone"]

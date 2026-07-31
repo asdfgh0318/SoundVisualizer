@@ -330,6 +330,9 @@ export interface PsychoacousticMetrics {
   fluctuation_vacil: number;
   annoyance: number;
   fluctuation_assumed_zero: boolean;
+  // false = audio was not scaled to Pa (no Sens Factor), so loudness/sharpness/PA
+  // are relative-only. The error is nonlinear — not comparable with absolute rows.
+  absolute: boolean;
 }
 
 export interface CompatTolerance {

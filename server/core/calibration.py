@@ -84,11 +84,26 @@ def parse_umik_calibration(text: str) -> UmikCalibration:
 # A calibrator driving the mic at 94 dB SPL is 1 Pa rms — the reference level the
 # UMIK Sens Factor is quoted against (it records the dBFS the mic reports there).
 CALIBRATOR_REFERENCE_SPL_DB = 94.0
+REFERENCE_PRESSURE_PA = 20e-6
 
 
 def is_absolute_spl(cal: UmikCalibration) -> bool:
     """Whether `cal` can convert dBFS to absolute dB SPL (needs a Sens Factor)."""
     return cal.sens_factor_db is not None
+
+
+def pascals_per_full_scale(cal: UmikCalibration) -> float | None:
+    """Pa per unit of float audio in [-1, 1], or None without a Sens Factor.
+
+    Falls out of `SPL = 20*log10(A_rms) - sens_factor_db + 94` combined with
+    `p_rms = 20e-6 * 10**(SPL/20)`: the level terms cancel and leave a constant
+    scalar. Consumers that need Pa (mosqito) multiply the samples by it.
+    """
+    if cal.sens_factor_db is None:
+        return None
+    return REFERENCE_PRESSURE_PA * 10 ** (
+        (CALIBRATOR_REFERENCE_SPL_DB - cal.sens_factor_db) / 20.0
+    )
 
 
 def apply_calibration_to_spectrum(

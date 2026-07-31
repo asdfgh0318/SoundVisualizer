@@ -1,7 +1,12 @@
 import numpy as np
 import pytest
 
-from server.core.calibration import parse_umik_calibration
+from server.core.calibration import (
+    CALIBRATOR_REFERENCE_SPL_DB,
+    REFERENCE_PRESSURE_PA,
+    parse_umik_calibration,
+    pascals_per_full_scale,
+)
 
 SAMPLE_FILE = '''"Sens Factor =-1.7240dB, SERNO: 8100123"
 "AGain=-9.0dB"
@@ -65,3 +70,41 @@ def test_parse_skips_comment_lines():
 '''
     cal = parse_umik_calibration(text)
     assert len(cal.freq_hz) == 1
+
+
+SAMPLE_NO_SENS = '''"SERNO: 8100999"
+20.0   -0.5
+1000.0  0.0
+'''
+
+
+def test_pascals_per_full_scale_scalar():
+    cal = parse_umik_calibration(
+        '"Sens Factor =-11.2dB, SERNO: 8100111"\n20.0 0.0\n1000.0 0.0\n'
+    )
+    assert pascals_per_full_scale(cal) == pytest.approx(3.6394, abs=1e-4)
+
+
+def test_pascals_per_full_scale_round_trips_to_fft_spl():
+    """A full-scale sine must land on the same SPL the FFT path reports for it.
+
+    The FFT path's full-scale sine sits at -3.01 dBFS, so its absolute level is
+    -3.01 - sens + 94. Scaling the same sine to Pa and taking 20*log10(p_rms/20uPa)
+    has to agree, or the two calibration paths disagree about what 0 dBFS means.
+    """
+    sens = -11.2
+    cal = parse_umik_calibration(f'"Sens Factor ={sens}dB, SERNO: 8100111"\n20.0 0.0\n1000.0 0.0\n')
+    scalar = pascals_per_full_scale(cal)
+
+    fs = 48000
+    t = np.arange(fs) / fs
+    p = np.sin(2 * np.pi * 1000 * t) * scalar
+    spl_from_pa = 20 * np.log10(np.sqrt(np.mean(p ** 2)) / REFERENCE_PRESSURE_PA)
+
+    spl_from_fft = -3.01 - sens + CALIBRATOR_REFERENCE_SPL_DB
+    assert spl_from_pa == pytest.approx(102.19, abs=0.02)
+    assert spl_from_pa == pytest.approx(spl_from_fft, abs=0.01)
+
+
+def test_pascals_per_full_scale_none_without_sens_factor():
+    assert pascals_per_full_scale(parse_umik_calibration(SAMPLE_NO_SENS)) is None

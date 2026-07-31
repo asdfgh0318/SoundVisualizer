@@ -13,11 +13,18 @@ Pipeline:
     sanity-check against its built-in reading.
   - PA: Zwicker formula, computed manually from L/S/R/F.
 
-`mosqito` expects acoustic pressure in Pa. We pass float32 audio in [-1, 1]
-(dBFS-relative) directly — absolute values are therefore arbitrary. Relative
-comparisons within a key are valid. Note this path does NOT consume the UMIK
-calibration, unlike the FFT path which converts to absolute dB SPL: loudness and
-sharpness are level-dependent, so these numbers are not yet ISO-comparable.
+`mosqito` expects acoustic pressure in Pa, so callers pass the UMIK Sens Factor
+derived scalar (`calibration.pascals_per_full_scale`) and we scale the float32
+[-1, 1] samples by it — loudness and sharpness are level-dependent, so without
+it the numbers are not ISO-comparable. `pa_per_full_scale=None` is the explicit
+opt-out (no cal file, or a cal file without a Sens Factor); the resulting metrics
+carry `absolute=False` and are only good for relative comparison — the error is
+nonlinear, not an offset you can subtract afterwards.
+
+Only the scalar is applied. The mic's per-frequency response curve — which the
+FFT path does interpolate — is NOT applied here: correcting a time signal means
+FIR-filtering it, which is separate work. UMIK-2 curves are within ~±2 dB over
+the drone band, so this is an approximation, not an exact ISO 532-1 input.
 """
 
 import math
@@ -39,6 +46,9 @@ class PsychoacousticMetrics(BaseModel):
     annoyance: float
     # Carried through so the UI can flag the F=0 caveat.
     fluctuation_assumed_zero: bool = True
+    # Whether the audio was scaled to Pa — i.e. whether sone/acum/PA mean anything
+    # in ISO terms. Mirrors FFTResponse.absolute_spl.
+    absolute: bool
 
 
 def psychoacoustic_annoyance(
@@ -62,8 +72,18 @@ def psychoacoustic_annoyance(
     return float(N * (1.0 + math.sqrt(w_S ** 2 + w_FR ** 2)))
 
 
-def compute_metrics(audio: np.ndarray, sample_rate: int) -> PsychoacousticMetrics:
-    """Compute all five metrics for a mono audio buffer."""
+def compute_metrics(
+    audio: np.ndarray,
+    sample_rate: int,
+    *,
+    pa_per_full_scale: float | None,
+) -> PsychoacousticMetrics:
+    """Compute all five metrics for a mono audio buffer.
+
+    `pa_per_full_scale` is keyword-only and has no default so no caller can
+    silently end up with arbitrary-scale loudness; pass None to opt out.
+    """
+    absolute = pa_per_full_scale is not None
     if audio.ndim > 1:
         audio = audio[:, 0]
     if audio.size < int(sample_rate * 0.2):
@@ -71,10 +91,12 @@ def compute_metrics(audio: np.ndarray, sample_rate: int) -> PsychoacousticMetric
         return PsychoacousticMetrics(
             loudness_sone=0.0, sharpness_acum=0.0,
             roughness_asper=0.0, fluctuation_vacil=0.0,
-            annoyance=0.0,
+            annoyance=0.0, absolute=absolute,
         )
 
     audio64 = audio.astype(np.float64)
+    if pa_per_full_scale is not None:
+        audio64 = audio64 * pa_per_full_scale
     N, N_spec, _bark = loudness_zwst(audio64, sample_rate)
     L = float(N)
     S = float(sharpness_din_from_loudness(N, N_spec))
@@ -93,4 +115,5 @@ def compute_metrics(audio: np.ndarray, sample_rate: int) -> PsychoacousticMetric
         fluctuation_vacil=F,
         annoyance=PA,
         fluctuation_assumed_zero=True,
+        absolute=absolute,
     )
