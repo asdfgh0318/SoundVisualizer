@@ -81,6 +81,16 @@ def parse_umik_calibration(text: str) -> UmikCalibration:
     )
 
 
+# A calibrator driving the mic at 94 dB SPL is 1 Pa rms — the reference level the
+# UMIK Sens Factor is quoted against (it records the dBFS the mic reports there).
+CALIBRATOR_REFERENCE_SPL_DB = 94.0
+
+
+def is_absolute_spl(cal: UmikCalibration) -> bool:
+    """Whether `cal` can convert dBFS to absolute dB SPL (needs a Sens Factor)."""
+    return cal.sens_factor_db is not None
+
+
 def apply_calibration_to_spectrum(
     freq_hz: np.ndarray,
     mag_db: np.ndarray,
@@ -90,6 +100,14 @@ def apply_calibration_to_spectrum(
 
     Linear interpolation of `cal.gain_db` over `freq_hz`. Bins outside the
     calibration's frequency range clamp to the boundary values.
+
+    With a Sens Factor present the constant `94 - sens_factor_db` is added too,
+    turning dBFS into absolute dB SPL. Adding a level offset to a per-Hz density
+    is correct here: it passes through the downstream band integration unchanged.
+    AGain is deliberately *not* added — the Sens Factor already accounts for the
+    mic's internal gain; AGain only records which analog-gain setting it is valid
+    at. Without a Sens Factor only the response curve is applied and the result
+    stays dBFS-relative (see `is_absolute_spl`).
     """
     correction = np.interp(
         freq_hz,
@@ -98,4 +116,6 @@ def apply_calibration_to_spectrum(
         left=float(cal.gain_db[0]),
         right=float(cal.gain_db[-1]),
     )
+    if cal.sens_factor_db is not None:
+        correction = correction + (CALIBRATOR_REFERENCE_SPL_DB - cal.sens_factor_db)
     return mag_db + correction

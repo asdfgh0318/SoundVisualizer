@@ -135,8 +135,8 @@ export function PsychoacousticsTab({ keySlug, point }: Props) {
       <div className="text-xs text-gray-500 flex items-center gap-2 flex-wrap">
         <span>
           Loudness / sharpness / roughness are derived from float32 audio in [-1, 1] — relative
-          comparisons within a key are valid; absolute sone values assume calibrated dB SPL input,
-          which only applies once a UMIK-2 calibration file is uploaded for each mic.
+          comparisons within a key are valid. Unlike the FFT/polar tabs, this path does not apply
+          the UMIK-2 calibration, so the absolute sone/acum values are not ISO-comparable.
         </span>
         <span className="inline-flex items-center gap-2 ml-auto whitespace-nowrap">
           <span>color scale per column:</span>

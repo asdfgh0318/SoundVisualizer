@@ -53,6 +53,11 @@ export function FFTTab({ compare }: Props) {
   const allCalibrated = fetched.length > 0 && fetched.every((a) => ffts[a.id]?.calibrated);
   const mixedCalibration =
     fetched.some((a) => ffts[a.id]?.calibrated) && !allCalibrated;
+  const allAbsolute = fetched.length > 0 && fetched.every((a) => ffts[a.id]?.absolute_spl);
+  const mixedAbsolute = fetched.some((a) => ffts[a.id]?.absolute_spl) && !allAbsolute;
+  // Response curve applied but no Sens Factor → still dBFS, must not be labelled SPL.
+  const curveOnly = fetched.some((a) => ffts[a.id]?.calibrated && !ffts[a.id]?.absolute_spl);
+  const unit = allAbsolute ? 'dB SPL' : 'dBFS';
   const comparing = series.length > 1;
 
   return (
@@ -70,9 +75,16 @@ export function FFTTab({ compare }: Props) {
 
       {error && <div className="text-sm text-red-400">FFT error: {error}</div>}
 
-      {mixedCalibration && (
+      {(mixedCalibration || mixedAbsolute) && (
         <div className="text-xs text-amber-400 bg-amber-500/10 border border-amber-500/30 rounded-md p-2">
-          ⚠ Mixing calibrated (dB SPL) and uncalibrated (dBFS) series — absolute levels aren't comparable across these lines.
+          ⚠ Mixing absolute (dB SPL) and relative (dBFS) series — absolute levels aren't comparable across these lines.
+        </div>
+      )}
+
+      {curveOnly && (
+        <div className="text-xs text-amber-400 bg-amber-500/10 border border-amber-500/30 rounded-md p-2">
+          ⚠ Some calibration files carry no Sens Factor — only the frequency-response curve is
+          applied to those, so their levels stay dBFS-relative, not dB SPL.
         </div>
       )}
 
@@ -81,7 +93,14 @@ export function FFTTab({ compare }: Props) {
           <div className="text-sm text-gray-400 italic">No acoustic measurements at this point.</div>
         )}
         {elevations.map((elev) => (
-          <OverlayRow key={elev} elevation={elev} series={series} ffts={ffts} showLegend={comparing} />
+          <OverlayRow
+            key={elev}
+            elevation={elev}
+            series={series}
+            ffts={ffts}
+            showLegend={comparing}
+            unit={unit}
+          />
         ))}
       </div>
     </div>
@@ -95,11 +114,13 @@ function OverlayRow({
   series,
   ffts,
   showLegend,
+  unit,
 }: {
   elevation: number;
   series: CompareSeries[];
   ffts: Record<string, FFTResponse>;
   showLegend: boolean;
+  unit: string;
 }) {
   const members = useMemo(
     () =>
@@ -120,10 +141,10 @@ function OverlayRow({
           x: r ? r.frequencies.slice(1) : [],
           y: r ? r.magnitudes_db.slice(1) : [],
           line: { color: s.color, width: 1.3 },
-          hovertemplate: `${s.label}<br>%{x:.0f} Hz<br>%{y:.1f} dB<extra></extra>`,
+          hovertemplate: `${s.label}<br>%{x:.0f} Hz<br>%{y:.1f} ${unit}<extra></extra>`,
         };
       }),
-    [members, ffts],
+    [members, ffts, unit],
   );
 
   const layout = useMemo<Partial<Layout>>(
@@ -144,12 +165,12 @@ function OverlayRow({
         gridcolor: '#374151',
         zerolinecolor: '#374151',
         tickfont: { color: '#9ca3af', size: 10 },
-        title: { text: 'dB', font: { color: '#9ca3af', size: 10 } },
+        title: { text: unit, font: { color: '#9ca3af', size: 10 } },
       },
       showlegend: showLegend,
       legend: { orientation: 'h', x: 0, y: 1.18, font: { color: '#d1d5db', size: 10 }, bgcolor: 'rgba(0,0,0,0)' },
     }),
-    [showLegend],
+    [showLegend, unit],
   );
 
   const elevLabel = elevation > 0 ? `+${elevation}°` : `${elevation}°`;

@@ -42,7 +42,7 @@ server/
     trigger_sync.py    # dBFS onset alignment (port from src/audio/triggerSync.ts)
     wav.py             # float32 WAV read/write via scipy
     fft.py             # Welch PSD → dB
-    calibration.py     # REW-format UMIK-2 cal parser + spectrum correction
+    calibration.py     # REW-format UMIK-2 cal parser + response curve + dBFS→dB SPL
     cutoff_watchdog.py # Tyto safety latching
     thrust_stand_service.py  # owns the Tyto connection + sample stream; detects link loss and reconnects
     capture_orchestrator.py  # per-half PWM-ramp capture loop
@@ -53,7 +53,7 @@ server/
     paths.py keys.py measurements.py calibration.py
     setup_presets.py compat_tolerances.py psychoacoustics.py
   vendor/pawel/      # Vendored — Paweł's Tyto MSP + Norsonic protocol code
-  tests/             # 94 passing tests
+  tests/             # 101 passing tests
 ```
 
 ## Conventions

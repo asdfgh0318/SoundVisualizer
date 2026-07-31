@@ -14,9 +14,10 @@ Pipeline:
   - PA: Zwicker formula, computed manually from L/S/R/F.
 
 `mosqito` expects acoustic pressure in Pa. We pass float32 audio in [-1, 1]
-(dBFS-relative) directly — absolute values are therefore arbitrary until a
-calibrated SPL reference is applied. Relative comparisons within a key are
-valid.
+(dBFS-relative) directly — absolute values are therefore arbitrary. Relative
+comparisons within a key are valid. Note this path does NOT consume the UMIK
+calibration, unlike the FFT path which converts to absolute dB SPL: loudness and
+sharpness are level-dependent, so these numbers are not yet ISO-comparable.
 """
 
 import math

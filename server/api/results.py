@@ -20,7 +20,7 @@ from server.api.schemas import (
     MeasurementHalf,
     PerformanceMeasurementMeta,
 )
-from server.core.calibration import apply_calibration_to_spectrum
+from server.core.calibration import apply_calibration_to_spectrum, is_absolute_spl
 from server.core.fft import compute_fft
 from server.core.psychoacoustics import PsychoacousticMetrics
 from server.core.psychoacoustics import compute_metrics as compute_psychoacoustic_metrics
@@ -300,6 +300,10 @@ class FFTResponse(BaseModel):
     magnitudes_db: list[float]
     sample_rate: int
     calibrated: bool
+    # `calibrated` only means a cal file was applied. Without a Sens Factor the
+    # spectrum keeps the response curve but stays dBFS-relative, so the UI needs
+    # this to know whether it may label the axis "dB SPL".
+    absolute_spl: bool
     window: str
     size: int
 
@@ -327,17 +331,20 @@ def get_fft(
     freq, mag_db = compute_fft(audio, sr, window=window, size=size, overlap=overlap)
 
     calibrated = False
+    absolute_spl = False
     if meta.calibration_file_id:
         cal = cal_store.get_calibration(meta.calibration_file_id)
         if cal is not None:
             mag_db = apply_calibration_to_spectrum(freq, mag_db, cal)
             calibrated = True
+            absolute_spl = is_absolute_spl(cal)
 
     return FFTResponse(
         frequencies=freq.tolist(),
         magnitudes_db=mag_db.tolist(),
         sample_rate=sr,
         calibrated=calibrated,
+        absolute_spl=absolute_spl,
         window=window,
         size=size,
     )

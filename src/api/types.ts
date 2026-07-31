@@ -357,7 +357,10 @@ export interface FFTResponse {
   frequencies: number[];
   magnitudes_db: number[];
   sample_rate: number;
+  /** A cal file was applied (response curve). Does not imply absolute levels. */
   calibrated: boolean;
+  /** Cal file carried a Sens Factor, so magnitudes are absolute dB SPL, not dBFS. */
+  absolute_spl: boolean;
   window: string;
   size: number;
 }

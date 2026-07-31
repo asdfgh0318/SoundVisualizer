@@ -70,10 +70,14 @@ export function PolarTab({ compare }: Props) {
     }));
   }, [series, ffts, band]);
 
-  const allCalibrated =
-    allAcoustic.length > 0 && allAcoustic.every((a) => ffts[a.id]?.calibrated);
-  const anyCalibrated = allAcoustic.some((a) => ffts[a.id]?.calibrated);
-  const mixedCalibration = anyCalibrated && !allCalibrated;
+  const allAbsolute =
+    allAcoustic.length > 0 && allAcoustic.every((a) => ffts[a.id]?.absolute_spl);
+  const mixedAbsolute = allAcoustic.some((a) => ffts[a.id]?.absolute_spl) && !allAbsolute;
+  // Response curve applied but no Sens Factor → still dBFS, must not be labelled SPL.
+  const curveOnly = allAcoustic.some(
+    (a) => ffts[a.id]?.calibrated && !ffts[a.id]?.absolute_spl,
+  );
+  const unit = allAbsolute ? 'dB SPL' : 'dBFS';
   const drawable = polarSeries.filter((s) => s.points.length >= 2);
 
   return (
@@ -94,16 +98,22 @@ export function PolarTab({ compare }: Props) {
           Band: <span className="font-mono text-gray-200">{Math.round(band.low_hz)}–{Math.round(band.high_hz)} Hz</span>
           {' · '}
           {drawable.length} curve{drawable.length === 1 ? '' : 's'}
-          {allCalibrated && (
-            <span className="ml-2 text-emerald-400 uppercase tracking-wide text-[10px]">calibrated</span>
-          )}
+          {' · '}
+          <span className={allAbsolute ? 'text-emerald-400' : 'text-gray-400'}>{unit}</span>
         </div>
         <RangeModeToggle value={rangeMode} onChange={setRangeMode} />
       </div>
 
-      {mixedCalibration && (
+      {mixedAbsolute && (
         <div className="text-xs text-amber-400 bg-amber-500/10 border border-amber-500/30 rounded-md p-2">
-          ⚠ Mixing calibrated (dB SPL) and uncalibrated (dBFS) series — absolute levels aren't comparable across these curves.
+          ⚠ Mixing absolute (dB SPL) and relative (dBFS) series — absolute levels aren't comparable across these curves.
+        </div>
+      )}
+
+      {curveOnly && (
+        <div className="text-xs text-amber-400 bg-amber-500/10 border border-amber-500/30 rounded-md p-2">
+          ⚠ Some calibration files carry no Sens Factor — only the frequency-response curve is
+          applied to those, so their levels stay dBFS-relative, not dB SPL.
         </div>
       )}
 
@@ -118,7 +128,7 @@ export function PolarTab({ compare }: Props) {
           </div>
         )}
         {!loading && !error && drawable.length > 0 && (
-          <PolarPolarPlot series={drawable} rangeMode={rangeMode} />
+          <PolarPolarPlot series={drawable} rangeMode={rangeMode} unit={unit} />
         )}
       </div>
     </div>

@@ -213,7 +213,7 @@ Caveat: the timer runs every 15 min, so a capture from the last few minutes may 
 
 **Client:** React 19 · Vite 7 · TypeScript · Tailwind 4 · Zustand 5 · Plotly.js (`plotly.js-dist-min`).
 
-**Tests:** pytest (94 passing) covering FFT, calibration, trigger-sync alignment, cutoff watchdog, config loading, capture orchestrator with a fake stand, results endpoints, psychoacoustics. Lint via ruff.
+**Tests:** pytest (101 passing) covering FFT, calibration, trigger-sync alignment, cutoff watchdog, config loading, capture orchestrator with a fake stand, results endpoints, psychoacoustics. Lint via ruff.
 
 ## Acknowledgements
 

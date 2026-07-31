@@ -18,13 +18,15 @@ export interface PolarSeries {
 interface Props {
   series: PolarSeries[];
   rangeMode: 180 | 360;
+  /** "dB SPL" once a Sens Factor is applied, otherwise "dBFS". */
+  unit: string;
 }
 
 const GRID = '#374151';
 const TEXT = '#9ca3af';
 
-const HOVER =
-  '%{fullData.name}<br>elev %{customdata[0]}° (%{customdata[1]})<br>%{r:.1f} dB<extra></extra>';
+const hoverTemplate = (unit: string) =>
+  `%{fullData.name}<br>elev %{customdata[0]}° (%{customdata[1]})<br>%{r:.1f} ${unit}<extra></extra>`;
 
 // Plotly default polar convention: theta=0 is at 3 o'clock (right), increases
 // counter-clockwise. We want elevation = +90° at 12 o'clock, 0° at 3 o'clock,
@@ -33,7 +35,7 @@ const elevToTheta = (e: number): number => (e >= 0 ? e : 360 + e);
 // Mirror across the vertical axis (the 12-6 line): θ_mirror = 180 - θ_right.
 const elevToMirrorTheta = (e: number): number => 180 - e;
 
-export function PolarPolarPlot({ series, rangeMode }: Props) {
+export function PolarPolarPlot({ series, rangeMode, unit }: Props) {
   const showLegend = series.length > 1;
 
   const data = useMemo<Data[]>(() => {
@@ -51,7 +53,7 @@ export function PolarPolarPlot({ series, rangeMode }: Props) {
         mode: 'lines+markers' as const,
         line: { color: s.color, width: 2 },
         marker: { color: s.color, size: 7 },
-        hovertemplate: HOVER,
+        hovertemplate: hoverTemplate(unit),
         name: s.label,
       };
 
@@ -63,7 +65,19 @@ export function PolarPolarPlot({ series, rangeMode }: Props) {
       }
     }
     return traces;
-  }, [series, rangeMode, showLegend]);
+  }, [series, rangeMode, showLegend, unit]);
+
+  // Anchor the centre of the plot at 0 so the radius reads as an absolute level
+  // and every tick is positive. Only valid for real dB SPL — uncalibrated dBFS is
+  // negative and would fall entirely outside a [0, max] range, so that stays
+  // auto-scaled rather than silently rendering an empty chart.
+  const radialRange = useMemo(() => {
+    const vals = series.flatMap((s) => s.points.map((p) => p.spl_db)).filter(Number.isFinite);
+    if (vals.length === 0 || Math.min(...vals) < 0) return {};
+    const max = Math.max(...vals);
+    const step = max <= 20 ? 5 : max <= 60 ? 10 : 20;
+    return { range: [0, Math.ceil(max / step) * step], tick0: 0, dtick: step };
+  }, [series]);
 
   const layout = useMemo<Partial<Layout>>(() => {
     // 180° mode: right half visible, ticks at 90/45/0/315/270 (+90 / +45 / 0 / -45 / -90).
@@ -83,8 +97,10 @@ export function PolarPolarPlot({ series, rangeMode }: Props) {
           gridcolor: GRID,
           linecolor: GRID,
           tickfont: { color: TEXT, size: 10 },
-          ticksuffix: ' dB',
+          ticksuffix: ` ${unit}`,
           angle: 0,
+          showline: true,
+          ...radialRange,
         },
         angularaxis: {
           tickmode: 'array',
@@ -100,7 +116,7 @@ export function PolarPolarPlot({ series, rangeMode }: Props) {
       showlegend: showLegend,
       legend: { orientation: 'h', x: 0, y: 1.08, font: { color: '#d1d5db', size: 11 }, bgcolor: 'rgba(0,0,0,0)' },
     };
-  }, [rangeMode, showLegend]);
+  }, [rangeMode, showLegend, unit, radialRange]);
 
   return <PlotlyChart data={data} layout={layout} className="w-full" />;
 }

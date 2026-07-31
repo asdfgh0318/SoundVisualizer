@@ -10,8 +10,10 @@ from server.api.schemas import (
     MeasurementHalf,
     PerformanceMeasurementMeta,
 )
+from server.core.calibration import parse_umik_calibration
 from server.core.wav import write_wav_float32
 from server.main import app
+from server.store import calibration as cal_store
 from server.store import keys, measurements
 from server.store.paths import measurement_dir
 
@@ -33,7 +35,10 @@ def _make_key():
     return k
 
 
-def _write_acoustic(slug: str, t_start, mic: str, elev: float, half: MeasurementHalf, pwm: int):
+def _write_acoustic(
+    slug: str, t_start, mic: str, elev: float, half: MeasurementHalf, pwm: int,
+    cal_id: str | None = None,
+):
     sr = 48000
     t = np.arange(8192) / sr
     audio = (0.5 * np.sin(2 * np.pi * 1000 * t)).astype(np.float32)
@@ -45,6 +50,7 @@ def _write_acoustic(slug: str, t_start, mic: str, elev: float, half: Measurement
         elevation_deg=elev,
         half=half,
         sample_rate=sr,
+        calibration_file_id=cal_id,
     )
     saved = measurements.create_measurement(slug, meta)
     write_wav_float32(measurement_dir(slug, saved.id) / "audio.wav", audio, sr)
@@ -147,6 +153,39 @@ def test_fft_returns_peak_at_1khz(client):
     peak_idx = max(range(len(mags)), key=lambda i: mags[i])
     assert abs(freqs[peak_idx] - 1000.0) < 30
     assert body["calibrated"] is False
+    assert body["absolute_spl"] is False
+    assert max(mags) < 0  # uncalibrated → dBFS density, negative
+
+
+def _save_cal(cal_id: str, header: str) -> str:
+    text = f"{header}\n20.000\t0.0\n20000.000\t0.0\n"
+    cal_store.save_calibration(cal_id, text, parse_umik_calibration(text))
+    return cal_id
+
+
+def test_fft_with_sens_factor_reports_absolute_spl(client):
+    k = _make_key()
+    cal_id = _save_cal("8100001", '"Sens Factor =-12.0dB, AGain=18.0dB, SERNO: 8100001"')
+    saved = _write_acoustic(
+        k.slug, datetime.now(UTC), "8100001", 0.0, MeasurementHalf.TOP, 1500, cal_id=cal_id,
+    )
+    body = client.get(f"/keys/{k.slug}/measurements/{saved.id}/fft").json()
+    assert body["calibrated"] is True
+    assert body["absolute_spl"] is True
+    # A -9 dBFS sine at +106 dB offset lands well above 0 — real SPL territory.
+    assert max(body["magnitudes_db"]) > 50
+
+
+def test_fft_without_sens_factor_is_not_absolute(client):
+    k = _make_key()
+    cal_id = _save_cal("8100002", '"SERNO: 8100002"')
+    saved = _write_acoustic(
+        k.slug, datetime.now(UTC), "8100002", 0.0, MeasurementHalf.TOP, 1500, cal_id=cal_id,
+    )
+    body = client.get(f"/keys/{k.slug}/measurements/{saved.id}/fft").json()
+    assert body["calibrated"] is True
+    assert body["absolute_spl"] is False
+    assert max(body["magnitudes_db"]) < 0
 
 
 def test_fft_404_on_missing_measurement(client):

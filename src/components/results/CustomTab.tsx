@@ -331,6 +331,10 @@ function SelectedPointFFTPanel({
   point: MergedPWMPoint;
   ffts: Record<string, FFTResponse>;
 }) {
+  const fetched = point.acoustic.filter((a) => ffts[a.id]);
+  const unit =
+    fetched.length > 0 && fetched.every((a) => ffts[a.id]?.absolute_spl) ? 'dB SPL' : 'dBFS';
+
   const traces = useMemo<Data[]>(() => {
     const palette = ['#818cf8', '#a78bfa', '#f472b6', '#fb923c', '#34d399', '#22d3ee'];
     return point.acoustic.map((a: typeof point.acoustic[number], i: number) => {
@@ -343,10 +347,10 @@ function SelectedPointFFTPanel({
         x: fft ? fft.frequencies.slice(1) : [],
         y: fft ? fft.magnitudes_db.slice(1) : [],
         line: { color, width: 1 },
-        hovertemplate: `${a.elevation_deg}°<br>%{x:.0f} Hz<br>%{y:.1f} dB<extra></extra>`,
+        hovertemplate: `${a.elevation_deg}°<br>%{x:.0f} Hz<br>%{y:.1f} ${unit}<extra></extra>`,
       } as Data;
     });
-  }, [point.acoustic, ffts]);
+  }, [point.acoustic, ffts, unit]);
 
   const layout = useMemo<Partial<Layout>>(
     () => ({
@@ -365,11 +369,11 @@ function SelectedPointFFTPanel({
       yaxis: {
         gridcolor: '#374151',
         tickfont: { color: '#9ca3af' },
-        title: { text: 'dB', font: { color: '#9ca3af' } },
+        title: { text: unit, font: { color: '#9ca3af' } },
       },
       legend: { orientation: 'h', font: { color: '#d1d5db', size: 11 } },
     }),
-    [],
+    [unit],
   );
 
   return (
@@ -379,7 +383,7 @@ function SelectedPointFFTPanel({
         <span className="text-sm font-mono text-gray-200">PWM {row.pwm_us} µs</span>
         {row.spl_band !== null && (
           <span className="text-xs text-gray-400">
-            band SPL: <span className="font-mono text-gray-200">{row.spl_band.toFixed(1)} dB</span>
+            band level: <span className="font-mono text-gray-200">{row.spl_band.toFixed(1)} {unit}</span>
           </span>
         )}
       </div>
