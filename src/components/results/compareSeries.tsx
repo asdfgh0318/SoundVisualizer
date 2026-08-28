@@ -130,6 +130,7 @@ export function SeriesPicker({
             {keys.map((k) => (
               <option key={k.slug} value={k.slug}>
                 {k.motor} · {k.propeller}{k.shroud && k.shroud !== 'none' ? ` · ${k.shroud}` : ''}
+                {k.notes && k.notes !== 'unset' ? ` · ${k.notes}` : ''}
               </option>
             ))}
           </select>
