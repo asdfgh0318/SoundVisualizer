@@ -41,8 +41,12 @@ export function useCompareSeries(keySlug: string, point: MergedPWMPoint | null):
     return (slug: string): string => {
       const k = bySlug.get(slug);
       if (!k) return slug.split('__')[1] ?? slug; // fallback: propeller part of the slug
+      // Notes carries what actually distinguishes two otherwise-identical keys
+      // (e.g. two baselines of the same motor+prop, one per session). Without it
+      // both render as "6in [unset]" and can't be told apart in an overlay.
       const shroud = k.shroud && k.shroud !== 'none' ? ` [${k.shroud}]` : '';
-      return `${k.propeller}${shroud}`.trim() || k.motor || slug;
+      const notes = k.notes && k.notes !== 'unset' ? ` · ${k.notes}` : '';
+      return `${k.propeller}${shroud}${notes}`.trim() || k.motor || slug;
     };
   }, [keys]);
 
