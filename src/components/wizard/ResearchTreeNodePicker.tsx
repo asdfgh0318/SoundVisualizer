@@ -87,18 +87,27 @@ export function ResearchTreeNodePicker({ form, onChange }: Props) {
     }
     const node = nodes.find((n) => n.id === nodeId);
     if (!node) return;
-    // Autofill key fields from the node. Don't overwrite values the user
-    // has already typed — only fill empty slots so re-picking a node
-    // doesn't blow away their edits.
+    // Autofill key fields from the node. Fill empty slots, and also replace
+    // values that came from the *previously picked* node — otherwise switching
+    // materials silently keeps the old node's shroud/notes and the capture is
+    // stored under the previous material's key. Anything the user typed
+    // themselves (matching neither node) is still left alone.
+    const prev = form.research_tree_node_id
+      ? nodes.find((n) => n.id === form.research_tree_node_id) ?? null
+      : null;
+    const prevShroud = prev ? shroudFromGeometry(prev.geometry) : null;
+
     const patch: Partial<WizardForm> = { research_tree_node_id: nodeId };
     if (!form.propeller.trim() && node.geometry.propellerInches != null) {
       patch.propeller = `${node.geometry.propellerInches}in`;
     }
-    if (!form.shroud.trim()) {
-      const sh = shroudFromGeometry(node.geometry);
-      if (sh) patch.shroud = sh;
+    const sh = shroudFromGeometry(node.geometry);
+    if (!form.shroud.trim() || (prevShroud && form.shroud.trim() === prevShroud)) {
+      patch.shroud = sh ?? '';
     }
-    if (!form.notes.trim()) patch.notes = node.id;
+    if (!form.notes.trim() || (prev && form.notes.trim() === prev.id)) {
+      patch.notes = node.id;
+    }
     onChange(patch);
   };
 
