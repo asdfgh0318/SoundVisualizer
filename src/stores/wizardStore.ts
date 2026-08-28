@@ -39,10 +39,14 @@ const defaultForm = (): WizardForm => ({
   shroud: '',
   notes: '',
   sample_rate: 48000,
+  // Matches the dp1 material-study ramp: five steps, short takes. 200 ms keeps
+  // each take well inside any plausible recirculation onset window.
   pwm_steps: [
-    { pwm_us: 1200, recording_ms: 1000 },
-    { pwm_us: 1500, recording_ms: 1500 },
-    { pwm_us: 1800, recording_ms: 2000 },
+    { pwm_us: 1200, recording_ms: 200 },
+    { pwm_us: 1500, recording_ms: 200 },
+    { pwm_us: 1800, recording_ms: 200 },
+    { pwm_us: 1900, recording_ms: 200 },
+    { pwm_us: 2000, recording_ms: 200 },
   ],
   stabilize_window: 10,
   stabilize_tolerance: 4.0,
