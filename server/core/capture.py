@@ -6,6 +6,7 @@ per-stream buffer. UMIK-2s have independent ADC clocks → simultaneous starts
 land within ~ms of each other; trigger-onset sync afterwards aligns them.
 """
 
+import contextlib
 import time
 from dataclasses import dataclass
 from threading import Lock
@@ -50,26 +51,32 @@ def capture_simultaneous(
 
         return cb
 
-    streams = [
-        sd.InputStream(
-            device=spec.device_index,
-            channels=spec.channels,
-            samplerate=spec.sample_rate,
-            dtype="float32",
-            callback=make_callback(i),
-        )
-        for i, spec in enumerate(specs)
-    ]
-
+    # Open inside the try: if one device is unavailable, the ones already opened
+    # must still be closed. Constructing the whole list first leaks every stream
+    # opened before the failure, and those handles keep holding the ALSA devices
+    # — so the next capture fails with the same "Device unavailable" on mics that
+    # are physically fine, until the service is restarted.
+    streams: list[sd.InputStream] = []
     try:
+        for i, spec in enumerate(specs):
+            streams.append(
+                sd.InputStream(
+                    device=spec.device_index,
+                    channels=spec.channels,
+                    samplerate=spec.sample_rate,
+                    dtype="float32",
+                    callback=make_callback(i),
+                )
+            )
         for s in streams:
             s.start()
         time.sleep(duration_seconds)
     finally:
         for s in streams:
-            try:
+            # A stream that failed to start must not block closing the rest.
+            with contextlib.suppress(Exception):
                 s.stop()
-            finally:
+            with contextlib.suppress(Exception):
                 s.close()
 
     out: list[CaptureResult] = []
