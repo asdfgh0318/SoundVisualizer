@@ -374,7 +374,7 @@
           </div>
           <div class="gives"><b>Gives</b> a picture, which is what convinces people who were not in the room.<br>
             <b>Costs</b> a compact intensity array, or a camera rental.<br>
-            <b>Misses</b> — has documented limits on resolving two simultaneous reflections.</div>
+            <b>Misses</b> two arrivals closer together than the time a wave takes to cross the array — the limit scales with array size.</div>
         </div>
 
         <div class="rung confirm">
@@ -711,7 +711,7 @@ solve  |S′ − Mᵢ| = Rᵢ   for S′        (≥4 mics; subtract pairs → l
               <td><strong>SDM</strong><br><span class="mono" style="color:var(--ink-3)">compact intensity array</span></td>
               <td>A direction for every sample of the impulse response</td>
               <td>A time-resolved cloud of image sources</td>
-              <td class="num">Two simultaneous reflections; late-tail estimates</td>
+              <td class="num">Arrivals within one array-transit time; late tail is statistical only</td>
             </tr>
             <tr>
               <td><strong>Your UMIK arc</strong></td>
@@ -861,6 +861,10 @@ solve  |S′ − Mᵢ| = Rᵢ   for S′        (≥4 mics; subtract pairs → l
               <span class="doi">arXiv:2208.14017</span></li>
             <li>Blind localization of early room reflections with an arbitrary microphone array.
               <span class="doi">arXiv:2409.15484</span></li>
+            <li>Meyer-Kahlen, N., Amengual, S. V. &amp; Lokki, T. <em>What the Spatial Decomposition Method can
+              and cannot do.</em> ICA 2022 proceedings, Acoustical Society of Korea.
+              <span class="doi">retrieved from Aaltodoc after this page first published — the tier-4 limit in
+              §01 and §04 now comes from it</span></li>
             <li>Carried over from the companion review: ISO 26101-1:2021 preview; Nash, ICA 2019; González &amp;
               Kob, DAGA 2026 (the SDM-on-directivity study); ARTA AN4 on time-gating geometry.</li>
           </ol>
@@ -868,8 +872,10 @@ solve  |S′ − Mᵢ| = Rᵢ   for S′        (≥4 mics; subtract pairs → l
 
         <div class="panel">
           <p class="eyebrow" style="color:var(--fail)">Not retrieved — need the PDFs</p>
-          <p style="font-size:.86rem;color:var(--ink-2);margin-top:.7rem">The third is the one I would most want
-            before anyone commits money to tier 4 — it is the paper that documents where SDM stops working.</p>
+          <p style="font-size:.86rem;color:var(--ink-2);margin-top:.7rem">All four are publisher-gated. The
+            first two are the foundational spherical-array localisation papers; nothing in §01 or §04 depends on
+            them beyond what their abstracts state, but the accuracy figures quoted for tier 3 come from
+            Lovedee-Turner alone rather than from a body of work.</p>
           <ol>
             <li>Sun, H., Mabande, E., Kowalczyk, K., Kellermann, W. <em>Localization of distinct reflections in
               rooms using spherical microphone array eigenbeam processing.</em> JASA 131(4) 2828, 2012.
@@ -877,13 +883,12 @@ solve  |S′ − Mᵢ| = Rᵢ   for S′        (≥4 mics; subtract pairs → l
             <li>Mabande, E., Kowalczyk, K., Sun, H., Kellermann, W. <em>Room geometry inference based on
               spherical microphone array eigenbeam processing.</em> JASA 134(4), 2013.
               <span class="doi">doi:10.1121/1.4820895</span></li>
-            <li>Tervo, S. et al. <em>What the Spatial Decomposition Method can and cannot do.</em> AES, 2022 —
-              directional estimation limits, two simultaneous reflections, late-tail behaviour.</li>
             <li>Pawlak, A. &amp; Lee, H. <em>Spatial segmentation of impulse response for room reflection
               analysis and auralization.</em> Applied Acoustics, 2026.
-              <span class="doi">doi:10.2139/ssrn.5708563</span></li>
+              <span class="doi">doi:10.1016/j.apacoust.2026.111303 · preprint doi:10.2139/ssrn.5708563</span></li>
             <li>A dereverberation beamforming algorithm for noise source localization in anechoic and
-              semi-reverberant environments. <span class="doi">PMC11987664 — landing page only</span></li>
+              semi-reverberant environments. <span class="doi">PMC11987664 — open access, but PMC blocks
+              automated download; opens fine in a browser</span></li>
           </ol>
           <p style="font-size:.86rem;color:var(--ink-2);margin-top:.8rem">The acoustic-camera false-positive
             guidance in §04 is from vendor practitioner documentation, not a peer-reviewed source. It is
