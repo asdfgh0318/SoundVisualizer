@@ -1,0 +1,377 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Absorptive But Not Anechoic — one page</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@500;600;700&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&display=swap">
+<style>
+  @page { size: A4; margin: 8mm 10mm 4mm; }
+
+  :root {
+    --ink:      #10171b;
+    --ink-2:    #46545c;
+    --ink-3:    #74828a;
+    --rule:     #c6d0d5;
+    --rule-2:   #e0e6e9;
+    --panel:    #f1f4f6;
+    --accent:   #17566e;
+    --accent-2: #0f7ba8;
+    --signal:   #8f5c0d;
+    --fail:     #96382a;
+    --serif: "Source Serif 4", Charter, Georgia, serif;
+    --sans:  "IBM Plex Sans", "Helvetica Neue", Arial, sans-serif;
+    --mono:  "IBM Plex Mono", "DejaVu Sans Mono", Consolas, monospace;
+  }
+
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    font-family: var(--serif);
+    font-size: 6.8pt;
+    line-height: 1.21;
+    color: var(--ink);
+    background: #fff;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+  p { margin: 0 0 2.2pt; }
+  a { color: var(--accent-2); text-decoration: none; }
+  code { font-family: var(--mono); font-size: .93em; }
+  b, strong { font-family: var(--sans); font-weight: 600; }
+
+  /* ---------- header ---------- */
+  header {
+    display: grid; grid-template-columns: 1fr auto; gap: 0 7mm; align-items: end;
+    border-bottom: 1.5pt solid var(--ink); padding-bottom: 2.4pt;
+  }
+  .eyebrow {
+    font-family: var(--mono); font-size: 5.2pt; letter-spacing: .13em;
+    text-transform: uppercase; color: var(--ink-3); margin: 0 0 1.5pt; font-weight: 400;
+  }
+  h1 {
+    font-family: var(--sans); font-weight: 700; font-size: 17.5pt;
+    letter-spacing: -.026em; line-height: .94; margin: 0;
+  }
+  .sub { font-size: 7pt; color: var(--ink-2); margin: 2pt 0 0; max-width: 112mm; line-height: 1.23; }
+  .headmeta {
+    font-family: var(--mono); font-size: 5.4pt; line-height: 1.48;
+    color: var(--ink-3); text-align: right; white-space: nowrap;
+  }
+  .headmeta b { color: var(--ink-2); font-weight: 500; font-family: var(--mono); }
+
+  /* ---------- lead ---------- */
+  .lead {
+    display: grid; grid-template-columns: 1fr 50mm; gap: 0 6mm;
+    border-bottom: .6pt solid var(--rule); padding: 2.4pt 0 2.6pt; margin-bottom: 2.6pt;
+  }
+  .lead p { font-size: 7.1pt; line-height: 1.29; }
+  .quote {
+    border-left: 1.6pt solid var(--accent); padding-left: 3mm;
+    font-family: var(--sans); font-weight: 600; font-size: 7.5pt;
+    line-height: 1.18; letter-spacing: -.012em;
+  }
+  .quote span {
+    display: block; margin-top: 2pt; font-family: var(--mono); font-weight: 400;
+    font-size: 5.2pt; letter-spacing: .02em; color: var(--ink-3); line-height: 1.35;
+  }
+
+  /* ---------- columns ---------- */
+  .cols { display: grid; grid-template-columns: 1fr 1fr; gap: 0 6mm; align-items: start; }
+  .col { display: flex; flex-direction: column; gap: 2.3pt; }
+
+  h2 {
+    font-family: var(--sans); font-weight: 600; font-size: 7.7pt;
+    letter-spacing: -.014em; margin: 0 0 1.6pt; padding-bottom: 1.2pt;
+    border-bottom: .6pt solid var(--rule);
+    display: flex; justify-content: space-between; align-items: baseline; gap: 3mm;
+  }
+  h2 em {
+    font-family: var(--mono); font-style: normal; font-size: 5.1pt;
+    letter-spacing: .1em; text-transform: uppercase; color: var(--ink-3);
+    font-weight: 400; white-space: nowrap;
+  }
+
+  table { border-collapse: collapse; width: 100%; font-family: var(--sans); }
+  th, td { text-align: left; vertical-align: top; padding: 1pt 0; font-size: 6.1pt; line-height: 1.21; }
+  th { font-family: var(--mono); font-size: 5.1pt; letter-spacing: .08em; text-transform: uppercase;
+       color: var(--ink-3); font-weight: 500; border-bottom: .5pt solid var(--rule); padding-bottom: 1.5pt; }
+  td { border-bottom: .4pt solid var(--rule-2); }
+  tr:last-child td { border-bottom: 0; }
+  td.k { font-weight: 600; padding-right: 2mm; }
+  td.v { font-family: var(--mono); font-size: 5.7pt; white-space: nowrap; padding-right: 2mm; }
+  .tag { font-family: var(--mono); font-weight: 400; font-size: 5.1pt; color: var(--ink-3); display: block; }
+  .warn { color: var(--fail); }
+
+  ol.modes { margin: 0; padding: 0; list-style: none; counter-reset: m; }
+  ol.modes li {
+    counter-increment: m; display: grid; grid-template-columns: 7pt 1fr; gap: 0 1.6mm;
+    font-size: 6.1pt; line-height: 1.21; padding: .9pt 0; border-bottom: .4pt solid var(--rule-2);
+  }
+  ol.modes li:last-child { border-bottom: 0; }
+  ol.modes li::before {
+    content: counter(m, decimal-leading-zero);
+    font-family: var(--mono); font-size: 5.1pt; font-weight: 600; color: var(--accent-2); padding-top: .4pt;
+  }
+
+  ol.steps { margin: 0; padding: 0 0 0 9pt; font-size: 6.2pt; line-height: 1.22; }
+  ol.steps li { padding: .45pt 0; }
+  ol.steps li::marker { font-family: var(--mono); font-size: 5.3pt; color: var(--accent-2); }
+
+  ul.tight { margin: 0; padding-left: 7pt; font-size: 6.2pt; line-height: 1.22; }
+  ul.tight li { padding: .4pt 0; }
+
+  .callout {
+    background: var(--panel); border-left: 1.6pt solid var(--signal);
+    padding: 2.2pt 3mm; font-size: 6.2pt; line-height: 1.23;
+  }
+  .note { font-size: 6.2pt; line-height: 1.22; margin-top: 2pt; }
+
+  /* ---------- links strip ---------- */
+  .links {
+    margin-top: 2.4pt; padding-top: 2.2pt; border-top: 1.2pt solid var(--ink);
+    display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 0 6mm;
+  }
+  .links h3 {
+    font-family: var(--mono); font-size: 5.1pt; letter-spacing: .11em; text-transform: uppercase;
+    color: var(--ink-3); font-weight: 500; margin: 0 0 1.6pt;
+  }
+  .links ul { margin: 0; padding: 0; list-style: none; }
+  .links li { font-size: 5.8pt; line-height: 1.21; padding: .5pt 0; }
+  .links li span { font-family: var(--mono); font-size: 5pt; color: var(--ink-3); display: block; word-break: break-all; line-height: 1.23; }
+  .more {
+    margin-top: 1.6pt; padding-top: 1.4pt; border-top: .5pt solid var(--rule-2);
+    font-family: var(--mono); font-size: 5pt; line-height: 1.4; color: var(--ink-3);
+  }
+
+  footer {
+    margin-top: 1.6pt; padding-top: 1.4pt; border-top: .6pt solid var(--rule);
+    font-family: var(--mono); font-size: 5pt; color: var(--ink-3);
+    display: flex; justify-content: space-between; gap: 4mm;
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div>
+    <p class="eyebrow">SoundVisualizer · literature review · stage 1 of 2</p>
+    <h1>Absorptive But Not Anechoic</h1>
+    <p class="sub">Simulating an anechoic chamber before you trust it: what the models predict, which failures
+      they catch, and what it costs to find out. Acoustic scope only.</p>
+  </div>
+  <div class="headmeta">
+    <b>1 Sep 2026</b><br>
+    21 sources retrieved<br>
+    9 paywalled · DOIs below<br>
+    papers/anechoic-simulation/
+  </div>
+</header>
+
+<div class="lead">
+  <div>
+    <p><b>The result everything else hangs off.</b> In 2019 Anthony Nash qualified a 51 m³ commercially built
+      anechoic chamber against ISO 3745 Annex A. On pink noise in one-third-octave bands it
+      <b>passed</b>; on pure tones at the same band centres it <b>failed</b> — a 2056 Hz tone fitted a decay of
+      −26.4 dB per decade of distance, about 8 dB per doubling, which is not physically possible in a free field
+      and is explicable only as a reflection cancelling the direct wave.</p>
+    <p><b>Why it matters here.</b> Band noise averages over the interference pattern; a tone sits inside it, and
+      drone noise is tonal. A chamber qualified with noise is not qualified for this rig — and a simulation
+      excited with noise reproduces the passing answer while the room is failing.</p>
+  </div>
+  <div class="quote">
+    In short, the chamber is absorptive but not anechoic.
+    <span>A. Nash, <i>Qualification of an anechoic chamber</i>, ICA 2019 · on a chamber with foam wedges on all
+      six surfaces, an expanded-metal floor grate, and no evidence its wedges were ever impedance-tube tested</span>
+  </div>
+</div>
+
+<div class="cols">
+
+  <!-- ============ LEFT ============ -->
+  <div class="col">
+
+    <div>
+      <h2>“Simulating a chamber” is three jobs <em>not one</em></h2>
+      <table>
+        <thead><tr><th style="width:27%">Stage</th><th style="width:42%">Produces</th><th style="width:31%">Cost / catch</th></tr></thead>
+        <tbody>
+          <tr>
+            <td class="k">1 · Absorber unit cell<span class="tag">FEM · Floquet · PML</span></td>
+            <td>α(f,θ) and complex surface impedance of the <i>real</i> wedge geometry</td>
+            <td>minutes · needs flow resistivity σ from an impedance tube</td>
+          </tr>
+          <tr>
+            <td class="k">2 · Interior field<span class="tag">image source, or FEM/BEM/FDTD</span></td>
+            <td>p(x, f) with phase preserved, along each traverse</td>
+            <td>minutes → days · locally-reacting shortcut; wave solvers scale as f³</td>
+          </tr>
+          <tr>
+            <td class="k">3 · Virtual qualification<span class="tag">fit b − 20·log(r/r₀)</span></td>
+            <td>ΔLp vs the ISO tolerance table → a (frequency × distance × direction) envelope</td>
+            <td>free · must be driven with tones, not band noise</td>
+          </tr>
+        </tbody>
+      </table>
+      <p class="note">Only stage 2 is expensive, and the published methodology (Bonfiglio &amp; Pompoli) avoids
+        meshing the room at all: it turns the stage-1 impedance into a spherical-wave oblique-incidence
+        reflection coefficient and predicts the field with complex image sources. That is why chamber design is
+        tractable on a laptop.</p>
+    </div>
+
+    <div>
+      <h2>Method stack <em>ordered by cost</em></h2>
+      <table>
+        <thead><tr><th style="width:33%">Method</th><th style="width:67%">Valid where — and the catch</th></tr></thead>
+        <tbody>
+          <tr><td class="k">Equivalent fluid + TMM<span class="tag">Delany–Bazley · Miki · JCA</span></td><td>α(f) of a flat layer from one parameter. <span class="warn">Model choice moves the fitted σ by 2.5×</span></td></tr>
+          <tr><td class="k">FEM unit cell</td><td>α(f,θ) of any wedge or pyramid profile. Needs σ, which needs a measurement</td></tr>
+          <tr><td class="k">Complex image source</td><td>Interior field with phase, near-zero cost. Locally-reacting unless explicitly corrected</td></tr>
+          <tr><td class="k">Room FEM / BEM / FDTD</td><td>The only route that models extended-reaction absorbers. 6–10 DOF per wavelength; doubling f<sub>max</sub> costs 8× the DOF</td></tr>
+          <tr><td class="k">Geometrical acoustics<span class="tag">energy ray tracing</span></td><td><span class="warn">Carries energy, not phase → cannot represent cancellation → returns a clean, confident, wrong answer</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div>
+      <h2>What the simulations get wrong</h2>
+      <ul class="tight">
+        <li><b>The input data is the error, not the solver.</b> Uncertainty work targets three parameters:
+          absorber flow resistivity, absorber thickness, hard-wall absorption. Vorländer: the input quality
+          needed for JND-accurate prediction isn't available from reverberation-room measurements.</li>
+        <li><b>The diagnostic tell.</b> When two numerical methods agree with each other but both miss the
+          measurement, the material data is wrong — not the solver.</li>
+        <li><b>A model can only fail the way you asked it to.</b> The Nash result is not a modelling artefact;
+          it is a question-selection artefact. Reproduce a published benchmark case before trusting a first run.</li>
+      </ul>
+      <div class="callout" style="margin-top:2.4pt">
+        <b>The load-bearing conclusion.</b> Nothing in this literature supports substituting a model for an
+        ISO 26101-1 divergence-loss measurement. What the model buys is targeting — which frequencies,
+        directions and distances are marginal, and therefore where the twenty measurements you can afford
+        should go instead of the two hundred you cannot.
+      </div>
+    </div>
+
+    <div>
+      <h2>The workflow <em>stage A · days, on a laptop</em></h2>
+      <ol class="steps">
+        <li><b>Impedance tube</b> (ISO 10534-2) on one flat sample of the lining — the only physical measurement stage A needs.</li>
+        <li><b>Fit σ with ≥3 models</b> and keep the spread as an uncertainty band instead of picking a winner.</li>
+        <li><b>FEM the real geometry in a unit cell</b> — one wedge, Floquet periodicity, PML. Output α(f,θ) and impedance.</li>
+        <li><b>Phase-preserving image-source model</b> of the room with those coefficients; receivers on all eleven arc directions; include untreated features explicitly.</li>
+        <li><b>Run the virtual ISO 26101-1 test</b> per direction; output the frequency × distance × direction map.</li>
+        <li><b>Excite it with tones</b> at ⅓-octave centres. Tone-only failure is the result, not an artefact.</li>
+        <li><b>Then measure</b> the flagged directions. Stage B — room FEM below the crossover with extended-reaction elements — only if stage A is marginal.</li>
+      </ol>
+      <p class="note"><b>With no chamber at all:</b> time-gate, planned with the image-source method. Gate length
+        t<sub>g</sub> sets the lowest trustworthy frequency at ≈ 1/t<sub>g</sub> (5.6 ms → 178 Hz); image-source
+        geometry gives the mounting height that buys it — for a 5 ms floor bounce at 0.48 m spacing, ≥ 1.08 m
+        above the floor. Run any gating experiment with <code>trigger.enabled = false</code>.</p>
+    </div>
+
+  </div>
+
+  <!-- ============ RIGHT ============ -->
+  <div class="col">
+
+    <div>
+      <h2>Twelve ways a chamber lies to you <em>all documented</em></h2>
+      <ol class="modes">
+        <li><span><b>Cut-off is depth, not quality.</b> Roughly where wedge length = λ/4. A better material in the same depth barely moves it.</span></li>
+        <li><span><b>Geometry carries the absorption.</b> ITMO: a flat disk of the lining measures α &lt; 0.5 (290–1800 Hz); the pyramid of the same material reaches 0.996.</span></li>
+        <li><span><b>Locally-reacting boundaries are wrong for porous wedges.</b> Real absorbers are extended-reaction and angle-dependent — the standard shortcut, the standard optimism.</span></li>
+        <li><span><b>Your one input is ambiguous.</b> Same sample, five models: σ = 3437 / 5136 / 5994 / 6125 / 8701 Pa·s/m².</span></li>
+        <li><span><b>Tones expose what noise hides.</b> The Nash result. Decisive for tonal rotor noise.</span></li>
+        <li><span><b>A chamber is not anechoic — it is anechoic in an envelope.</b> ITMO qualifies 50–3150 Hz at 0.5–0.9 m in every direction; past that the four directions diverge. Worst deviation: 15.5 dB.</span></li>
+        <li><span><b>Grates, ports, doors and recesses are the actual reflectors.</b> ISO 26101-1 requires traverses aimed at exactly these features.</span></li>
+        <li><span><b>Your own rig is inside the field.</b> Booms, arc frame, turntable — scatter that reads as directivity after the fact.</span></li>
+        <li><span><b>The fit changes the verdict.</b> ISO 3745 fits a/(r−r₀) with a fitted acoustic-centre offset; ISO 26101 fits b − 20·log(r/r₀), r₀ = 1 m. Not always the same answer.</span></li>
+        <li><span><b>Small rooms can be unqualifiable by rule, not physics.</b> Traverse minimum was λ/2 in ISO 26101:2012, λ/4 since 2017. Split's 2.8 × 1.7 × 2.05 m chamber bottomed out at 250 Hz.</span></li>
+        <li><span><b>Nobody ever tested the wedges.</b> A purchased chamber is not a qualified one; one qualified once is not one qualified now.</span></li>
+        <li><span><b>A ray-tracing model will say it's fine.</b> Round robins report up to ±5 dB max deviation on sound strength, worst where modal density is low.</span></li>
+      </ol>
+    </div>
+
+    <div>
+      <h2>What this means for the arc rig <em>ISO 5305:2024</em></h2>
+      <p class="note" style="margin-top:0;margin-bottom:2.2pt">ISO 5305 (rotor UAS &lt; 150 kg) does not say
+        “use a chamber”. It requires ISO 26101-1 inverse-square validity <i>for all source positions and
+        measurement directions specified</i>, with traverses <i>along the measurement directions defined by the
+        microphone positions</i>. For an 11-mic arc at 18° that is up to eleven traverse directions, not five.</p>
+      <table>
+        <tbody>
+          <tr><td class="k" style="width:31%">Tolerance</td><td class="v" style="width:36%">±1.5 / ±1.0 / ±1.5 dB</td><td>125–630 · 800–5000 · ≥6300 Hz</td></tr>
+          <tr><td class="k">Far field</td><td class="v">R ≥ 5·D<sub>A</sub></td><td>0.64 m for a 5″ prop; 0.76 m for 6″</td></tr>
+          <tr><td class="k">Ground clearance</td><td class="v">H₀ ≥ max(2·D<sub>A</sub>, 1.2 m)</td><td>aerodynamic rule; also sets floor-bounce path</td></tr>
+          <tr><td class="k">Background noise</td><td class="v">≥ 6 dB, prefer ≥ 15</td><td>failing bands must be stated, not silently included</td></tr>
+          <tr><td class="k">Mic supports</td><td class="v">acoustically treated</td><td>the arc frame is a scatterer in the field</td></tr>
+        </tbody>
+      </table>
+      <div class="callout" style="margin-top:2.4pt">
+        <b>The arc makes the room error worse, not neutral.</b> Chamber deviation is direction-dependent. A
+        single microphone samples one direction and picks up an offset; an elevation arc samples eleven
+        simultaneously and plots them as a polar shape. A direction-dependent room artefact therefore lands on
+        the <i>shape</i> of the directivity plot and looks exactly like real directivity — the same structural
+        hazard as the recirculation finding, moved from the time axis to the spatial one. Comparisons at a
+        <i>fixed</i> elevation stay far better protected, because the error is common-mode there.
+      </div>
+    </div>
+
+    <div>
+      <h2>Needed before stage 2 can run <em>blocking</em></h2>
+      <ul class="tight">
+        <li><b>The arc radius.</b> Not in <code>config.toml</code>, not in <code>docs/mic_arc.md</code> (which
+          has all 11 serials and elevations). It decides whether the 275 stored takes are far-field at all.</li>
+        <li><b>Room dimensions and surfaces</b> — L × W × H, floor material, wall treatment, where the rig sits.
+          The entire geometric input to stage A step 4.</li>
+        <li><b>Rotor-plane height</b> above the floor, and whether it can move. <b>Prop diameters</b> in the dp1
+          campaign, for the far-field and clearance numbers.</li>
+        <li><b>Is a chamber actually on the table?</b> Budget and space — or is this about characterising the
+          room you already measure in? Stage A is identical either way; only what you do with the answer changes.</li>
+      </ul>
+    </div>
+
+  </div>
+</div>
+
+<!-- ============ LINKS ============ -->
+<div class="links">
+  <div>
+    <h3>Full report &amp; primary evidence</h3>
+    <ul>
+      <li><b>Full review — interactive, with figures</b><span><a href="https://claude.ai/code/artifact/6226a13c-4e3e-43e6-bf94-a94fc8cac625">claude.ai/code/artifact/6226a13c-4e3e-43e6-bf94-a94fc8cac625</a></span></li>
+      <li><b>Nash — Qualification of an anechoic chamber, ICA 2019</b><span><a href="https://pub.dega-akustik.de/ICA2019/data/articles/001379.pdf">pub.dega-akustik.de/ICA2019/data/articles/001379.pdf</a></span></li>
+      <li><b>Bikmukhametov et al. — ITMO qualification envelope</b><span><a href="https://arxiv.org/abs/2603.16556">arxiv.org/abs/2603.16556</a></span></li>
+    </ul>
+  </div>
+  <div>
+    <h3>Standards &amp; qualification method</h3>
+    <ul>
+      <li><b>ISO 26101-1:2021 — free-field qualification (preview)</b><span><a href="https://cdn.standards.iteh.ai/samples/80877/5d209f9c861b4d80a71e35148c1bdd27/ISO-26101-1-2021.pdf">cdn.standards.iteh.ai · ISO-26101-1-2021.pdf</a></span></li>
+      <li><b>ISO 5305:2024 — UAS noise measurement (preview)</b><span><a href="https://cdn.standards.iteh.ai/samples/81111/498c23f815fa4e35b88dc00ffd1d4c6d/ISO-5305-2024.pdf">cdn.standards.iteh.ai · ISO-5305-2024.pdf</a></span></li>
+      <li><b>Russo et al. — ISO 3745 vs ISO 26101, Euronoise 2018</b><span><a href="https://www.euronoise2018.eu/docs/papers/369_Euronoise2018.pdf">euronoise2018.eu/docs/papers/369_Euronoise2018.pdf</a></span></li>
+    </ul>
+  </div>
+  <div>
+    <h3 style="color:var(--fail)">Blocked — paywalled, need the PDFs</h3>
+    <ul>
+      <li>Claims resting on these are from abstracts, not full text; the first three are the core methodology
+        papers. AIP, Elsevier and SAGE block automated retrieval and none has an open mirror — pull them through
+        a proxy and drop them in <code>papers/anechoic-simulation/</code>.
+        <span style="color:var(--ink-2);margin-top:1.4pt">Bonfiglio &amp; Pompoli 2013 <a href="https://doi.org/10.1121/1.4807820">10.1121/1.4807820</a> · Schneider 2009 <a href="https://doi.org/10.1016/j.jsv.2008.08.019">10.1016/j.jsv.2008.08.019</a> · Jiang et al. 2016 <a href="https://doi.org/10.1016/j.jsv.2016.06.020">10.1016/j.jsv.2016.06.020</a> · Cunefare et al. 2003 <a href="https://doi.org/10.1121/1.1527595">10.1121/1.1527595</a> · Singh et al. 2020 <a href="https://doi.org/10.1177/1475472X20905070">10.1177/1475472X20905070</a> · Easwaran &amp; Munjal 1993 <a href="https://doi.org/10.1006/jsvi.1993.1027">10.1006/jsvi.1993.1027</a> · Wang &amp; Tang 1996 <a href="https://doi.org/10.1016/S0955-7997(96)00017-3">10.1016/S0955-7997(96)00017-3</a> · Kar &amp; Munjal 2006 <a href="https://doi.org/10.1016/j.apacoust.2005.11.009">10.1016/j.apacoust.2005.11.009</a> · Brinkmann et al. 2019 <a href="https://doi.org/10.1121/1.5096178">10.1121/1.5096178</a></span></li>
+    </ul>
+  </div>
+</div>
+
+<div class="more">
+  Also read at source · Beranek &amp; Sleeper 1946 <a href="https://www.govinfo.gov/content/pkg/GOVPUB-PR32_413-2341dfbf0b469d676acef6b94d738eb9/html/GOVPUB-PR32_413-2341dfbf0b469d676acef6b94d738eb9.htm">govinfo.gov · GOVPUB-PR32_413</a> · Prinn, FEM for room acoustics <a href="https://www.mdpi.com/2624-599X/5/2/22">mdpi.com/2624-599X/5/2/22</a> · González &amp; Kob, DAGA 2026 <a href="https://pub.dega-akustik.de/DAGA_2026/files/upload/paper/688.pdf">dega-akustik.de · DAGA_2026 688.pdf</a> · ARTA AN4 time-gating <a href="https://www.artalabs.hr/AppNotes/AN4-FreeField-Rev03eng.pdf">artalabs.hr · AN4-FreeField</a> · <a href="https://github.com/LCAV/pyroomacoustics">github.com/LCAV/pyroomacoustics</a> · full source list and figures in the interactive report above
+</div>
+
+<footer>
+  <span>SoundVisualizer · docs/anechoic-simulation-onepager.pdf · stage 1 of 2, methods survey</span>
+  <span>Claims are from papers read at source unless a DOI appears above · acoustic scope only</span>
+</footer>
+
+</body>
+</html>

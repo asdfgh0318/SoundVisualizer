@@ -19,7 +19,7 @@ Production deployment (Phase 10) targets a **Raspberry Pi 5** (running Raspberry
   - Config lives on the data partition, so **`config.toml` edits need no overlay toggle at all.**
   - Cutoffs + tare are runtime state and reset every boot regardless of overlay — re-push cutoffs before any powered run.
 
-Reference docs: [PLAN.md](PLAN.md) · [2.md](2.md) (original scope) · [1.md](1.md) (kickoff) · [docs/overview.html](docs/overview.html).
+Reference docs: [PLAN.md](PLAN.md) · [2.md](2.md) (original scope) · [1.md](1.md) (kickoff) · [docs/overview.html](docs/overview.html) · [docs/anechoic-simulation.html](docs/anechoic-simulation.html) (chamber-simulation literature review; one-page summary in `docs/anechoic-simulation-onepager.pdf`).
 
 ## Hardware
 

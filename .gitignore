@@ -46,3 +46,11 @@ venv/
 # (psychoacoustics_report{,_pl}.pdf) are tracked separately. Recursive so
 # topic subfolders (shroud_comparison/, etc.) are also ignored.
 docs/references/**/*.pdf
+
+# Research paper library — same policy as docs/references: useful locally,
+# not worth bloating the repo. Derived text/scrapes go too; the write-ups in
+# docs/ (anechoic-simulation*.html/pdf) are tracked instead.
+papers/**/*.pdf
+papers/**/*.html
+papers/**/txt/
+papers/**/doi_lookup.txt
