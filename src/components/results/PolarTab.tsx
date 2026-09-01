@@ -135,7 +135,7 @@ export function PolarTab({ compare }: Props) {
   );
 }
 
-function RangeModeToggle({
+export function RangeModeToggle({
   value, onChange,
 }: {
   value: 180 | 360;

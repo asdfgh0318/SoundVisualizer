@@ -4,13 +4,14 @@ import type { MergedPWMPoint } from '../api/types';
 import { useCompareSeries } from '../components/results/compareSeries';
 import { CustomTab } from '../components/results/CustomTab';
 import { FFTTab } from '../components/results/FFTTab';
+import { LiveTab } from '../components/results/LiveTab';
 import { KeyPicker } from '../components/results/KeyPicker';
 import { PerformanceHeader } from '../components/results/PerformanceHeader';
 import { PolarTab } from '../components/results/PolarTab';
 import { PsychoacousticsTab } from '../components/results/PsychoacousticsTab';
 import { PWMPointSidebar } from '../components/results/PWMPointSidebar';
 
-type Tab = 'fft' | 'polar' | 'custom' | 'psy';
+type Tab = 'fft' | 'polar' | 'custom' | 'psy' | 'live';
 
 export function ResultsPage() {
   const [keySlug, setKeySlug] = useState<string | null>(null);
@@ -30,7 +31,10 @@ export function ResultsPage() {
         <Tabs value={tab} onChange={setTab} />
       </div>
 
-      {keySlug ? (
+      {/* Live reads the mics directly, so it needs no stored key. */}
+      {tab === 'live' ? (
+        <LiveTab />
+      ) : keySlug ? (
         <ResultsBody keySlug={keySlug} tab={tab} />
       ) : (
         <div className="text-sm text-gray-400 italic">Pick a key to see results.</div>
@@ -145,6 +149,7 @@ function Tabs({ value, onChange }: { value: Tab; onChange: (t: Tab) => void }) {
     { key: 'polar', label: 'Polar' },
     { key: 'custom', label: 'Custom' },
     { key: 'psy', label: 'Psychoacoustics' },
+    { key: 'live', label: 'Live' },
   ];
   return (
     <div className="flex bg-gray-800 border border-gray-700 rounded-md overflow-hidden">
