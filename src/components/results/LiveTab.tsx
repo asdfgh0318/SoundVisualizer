@@ -25,7 +25,16 @@ export function LiveTab() {
   const [error, setError] = useState<string | null>(null);
   const [rangeMode, setRangeMode] = useState<180 | 360>(180);
   const [tolerance, setTolerance] = useState(3);
+  const [avgSec, setAvgSec] = useState(3);
   const wsRef = useRef<WebSocket | null>(null);
+  // Exponential moving average, held in LINEAR POWER per mic. Averaging dB
+  // directly under-weights the loud moments and biases every mic low by an
+  // amount that depends on how much it fluctuates — which is exactly the
+  // between-mic difference this tab exists to measure.
+  const emaRef = useRef<Map<string, number>>(new Map());
+  const lastTsRef = useRef<number | null>(null);
+  const startedRef = useRef<number | null>(null);
+  const [settled, setSettled] = useState(false);
 
   const usable = useMemo(
     () => mics.filter((m) => m.deviceIndex !== null && m.elevationDeg !== null),
@@ -37,6 +46,10 @@ export function LiveTab() {
     const ws = new WebSocket(`${WS_BASE}/devices/audio/levels`);
     wsRef.current = ws;
     setError(null);
+    emaRef.current = new Map();
+    lastTsRef.current = null;
+    startedRef.current = Date.now();
+    setSettled(false);
 
     ws.onopen = () =>
       ws.send(
@@ -56,7 +69,26 @@ export function LiveTab() {
         setRunning(false);
         return;
       }
-      if (msg.levels) setLevels(msg.levels);
+      if (!msg.levels) return;
+
+      const now = Date.now();
+      const dt = lastTsRef.current === null ? 0.1 : (now - lastTsRef.current) / 1000;
+      lastTsRef.current = now;
+      // Time-constant EMA driven by the real frame interval, so the smoothing
+      // means the same thing whether frames arrive at 10 Hz or stutter.
+      const tau = Math.max(0.1, avgSec);
+      const alpha = 1 - Math.exp(-dt / tau);
+
+      const smoothed: LiveLevel[] = (msg.levels as LiveLevel[]).map((l) => {
+        if (l.level_db === null || !Number.isFinite(l.level_db)) return l;
+        const power = Math.pow(10, l.level_db / 10);
+        const prev = emaRef.current.get(l.serial);
+        const next = prev === undefined ? power : prev + alpha * (power - prev);
+        emaRef.current.set(l.serial, next);
+        return { ...l, level_db: 10 * Math.log10(next) };
+      });
+      setLevels(smoothed);
+      if (startedRef.current !== null && now - startedRef.current > tau * 3000) setSettled(true);
     };
     ws.onerror = () => setError('connection failed');
     ws.onclose = (ev) => {
@@ -68,7 +100,7 @@ export function LiveTab() {
       ws.close();
       wsRef.current = null;
     };
-  }, [running, usable]);
+  }, [running, usable, avgSec]);
 
   const valid = levels.filter((l) => l.level_db !== null && Number.isFinite(l.level_db));
   const allAbsolute = valid.length > 0 && valid.every((l) => l.absolute);
@@ -135,6 +167,20 @@ export function LiveTab() {
           </span>
 
           <label className="text-xs text-gray-400 flex items-center gap-2 ml-auto">
+            Averaging
+            <select
+              value={avgSec}
+              onChange={(e) => setAvgSec(Number(e.target.value))}
+              className="input py-1"
+            >
+              <option value={0.5}>0.5 s (fast)</option>
+              <option value={3}>3 s</option>
+              <option value={10}>10 s</option>
+              <option value={30}>30 s (steady)</option>
+            </select>
+          </label>
+
+          <label className="text-xs text-gray-400 flex items-center gap-2">
             Tolerance ±
             <input
               type="number"
@@ -152,6 +198,12 @@ export function LiveTab() {
         {usable.length === 0 && (
           <p className="text-xs text-amber-400">
             No mics with both a device and an elevation. Set them up in <strong>Setup</strong> first.
+          </p>
+        )}
+        {running && !settled && (
+          <p className="text-xs text-amber-400">
+            Settling — the average needs about {(avgSec * 3).toFixed(0)} s before the spread is
+            trustworthy.
           </p>
         )}
         {error && <p className="text-xs text-red-400">⚠ {error}</p>}
@@ -226,7 +278,7 @@ export function LiveTab() {
         </p>
       )}
       <p className="text-xs text-gray-500">
-        Broadband RMS, scalar-calibrated. The per-frequency response curve is not applied — that
+        Broadband RMS, scalar-calibrated, averaged over {avgSec} s in the power domain. The per-frequency response curve is not applied — that
         needs an FIR filter on the time signal, so a mic&apos;s curve shape is invisible here.
       </p>
     </div>
