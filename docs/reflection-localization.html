@@ -1,0 +1,903 @@
+<title>Where the Reflection Came From</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@500;600;700&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&display=swap">
+
+<style>
+  :root {
+    --ground:      #e8ebec;
+    --panel:       #fbfcfc;
+    --panel-2:     #f0f3f4;
+    --rule:        #ccd4d8;
+    --rule-soft:   #dee4e7;
+    --ink:         #10171b;
+    --ink-2:       #46545c;
+    --ink-3:       #78868d;
+    --accent:      #17566e;
+    --accent-soft: #dce8ed;
+    --signal:      #8f5c0d;
+    --signal-soft: #f2e7d2;
+    --fail:        #96382a;
+    --fail-soft:   #f1dcd7;
+
+    --s1: #0f7ba8;
+    --s2: #a6690c;
+    --s3: #973a86;
+
+    --shadow: 0 1px 2px rgba(16,23,27,.05), 0 10px 28px -14px rgba(16,23,27,.22);
+
+    --serif: "Source Serif 4", Charter, "Bitstream Charter", Georgia, serif;
+    --sans:  "IBM Plex Sans", ui-sans-serif, system-ui, "Segoe UI", Helvetica, Arial, sans-serif;
+    --mono:  "IBM Plex Mono", ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+
+    --measure: 64ch;
+    --pad: clamp(1.1rem, 4vw, 2.4rem);
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --ground:      #0d1316;
+      --panel:       #141c20;
+      --panel-2:     #1a2429;
+      --rule:        #28343a;
+      --rule-soft:   #1e292e;
+      --ink:         #dbe4e7;
+      --ink-2:       #9aabb2;
+      --ink-3:       #6d7d84;
+      --accent:      #6bb4d0;
+      --accent-soft: #16323e;
+      --signal:      #d3a052;
+      --signal-soft: #372a15;
+      --fail:        #d8785f;
+      --fail-soft:   #391e18;
+      --s1: #2e93bd;
+      --s2: #b98a38;
+      --s3: #b06fa8;
+      --shadow: 0 1px 2px rgba(0,0,0,.45), 0 12px 32px -16px rgba(0,0,0,.75);
+    }
+  }
+
+  :root[data-theme="dark"] {
+    --ground:      #0d1316;
+    --panel:       #141c20;
+    --panel-2:     #1a2429;
+    --rule:        #28343a;
+    --rule-soft:   #1e292e;
+    --ink:         #dbe4e7;
+    --ink-2:       #9aabb2;
+    --ink-3:       #6d7d84;
+    --accent:      #6bb4d0;
+    --accent-soft: #16323e;
+    --signal:      #d3a052;
+    --signal-soft: #372a15;
+    --fail:        #d8785f;
+    --fail-soft:   #391e18;
+    --s1: #2e93bd;
+    --s2: #b98a38;
+    --s3: #b06fa8;
+    --shadow: 0 1px 2px rgba(0,0,0,.45), 0 12px 32px -16px rgba(0,0,0,.75);
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    background: var(--ground);
+    color: var(--ink);
+    font-family: var(--serif);
+    font-size: 17px;
+    line-height: 1.66;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .wrap {
+    max-width: 76rem;
+    margin: 0 auto;
+    padding: var(--pad) var(--pad) 5rem;
+    display: flex;
+    flex-direction: column;
+    gap: clamp(2.4rem, 5vw, 3.8rem);
+  }
+
+  .col { max-width: var(--measure); }
+  p { margin: 0 0 1.05em; }
+  p:last-child { margin-bottom: 0; }
+
+  a { color: var(--accent); text-underline-offset: 2px; text-decoration-thickness: 1px; }
+  a:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 2px; }
+
+  code, .mono { font-family: var(--mono); font-size: .88em; }
+  code {
+    background: var(--panel-2);
+    border: 1px solid var(--rule-soft);
+    border-radius: 3px;
+    padding: .08em .3em;
+  }
+
+  .eyebrow {
+    font-family: var(--mono);
+    font-size: .69rem;
+    letter-spacing: .13em;
+    text-transform: uppercase;
+    color: var(--ink-3);
+    margin: 0;
+  }
+
+  /* ---------- masthead ---------- */
+  .masthead { display: flex; flex-direction: column; gap: 1.4rem; }
+  .masthead h1 {
+    font-family: var(--sans);
+    font-weight: 700;
+    font-size: clamp(2.4rem, 7vw, 4.3rem);
+    line-height: .98;
+    letter-spacing: -.028em;
+    margin: 0;
+    text-wrap: balance;
+  }
+  .standfirst {
+    font-size: clamp(1.08rem, 2.2vw, 1.32rem);
+    line-height: 1.5;
+    color: var(--ink-2);
+    max-width: 54ch;
+    margin: 0;
+  }
+  .metastrip {
+    display: flex; flex-wrap: wrap; gap: 0 2.2rem;
+    padding-top: 1.1rem; border-top: 1px solid var(--rule);
+    font-family: var(--mono); font-size: .74rem; color: var(--ink-3);
+  }
+  .metastrip b { color: var(--ink-2); font-weight: 500; }
+
+  /* ---------- sections ---------- */
+  section { display: flex; flex-direction: column; gap: 1.5rem; }
+
+  .shead {
+    display: grid; grid-template-columns: 3.2rem 1fr; gap: 0 1rem;
+    align-items: baseline; padding-top: 1.1rem; border-top: 2px solid var(--ink);
+  }
+  .shead .num {
+    font-family: var(--mono); font-size: .8rem; font-weight: 600;
+    color: var(--accent); letter-spacing: .06em;
+  }
+  .shead h2 {
+    font-family: var(--sans); font-weight: 600;
+    font-size: clamp(1.4rem, 3vw, 1.95rem);
+    letter-spacing: -.018em; line-height: 1.15; margin: 0; text-wrap: balance;
+  }
+  .shead .sub {
+    grid-column: 2; font-size: .95rem; color: var(--ink-2);
+    margin: .35rem 0 0; max-width: 58ch;
+  }
+
+  h3 { font-family: var(--sans); font-weight: 600; font-size: 1.06rem; margin: 0 0 .5rem; letter-spacing: -.006em; }
+
+  .indent { padding-left: 4.2rem; }
+  @media (max-width: 720px) { .indent { padding-left: 0; } .shead { grid-template-columns: 2.4rem 1fr; } }
+
+  /* ---------- the ladder ---------- */
+  .ladder { display: flex; flex-direction: column; gap: 1px; background: var(--rule); border: 1px solid var(--rule); border-radius: 4px; overflow: hidden; }
+  .rung {
+    background: var(--panel);
+    display: grid;
+    grid-template-columns: 4.5rem 1fr 15rem;
+    gap: 0 1.4rem;
+    padding: 1.05rem 1.3rem;
+    align-items: start;
+  }
+  @media (max-width: 860px) { .rung { grid-template-columns: 3.4rem 1fr; } .rung .gives { grid-column: 2; padding-top: .5rem; } }
+  .rung .tier {
+    font-family: var(--mono); font-size: .72rem; font-weight: 600;
+    letter-spacing: .07em; color: var(--accent);
+    border: 1px solid var(--accent); border-radius: 3px;
+    padding: .12rem .4rem; text-align: center; white-space: nowrap;
+  }
+  .rung.confirm .tier { color: var(--signal); border-color: var(--signal); }
+  .rung h4 { font-family: var(--sans); font-weight: 600; font-size: 1rem; margin: 0 0 .3rem; letter-spacing: -.008em; }
+  .rung p { font-size: .93rem; line-height: 1.55; margin: 0; color: var(--ink-2); }
+  .rung .gives {
+    font-family: var(--mono); font-size: .74rem; line-height: 1.55; color: var(--ink-3);
+    border-left: 2px solid var(--rule); padding-left: 1rem;
+  }
+  .rung .gives b { color: var(--ink-2); font-weight: 500; }
+  @media (max-width: 860px) { .rung .gives { border-left: 0; border-top: 1px solid var(--rule-soft); padding-left: 0; margin-top: .6rem; padding-top: .6rem; } }
+
+  /* ---------- tables ---------- */
+  .tablewrap { overflow-x: auto; border: 1px solid var(--rule); border-radius: 4px; background: var(--panel); }
+  table { border-collapse: collapse; width: 100%; min-width: 42rem; font-family: var(--sans); }
+  th, td { text-align: left; vertical-align: top; padding: .7rem .9rem; border-bottom: 1px solid var(--rule-soft); font-size: .87rem; line-height: 1.48; }
+  thead th {
+    font-size: .69rem; font-family: var(--mono); letter-spacing: .09em; text-transform: uppercase;
+    color: var(--ink-3); font-weight: 500; border-bottom: 1px solid var(--rule); background: var(--panel-2);
+  }
+  tbody tr:last-child td { border-bottom: 0; }
+  td.num, th.num { font-family: var(--mono); font-variant-numeric: tabular-nums; white-space: nowrap; }
+  .warn { color: var(--fail); }
+
+  /* ---------- figures ---------- */
+  figure {
+    margin: 0; background: var(--panel); border: 1px solid var(--rule); border-radius: 4px;
+    padding: 1.4rem 1.5rem 1.2rem; box-shadow: var(--shadow); overflow-x: auto;
+  }
+  figure svg { display: block; width: 100%; min-width: 32rem; height: auto; color: var(--ink-2); }
+  figcaption {
+    margin-top: 1.1rem; padding-top: .85rem; border-top: 1px solid var(--rule-soft);
+    font-size: .86rem; line-height: 1.55; color: var(--ink-2); max-width: 78ch;
+  }
+  figcaption b { font-family: var(--sans); font-weight: 600; color: var(--ink); }
+
+  /* ---------- callouts ---------- */
+  .callout { border: 1px solid var(--signal); background: var(--signal-soft); border-radius: 4px; padding: 1.25rem 1.4rem; }
+  .callout .eyebrow { color: var(--signal); }
+  .callout h3 { margin-top: .5rem; }
+  .callout p { font-size: .95rem; }
+
+  .stop { border: 1px solid var(--fail); background: var(--fail-soft); border-radius: 4px; padding: 1.25rem 1.4rem; }
+  .stop .eyebrow { color: var(--fail); }
+  .stop h3 { margin-top: .5rem; }
+  .stop p { font-size: .95rem; }
+
+  .panel { background: var(--panel); border: 1px solid var(--rule); border-radius: 4px; padding: 1.4rem 1.5rem; box-shadow: var(--shadow); }
+
+  .eq {
+    font-family: var(--mono); font-size: .88rem; line-height: 1.9;
+    background: var(--panel-2); border: 1px solid var(--rule-soft); border-radius: 4px;
+    padding: 1rem 1.2rem; overflow-x: auto; white-space: pre;
+  }
+
+  ol.steps { list-style: none; counter-reset: s; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 1rem; }
+  ol.steps li { counter-increment: s; display: grid; grid-template-columns: 2rem 1fr; gap: 0 .9rem; align-items: baseline; }
+  ol.steps li::before {
+    content: counter(s, decimal-leading-zero);
+    font-family: var(--mono); font-size: .74rem; font-weight: 600; color: var(--accent);
+  }
+  ol.steps li > div { font-size: .96rem; line-height: 1.58; }
+  ol.steps b { font-family: var(--sans); font-weight: 600; }
+
+  ul.plain { margin: 0; padding-left: 1.15rem; }
+  ul.plain li { margin-bottom: .5rem; font-size: .96rem; line-height: 1.55; }
+  ul.plain li:last-child { margin-bottom: 0; }
+
+  .ledger { display: grid; grid-template-columns: repeat(auto-fit, minmax(21rem, 1fr)); gap: 1.2rem; }
+  .ledger ol { margin: .6rem 0 0; padding-left: 1.3rem; }
+  .ledger li { font-size: .84rem; line-height: 1.5; margin-bottom: .55rem; }
+  .ledger .doi { font-family: var(--mono); font-size: .76rem; color: var(--ink-3); display: block; }
+
+  footer {
+    padding-top: 1.2rem; border-top: 1px solid var(--rule);
+    font-family: var(--mono); font-size: .73rem; color: var(--ink-3);
+    display: flex; flex-wrap: wrap; gap: .4rem 1.8rem;
+  }
+</style>
+
+<div class="wrap">
+
+  <header class="masthead">
+    <p class="eyebrow">SoundVisualizer · companion to the chamber review · diagnostics</p>
+    <h1>Where the Reflection Came From</h1>
+    <p class="standfirst">A divergence-loss test tells you a chamber is failing. It does not tell you which
+      surface is doing it. This is the ladder of methods that does — and what each rung actually costs.</p>
+    <div class="metastrip">
+      <span><b>Scope</b> acoustic, diagnostic</span>
+      <span><b>Date</b> 1 Sep 2026</span>
+      <span><b>Companion to</b> Absorptive But Not Anechoic</span>
+      <span><b>Library</b> papers/reflection-localization/</span>
+    </div>
+  </header>
+
+  <div class="col">
+    <p>The qualification standard gives you a number per traverse direction: this room deviates from the inverse
+      square law by so many decibels, along this line, at this frequency. That is a detector, not a locator. Five
+      traverses over a whole room is a spatial resolution of about a fifth of a sphere, and the answer it returns
+      — "something reflects, somewhere over there" — is not enough to act on. You cannot treat a direction.</p>
+    <p>Locating the reflector is a separate measurement with separate instruments, and it is the step between
+      knowing you have a problem and fixing it. The good news is that the cheap rungs of the ladder are very
+      cheap, the expensive rungs are genuinely expensive, and the decisive rung — the one that proves you were
+      right — is a moving blanket.</p>
+  </div>
+
+  <!-- ================= 01 ================= -->
+  <section>
+    <div class="shead">
+      <span class="num">01</span>
+      <h2>The ladder</h2>
+      <p class="sub">Ordered the way you would actually climb it. Most problems are solved by tier 1 plus tier 5;
+        tiers 2–4 exist for when the reflectogram shows several arrivals and you cannot guess which surface is
+        which.</p>
+    </div>
+
+    <div class="indent">
+      <div class="ladder">
+
+        <div class="rung">
+          <span class="tier">TIER 0</span>
+          <div>
+            <h4>Divergence-loss traverse — ISO 26101-1</h4>
+            <p>The qualification test itself. Sound pressure against distance along five or more straight paths,
+              compared to a fitted inverse-square line. This is where you find out you have a problem at all.</p>
+          </div>
+          <div class="gives"><b>Gives</b> that it fails, at which frequencies, and along which of ~5 directions.<br>
+            <b>Costs</b> a source, a microphone, a traverse rig.<br>
+            <b>Misses</b> where. Entirely.</div>
+        </div>
+
+        <div class="rung">
+          <span class="tier">TIER 1</span>
+          <div>
+            <h4>Impulse response and reflectogram</h4>
+            <p>A swept sine through a small loudspeaker at the source position, deconvolved to an impulse
+              response. Every discrete reflection is a peak; its delay after the direct sound converts straight
+              to excess path length, <span class="mono">Δs = c·τ</span>. Strength comes free in the same plot.
+              This is the first thing to do and it answers most questions.</p>
+          </div>
+          <div class="gives"><b>Gives</b> how many reflections, how late, how strong, and the usable gate length.<br>
+            <b>Costs</b> one microphone, one loudspeaker, free software.<br>
+            <b>Misses</b> direction — a 4.7 ms arrival could be from any point on an ellipsoid.</div>
+        </div>
+
+        <div class="rung">
+          <span class="tier">TIER 2</span>
+          <div>
+            <h4>Image-source trilateration</h4>
+            <p>Repeat tier 1 at four or more known microphone positions. Each gives one range to the same image
+              source; solve for its 3D position, and the reflecting plane is the perpendicular bisector between
+              the real source and the image. No array hardware, no phase coherence — see §02.</p>
+          </div>
+          <div class="gives"><b>Gives</b> the reflector's position in 3D, over-determined and checkable.<br>
+            <b>Costs</b> microphones you already own, plus surveying their positions.<br>
+            <b>Misses</b> nothing geometric — but you must match peaks across channels.</div>
+        </div>
+
+        <div class="rung">
+          <span class="tier">TIER 3</span>
+          <div>
+            <h4>Spherical array — time-gated DoA + ToA</h4>
+            <p>An EigenMike-class array measures a spatial impulse response; beamforming gated around each
+              arrival gives direction as well as time, which fixes the image source in one measurement and
+              resolves the peak-matching problem automatically. This is the method the room-geometry literature
+              converged on.</p>
+          </div>
+          <div class="gives"><b>Gives</b> full room geometry from one position. RMS boundary error 2.7–4.7 cm
+            simulated, 11.5–18.9 cm measured.<br>
+            <b>Costs</b> a 32-channel spherical array.<br>
+            <b>Misses</b> above its aliasing frequency — 8 kHz for the EM32.</div>
+        </div>
+
+        <div class="rung">
+          <span class="tier">TIER 4</span>
+          <div>
+            <h4>Spatial Decomposition Method, or an acoustic camera</h4>
+            <p>SDM assigns a direction of arrival to every sample of the impulse response, producing a
+              time-resolved map of image sources — this is how the loudspeaker-directivity study traced which
+              surfaces were corrupting its polar plots. A conventional acoustic camera can do the job too, but
+              reads backwards; see §04.</p>
+          </div>
+          <div class="gives"><b>Gives</b> a picture, which is what convinces people who were not in the room.<br>
+            <b>Costs</b> a compact intensity array, or a camera rental.<br>
+            <b>Misses</b> — has documented limits on resolving two simultaneous reflections.</div>
+        </div>
+
+        <div class="rung confirm">
+          <span class="tier">TIER 5</span>
+          <div>
+            <h4>The blanket test</h4>
+            <p>Drape absorber over the surface you accused. Re-run tier 0. If the deviation goes away, you were
+              right; if it does not, you were not. Everything above this rung produces a hypothesis. This is the
+              only step that produces a fact.</p>
+          </div>
+          <div class="gives"><b>Gives</b> proof, and a preview of the fix.<br>
+            <b>Costs</b> a blanket and twenty minutes.<br>
+            <b>Misses</b> nothing. Do not skip it.</div>
+        </div>
+
+      </div>
+
+      <div class="col" style="margin-top:1.5rem">
+        <p>The gap between tier 0 and tier 5 is where most chamber problems actually die. Nash's 51 m³ chamber
+          is a tier-0 result that was never carried further: the report names two plausible culprits — an
+          expanded-metal floor grate and foam wedges that had never been impedance-tube tested — and neither was
+          confirmed. That is not a criticism of the work; it is what a qualification test is scoped to deliver.
+          It is just not the end of the job.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= 02 ================= -->
+  <section>
+    <div class="shead">
+      <span class="num">02</span>
+      <h2>Tier 2 in detail — the rung most people skip</h2>
+      <p class="sub">It needs no array, no phase coherence between channels, and no equipment you do not already
+        have. It is the best value on the ladder and it is worth understanding why it works.</p>
+    </div>
+
+    <div class="indent" style="display:flex;flex-direction:column;gap:1.5rem">
+
+      <figure>
+        <svg viewBox="0 0 860 490" role="img" aria-label="Geometry of image-source trilateration. A source above a reflecting floor produces a mirrored image source below it. Three microphones each receive a direct path and a reflected path; the reflected path length equals the straight-line distance from the image source, so measuring the extra delay at each microphone gives a range to the image source, and four or more ranges fix its position.">
+          <defs>
+            <marker id="ar2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+              <path d="M0,0 L10,5 L0,10 z" fill="currentColor"></path>
+            </marker>
+            <pattern id="hatch" width="8" height="8" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
+              <line x1="0" y1="0" x2="0" y2="8" stroke="currentColor" stroke-width="1" opacity=".28"></line>
+            </pattern>
+          </defs>
+
+          <!-- reflecting surface -->
+          <rect x="40" y="272" width="780" height="26" fill="url(#hatch)"></rect>
+          <line x1="40" y1="272" x2="820" y2="272" stroke="currentColor" stroke-width="2"></line>
+          <text x="46" y="316" font-family="IBM Plex Mono, monospace" font-size="11" fill="currentColor" opacity=".8">reflecting surface — the one you are trying to identify</text>
+
+          <!-- reflected paths (via floor) -->
+          <g stroke="var(--s1)" stroke-width="2" fill="none">
+            <path d="M230,120 L403,272 L600,100"></path>
+            <path d="M230,120 L471,272 L640,165"></path>
+            <path d="M230,120 L533,272 L610,232"></path>
+          </g>
+
+          <!-- direct paths -->
+          <g stroke="currentColor" stroke-width="1.6" fill="none" opacity=".55">
+            <line x1="230" y1="120" x2="600" y2="100"></line>
+            <line x1="230" y1="120" x2="640" y2="165"></line>
+            <line x1="230" y1="120" x2="610" y2="232"></line>
+          </g>
+
+          <!-- image source rays -->
+          <g stroke="var(--s3)" stroke-width="1.5" stroke-dasharray="7 5" fill="none">
+            <line x1="230" y1="420" x2="600" y2="100"></line>
+            <line x1="230" y1="420" x2="640" y2="165"></line>
+            <line x1="230" y1="420" x2="610" y2="232"></line>
+          </g>
+
+          <!-- mirror axis -->
+          <line x1="230" y1="120" x2="230" y2="420" stroke="currentColor" stroke-width="1" stroke-dasharray="3 4" opacity=".5"></line>
+
+          <!-- source -->
+          <circle cx="230" cy="120" r="7" fill="currentColor"></circle>
+          <text x="216" y="106" font-family="IBM Plex Sans, sans-serif" font-size="13" font-weight="600" fill="currentColor" text-anchor="end">S</text>
+          <text x="216" y="122" font-family="IBM Plex Mono, monospace" font-size="10" fill="currentColor" text-anchor="end" opacity=".8">loudspeaker at the</text>
+          <text x="216" y="135" font-family="IBM Plex Mono, monospace" font-size="10" fill="currentColor" text-anchor="end" opacity=".8">rotor position</text>
+
+          <!-- image source -->
+          <circle cx="230" cy="420" r="16" fill="var(--s3)" opacity=".14"></circle>
+          <circle cx="230" cy="420" r="7" fill="none" stroke="var(--s3)" stroke-width="2.5"></circle>
+          <text x="216" y="418" font-family="IBM Plex Sans, sans-serif" font-size="13" font-weight="600" fill="var(--s3)" text-anchor="end">S′</text>
+          <text x="216" y="434" font-family="IBM Plex Mono, monospace" font-size="10" fill="var(--s3)" text-anchor="end">the image source</text>
+          <text x="216" y="447" font-family="IBM Plex Mono, monospace" font-size="10" fill="var(--s3)" text-anchor="end">— solve for this point</text>
+
+          <!-- mics -->
+          <g fill="currentColor">
+            <rect x="595" y="95" width="10" height="10" rx="1.5"></rect>
+            <rect x="635" y="160" width="10" height="10" rx="1.5"></rect>
+            <rect x="605" y="227" width="10" height="10" rx="1.5"></rect>
+          </g>
+          <g font-family="IBM Plex Mono, monospace" font-size="11" fill="currentColor">
+            <text x="614" y="96">M₁</text>
+            <text x="654" y="161">M₂</text>
+            <text x="624" y="228">M₃</text>
+          </g>
+
+          <!-- reflection points -->
+          <g fill="var(--s1)">
+            <circle cx="403" cy="272" r="4"></circle>
+            <circle cx="471" cy="272" r="4"></circle>
+            <circle cx="533" cy="272" r="4"></circle>
+          </g>
+          <text x="403" y="262" font-family="IBM Plex Mono, monospace" font-size="10" fill="var(--s1)" text-anchor="middle">P₁</text>
+
+          <!-- legend -->
+          <g font-family="IBM Plex Mono, monospace" font-size="10.5">
+            <line x1="640" y1="330" x2="676" y2="330" stroke="currentColor" stroke-width="1.6" opacity=".55"></line>
+            <text x="684" y="334" fill="currentColor" opacity=".85">direct path</text>
+            <line x1="640" y1="352" x2="676" y2="352" stroke="var(--s1)" stroke-width="2"></line>
+            <text x="684" y="356" fill="var(--s1)">reflected path</text>
+            <line x1="640" y1="374" x2="676" y2="374" stroke="var(--s3)" stroke-width="1.5" stroke-dasharray="7 5"></line>
+            <text x="684" y="378" fill="var(--s3)">same length, straight</text>
+          </g>
+
+          <!-- key identity -->
+          <text x="46" y="360" font-family="IBM Plex Mono, monospace" font-size="11.5" fill="currentColor">|S′ − Mᵢ|  =  |S − Pᵢ| + |Pᵢ − Mᵢ|  =  Rᵢ</text>
+          <text x="46" y="380" font-family="IBM Plex Mono, monospace" font-size="11.5" fill="currentColor">Rᵢ         =  |S − Mᵢ| + c·τᵢ</text>
+          <text x="46" y="404" font-family="IBM Plex Mono, monospace" font-size="10.5" fill="currentColor" opacity=".8">τᵢ is read inside channel i alone — no clock shared</text>
+          <text x="46" y="420" font-family="IBM Plex Mono, monospace" font-size="10.5" fill="currentColor" opacity=".8">with the others, so channel sync is irrelevant.</text>
+          <text x="46" y="446" font-family="IBM Plex Mono, monospace" font-size="10.5" fill="currentColor" opacity=".8">Reflector plane = perpendicular bisector of S–S′.</text>
+        </svg>
+        <figcaption><b>Why tier 2 costs nothing you do not already have.</b> A specular reflection off a plane is
+          exactly equivalent to a straight ray from a mirrored image source S′. So the reflected arrival at
+          microphone <i>i</i> carries one piece of information — the range from S′ — and four such ranges fix S′
+          in space by ordinary multilateration. The crucial property is that τᵢ, the delay between the direct
+          sound and the reflection, is measured <i>within a single channel</i>. It never crosses between
+          microphones, so inter-channel clock offset, sample-rate drift, and start-time jitter cannot corrupt
+          it. That is what separates this from beamforming, which lives or dies on exactly those things.</figcaption>
+      </figure>
+
+      <div class="col">
+        <h3>The whole calculation</h3>
+      </div>
+
+      <div class="eq">for each microphone i at known position Mᵢ:
+    dᵢ  = |S − Mᵢ|              direct path, from geometry
+    τᵢ  = t_reflection − t_direct   read off channel i's impulse response
+    Rᵢ  = dᵢ + c·τᵢ             range from the image source
+
+solve  |S′ − Mᵢ| = Rᵢ   for S′        (≥4 mics; subtract pairs → linear least squares)
+
+    n  = (S′ − S) / |S′ − S|    reflector plane normal
+    x₀ = (S + S′) / 2           a point on the plane
+    Pᵢ = where the segment S′→Mᵢ crosses that plane   — the actual bounce point</div>
+
+      <div class="stop">
+        <p class="eyebrow">The one hard part</p>
+        <h3>Peak association, not geometry</h3>
+        <p>Deciding that the third peak at M₁ and the third peak at M₄ are the <em>same</em> reflection is the
+          step that breaks. With one strong discrete reflection it is trivial. With six surfaces and
+          second-order arrivals interleaving, it is a combinatorial problem, and picking wrong puts S′ somewhere
+          meaningless with no warning. This is the entire reason the literature pays for spherical arrays:
+          direction of arrival resolves the association that timing alone cannot. Practical mitigation — start
+          with the strongest single arrival, confirm it with tier 5, treat it, and repeat.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= 03 ================= -->
+  <section>
+    <div class="shead">
+      <span class="num">03</span>
+      <h2>What this looks like on the arc rig</h2>
+      <p class="sub">Two results fall straight out of the geometry, and one of them is a problem nobody has
+        looked at yet.</p>
+    </div>
+
+    <div class="indent" style="display:flex;flex-direction:column;gap:1.5rem">
+
+      <div class="stop">
+        <p class="eyebrow">Settled — do not plan around it</p>
+        <h3>The UMIK arc cannot beamform, and it is not close</h3>
+        <p><code>server/core/trigger_sync.py</code> aligns channels on an RMS block onset with
+          <code>block_size = 128</code>. At 48 kHz that is a <b>2.67 ms alignment quantum — 91 cm of sound
+          path</b>. Beamforming needs inter-channel timing good to tens of microseconds. Even granting perfect
+          sync, eleven microphones at 18° on a radius-<i>r</i> arc have chord spacing 0.313·<i>r</i>, which
+          spatially aliases above <b>548 Hz</b> at <i>r</i> = 1 m. It is not an acoustic camera, it cannot be
+          made into one, and no amount of software fixes either number.</p>
+      </div>
+
+      <div class="callout">
+        <p class="eyebrow">Available today</p>
+        <h3>The same eleven microphones are an excellent tier-2 array</h3>
+        <p>Because τᵢ never crosses channels, the 2.67 ms alignment quantum is irrelevant to it. Within one
+          channel the resolution is one sample: <b>20.8 µs, or 7.1 mm of path</b>. Eleven microphones at
+          surveyed positions give eleven ranges to each image source, against three unknowns — heavily
+          over-determined, so the residual tells you whether your peak association was right. The rig you built
+          for directivity is, unmodified, a reflection locator.</p>
+      </div>
+
+      <figure>
+        <svg viewBox="0 0 860 420" role="img" aria-label="Lowest trustworthy frequency after time-gating, plotted against microphone elevation on the arc. It rises from 143 hertz at plus 90 degrees to 858 hertz at minus 90 degrees, a six-fold spread, because the bottom microphone sits close to the floor and its floor reflection arrives early.">
+          <!-- grid -->
+          <g stroke="currentColor" stroke-width="1" opacity=".16">
+            <line x1="90" y1="330" x2="790" y2="330"></line>
+            <line x1="90" y1="248.7" x2="790" y2="248.7"></line>
+            <line x1="90" y1="141.3" x2="790" y2="141.3"></line>
+            <line x1="90" y1="60" x2="790" y2="60"></line>
+          </g>
+          <g stroke="currentColor" stroke-width="1" opacity=".28">
+            <line x1="90" y1="50" x2="90" y2="330"></line>
+            <line x1="440" y1="50" x2="440" y2="338" stroke-dasharray="4 4"></line>
+          </g>
+
+          <!-- y labels -->
+          <g font-family="IBM Plex Mono, monospace" font-size="10.5" fill="currentColor" text-anchor="end" opacity=".85">
+            <text x="82" y="334">100</text>
+            <text x="82" y="252.7">200</text>
+            <text x="82" y="145.3">500</text>
+            <text x="82" y="64">1000</text>
+          </g>
+          <text x="26" y="195" font-family="IBM Plex Mono, monospace" font-size="10.5" fill="currentColor"
+                text-anchor="middle" transform="rotate(-90 26 195)" opacity=".85">lowest trustworthy frequency (Hz)</text>
+
+          <!-- x labels -->
+          <g font-family="IBM Plex Mono, monospace" font-size="10.5" fill="currentColor" text-anchor="middle" opacity=".85">
+            <text x="90" y="354">−90°</text>
+            <text x="230" y="354">−54°</text>
+            <text x="440" y="354">0°</text>
+            <text x="650" y="354">+54°</text>
+            <text x="790" y="354">+90°</text>
+            <text x="440" y="376">microphone elevation on the arc</text>
+            <text x="90" y="372" font-size="9.5" opacity=".8">below</text>
+            <text x="790" y="372" font-size="9.5" opacity=".8">overhead</text>
+          </g>
+
+          <!-- curve -->
+          <polyline points="90,78.1 160,99.8 230,142.9 300,183.8 370,216.2 440,240.8 510,259.1 580,272 650,280.9 720,286.4 790,288.1"
+                    fill="none" stroke="var(--s1)" stroke-width="2.5"></polyline>
+          <g fill="var(--s1)" stroke="var(--panel)" stroke-width="1.5">
+            <circle cx="90" cy="78.1" r="5"></circle>
+            <circle cx="160" cy="99.8" r="5"></circle>
+            <circle cx="230" cy="142.9" r="5"></circle>
+            <circle cx="300" cy="183.8" r="5"></circle>
+            <circle cx="370" cy="216.2" r="5"></circle>
+            <circle cx="440" cy="240.8" r="5"></circle>
+            <circle cx="510" cy="259.1" r="5"></circle>
+            <circle cx="580" cy="272" r="5"></circle>
+            <circle cx="650" cy="280.9" r="5"></circle>
+            <circle cx="720" cy="286.4" r="5"></circle>
+            <circle cx="790" cy="288.1" r="5"></circle>
+          </g>
+
+          <!-- direct labels -->
+          <g font-family="IBM Plex Mono, monospace" font-size="10.5" fill="var(--s1)" text-anchor="middle">
+            <text x="98" y="66">858 Hz</text>
+            <text x="230" y="132">493</text>
+            <text x="440" y="230">214</text>
+            <text x="782" y="278">143 Hz</text>
+          </g>
+
+          <!-- annotation -->
+          <text x="104" y="46" font-family="IBM Plex Sans, sans-serif" font-size="12" font-weight="600" fill="currentColor">worst mic: 1.17 ms gate</text>
+          <text x="700" y="308" font-family="IBM Plex Sans, sans-serif" font-size="12" font-weight="600" fill="currentColor" text-anchor="end">best mic: 7.00 ms gate</text>
+
+          <text x="90" y="404" font-family="IBM Plex Mono, monospace" font-size="10" fill="currentColor" opacity=".75">assumes arc radius r = 1.0 m and rotor plane 1.2 m above a reflecting floor — BOTH UNCONFIRMED · c = 343 m/s · f ≈ 1/τ</text>
+        </svg>
+        <figcaption><b>The reflection-free window is not a property of the room. On this rig it is a property of
+          elevation.</b> The floor bounce reaches the −90° microphone 1.17 ms after the direct sound, because
+          that microphone sits 0.2 m off the floor; it reaches the +90° microphone 7.00 ms after, because that
+          one is 2.2 m up. Time-gating is therefore valid above 858 Hz at the bottom of the arc and above
+          143 Hz at the top — a <b>six-fold spread across a single simultaneous take</b>. Every polar plot
+          below roughly 860 Hz is built from microphones with systematically different amounts of floor
+          reflection in them, varying monotonically with the very axis being plotted. Raising the whole rig
+          helps the bottom mic least, because its path difference is bounded by twice its own height.</figcaption>
+      </figure>
+
+      <div class="col">
+        <p>This is the third instance of the same structural pattern: a room artefact that correlates with the
+          independent variable rather than scattering randomly across it. Recirculation correlates with PWM
+          because the run ramps monotonically; chamber deviation correlates with direction because chambers are
+          anisotropic; and now the floor-bounce gate correlates with elevation because the arc is vertical.
+          None of the three is noise, and averaging does not touch any of them.</p>
+        <p>The numbers above are computed from an assumed 1.0 m arc radius and 1.2 m rotor height. Both are
+          unknown — the radius is <a href="https://claude.ai/code/artifact/6226a13c-4e3e-43e6-bf94-a94fc8cac625">still the blocking input</a> — but the
+          <em>shape</em> of the curve does not depend on them. Only its position does.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= 04 ================= -->
+  <section>
+    <div class="shead">
+      <span class="num">04</span>
+      <h2>Acoustic cameras, read correctly</h2>
+      <p class="sub">They do work for this. They just do not show you what a first-time user expects.</p>
+    </div>
+
+    <div class="indent" style="display:flex;flex-direction:column;gap:1.4rem">
+      <div class="col">
+        <p>A conventional planar acoustic camera images <em>sources</em>. Point one into a chamber whose wall is
+          reflecting and it will paint a hotspot — but that hotspot is S′ from the figure above, the image
+          source, sitting <em>behind</em> the wall rather than on it. Practitioner guidance for acoustic imaging
+          treats this as the canonical false positive, with a simple field test: move the array and re-scan. A
+          real source stays put; a reflection shifts or disappears, because its apparent position is tied to the
+          array's viewpoint through the mirror geometry.</p>
+        <p>So the camera is a locator, provided you read the ghost as the image source and mirror it back. What
+          it is not is a turnkey answer, and a plain broadband scan of a running rotor will not give you one —
+          you need the arrival gated in time, which means an impulse response, which means the swept sine again.</p>
+        <p>The instrument the research literature actually converged on is a <strong>spherical</strong> array
+          rather than a planar camera, because it resolves direction over the full sphere and pairs naturally
+          with time-of-arrival. Lovedee-Turner and Murphy recover complete room geometry from a single EigenMike
+          EM32 measurement, with the accuracy quoted in the ladder. The constraints are worth repeating: every
+          boundary must be at least 50 cm from both source and array, the EM32 aliases above 8 kHz, and accuracy
+          degrades sharply — 16 to 25 cm — once the room stops being convex.</p>
+      </div>
+
+      <div class="tablewrap">
+        <table>
+          <thead>
+            <tr><th style="width:22%">Instrument</th><th style="width:26%">What it images</th><th style="width:30%">Reads as</th><th class="num" style="width:22%">Watch for</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Planar acoustic camera</strong></td>
+              <td>Sources, projected onto a scan plane</td>
+              <td>A hotspot at the mirrored position, behind the reflecting surface</td>
+              <td class="num warn">Ghosts that move when the array moves</td>
+            </tr>
+            <tr>
+              <td><strong>Spherical array</strong><br><span class="mono" style="color:var(--ink-3)">EigenMike-class</span></td>
+              <td>Direction of arrival per time gate</td>
+              <td>An image source per arrival → boundary planes</td>
+              <td class="num">Aliasing above 8 kHz; ≥50 cm clearance</td>
+            </tr>
+            <tr>
+              <td><strong>SDM</strong><br><span class="mono" style="color:var(--ink-3)">compact intensity array</span></td>
+              <td>A direction for every sample of the impulse response</td>
+              <td>A time-resolved cloud of image sources</td>
+              <td class="num">Two simultaneous reflections; late-tail estimates</td>
+            </tr>
+            <tr>
+              <td><strong>Your UMIK arc</strong></td>
+              <td>Nothing directional — no coherent phase</td>
+              <td>Eleven independent ranges to the image source</td>
+              <td class="num">Peak association across channels</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= 05 ================= -->
+  <section>
+    <div class="shead">
+      <span class="num">05</span>
+      <h2>What the standards say to do about it</h2>
+      <p class="sub">There is a formal answer to “the room is not anechoic and I cannot fix it”, and it is not
+        to keep adjusting the room until it passes.</p>
+    </div>
+
+    <div class="indent" style="display:flex;flex-direction:column;gap:1.4rem">
+      <div class="col">
+        <p><strong>ISO 26101 has a Part 2</strong>, published 2024, and it is the half of the standard that
+          almost nobody cites. Part 1 asks whether a space is a free field. Part 2 qualifies a space that only
+          <em>approximates</em> a free field near one or more reflecting planes, and quantifies what is left
+          over as the environmental correction <span class="mono">K₂</span> — the term that corrects measured
+          sound pressure for reflected sound when deriving sound power. In an ideal free field K₂ = 0; the
+          standard's job is to tell you how far from zero you actually are, and it notes that K₂ generally
+          grows with the area of the measurement surface.</p>
+        <p>That reframes the problem usefully. You are not obliged to achieve an anechoic room. You are obliged
+          to <em>measure</em> how far from one you are, report it, and correct for it.</p>
+      </div>
+
+      <div class="tablewrap">
+        <table>
+          <thead>
+            <tr><th class="num" style="width:8%">Clause</th><th style="width:30%">Procedure</th><th style="width:38%">When</th><th style="width:24%">Standard's own verdict</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="num">5</td>
+              <td><strong>Absolute comparison test</strong><br><span class="mono" style="color:var(--ink-3)">calibrated reference sound source, ISO 6926</span></td>
+              <td>Indoors or outdoors; works even if the source under test cannot be removed</td>
+              <td>Preferred. Most accurate in real industrial rooms.</td>
+            </tr>
+            <tr>
+              <td class="num">6</td>
+              <td><strong>Room-absorption methods</strong><br><span class="mono" style="color:var(--ink-3)">A from reverberation time, a secondary surface, or an RSS</span></td>
+              <td>Roughly cubic, substantially empty rooms absorbing only at the boundaries</td>
+              <td>Less accurate than the comparison test.</td>
+            </tr>
+            <tr>
+              <td class="num">7</td>
+              <td><strong>Inverse-square-law qualification</strong><br><span class="mono" style="color:var(--ink-3)">parallelepiped and cylindrical measurement surfaces</span></td>
+              <td><strong>Hemi-anechoic rooms only</strong>, up to a maximum qualified volume</td>
+              <td>Most accurate, and preferred for hemi-anechoic. The others can be unreliable there.</td>
+            </tr>
+            <tr>
+              <td class="num">8</td>
+              <td><strong>Estimated equivalent absorption area</strong></td>
+              <td>When nothing better is available</td>
+              <td>Least accurate.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="col">
+        <p>For a rotor on a stand in an ordinary room, clause 5 is the one to reach for: a calibrated reference
+          sound source is a modest purchase, it works without removing the rig, and it gives K₂ in frequency
+          bands rather than a single broadband number. It also composes with everything above — the same
+          reference source drives the tier-1 impulse response.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= 06 ================= -->
+  <section>
+    <div class="shead">
+      <span class="num">06</span>
+      <h2>The procedure, end to end</h2>
+      <p class="sub">One afternoon for steps 1–5 with hardware already on the bench.</p>
+    </div>
+
+    <div class="indent" style="display:flex;flex-direction:column;gap:1.5rem">
+      <ol class="steps">
+        <li><div><b>Put a loudspeaker where the rotor goes.</b> Small, reasonably omnidirectional. The rotor
+          cannot give you an impulse response; a swept sine can. Survey its acoustic centre and every microphone
+          position — tier 2's accuracy is now geometry-limited, not timing-limited, so the tape measure is the
+          instrument that matters.</div></li>
+        <li><div><b>Record an exponential sine sweep on all channels</b> with
+          <code>trigger.enabled = false</code>. Onset alignment shifts the time origin you are about to measure
+          delays from. Same trap as the recirculation take.</div></li>
+        <li><div><b>Deconvolve to impulse responses</b> and plot each as an energy-time curve. Read off the
+          direct sound, then every discrete peak and its delay. You now have the gate length for every
+          microphone — and, as §03 shows, they will not be the same.</div></li>
+        <li><div><b>Convert delays to path lengths</b> — <span class="mono">Δs = c·τ</span> — and sanity-check
+          them against the room you can see. A 1.6 m excess at the 0° mic in a 1.2 m-high rig is the floor, and
+          you should be able to predict it before measuring it. If a peak has no candidate surface, that is the
+          interesting one.</div></li>
+        <li><div><b>Trilaterate the strongest unexplained arrival</b> across four or more channels, per §02.
+          Check the residual: a good association gives a consistent S′, a bad one does not converge.</div></li>
+        <li><div><b>Blanket the surface you identified and re-run tier 0.</b> Deviation gone means solved.
+          Deviation unchanged means the association was wrong — go back to step 5 with the next
+          arrival.</div></li>
+        <li><div><b>If several arrivals interleave and step 5 will not converge,</b> that is the signal to
+          escalate to tier 3 or 4 — hire a spherical array for a day rather than buying one. That is the point
+          where direction of arrival earns its cost, and not before.</div></li>
+        <li><div><b>Whatever remains, quantify it.</b> Determine K₂ by ISO 26101-2 clause 5 with a reference
+          sound source and report it alongside the results. A stated correction is a defensible measurement; an
+          unstated reflection is not.</div></li>
+      </ol>
+
+      <div class="callout">
+        <p class="eyebrow">The habit worth keeping</p>
+        <h3>Predict the reflection before you measure it</h3>
+        <p>Every surface you can see has a computable arrival time. Working them out first turns the
+          reflectogram from a puzzle into a checklist: floor at 4.7 ms, ceiling at 9 ms, the equipment rack at
+          6 ms. The peaks that match are confirmations; the peaks that do not are the actual findings. This
+          costs five minutes and removes most of the peak-association problem before it starts.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= 07 ================= -->
+  <section>
+    <div class="shead">
+      <span class="num">07</span>
+      <h2>Evidence ledger</h2>
+      <p class="sub">Same convention as the companion review: what was read at source, and what was not.</p>
+    </div>
+
+    <div class="indent">
+      <div class="ledger">
+        <div class="panel">
+          <p class="eyebrow">Read at source — in <code>papers/reflection-localization/</code></p>
+          <ol>
+            <li>Lovedee-Turner, M. &amp; Murphy, D. <em>Three-dimensional reflector localisation and room
+              geometry estimation using a spherical microphone array.</em> JASA 146(5) 3339, 2019.
+              <span class="doi">doi:10.1121/1.5130569 · open copy at White Rose eprints 153179</span></li>
+            <li>ISO 26101-2:2024 — <em>Determination of the environmental correction</em> (published preview:
+              scope, terms, and the clause 4 selection of procedures).</li>
+            <li>Tervo, S. et al. <em>Spatial Decomposition Method for Room Impulse Responses.</em> JAES, 2013.</li>
+            <li>Gridless 3D recovery of image sources from room impulse responses.
+              <span class="doi">arXiv:2208.14017</span></li>
+            <li>Blind localization of early room reflections with an arbitrary microphone array.
+              <span class="doi">arXiv:2409.15484</span></li>
+            <li>Carried over from the companion review: ISO 26101-1:2021 preview; Nash, ICA 2019; González &amp;
+              Kob, DAGA 2026 (the SDM-on-directivity study); ARTA AN4 on time-gating geometry.</li>
+          </ol>
+        </div>
+
+        <div class="panel">
+          <p class="eyebrow" style="color:var(--fail)">Not retrieved — need the PDFs</p>
+          <p style="font-size:.86rem;color:var(--ink-2);margin-top:.7rem">The third is the one I would most want
+            before anyone commits money to tier 4 — it is the paper that documents where SDM stops working.</p>
+          <ol>
+            <li>Sun, H., Mabande, E., Kowalczyk, K., Kellermann, W. <em>Localization of distinct reflections in
+              rooms using spherical microphone array eigenbeam processing.</em> JASA 131(4) 2828, 2012.
+              <span class="doi">doi:10.1121/1.3688476</span></li>
+            <li>Mabande, E., Kowalczyk, K., Sun, H., Kellermann, W. <em>Room geometry inference based on
+              spherical microphone array eigenbeam processing.</em> JASA 134(4), 2013.
+              <span class="doi">doi:10.1121/1.4820895</span></li>
+            <li>Tervo, S. et al. <em>What the Spatial Decomposition Method can and cannot do.</em> AES, 2022 —
+              directional estimation limits, two simultaneous reflections, late-tail behaviour.</li>
+            <li>Pawlak, A. &amp; Lee, H. <em>Spatial segmentation of impulse response for room reflection
+              analysis and auralization.</em> Applied Acoustics, 2026.
+              <span class="doi">doi:10.2139/ssrn.5708563</span></li>
+            <li>A dereverberation beamforming algorithm for noise source localization in anechoic and
+              semi-reverberant environments. <span class="doi">PMC11987664 — landing page only</span></li>
+          </ol>
+          <p style="font-size:.86rem;color:var(--ink-2);margin-top:.8rem">The acoustic-camera false-positive
+            guidance in §04 is from vendor practitioner documentation, not a peer-reviewed source. It is
+            consistent with the image-source physics in §02, but treat it as craft knowledge rather than a
+            citation.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <span>SoundVisualizer · docs/reflection-localization.html</span>
+    <span>Companion to <a href="https://claude.ai/code/artifact/6226a13c-4e3e-43e6-bf94-a94fc8cac625">Absorptive But Not Anechoic</a></span>
+    <span>Arc numbers assume r = 1.0 m and 1.2 m rotor height — both unconfirmed</span>
+  </footer>
+
+</div>
