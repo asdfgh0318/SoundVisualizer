@@ -76,7 +76,15 @@ export function PresetControls() {
         .filter((m) => (m.alsaCardId || m.deviceIndex !== null) && key(m.serial))
         .map((m) => [key(m.serial), m]),
     );
+    // The saved preset wins wherever it actually carries a binding — it is the
+    // deliberate record, while the in-browser row is scratch that goes stale
+    // (a row whose card vanished gets its deviceIndex nulled on every render).
+    // Carrying the local value over unconditionally meant a preset load could
+    // never repair a broken row, which is the opposite of what loading is for.
+    // Prior bindings still fill entries the preset has none for, so a preset
+    // saved without device bindings does not force you to re-identify mics.
     const loaded = presetEntriesToMics(selected.mics).map((m) => {
+      if (m.alsaCardId) return m;
       const prior = key(m.serial) ? priorBySerial.get(key(m.serial)) : undefined;
       return prior
         ? { ...m, deviceIndex: prior.deviceIndex, alsaCardId: prior.alsaCardId }
