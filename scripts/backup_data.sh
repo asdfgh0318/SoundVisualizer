@@ -10,6 +10,17 @@
 
 set -euo pipefail
 
+# The Pi's data partition cannot hold a git mirror of the measurements (the
+# mirror is measurements x2 - working copy plus objects - and WAVs do not
+# compress). While that is true, backups run FROM the laptop instead
+# (scripts/backup_from_laptop.sh) and this script must stay out of the way,
+# even though setup_rpi.sh re-enables the timer on every deploy. The marker
+# lives on the data partition so it survives reboots and the overlay.
+if [ -e "${SOUNDVIS_BACKUP_DISABLE_MARKER:-$HOME/data/backup.laptop-managed}" ]; then
+  echo "backups are laptop-managed (marker present) - skipping"
+  exit 0
+fi
+
 SRC="${SOUNDVIS_DATA:-$HOME/SoundVisualizer/data}"
 DST_DIR="${SOUNDVIS_BACKUP_DIR:-$HOME/SoundVisualizer-data}"
 REMOTE="${SOUNDVIS_BACKUP_REMOTE:-github-data:asdfgh0318/SoundVisualizer-data.git}"
