@@ -10,8 +10,8 @@ import { Button } from '../ui/Button';
  *  UMIK-2s all report USB serial 00000, so the only way to tell which physical
  *  mic is which is to tap one and see which row moves. Showing every device at
  *  once — including ones no mic row is bound to — means one pass of tapping
- *  identifies the whole arc, and a mic bound to the wrong elevation is obvious
- *  because the wrong row lights up.
+ *  identifies the whole arc, and a mic bound to the wrong elevation shows up as
+ *  the wrong row moving.
  *
  *  Peak-hold matters here: a tap is a transient, and at 10 frames/sec a bar
  *  that only shows the instantaneous level can return to rest before you have
@@ -110,13 +110,6 @@ export function MicLevelBoard() {
     return () => ws.close();
   }, [running, devices]);
 
-  // Loudest right now — the one you just tapped.
-  const loudest = useMemo(() => {
-    const withLvl = rows.filter((r) => r.level !== null);
-    if (withLvl.length === 0) return null;
-    return withLvl.reduce((a, b) => ((a.level as number) > (b.level as number) ? a : b)).card;
-  }, [rows]);
-
   const pct = (db: number | null) =>
     db === null ? 0 : Math.max(0, Math.min(100, ((db - FLOOR_DB) / (0 - FLOOR_DB)) * 100));
 
@@ -154,11 +147,6 @@ export function MicLevelBoard() {
         >
           {running ? 'Stop' : `Start live levels (${devices.length} devices)`}
         </Button>
-        {running && rows.length > 0 && (
-          <span className="text-xs text-gray-500">
-            loudest now: <span className="font-mono text-indigo-300">{loudest ?? '—'}</span>
-          </span>
-        )}
       </div>
 
       {error && <p className="text-xs text-red-400">⚠ {error}</p>}
@@ -167,13 +155,10 @@ export function MicLevelBoard() {
         <div className="space-y-1">
           {sorted.map((r) => {
             const bound = boundTo.get(r.card);
-            const isLoud = r.card === loudest && r.level !== null && r.level > FLOOR_DB + 20;
             return (
               <div
                 key={r.card}
-                className={`flex items-center gap-2 px-2 py-1.5 rounded border ${
-                  isLoud ? 'border-indigo-400 bg-indigo-500/10' : 'border-gray-800'
-                }`}
+                className="flex items-center gap-2 px-2 py-1.5 rounded border border-gray-800"
               >
                 <span className="font-mono text-xs text-gray-300 w-36 shrink-0 truncate">
                   {r.card}
@@ -191,7 +176,7 @@ export function MicLevelBoard() {
 
                 <div className="relative flex-1 h-4 bg-gray-900 rounded overflow-hidden">
                   <div
-                    className={`absolute inset-y-0 left-0 ${isLoud ? 'bg-indigo-400' : 'bg-gray-600'}`}
+                    className="absolute inset-y-0 left-0 bg-indigo-400"
                     style={{ width: `${pct(r.level)}%` }}
                   />
                   {r.peak !== null && (
