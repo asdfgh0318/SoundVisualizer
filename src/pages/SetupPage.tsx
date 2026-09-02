@@ -3,7 +3,7 @@ import { CalibrationLibrary } from '../components/setup/CalibrationLibrary';
 import { CompatToleranceConfig } from '../components/setup/CompatToleranceConfig';
 import { CutoffsConfig } from '../components/setup/CutoffsConfig';
 import { DeferredCard } from '../components/setup/DeferredCard';
-import { MicIdentifyWizard } from '../components/setup/MicIdentifyWizard';
+import { MicLevelBoard } from '../components/setup/MicLevelBoard';
 import { MicList } from '../components/setup/MicList';
 import { TytoStatus } from '../components/setup/TytoStatus';
 import { Card } from '../components/ui/Card';
@@ -40,10 +40,10 @@ export function SetupPage() {
       </Card>
 
       <Card
-        title="Identify mics by tapping"
-        description="Confirm which physical mic sits at each elevation — the only reliable check, since every UMIK-2 reports serial 00000."
+        title="Live levels — all mics"
+        description="Every mic at once. Tap one and watch which row jumps: the only reliable way to tell them apart, since every UMIK-2 reports serial 00000."
       >
-        <MicIdentifyWizard />
+        <MicLevelBoard />
       </Card>
 
       <Card
