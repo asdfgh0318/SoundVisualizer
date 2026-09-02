@@ -111,26 +111,41 @@ def apply_calibration_to_spectrum(
     mag_db: np.ndarray,
     cal: UmikCalibration,
 ) -> np.ndarray:
-    """Add the UMIK-2 calibration correction to a magnitude spectrum.
+    """Apply the UMIK-2 calibration to a magnitude spectrum.
 
-    Linear interpolation of `cal.gain_db` over `freq_hz`. Bins outside the
-    calibration's frequency range clamp to the boundary values.
+    The response curve is SUBTRACTED, the Sens Factor offset is ADDED. They are
+    different quantities and the signs are not a matter of taste:
 
-    With a Sens Factor present the constant `94 - sens_factor_db` is added too,
-    turning dBFS into absolute dB SPL. Adding a level offset to a per-Hz density
-    is correct here: it passes through the downstream band integration unchanged.
-    AGain is deliberately *not* added — the Sens Factor already accounts for the
-    mic's internal gain; AGain only records which analog-gain setting it is valid
-    at. Without a Sens Factor only the response curve is applied and the result
-    stays dBFS-relative (see `is_absolute_spl`).
+    * `cal.gain_db` is the mic's own gain response — its coloration — not a
+      correction. REW, whose file format this is, states it directly: "It should
+      contain the actual gain (and optionally phase) response of the meter or
+      microphone at the frequencies given, these will then be subtracted from
+      subsequent measurements." A mic reading 1 dB hot at 5 kHz must have 1 dB
+      taken off. The curve's shape corroborates it: these files sit near 0 dB at
+      1 kHz and go negative at both extremes, which is a capsule rolling off —
+      a correction curve for such a mic would be positive there.
+
+    * The Sens Factor is the dBFS the mic reports at 94 dB SPL, so
+      `SPL = dBFS - sens_factor_db + 94` follows from the definition. Adding a
+      constant to a per-Hz density is fine: it passes through the downstream band
+      integration unchanged.
+
+    Linear interpolation over `freq_hz`; bins outside the calibration's range
+    clamp to the boundary values rather than extrapolating.
+
+    AGain is deliberately *not* applied — the Sens Factor already accounts for
+    the mic's internal gain; AGain only records which analog-gain setting it is
+    valid at. Without a Sens Factor only the response curve is removed and the
+    result stays dBFS-relative (see `is_absolute_spl`).
     """
-    correction = np.interp(
+    response = np.interp(
         freq_hz,
         cal.freq_hz,
         cal.gain_db,
         left=float(cal.gain_db[0]),
         right=float(cal.gain_db[-1]),
     )
+    correction = -response
     if cal.sens_factor_db is not None:
         correction = correction + (CALIBRATOR_REFERENCE_SPL_DB - cal.sens_factor_db)
     return mag_db + correction

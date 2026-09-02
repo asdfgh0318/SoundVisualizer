@@ -37,7 +37,14 @@ def test_short_audio_returns_stub():
     assert mag[0] < -100
 
 
-def test_calibration_correction_added_to_spectrum():
+def test_response_curve_is_subtracted_not_added():
+    """The cal file holds the mic's own gain response, so it comes OFF.
+
+    REW, whose format this is: "It should contain the actual gain (and
+    optionally phase) response of the meter or microphone at the frequencies
+    given, these will then be subtracted from subsequent measurements."
+    A mic reading +2 dB hot at 100 Hz must have 2 dB removed, not added.
+    """
     freq = np.array([100.0, 1000.0, 10000.0])
     mag_db = np.array([-50.0, -50.0, -50.0])
     cal = UmikCalibration(
@@ -48,7 +55,7 @@ def test_calibration_correction_added_to_spectrum():
         gain_db=np.array([2.0, -1.0, 5.0]),
     )
     out = apply_calibration_to_spectrum(freq, mag_db, cal)
-    np.testing.assert_array_equal(out, [-48.0, -51.0, -45.0])
+    np.testing.assert_array_equal(out, [-52.0, -49.0, -55.0])
 
 
 def test_calibration_clamps_outside_range():
@@ -62,9 +69,10 @@ def test_calibration_clamps_outside_range():
         gain_db=np.array([2.0, 5.0]),
     )
     out = apply_calibration_to_spectrum(freq, mag_db, cal)
-    # 10 Hz clamps to gain_db[0]=2.0, 30000 Hz clamps to gain_db[-1]=5.0
-    assert out[0] == -48.0
-    assert out[2] == -45.0
+    # 10 Hz clamps to gain_db[0]=2.0, 30000 Hz clamps to gain_db[-1]=5.0,
+    # and the response is subtracted.
+    assert out[0] == -52.0
+    assert out[2] == -55.0
 
 
 def _band_power_db(freq: np.ndarray, mag_db: np.ndarray, low: float, high: float) -> float:
@@ -116,7 +124,8 @@ def test_sens_factor_offset_stacks_on_response_curve():
     )
     out = apply_calibration_to_spectrum(freq, mag_db, cal)
     offset = CALIBRATOR_REFERENCE_SPL_DB - (-1.724)
-    np.testing.assert_allclose(out, np.array([-48.0, -51.0, -45.0]) + offset)
+    # response subtracted, Sens Factor offset added — opposite signs, on purpose
+    np.testing.assert_allclose(out, np.array([-52.0, -49.0, -55.0]) + offset)
 
 
 def test_missing_sens_factor_applies_response_curve_only():
@@ -130,7 +139,7 @@ def test_missing_sens_factor_applies_response_curve_only():
         gain_db=np.array([3.0, 3.0]),
     )
     out = apply_calibration_to_spectrum(freq, mag_db, cal)
-    assert out[0] == pytest.approx(-37.0)
+    assert out[0] == pytest.approx(-43.0)  # -40 - 3, response removed
     assert not is_absolute_spl(cal)
 
 
@@ -150,3 +159,34 @@ def test_sens_offset_survives_band_integration():
     raw = _band_power_db(freq, mag_db, 0.0, sr / 2)
     cald = _band_power_db(freq, apply_calibration_to_spectrum(freq, mag_db, cal), 0.0, sr / 2)
     assert cald - raw == pytest.approx(106.0, abs=1e-6)
+
+
+def test_curve_and_sens_factor_have_opposite_signs():
+    """Guard the one thing that is easy to get backwards and hard to notice.
+
+    The two halves of a cal file are different quantities and move the spectrum
+    in opposite directions. A mic that reads hot at some frequency must be
+    brought DOWN there (response subtracted), while the Sens Factor lifts dBFS
+    up to dB SPL (offset added). Getting the curve's sign wrong doubles its
+    error instead of removing it — roughly 3.7 dB of fabricated spread across a
+    real 11-mic set, which lands straight on directivity.
+    """
+    freq = np.array([1000.0])
+    mag_db = np.array([-50.0])
+    hot = UmikCalibration(  # mic reads 4 dB hot here
+        serial="t", sens_factor_db=None, again_db=None,
+        freq_hz=np.array([100.0, 10000.0]), gain_db=np.array([4.0, 4.0]),
+    )
+    quiet = UmikCalibration(  # mic reads 4 dB shy here
+        serial="t", sens_factor_db=None, again_db=None,
+        freq_hz=np.array([100.0, 10000.0]), gain_db=np.array([-4.0, -4.0]),
+    )
+    assert apply_calibration_to_spectrum(freq, mag_db, hot)[0] == pytest.approx(-54.0)
+    assert apply_calibration_to_spectrum(freq, mag_db, quiet)[0] == pytest.approx(-46.0)
+
+    # ...while the Sens Factor raises the level, on a flat curve.
+    flat = UmikCalibration(
+        serial="t", sens_factor_db=-12.0, again_db=None,
+        freq_hz=np.array([100.0, 10000.0]), gain_db=np.array([0.0, 0.0]),
+    )
+    assert apply_calibration_to_spectrum(freq, mag_db, flat)[0] == pytest.approx(-50.0 + 12.0 + 94.0)
