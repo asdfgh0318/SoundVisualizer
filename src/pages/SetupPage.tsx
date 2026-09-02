@@ -3,6 +3,7 @@ import { CalibrationLibrary } from '../components/setup/CalibrationLibrary';
 import { CompatToleranceConfig } from '../components/setup/CompatToleranceConfig';
 import { CutoffsConfig } from '../components/setup/CutoffsConfig';
 import { DeferredCard } from '../components/setup/DeferredCard';
+import { MicIdentifyWizard } from '../components/setup/MicIdentifyWizard';
 import { MicList } from '../components/setup/MicList';
 import { TytoStatus } from '../components/setup/TytoStatus';
 import { Card } from '../components/ui/Card';
@@ -36,6 +37,13 @@ export function SetupPage() {
         description="Manual placement — one row per UMIK-2. Top and bottom elevations are independent; the user manually re-mounts mics between captures."
       >
         <MicList />
+      </Card>
+
+      <Card
+        title="Identify mics by tapping"
+        description="Confirm which physical mic sits at each elevation — the only reliable check, since every UMIK-2 reports serial 00000."
+      >
+        <MicIdentifyWizard />
       </Card>
 
       <Card
