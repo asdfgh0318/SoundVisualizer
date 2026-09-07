@@ -5,14 +5,14 @@ Only what the text says; anything not stated is marked "(unclear in text)". Page
 
 **Not covered:** Beranek & Sleeper 1946 — no `.txt` exists in `txt/` (only `beranek_sleeper_1946_anechoic_chambers.html` in the parent directory), so it was skipped as instructed.
 
-**File-name caveat:** `internoise2023_quadcopter_uav_teststand.txt` and `quietdrones_schmal_quadcopter_teststand.txt` are two closely related Schmal/Herrin/Fernández Comesaña papers on the same UK test stand. The "internoise2023" text carries no venue header and itself cites "Development of a UAV Test Stand, Inter-Noise 2023, Japan" as ref. [6], so it is *not* that Inter-Noise paper; its venue/year is unclear in text. The "quietdrones" text carries the session header "Experimental Acoustic and Flow Measurements" and cites items up to Dec 2023.
+**File-name caveat:** `Schmal_nd_conf_quadcopter-sound-characterization-uav-test-stand.txt` and `Schmal_nd_conf_acoustic-characterization-quadcopter-test-stand.txt` are two closely related Schmal/Herrin/Fernández Comesaña papers on the same UK test stand. The "internoise2023" text carries no venue header and itself cites "Development of a UAV Test Stand, Inter-Noise 2023, Japan" as ref. [6], so it is *not* that Inter-Noise paper; its venue/year is unclear in text. The "quietdrones" text carries the session header "Experimental Acoustic and Flow Measurements" and cites items up to Dec 2023.
 
 Theme key: T1 tones expose what band-noise hides · T2 wedge cut-off ≠ usable LF limit · T3 qualification method changes verdict · T4 ground/floor reflection distorts tones/directivity · T5 flow recirculation inflates BPF/broadband · T6 α/locally-reacting admittance insufficient at LF · T7 fixtures/discontinuities dominate · T8 free field extendable below passive cut-off · T9 open-jet shear-layer refraction.
 Evidence: III = controlled measurement with reference/qualification data · VI = single descriptive case / simulation without measurement validation · VII = standard, vendor note, expert/review report.
 
 ---
 
-### Nash 2019, ICA Aachen — ica2019_qualification_anechoic_chamber.txt
+### Nash 2019, ICA Aachen — Nash_2019_ICA_qualification-of-an-anechoic-chamber.txt
 - Type: conference (Proc. 23rd ICA, pp. 1343–1349)
 - WHY: A 51 m³ IAC fully-anechoic chamber with exposed foam wedges and a partly-open expanded-metal floor grate had to be qualified post-construction to ISO 3745 Annex A / ISO 26101, and the project specification required pure-tone (not broadband) test signals.
 - HOW: Draw-away on 5 traverses × 20 positions at 25 mm spacing over 500 mm, first mic 1 m from source; B&K 4295 OmniSource for 100–1250 Hz and a custom 1.5 m pipe + JBL 2426J compression driver for 800–12 500 Hz; two "tone clusters" (12 and 13 tones at 1/3-octave centres, FFT-bin aligned) recorded on 4–7 GRAS 40AE mics, flattop-window FFT; one traverse repeated with pink noise in 1/3-octave bands (36 measurements incl. 14 duplicates); floor grate covered with 50 mm glass-fibre panels.
@@ -21,7 +21,7 @@ Evidence: III = controlled measurement with reference/qualification data · VI =
 - Evidence level: III — ISO-protocol qualification with both signal types on the same traverses.
 - Quality: B — peer-reviewed conference with full fit numbers.
 
-### Bikmukhametov 2026 (arXiv 2603.16556, "submitted to Elsevier") — itmo_radiowave_chamber_as_acoustic_freefield.txt
+### Bikmukhametov 2026 (arXiv 2603.16556, "submitted to Elsevier") — Bikmukhametov_2026_arXiv_ITMO-radiowave-chamber-acoustic-free-field.txt
 - Type: journal preprint (EM-chamber facility used acoustically)
 - WHY: Acoustic anechoic chambers are rare and costly; radio-wave absorbers may also absorb sound, so the ITMO RF chamber (4.46 × 6.96 × 3.3 m bare; carbon-loaded open-cell foam pyramids 425 mm high, 150 mm base) was tested for acoustic free-field use.
 - HOW: ISO 3745:2012 / GOST-ISO 3745-2014 divergence test with OED-SP360 omni source, B&K 2250 + Sennheiser e604, 4 traverses to the corners, 11 points from 0.5 m at 100 mm steps, 30 s each; two-microphone impedance tube (ISO 10534-2) on a 25 mm disk cut from a pyramid (290–1800 Hz); COMSOL Floquet-periodic pyramid model with Delany–Bazley σ = 3437 Pa·s/m²; background noise and RT in 1/3-octaves.
@@ -30,7 +30,7 @@ Evidence: III = controlled measurement with reference/qualification data · VI =
 - Evidence level: III — ISO 3745 traverse data against inverse-square reference.
 - Quality: B — full numbers, but preprint (not yet peer-reviewed).
 
-### Russo 2018, Euronoise Crete — euronoise2018_split_iso3745_vs_iso26101.txt
+### Russo 2018, Euronoise Crete — Russo_2018_Euronoise_ISO3745-vs-ISO26101-Split-chamber.txt
 - Type: conference (Euronoise 2018 Proc., pp. 2225–2230)
 - WHY: ISO 3745 Annex A (1977 lineage) and ISO 26101 (2012/2017) both qualify free fields but differ in detail; the new 2.8 × 1.7 × 2.05 m Split chamber was qualified under both.
 - HOW: Standard-by-standard comparison (source stability ±0.5 vs ±0.2 dB with monitor-mic correction; ≥10 dB vs ≥6 dB above background; spacing ≤0.1 m vs ≤λ/10 below 1 kHz and 25 mm above; ISO 3745 two-parameter fit (a, r0) vs ISO 26101 single b; traverse minimum λ/2 in 2012 reduced to λ/4 in 2017; ISO 3745 needs 100 Hz–10 kHz for full conformity, ISO 26101 any contiguous range); measurements with ARTA pink noise (48 kHz, FFT 32k) from 0.5 m; RT60 from RT30 (ISO 3382).
@@ -39,7 +39,7 @@ Evidence: III = controlled measurement with reference/qualification data · VI =
 - Evidence level: III — ISO-protocol qualification of a real chamber.
 - Quality: B — peer-reviewed conference; numeric deviations only in figures.
 
-### González & Kob 2026, DAGA Dresden — daga2026_room_acoustics_on_directivity_meas.txt
+### González & Kob 2026, DAGA Dresden — Gonzalez-Kob_2026_DAGA_room-acoustics-loudspeaker-directivity.txt
 - Type: conference (DAGA 2026, pp. 1220–1223, DOI 10.71568/daga2026.688)
 - WHY: AES56-2008 defines loudspeaker polar measurement but "does not specify the room acoustic conditions", so the same speaker yields different polars in non-anechoic rooms.
 - HOW: Neumann KH120A (and KH80) on a Stage Banner 10AT turntable, 5° steps, exponential sweep 0.5 s at 44.1 kHz, octave-band-filtered IR (1024-sample window); four rooms with RT20 from 0.01 s (KIO anechoic) to 25.2 s at 63 Hz (ETI reverberant hall), Dc from Eq. (1); Spatial Decomposition Method with six GRAS 40AI mics to localise image sources.
@@ -48,7 +48,7 @@ Evidence: III = controlled measurement with reference/qualification data · VI =
 - Evidence level: III — polar data referenced to a 5° anechoic measurement.
 - Quality: B — peer-reviewed conference; key deviations given as figures plus a few numbers.
 
-### Prinn 2023, Acoustics (MDPI) 5:367–395 — mdpi_review_FEM_room_acoustics.txt (abstract, §6, §7 read)
+### Prinn 2023, Acoustics (MDPI) 5:367–395 — Prinn_2023_Acoustics_review-FEM-room-acoustics.txt (abstract, §6, §7 read)
 - Type: journal (narrative review)
 - WHY: FEM is now practical for wave-dominated room acoustics but neophytes lack a map of derivation, domains, and the open challenges (cost, pollution, material modelling, V&V).
 - HOW: Literature review; §6 collects state-of-the-art on iterative solvers, domain decomposition (2271 m³ auditorium, ~150 M DOF, 3 s IR to 3 kHz on 512 cores in ~2.5 h), DGM, dispersion reduction (MIR, high-order, PUFEM), material uncertainty, frequency-dependent (ADE) and extended-reaction (equivalent-fluid) boundaries.
@@ -57,7 +57,7 @@ Evidence: III = controlled measurement with reference/qualification data · VI =
 - Evidence level: VII — secondary/expert review (the supporting numbers are cited from others).
 - Quality: A — peer-reviewed journal with full method survey; T6 support is secondary evidence.
 
-### Payne & Simmons 1996, NPL Report CIRA(EXT) 009 — npl_cira9_payne_simmons_chamber.txt
+### Payne & Simmons 1996, NPL Report CIRA(EXT) 009 — Payne-Simmons_1996_NPL-CIRA009_environmental-correction-K2.txt
 - Type: report (National Physical Laboratory)
 - WHY: EC Machinery Directive sound-power declarations depend on the environmental correction K2 (0–7 dB across ISO 3744/3746/11200), and the ISO standards permit several methods that may disagree.
 - HOW: B&K 4204 reference source (90.9 dB ± 0.2 re 1 pW) in five NPL rooms from hemi-anechoic (room A, ISO 6926 to r = 1.5 m, 91.5 m³) to semi-reverberant (room E, 274 m³); 1.5 m hemisphere and parallelepipeds at 0.85/1.3/1.8 m; K2A by absolute (substitution), reverberation-time (A-weighted and 1 kHz), estimated-α table, and two-surface methods; B&K 2144 analyser, 15 s averages, repeatability <0.2 dB.
@@ -66,7 +66,7 @@ Evidence: III = controlled measurement with reference/qualification data · VI =
 - Evidence level: III — calibrated reference source, outdoor cross-check.
 - Quality: B — national-lab report with full tables (some table cells garbled by OCR).
 
-### Schmal, Herrin & Fernández Comesaña (year/venue unclear; cites Dec-2023 items) — quietdrones_schmal_quadcopter_teststand.txt
+### Schmal, Herrin & Fernández Comesaña (year/venue unclear; cites Dec-2023 items) — Schmal_nd_conf_acoustic-characterization-quadcopter-test-stand.txt
 - Type: conference ("Session: Experimental Acoustic and Flow Measurements"; Quiet Drones per filename — unclear in text)
 - WHY: Near-field UAV acoustics is little known and flying a UAV in a chamber is risky; a test stand emulating a 61 cm-wheelbase quadcopter allows safe, stationary measurement.
 - HOW: XRotor 40A ESCs, T-Motor MN3508, 38.1 cm props at ~3500 RPM, 22.2 V supplies; University of Kentucky hemi-anechoic chamber 6.1 × 6.1 × 3.0 m, "meets the ISO requirements for acoustic testing at 150 Hz and above"; Microflown PU-probe draw-away on 5 planes × 6 doubling distances, 30 s averages; Scan&Paint 3D intensity scans (20 Hz–10 kHz, 1 cm grid) ~5 cm above/below the props.
@@ -75,7 +75,7 @@ Evidence: III = controlled measurement with reference/qualification data · VI =
 - Evidence level: VI — descriptive single-facility characterisation; no reference qualification data shown.
 - Quality: B — full setup and decay numbers; most results in figures.
 
-### Schmal, Herrin & Fernández Comesaña (venue/year unclear in text) — internoise2023_quadcopter_uav_teststand.txt
+### Schmal, Herrin & Fernández Comesaña (venue/year unclear in text) — Schmal_nd_conf_quadcopter-sound-characterization-uav-test-stand.txt
 - Type: conference (cites "Development of a UAV Test Stand", Inter-Noise 2023 as [6]; own venue not stated)
 - WHY: As above — near-field behaviour, interaction noise and source superposition of a quadcopter emulated on a stand.
 - HOW: Same stand and 6.1 × 6.1 × 3.0 m hemi-anechoic chamber (ISO ≥150 Hz); Scan&Paint 3D on top/propeller/bottom planes and vertical propagation planes; PU-probe draw-away on two planes × seven doubling distances, 30 s averages; 1–4 propellers.
@@ -84,7 +84,7 @@ Evidence: III = controlled measurement with reference/qualification data · VI =
 - Evidence level: VI — descriptive case study.
 - Quality: B — conference paper with numbers (venue not stated in text).
 
-### Aussal & Gueguen 2019, ICA Aachen — ica2019_opensource_fast_room_acoustic_sim.txt
+### Aussal & Gueguen 2019, ICA Aachen — Aussal-Gueguen_2019_ICA_open-source-fast-room-acoustic-simulation.txt
 - Type: conference (Proc. 23rd ICA, pp. 6059–6066)
 - WHY: Wave methods (FEM/BEM) are impractical for a 436 000-triangle open-air theatre mesh; a fast ray-tracing/image-source hybrid was needed for 50–15 000 Hz RIRs.
 - HOW: Energy rays, specular reflection only, Er = Ei(1 − α(f)) with Odeon octave-band α, air absorption per ISO 9613-1; divide-and-conquer binary tree reduces O(NM) to O(N log M) (≈10⁶ rays, laptop, minutes); image sources back-propagated from the 2 m measurement sphere; validated on "theoretical test cases" and cross-checked with Odeon on the same mesh.
@@ -93,7 +93,7 @@ Evidence: III = controlled measurement with reference/qualification data · VI =
 - Evidence level: VI — simulation validated against theory and another simulator, not measurement.
 - Quality: B — peer-reviewed conference, method fully specified.
 
-### Okuzono 2024, Appl. Sci. 14:194 — applsci_FEM_air_absorption_2D.txt
+### Okuzono 2024, Appl. Sci. 14:194 — Okuzono_2024_ApplSci_room-FEM-air-absorption-2D.txt
 - Type: journal
 - WHY: Frequency-domain room FEM normally solves the lossless Helmholtz equation; air absorption matters at high frequency and the accuracy/efficiency of the lossy (complex-k) approach was undocumented.
 - HOW: 2D plane-wave duct 1 km long, 1 Hz–20 kHz, dispersion-reduced Q4 elements 2.5 mm (800 002 DOF, 6.8 elements/λ at 20 kHz), α from ISO 9613-1 Annex A for three atmospheres; 2D office (≈10.6 × 3.8 m) to 6 kHz with glass-wool absorbers as frequency-dependent locally-reacting impedance (Miki model, σ 6900–55 000 Pa·s/m²), CSQMOR iterative solver, 24 threads.
@@ -102,7 +102,7 @@ Evidence: III = controlled measurement with reference/qualification data · VI =
 - Evidence level: VI — numerical study without measurement.
 - Quality: A — peer-reviewed with full numbers (2D only).
 
-### Ressl & Wundes (WSEAS "Recent Advances in Acoustics & Music", ISBN 978-960-474-192-2; year unclear in text) — hearing_aid_anechoic_chamber_design.txt
+### Ressl & Wundes (WSEAS "Recent Advances in Acoustics & Music", ISBN 978-960-474-192-2; year unclear in text) — Ressl-Wundes_nd_WSEAS_hearing-aid-anechoic-chamber-design.txt
 - Type: conference
 - WHY: A cheap, small (1.103 m³) application-specific chamber for hearing-aid microphone tests over 250–4000 Hz.
 - HOW: Dimensions from a common scale × three small primes; geometric cut-off from a + 4a + λ/2 + 2lw = d → 211.7 Hz; wedge cut-off fc = c/4h (needs h ≥ 0.34 m; built 0.15 m → 571.6 Hz); double 30 mm MDF walls with 50 mm glass-wool gap (NC-10 target, 60 dB(A) ambient); 450 hot-wire-cut 25 kg/m³ PU wedges on Velcro modules; MATLAB image-source simulation, first reflections only (six phantom sources), comparing rigid vs lined walls to inverse-square law.
@@ -111,7 +111,7 @@ Evidence: III = controlled measurement with reference/qualification data · VI =
 - Evidence level: VI — design case study, preliminary measurements, no reference qualification.
 - Quality: C — few verified numbers, absorber untested.
 
-### Chialina et al. 2015, arXiv 1511.08410 — arxiv_modeling_anechoic_chambers_equiv_materials.txt
+### Chialina et al. 2015, arXiv 1511.08410 — Chialina_2015_arXiv_EM-anechoic-chambers-equivalent-materials.txt
 - Type: EM-domain (preprint)
 - WHY: Full-wave simulation of whole EMC semi-anechoic chambers is computationally prohibitive; equivalent (homogenised) wall admittance and an equivalent spherical radiator reduce cost without losing accuracy.
 - HOW: Discrete Geometric Approach (tetrahedral dual grids); unit cell of 2 × 2 cones + 3 × 3 ferrite tiles → admittance boundary condition translated to the wall plane, per frequency (31 sims); dipole + comb generator in an 8.64 × 5.6 × 5.68 m ETS-Lindgren chamber, receiver 3 m away, 18 geometries × 31 frequencies (90–390 MHz) = 558 runs, 1.1 M elements, ~3 days; measurement uncertainty budget: expanded 4.05 dB (k = 2) with site imperfections 3.0 dB (Table 1).
@@ -120,7 +120,7 @@ Evidence: III = controlled measurement with reference/qualification data · VI =
 - Evidence level: III — simulation validated against measurement with an uncertainty budget.
 - Quality: C — EM analogue, preprint.
 
-### Rodriguez (NSI-MI; AMTA-style proceedings, year unclear in text, cites AMTA 2016) — nsimi_predicted_vs_measured_chamber_perf.txt
+### Rodriguez (NSI-MI; AMTA-style proceedings, year unclear in text, cites AMTA 2016) — Rodriguez_nd_NSI-MI_EM-predicted-vs-measured-chamber-performance.txt
 - Type: EM-domain (conference)
 - WHY: Quiet-zone (QZ) reflectivity of rectangular RF chambers should be predictable from absorber bistatic reflectivity without full-wave runs.
 - HOW: First-order ray model (end wall + specular points on side walls/floor/ceiling) with a 7th-order polynomial for pyramidal absorber reflectivity vs angle and electrical thickness; checked against CST full-wave (12 × 22 × 12 m at 700 MHz) and free-space VSWR scans of three chambers (18 × 11.5 × 11.5 m at 100 MHz–12 GHz; 13.41 × 6.1 × 6.1 m at 0.8–6 GHz; 12 × 4.12 × 4.27 m at X-band).
@@ -129,7 +129,7 @@ Evidence: III = controlled measurement with reference/qualification data · VI =
 - Evidence level: III — predictions compared with full-wave and measured QZ data.
 - Quality: C — EM analogue.
 
-### Kanda & Wyss 1986, NBS Technical Note 1305 — nist_tn1305_offaxis_measurements_anechoic.txt
+### Kanda & Wyss 1986, NBS Technical Note 1305 — Kanda-Wyss_1986_NBS-TN1305_EM-off-axis-measurements-anechoic.txt
 - Type: EM-domain (national-lab report)
 - WHY: Probe calibrations in the NBS-Boulder RF chamber assume on-axis alignment; the error from off-axis placement needed quantifying for the chamber error budget.
 - HOW: 8.53 m long chamber (EHP/VHP-26 absorber), EFM-3 isotropic probe on a stepper cart, readings every 5 cm from 1 to 6 m; open-ended waveguide at 250 MHz and pyramidal horns at 600–1000 MHz; probe offsets 0.25–1.41 m on a 2 × 2 m frame; reproducibility ±0.15 dB scan-to-scan, ±0.5 dB day-to-day; absorber placement around the horn/doorway ±0.15 dB.
@@ -138,7 +138,7 @@ Evidence: III = controlled measurement with reference/qualification data · VI =
 - Evidence level: III — controlled repeated scans with reproducibility budget.
 - Quality: C — EM analogue (figures OCR-garbled; tables intact).
 
-### Prislan & Svenšek 2017, arXiv 1705.03825 — raytracing_semiclassical_lowfreq.txt
+### Prislan & Svenšek 2017, arXiv 1705.03825 — Prislan-Svensek_2017_arXiv_ray-tracing-semiclassical-low-frequency.txt
 - Type: journal preprint (arXiv; JASA-style)
 - WHY: Geometrical methods normally fail below the Schroeder frequency; the ray-tracing semiclassical (RTS) method reproduces the Green's function incl. lowest modes, but had only been tested with real, frequency-independent impedance — realistic frequency-dependent, phase-modifying and extended-reaction boundaries were untested.
 - HOW: 4.215 × 3.647 × 3 m room, four BCs (real z = 60 z0; membrane resonator fm = 50.6 Hz; 5 cm Delany–Bazley–Miki porous layer σ = 500 Ns/m⁴ on rigid wall, angle-dependent; mixed); RTS with 6 758 400 rays, cutoff |B| < 10⁻⁶, R = 0.2 m, 0.05 Hz steps to 300 Hz (cluster, 4 days); COMSOL FEM reference (≥5 points/λ to 200 Hz); T20 from octave-band decays vs Sabine.
@@ -147,7 +147,7 @@ Evidence: III = controlled measurement with reference/qualification data · VI =
 - Evidence level: VI — simulation vs FEM, no measurement.
 - Quality: B — full numbers; preprint.
 
-### Götz et al. 2025, arXiv 2509.05175 (Treble Technologies) — roomacoustic_sim_vs_measurement_audio_algo.txt
+### Götz et al. 2025, arXiv 2509.05175 (Treble Technologies) — Gotz_2025_arXiv_room-simulation-vs-measurement-audio-algorithms.txt
 - Type: journal/conference preprint (arXiv)
 - WHY: ASP/AML evaluation datasets are small because RIR measurement is costly; can wave-based or geometrical simulations replace measurements?
 - HOW: 72 measured RIRs in an 80 m³ lab (bricks, furniture, three absorber conditions, RT 0.3–0.9 s) and a 38 m³ studio (RT 1.43 s); replicated with DG-FEM (complex impedances from ISO 10534-2 tube, membrane velocity source, ≤7 kHz), GA ray-radiosity (complex impedances, fitted directivity) and GA ray-tracing in pyroomacoustics (energy α, cardioid); three algorithms (WPE, NN speaker-distance, diffusion dereverberation) compared by Pearson ρ and RMSE.
@@ -156,7 +156,7 @@ Evidence: III = controlled measurement with reference/qualification data · VI =
 - Evidence level: III — measured RIRs as reference.
 - Quality: B — preprint with full metrics.
 
-### Huang (Univ. of Bristol, supervisor Azarpeyvand; year unclear in text, refs to 2025) — height_dependent_rotor_noise_thrust_uam.txt
+### Huang (Univ. of Bristol, supervisor Azarpeyvand; year unclear in text, refs to 2025) — Huang_nd_Bristol-report_height-dependent-rotor-noise-thrust.txt
 - Type: thesis / student research report (unclear in text)
 - WHY: How rotor height relative to an upstream bluff-body (building) wake and inflow speed change thrust and noise of an eVTOL-scale propeller.
 - HOW: Bristol aeroacoustic facility, anechoic chamber 7.9 × 5.0 × 4.6 m with "a cut-off frequency of 160 Hz", open-jet closed-circuit tunnel, APC 12-inch two-blade prop 0.6 m from nozzle, cylinder 3D upstream, H = −0.5R/0R/+0.5R, 8/14/24 m/s, 12 000 RPM; 62 GRAS 40PL mics (top arc 1.5 m, 40–145° every 5°; side 2 m, 301–340° every 1°); Welch PSD, 1 Hz resolution, fs 65 536 Hz; OASPL over 5–8.5 kHz; load-cell CT; exploratory POD and inverse-Lighthill attempts.
@@ -165,7 +165,7 @@ Evidence: III = controlled measurement with reference/qualification data · VI =
 - Evidence level: VI — single-facility descriptive experiment.
 - Quality: C — unreviewed report; numbers mostly in figures.
 
-### Fonseca, Brum, Mareze & Brandão 2018, DAGA München — daga2018_RIR_chain_freefield_models.txt
+### Fonseca, Brum, Mareze & Brandão 2018, DAGA München — Fonseca_2018_DAGA_RIR-chain-calibration-free-field-models.txt
 - Type: conference (DAGA 2018, pp. 574–577)
 - WHY: The measurement chain colours RIR/BRIRs; the anechoic free-field response needed for inverse filtering is "expensive and often impracticable" to obtain, so simulated free-field (SFF) windowing/TDS methods were tested.
 - HOW: Simulated RIRs (source–receiver above an infinite reflector; image-source rectangular room; 2D FEM) convolved with a Yamaha HS50M free-field IR, then windowed with a hybrid rectangular + Blackman–Harris window after Local-Energy-Ratio onset detection; measurements in a 12 × 8 × 8 m studio (absorbers on walls/ceiling, concrete floor, mic laid on the floor, 1/2/4/8 m) and an 11.75 × 6.48 × 3.32 m auditorium (mic 1.5 m high, in-situ seats); B&K 4292 dodecahedron, correction range 50 Hz–10 kHz.
@@ -174,7 +174,7 @@ Evidence: III = controlled measurement with reference/qualification data · VI =
 - Evidence level: VI — no anechoic reference; a "silent room" used as reference.
 - Quality: B — peer-reviewed conference; sparse numbers.
 
-### Mateljan, ARTA Application Note No. 4 — arta_AN4_freefield_quasianechoic.txt
+### Mateljan, ARTA Application Note No. 4 — Mateljan_nd_ARTA-AN4_loudspeaker-free-field-response.txt
 - Type: vendor note (ARTA software)
 - WHY: Loudspeaker free-field response is wanted from measurements made in ordinary reverberant rooms.
 - HOW: Near-field response scaled by a/2r (valid ka ≪ 1, "very small error ... below 200Hz"), baffle-step diffraction model (1 + jf/f0)/(2 + jf/f0) with f0 = 42.70/d sphere or 34.16/d square baffle, gating the far-field IR before the first reflection (5.6 ms gate → valid above 178 Hz), merge at 235 Hz; image-method formula for required height h = √((d + cΔt)/2)² − (d/2)² → 1.08 m for a 5 ms gate at d = 48 cm.
@@ -183,7 +183,7 @@ Evidence: III = controlled measurement with reference/qualification data · VI =
 - Evidence level: VII — vendor application note.
 - Quality: C — vendor note, worked example only.
 
-### ISO 26101-1:2021 (iTeh preview: Foreword–5.1.5.1.2 only) — iso26101-1-2021_sample.txt
+### ISO 26101-1:2021 (iTeh preview: Foreword–5.1.5.1.2 only) — ISO-26101-1_2021_standard-preview_free-field-qualification.txt
 - Type: standard (sample; Annexes A–D not included)
 - WHY: "to promote uniformity in the method and conditions of measurement when qualifying free sound field environments" (Introduction, p. v); referencing documents may set their own criteria.
 - HOW: Divergence-loss method; Class 1 instrumentation; test source compact, omni per Annex B, ≥6 dB (preferably 15 dB) above background, stability within ±0.2 dB else monitor-mic correction (Formula 1); traverse origin inside the source volume, starting ≤λ/4 from the origin and traversing ≥λ/4 at the lowest frequency; equally spaced points (spacing per referencing document or Annex A); discrete-frequency (tones, or FFT of broadband noise) or 1/3-octave broadband qualification; continuous traverse allowed for pure tones; fit Lp(ri) = b − 20 lg(ri/r0).
@@ -192,7 +192,7 @@ Evidence: III = controlled measurement with reference/qualification data · VI =
 - Evidence level: VII — standard.
 - Quality: C — preview only (Annex A tolerances and traverse rules absent).
 
-### ISO 5305:2024 (iTeh preview: Foreword–7.3.1 only) — iso5305-2024_UAS_noise_sample.txt
+### ISO 5305:2024 (iTeh preview: Foreword–7.3.1 only) — ISO-5305_2024_standard-preview_UAS-noise-measurement.txt
 - Type: standard (sample)
 - WHY: No internationally agreed UAS noise procedure; EU 2019/945 (ISO 3744-based) covers hover only, "the microphone arrangement is not specified to avoid the influence of unsteady aerodynamic flow induced by the UAS" and "the directional nature of the noise produced by UAS was not considered" (Introduction, p. vi).
 - HOW: For MTOM < 150 kg multirotor UAS; 20 Hz–20 kHz recording at ≥48 kHz, WS2F/WS3F free-field mics indoors, class 1; far-field R ≥ 5 DA (Formula 1); height H0 ≥ max(2 DA, 1.2 m) to avoid aerodynamic ground effect (Formula 2); position within ±5 % of shortest mic distance; background ≥6 dB (preferably 15 dB) below; chamber qualified per ISO 26101-1 with Table 1 limits ±1.5 dB (125–630 Hz), ±1.0 dB (800–5000 Hz), ±1.5 dB (≥6300 Hz) "for all source positions and measurement directions", source placed "closest to the wall, floor and ceilings"; mics "on acoustically treated support"; anechoic wind tunnel clause 8 includes "8.2.3 Refraction correction" and "8.2.4 Microphone clearance distance" (titles only in sample); Annexes B/C (far-field numerical and measured), E (windscreen effect).

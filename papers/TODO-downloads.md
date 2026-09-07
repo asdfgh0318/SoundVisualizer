@@ -21,7 +21,7 @@ so re-render it *after* the review is corrected, never in parallel.
 → `papers/anechoic-simulation/`
 
 - [x] **Bonfiglio, P. & Pompoli, F. (2013)** — *Numerical methodologies for optimizing and
-      **FETCHED 2026-09-07 → `anechoic-simulation/jasa2013_bonfiglio_pompoli_lowfreq_chamber_prediction.pdf`** (text in `txt/`; review re-check still pending)
+      **FETCHED 2026-09-07 → `anechoic-simulation/Bonfiglio-Pompoli_2013_JASA_numerical-low-frequency-anechoic-chambers.pdf`** (text in `txt/`; review re-check still pending)
       predicting the low frequency behavior of anechoic chambers.* JASA 134(1) 285–291.
       <https://doi.org/10.1121/1.4807820>
       **Why:** the core methodology paper. All of §01 — converting wedge impedance to a
@@ -30,7 +30,7 @@ so re-render it *after* the review is corrected, never in parallel.
       from its abstract. If one paper gets fetched, this is it.
 
 - [x] **Cunefare, K. A. et al. (2003)** — *Anechoic chamber qualification: traverse method,
-      **FETCHED 2026-09-07 → `anechoic-simulation/jasa2003_cunefare_qualification_traverse_isl_signal.pdf`** (text in `txt/`; review re-check still pending)
+      **FETCHED 2026-09-07 → `anechoic-simulation/Cunefare_2003_JASA_chamber-qualification-traverse-fit-signal.pdf`** (text in `txt/`; review re-check still pending)
       inverse square law analysis method, and nature of test signal.* JASA 113(2) 881–892.
       <https://doi.org/10.1121/1.1527595>
       **Why:** failure mode 09 — that the choice of reference/fitting method changes the
@@ -38,14 +38,14 @@ so re-render it *after* the review is corrected, never in parallel.
       abstract; the size of the effect is unknown to us.
 
 - [x] **Schneider, S. (2009)** — *Numerical prediction of the quality of an anechoic chamber
-      **FETCHED 2026-09-07 → `anechoic-simulation/jsv2009_schneider_numerical_prediction_chamber_quality.pdf`** (text in `txt/`; review re-check still pending)
+      **FETCHED 2026-09-07 → `anechoic-simulation/Schneider_2009_JSV_numerical-prediction-anechoic-chamber-quality.pdf`** (text in `txt/`; review re-check still pending)
       in the low frequency range.* JSV 320(4–5) 990–1003.
       <https://doi.org/10.1016/j.jsv.2008.08.019>
       **Why:** the other low-frequency chamber-prediction paper. Unread entirely — cited
       only as existing.
 
 - [x] **Jiang, C., Zhang, S. & Huang, L. (2016)** — *On the acoustic wedge design and
-      **FETCHED 2026-09-07 → `anechoic-simulation/jsv2016_jiang_wedge_design_simulation.pdf`** (text in `txt/`; review re-check still pending)
+      **FETCHED 2026-09-07 → `anechoic-simulation/Jiang_2016_JSV_wedge-design-and-chamber-simulation.pdf`** (text in `txt/`; review re-check still pending)
       simulation of anechoic chamber.* JSV 381 139–155.
       <https://doi.org/10.1016/j.jsv.2016.06.020>
       **Why:** the UGFW (uniform-then-gradient flat-wall) alternative to wedges, which
@@ -57,13 +57,13 @@ so re-render it *after* the review is corrected, never in parallel.
 → `papers/anechoic-simulation/`
 
 - [x] **Vorländer, M. (2013)** — *Computer simulations in room acoustics: concepts and
-      **FETCHED 2026-09-07 → `anechoic-simulation/jasa2013_vorlander_simulation_uncertainties.pdf`** (text in `txt/`; review re-check still pending)
+      **FETCHED 2026-09-07 → `anechoic-simulation/Vorlander_2013_JASA_room-simulation-concepts-uncertainties.pdf`** (text in `txt/`; review re-check still pending)
       uncertainties.* JASA 133(3) 1203–1213. <https://doi.org/10.1121/1.4788978>
       **Why:** §04's claim that the input-data quality needed for JND-accurate prediction
       is not obtainable from reverberation-room measurements.
 
 - [x] **Brinkmann, F. et al. (2019)** — *A round robin on room acoustical simulation and
-      **FETCHED 2026-09-07 → `anechoic-simulation/jasa2019_brinkmann_round_robin.pdf`** (text in `txt/`; review re-check still pending)
+      **FETCHED 2026-09-07 → `anechoic-simulation/Brinkmann_2019_JASA_round-robin-room-acoustic-simulation.pdf`** (text in `txt/`; review re-check still pending)
       auralization.* JASA 145(4) 2746. <https://doi.org/10.1121/1.5096178>
       **Why:** the ±5 dB max-deviation figure behind failure mode 12.
 
@@ -77,11 +77,11 @@ so re-render it *after* the review is corrected, never in parallel.
 → `papers/reflection-localization/`
 
 - [x] **Sun, H., Mabande, E., Kowalczyk, K. & Kellermann, W. (2012)** — *Localization of
-      **FETCHED 2026-09-07 → `reflection-localization/jasa2012_sun_spherical_array_reflection_localization.pdf`** (text in `txt/`; review re-check still pending)
+      **FETCHED 2026-09-07 → `reflection-localization/Sun_2012_JASA_spherical-array-reflection-localization.pdf`** (text in `txt/`; review re-check still pending)
       distinct reflections in rooms using spherical microphone array eigenbeam processing.*
       JASA 131(4) 2828. <https://doi.org/10.1121/1.3688476>
 - [x] **Mabande, E., Kowalczyk, K., Sun, H. & Kellermann, W. (2013)** — *Room geometry
-      **FETCHED 2026-09-07 → `reflection-localization/jasa2013_mabande_room_geometry_inference.pdf`** (text in `txt/`; review re-check still pending)
+      **FETCHED 2026-09-07 → `reflection-localization/Mabande_2013_JASA_room-geometry-inference-spherical-array.pdf`** (text in `txt/`; review re-check still pending)
       inference based on spherical microphone array eigenbeam processing.* JASA 134(4).
       <https://doi.org/10.1121/1.4820895>
       **Why (both):** the foundational spherical-array localisation work. The tier-3

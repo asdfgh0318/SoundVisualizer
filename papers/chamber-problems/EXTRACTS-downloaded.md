@@ -4,7 +4,7 @@ Source texts: `papers/chamber-problems/txt/`. Page numbers are the printed page 
 
 ---
 
-### Winker & Stahnke 2016, Inter-Noise 2016 — internoise2016_winker_iso3745_vs_iso26101.txt
+### Winker & Stahnke 2016, Inter-Noise 2016 — Winker-Stahnke_2016_InterNoise_ISO3745-ISO26101-chamber-qualification.txt
 
 - **Facility / scope**: Method/standards paper by ETS-Lindgren comparing chamber-qualification procedures in ISO 3745 Annex A (2012 revision) vs ISO 26101:2012. Two case-study chambers: (a) an operational hemi-anechoic chamber, internal 7.8 × 6.3 × 5.2 m (L×W×H), originally qualified 100 Hz–20 kHz to 2.0 m by ISO 3745:2012 (§4.1.1, p. 5); (b) a small anechoic chamber for audio/telephone testing, 3.35 × 3.05 × 2.74 m, specified ISO 3745 range 160 Hz–20 kHz to 1 m (§4.1.2, p. 5). Wedge depth not stated. Tolerances quoted from ISO 3745 Table 1 (p. 2): anechoic ±1.5 dB ≤630 Hz, ±1.0 dB 800–5000 Hz, ±1.5 dB ≥6300 Hz; hemi-anechoic ±2.5 / ±2.0 / ±3.0 dB.
 - **Problems observed**:
@@ -17,7 +17,7 @@ Source texts: `papers/chamber-problems/txt/`. Page numbers are the printed page 
 
 ---
 
-### Haasjes (PhD thesis, Univ. of Twente, c. 2024; year not printed in text read) — utwente_haasjes_active_acoustic_anechoic_chamber.txt
+### Haasjes (PhD thesis, Univ. of Twente, c. 2024; year not printed in text read) — Haasjes_2025_PhD-Twente_active-acoustic-anechoic-chamber.txt
 
 - **Facility / scope**: Method thesis: extend the usable low-frequency range of an anechoic chamber (AAC) with feedforward active noise control, using the Kirchhoff–Helmholtz integral (KHI) on a ring of microphones to compute the reflected field. Reference facility: University of Twente anechoic chamber (Fig. 1.1, p. 2; dimensions not stated in sections read). Experimental rig: 2-D box 0.92 × 0.92 m, height 20 cm ("considered two-dimensional up to about 850 Hz"), glass lid 1.2 cm, 12 secondary Visaton W130X sources on the edges (3 per side, 0.3 m spacing), 12 primary sources fed through 1 m tubes to the centre, 12 sensors on a circle each with 3 radial microphones (§6.2, pp. 95–96). Numerical models: 0.84 m square room, walls Z = 10ρc, 12 channels, sensors on r = 0.24 m (§5.3, pp. 78–80); 5 × 5 m room, 200 channels, sensors at rs = 1.4 m (§5.4, pp. 90–91). Standard referenced: ISO 3745 (p. 2).
 - **Problems observed**:
@@ -32,7 +32,7 @@ Source texts: `papers/chamber-problems/txt/`. Page numbers are the printed page 
 
 ---
 
-### Merino-Martínez et al. 2020, Applied Acoustics 170:107504 — appacoust2020_merino-martinez_tudelft_anechoic_wind_tunnel.txt
+### Merino-Martínez et al. 2020, Applied Acoustics 170:107504 — Merino-Martinez_2020_ApplAcoust_TU-Delft-anechoic-wind-tunnel.txt
 
 - **Facility / scope**: TU Delft A-tunnel: open-jet, closed-circuit, vertical wind tunnel; anechoic plenum floor ≈ 6.4 × 6.4 m, height 3.2 m (§2, p. 2). Walls, ceiling and floor covered with Flamex foam wedges, total wedge height 0.49 m, designed on the λ/4 criterion for free-field "above approximately 173.5 Hz" (p. 4); floor foam under a 10 mm metal grid. Five interchangeable nozzles (0.25×0.4 m up to Ø0.6 m; Table 1, p. 4). 64-mic G.R.A.S. 40PH array on perforated steel plates (51 % open area), plate borders covered with foam. Free-field test per ISO 3745 tolerances (Table 5, p. 12). Conclusion quotes "cutoff frequency of 200 Hz" (§6, p. 14).
 - **Problems observed**:
@@ -47,7 +47,7 @@ Source texts: `papers/chamber-problems/txt/`. Page numbers are the printed page 
 
 ---
 
-### Simmons, Jobling & Payne 2004, NPL Report DQL-AC 007 — npl_hemianechoic_sound_power_uncertainties.txt
+### Simmons, Jobling & Payne 2004, NPL Report DQL-AC 007 — Simmons-Jobling-Payne_2004_NPL-DQL-AC007_hemi-anechoic-sound-power-uncertainties.txt
 
 - **Facility / scope**: NPL hemi-anechoic chamber (Annex A holds the specification; not in the text layer read). Room progressively degraded by removing wedges in 11 states (0, 40, 120, 224, 336, 560, 1008, 1300, 1450, 2000, 2626 = 100 %; Table 3, p. 21). Qualification per ISO 3745:1977 and ISO 3745:2003 inverse-square traverses (tolerances ±2.5 dB ≤630 Hz, ±2.0 dB 800–5000 Hz, ±3.0 dB ≥6300 Hz; Table 2, p. 15); sound power per ISO 3744 on a 1.5 m hemisphere with 10 key positions; K2 per ISO 3744. Sources: floor-flush "cavity point source" (2 mm aperture through the 0.5 m slab, tones 125 Hz–10 kHz at 50 dB, or flat broadband at 40 dB), B&K 4204 RSS, 550 W drill, RSS in an MDF box (§3.1, pp. 6–9).
 - **Problems observed**:
@@ -64,7 +64,7 @@ Source texts: `papers/chamber-problems/txt/`. Page numbers are the printed page 
 
 ---
 
-### Jenny 2011, BYU senior thesis (advisor B.E. Anderson) — byu2011_jenny_ultrasonic_anechoic_chamber_qualification_thesis.txt
+### Jenny 2011, BYU senior thesis (advisor B.E. Anderson) — Jenny_2011_BYU-thesis_ultrasonic-chamber-qualification.txt
 
 - **Facility / scope**: BYU small anechoic chamber, working dimensions 3.57 × 2.88 × 2.59 m, open-cell foam wedges (Future Foam 70200YW13, 0.032 g/cm³), base 30.48 cm, alternately oriented (§II, p. 4). Qualification 6.3 kHz–100 kHz one-third-octave bands per ANSI S12.55/ISO 3745 (which stops at 20 kHz); sources KEF Hypertweeter and Parasonics 40/58/75 kHz piezo transducers; G.R.A.S. 40BE ¼″ mic from 0.5 to 1.0 m in 5 cm steps along five corner traverses; swept sine below 50 kHz, random noise above (Table 1, p. 7).
 - **Problems observed**:
@@ -79,7 +79,7 @@ Source texts: `papers/chamber-problems/txt/`. Page numbers are the printed page 
 
 ---
 
-### Friot & Gintz (CNRS-LMA), arXiv 2009 (conference-style paper; venue unclear in text) — arxiv2009_noise_reflections_global_control.txt
+### Friot & Gintz (CNRS-LMA), arXiv 2009 (conference-style paper; venue unclear in text) — Friot-Gintz_2009_arXiv_estimation-global-control-noise-reflections.txt
 
 - **Facility / scope**: Method paper: estimating and actively cancelling scattered/reflected noise via "scattering filters" derived from the integral (Kirchhoff) representation of scattered pressure; experiments: duct with end tap (1-D), a parallelepiped in the LMA anechoic room (3-D, 14 channels), and a room mock-up (32 wall microphones, 100–300 Hz design). Target: LMA anechoic room 10 × 7 × 6 m with ~1400 wedges, free-field above 100 Hz; goal of active wall-reflection control in 20–100 Hz (§4, p. unclear; abstract).
 - **Problems observed**:
@@ -95,7 +95,7 @@ Source texts: `papers/chamber-problems/txt/`. Page numbers are the printed page 
 
 ---
 
-### Jawahar, Hanson, Akhter & Azarpeyvand 2025, Scientific Reports 15:2170 (file dated 2024; DOI 10.1038/s41598-024-82876-9) — scirep2024_porous_ground_propeller_ground_effect.txt
+### Jawahar, Hanson, Akhter & Azarpeyvand 2025, Scientific Reports 15:2170 (file dated 2024; DOI 10.1038/s41598-024-82876-9) — Jawahar_2025_SciRep_porous-ground-propeller-ground-effect.txt
 
 - **Facility / scope**: University of Bristol aeroacoustic facility anechoic chamber, 7.9 × 5.0 × 4.6 m including the acoustic walls (p. 3). APC 10×5.5″ pusher propeller (R = 127 mm), 7000 RPM (BPF = 233.33 Hz), axis 1.2 m above the chamber's perforated mesh platform. Ground plane: 1.7 × 1.5 m, 12 mm MDF plate at L/R = 0.75–4, bare or covered with 45PPI, 75PPI (12 mm) or 75PPI-T (24 mm) foam. Far-field polar array of 23 G.R.A.S. 40PL mics at 1.75 m (≈13R), θ = 40° above to 150° below the plate; 8 flush surface mics S1–S8 at 50 mm spacing in the plate. PSD with Hanning window, Δf = 2 Hz, 16 s at 2^16 Hz (pp. 3–4).
 - **Problems observed**:
@@ -107,7 +107,7 @@ Source texts: `papers/chamber-problems/txt/`. Page numbers are the printed page 
 
 ---
 
-### Belyaev, Golubev, Zverev, Makashov, Palchikovskiy, Sobolev & Chernykh 2015, Akusticheskii Zhurnal 61(5):636–644 (Acoustical Physics 61(5):606–614) — acoustphys2015_belyaev_wedge_absorption_anechoic_ru.txt (read in Russian; OCR text)
+### Belyaev, Golubev, Zverev, Makashov, Palchikovskiy, Sobolev & Chernykh 2015, Akusticheskii Zhurnal 61(5):636–644 (Acoustical Physics 61(5):606–614) — Belyaev_2015_AkustZh_wedge-absorption-anechoic-chambers-RU.txt (read in Russian; OCR text)
 
 - **Facility / scope**: Diffuse-field absorption of anechoic-chamber wedges measured per ISO 354:2006 in the TsAGI reverberation chambers AK-3 (V = 125 m³) and AK-11 (V = 210 m³), for lining the PNIPU (Perm) anechoic chamber with flow, 11.8 × 8.2 × 5.3 m (p. 637). Baseline: wedges of the operating TsAGI AK-2 anechoic facility — wire frame, capron fibre 80–90 kg/m³, total height 600 mm on a 200 × 200 × 150 mm base, hung 100 mm from the wall; αn > 0.99 for f > 100 Hz except 160 Hz (αn = 0.978); AK-2 is certified per ISO 3745:2003 "for the frequency range ≥ 200 Hz" and "provides free-field conditions for frequencies above 200 Hz" (pp. 637–638). Candidate wedges: basalt super-thin fibre (BSTV, fibre ≤ 1–2 µm, 20/30/40 kg/m³) 800 mm high, 200 mm wide, 1000 mm long, 100 mm base; mineral thin fibre (MTV, 5–9 µm fibre, 30/50/70 kg/m³), same geometry, plus a version 30 cm taller (110 cm) (pp. 639–640).
 - **Problems observed**:
@@ -121,7 +121,7 @@ Source texts: `papers/chamber-problems/txt/`. Page numbers are the printed page 
 
 ---
 
-### Bahr, Hutcheson & Stead 2020 (NASA NTRS; journal version of AIAA 2018-3118; journal name unclear in text) — ntrs2020_unsteady_propagation_openjet_kevlar.txt
+### Bahr, Hutcheson & Stead 2020 (NASA NTRS; journal version of AIAA 2018-3118; journal name unclear in text) — Bahr-Hutcheson-Stead_2020_NASA-NTRS_open-jet-vs-Kevlar-propagation.txt
 
 - **Facility / scope**: NASA Langley Quiet Flow Facility, anechoic open-jet tunnel, 2 × 3 ft nozzle; open-jet vs tensioned Kevlar-49 Style 120 panel (34 fibres/inch, 0.003″, 1500 N/m) bounding one side of the flow. Laser-plasma pulsed point source (Nd:YAG 120 mJ) in the flow; arc of 1/8″ mics outside the flow at −45° … −135°; Mach 0, 0.13, 0.17; 100–101 pulses per case at 5 Hz; 150 Hz–100 kHz analog band, 250 kS/s (§III, pp. 3–5).
 - **Problems observed**:
@@ -135,7 +135,7 @@ Source texts: `papers/chamber-problems/txt/`. Page numbers are the printed page 
 
 ---
 
-### Bahr 2021 (NASA NTRS; AIAA conference paper, venue unclear in text) — ntrs2021_open_closed_test_section_array.txt
+### Bahr 2021 (NASA NTRS; AIAA conference paper, venue unclear in text) — Bahr_2021_NASA-NTRS_open-vs-closed-test-section-arrays.txt
 
 - **Facility / scope**: NASA Langley 14- by 22-Foot Subsonic Tunnel, CRM-HL high-lift model tested in closed-wall (2018; 110-mic array, 1.83 m aperture, 3.33 m from model, screen cover over the array) and open-jet (2020/21; 97-mic array, 2.00 m, 5.17 m from model) configurations at M 0.16 and 0.2; DAMAS deconvolution; 2–40 kHz, 96 Hz bins (§IV–V, pp. 5–7).
 - **Problems observed**:
@@ -147,7 +147,7 @@ Source texts: `papers/chamber-problems/txt/`. Page numbers are the printed page 
 
 ---
 
-### Schlinker & Amiet 1978, NASA CR-145359 (UTRC) — ntrs1978_schlinker_amiet_shear_layer_refraction_experimental.txt (summary, introduction and conclusions only)
+### Schlinker & Amiet 1978, NASA CR-145359 (UTRC) — Schlinker-Amiet_1978_NASA-CR145359_shear-layer-refraction-experiment.txt (summary, introduction and conclusions only)
 
 - **Facility / scope**: UTRC Acoustic Research Tunnel, 0.91 m diameter open jet, free-stream Mach 0.1–0.4; discrete-tone source 1–10 kHz (text layer reads "1 kHz to 10 Hz", OCR) placed in the airstream at several axial and two off-axis positions; wavefront angle measured by cross-correlating far-field microphones and ray-tracing back to an assumed zero-thickness cylindrical shear layer of nozzle radius; dipole source for amplitude correction; scattering test at 90° (Summary, pp. 1–2; Method of Approach, p. 5).
 - **Problems observed**:
@@ -173,7 +173,7 @@ Source texts: `papers/chamber-problems/txt/`. Page numbers are the printed page 
 
 ## Abstract-only sources (full text not retrieved)
 
-### Singh, Garg & Narayanan 2020, Int. J. Aeroacoustics 19(1–2) — ijaeroacoustics2020_singh_lower_cutoff_frequency_empirical.abstract.txt — **abstract only**
+### Singh, Garg & Narayanan 2020, Int. J. Aeroacoustics 19(1–2) — Singh_2020_IJAeroacoustics_lower-cutoff-frequency-empirical.abstract.txt — **abstract only**
 Empirical expression for an anechoic chamber's lower cut-off frequency from source volume, chamber volume, wedge height and source-to-wall distance, agreeing within ±3 % with experiment; the chamber is qualified by inverse-square-law traverses in several directions and its cut-off is found to be 315 Hz within ±0.5 dB.
 Fan broadband-noise spectra inside vs outside the chamber demonstrate its echo-free behaviour over a broad frequency range.
 
@@ -181,7 +181,7 @@ Fan broadband-noise spectra inside vs outside the chamber demonstrate its echo-f
 Two-bladed propeller in ground effect in an anechoic chamber: thrust/torque/power rise strongly; far-field spectra show additional tonal peaks and, at some polar angles, high-frequency broadband humps not seen isolated; two regions — a shielded zone (OASPL reduced) and a reflection zone (OASPL enhanced), the latter "a result of pure acoustic reflection from the ground surface".
 Ground-plane embedded microphones locate the dominant source in the tip region; near- and far-field coherence studied vs ground distance.
 
-### Garg et al. 2019, MAPAN 34(3):357–369 — mapan2019_garg_microphone_freefield_calibration_uncertainty.abstract.txt — **abstract only**
+### Garg et al. 2019, MAPAN 34(3):357–369 — Garg_2019_MAPAN_microphone-free-field-calibration-uncertainty.abstract.txt — **abstract only**
 A transportable 2 m³ wedge-lined SPEKTRA anechoic chamber is used for IEC 61094-8 substitution-method free-field microphone calibration over 125 Hz–20 kHz; the usable working space is identified with the inverse-square pressure law and deviations from it are quantified.
 Expanded uncertainty ±0.36–0.52 dB (k = 2) validated in a bilateral comparison; Monte Carlo uncertainty evaluation demonstrated.
 
@@ -189,7 +189,7 @@ Expanded uncertainty ±0.36–0.52 dB (k = 2) validated in a bilateral compariso
 Gated (quasi-anechoic) loudspeaker measurement in ordinary rooms is limited because the driver's second-order high-pass response makes the impulse long, so reflections must be suppressed out to returns of 30 ms or more.
 A tuned notch (band-cut) equalization shortens the impulse response and allows correct full-range measurement in moderately sized non-anechoic rooms.
 
-### Ma, Chen, Wang, Liu & Ding 2022, Applied Acoustics 186:108424 — appacoust2022_ma_active_control_large_mppa_point_source.abstract.txt — **abstract only** (note: the DOI ...108383 supplied earlier resolves to a different paper)
+### Ma, Chen, Wang, Liu & Ding 2022, Applied Acoustics 186:108424 — Ma_2022_ApplAcoust_active-control-large-MPP-absorber.abstract.txt — **abstract only** (note: the DOI ...108383 supplied earlier resolves to a different paper)
 Theory and experiment on actively improving low-frequency absorption of a large micro-perforated panel absorber by a point source in its cavity; absorption improves significantly "in a wide low frequency range below the cutoff frequency", with the optimal source position at the cavity-section centre (cutoff set by the short side length).
 Mechanism: suppressing the cavity field enhances Helmholtz-type resonant absorption; higher-order cavity modes (except (0,0,0)) contribute nothing due to mode-shape symmetry; pressure-release and impedance-matching strategies remain applicable.
 
@@ -208,7 +208,7 @@ Read at source (full text) — Batches A/B: Winker 2016; Haasjes thesis (Summary
 
 Page numbers below are the journal pagination printed on the text layer. "(unclear in text)" marks OCR damage or statements the paper does not resolve.
 
-### Singh, Garg & Narayanan 2020, Int. J. Aeroacoustics 19(1–2):57–72 — ijaeroacoustics2020_singh_lower_cutoff_frequency_empirical.txt
+### Singh, Garg & Narayanan 2020, Int. J. Aeroacoustics 19(1–2):57–72 — Singh_2020_IJAeroacoustics_lower-cutoff-frequency-empirical.txt
 
 - **Facility / scope**: In-house plywood cuboid anechoic chamber at IIT (ISM) Dhanbad; external 2.75 × 2.40 × 2.98 m, working space 2.6 × 1.7 × 2.20 m tip-to-tip (p. 61). Lining: ~300 polyurethane-foam wedge blocks (32 FR foam, 30 ± 1 kg/m³), block 600 × 600 × 300 mm, wedge 275 mm on a 25 mm base, glued to walls and ceiling; floor is carpet with PU wedges laid on top to make it fully anechoic (Table 1, p. 61). Stated cut-off: 315 Hz "within 0.5 dB" by inverse-square-law verification along radial paths per ISO 3745:2012 (pp. 58, 66). Instrumentation: GRAS 40PH ¼″ free-field mic (50 mV/Pa), NI cDAQ 9174 + NI 9222, 10 s at 50 kHz, 1024-point Hanning FFT blocks averaged (p. 61). Source "with size smaller than 0.005 times the chamber size placed roughly at the center", described as generating "unidirectional sound" (p. 62; presumably omnidirectional — unclear in text). Signals: 500 Hz and 10 kHz sines with added white noise (Tables 2–3 quote "signal-to-noise ratio – 0.05"), mics at 20, 40, 80, 160 cm along paths OA and OB into two corners (pp. 62–63).
 - **Empirical formula, exactly as printed** (OCR renders λ as "k"):
@@ -227,7 +227,7 @@ Page numbers below are the journal pagination printed on the text layer. "(uncle
 - **Interpretation guidance**: Cut-off is read as the lowest 1/3-octave band whose fitted per-doubling slope is 6 dB within the tolerance (here 0.5 dB); a slope near 0 dB (100 Hz) means the field is not decaying with distance at all, a slope of ~3 dB (200 Hz) is transitional. Directional dependence is checked by repeating along two corner paths (OA, OB).
 - **Quotable sentences**: "The lower cut-off frequency is defined as the minimum frequency from which the chamber shows its anechoic behavior." (p. 58). "The SPL decays by about 6 dB along the paths OA and OB, within about 0.5 dB at a low frequency of 315 Hz and is evident from the slopes shown in Tables 2 and 3." (p. 65). "Thus, equation (4) could be considered as the best alternate for the accurate prediction of the lower cut-off frequency of the anechoic chamber over equation (1)." (p. 70).
 
-### Garg, Surendran, Dhanya, Chandran, Asif & Singh 2019, MAPAN 34(3):357–369 — mapan2019_garg_microphone_freefield_calibration_uncertainty.txt
+### Garg, Surendran, Dhanya, Chandran, Asif & Singh 2019, MAPAN 34(3):357–369 — Garg_2019_MAPAN_microphone-free-field-calibration-uncertainty.txt
 
 - **Facility / scope**: SPEKTRA (Dresden) transportable anechoic chamber at FCRI Palakkad, 2 m³ internal, outside 2 × 2 × 2.4 m, aluminium/PU sandwich panels, fully lined with 35 cm polyurethane-foam wedges; theoretical lower cut-off 250 Hz "derived in theory from its dimensions and the characteristics of the materials" (pp. 358–359). Loudspeaker in one removable side panel, microphone through a hole in the opposite (absorber-lined) panel; two USB cameras to confirm mic position (p. 359). IEC 61094-8 substitution calibration 125 Hz–20 kHz; free-field verification per ISO 26101:2012 with a B&K 4191 mic + Microtech Gefell MV 203 preamp (mic diameter garbled, p. 360); 23 ± 2 °C, 50 ± 10 % RH (p. 359).
 - **Problems observed**:
@@ -239,7 +239,7 @@ Page numbers below are the journal pagination printed on the text layer. "(uncle
 - **Interpretation guidance**: A deviation-vs-distance table that is near zero at one distance and grows monotonically with opposite signs on either side (as at 125–250 Hz here) is read as a chamber that "deteriorates gradually" toward its cut-off, not as a discrete reflection; the usable space is defined as the interval where all bands stay inside the ISO 26101 tolerance. Radial (off-axis) checks around the reference point bound the sensitivity to mic placement.
 - **Quotable sentences**: "It can be observed in Fig. 4a that in lower-frequency range from 125 to 630 Hz, the deviations between 79 and 89 cm are within ± 1.5 dB limits." (p. 360). "The worst deviation ranging from 0.10 to 0.20 dB from the inverse-square law is taken into account as an error contribution by 'departure from free-field characteristics' inside the defined working space in the measurement frequency range of 125 Hz–20 kHz." (p. 364).
 
-### Ma, Chen, Wang, Liu & Ding 2022, Applied Acoustics 185:108424 — appacoust2022_ma_active_control_large_mppa_point_source.txt
+### Ma, Chen, Wang, Liu & Ding 2022, Applied Acoustics 185:108424 — Ma_2022_ApplAcoust_active-control-large-MPP-absorber.txt
 
 - **Facility / scope**: Method paper, not a chamber study. Problem attacked: low-frequency absorption of a large rectangular micro-perforated panel absorber (MPPA; 0.4 mm holes, 0.5 mm plate, 1 % porosity, 0.08 m cavity, Table 1, p. 4) improved by a loudspeaker acting as a point source in the cavity near the backing wall; modal model of the cavity (modes up to 9 × 9 × 9), plane-wave incidence in a duct; Case 1 panel 0.6 × 0.8 m, Case 2 1.0 × 1.2 m (pp. 2–4). Experiment: MPPA closing one end of a 0.6 × 0.8 m duct, two-microphone transfer-function method (0.2 m spacing, 0.24 m from the panel), Fx-LMS controller, 50–430 Hz in 10 Hz steps (§5, pp. 10–11).
 - **Problems observed** (relevant to chambers as the cavity-mode behaviour of a bounded space):
@@ -251,7 +251,7 @@ Page numbers below are the journal pagination printed on the text layer. "(uncle
 - **Interpretation guidance**: For a bounded space the first excitable transverse mode, not the wedge/cavity depth, sets the low-frequency limit; whether a mode matters depends on source placement relative to its nodal lines (the same logic that decides which chamber modes a centred source can drive). A control/absorption gain that collapses abruptly at a specific frequency identifies that mode's resonance.
 - **Quotable sentences**: "In other words, there is a cutoff frequency for each location of the point source, after which the control effect hardly works immediately and the improvement of the sound absorption is very small." (p. 4). "Relative small sized cavity or low frequency excitation can guarantee the uniformity of the cavity sound field after control, which is conducive to achieve remarkable improvement of sound absorption." (abstract, p. 1).
 
-### Wang, Chen, You, Wu & Qiu 2019, Acta Acustica united with Acustica 105(5):732–742 — actaacustica2019_wang_ucmar_shear_layer_refraction.txt
+### Wang, Chen, You, Wu & Qiu 2019, Acta Acustica united with Acustica 105(5):732–742 — Wang_2019_ActaAcustica_UCMAR-shear-layer-refraction.txt
 
 - **Facility / scope**: Method paper. Problem attacked: shear-layer refraction in open-jet wind tunnels "causes a source shift when estimating the source location with beamforming" (Summary, p. 732). UCMAR gives an explicit (non-iterative) Snell's-law solution for an infinitely thin, convex, non-spreading 3-D shear layer of arbitrary cross-section (elliptic, polygonal, circular, rectangular with fillets), with a sound-speed ratio μ = cs/cr for temperature difference; forward (Eqs. 10, 12) and reverse (Eqs. 14–15) forms; propagation time Eqs. 29–31 feed the DAS steering vector (§2–3, pp. 733–736). Assumptions: "(i) an infinitely thin shear layer with a fixed and convex shape along x-direction; (ii) uniform distribution of velocity and temperature on both sides of the shear layer; and (iii) a negligible effect of reflection and turbulent scattering on the sound propagation" (p. 734).
 - **Problems observed**:
@@ -264,7 +264,7 @@ Page numbers below are the journal pagination printed on the text layer. "(uncle
 - **Interpretation guidance**: An apparent downstream displacement of beamformed sources that grows toward the jet centreline and with Mach number is shear-layer refraction, not a real source motion; correct the steering-vector propagation time rather than shifting the map. Include temperature (μ ≠ 1) whenever the jet is heated; distrust 1-D/planar corrections near nozzle corners or chamfers.
 - **Quotable sentences**: "Consequently, the presence of the shear layer changes the sound in terms of direction, amplitude, and spectra [4] during the acoustic propagation from the jet to the outside microphone arrays." (p. 732). "This phenomenon has also been found by Porteous et al. [30] that proves the refraction effect in a circular wind tunnel further producing distortions rather than a simple source shift." (p. 740).
 
-### Jenny & Anderson 2011, JASA Express Letters 130(2):EL69–EL75 — jasael2011_jenny_anderson_ultrasonic_chamber_qualification.txt
+### Jenny & Anderson 2011, JASA Express Letters 130(2):EL69–EL75 — Jenny-Anderson_2011_JASA-EL_ultrasonic-chamber-qualification.txt
 
 - **Facility / scope**: BYU anechoic chamber, working dimensions 3.57 × 2.88 × 2.59 m, Future Foam 70200YW13 open-cell wedges, 0.032 g/cm³ (2 lb/ft³), "a base, that is, 30.48 cm" (OCR prints "cm2"), alternately oriented (p. EL70). Qualification per ANSI S12.55-2006/ISO 3745-2003 from the 6.3 kHz to the 80 kHz third-octave band and up to 100 kHz; ±1.5 dB tolerance at ≥ 6.3 kHz applied throughout (p. EL71). Sources: KEF Hypertweeter, Parasonics 4012A, PAR58T, 7516; G.R.A.S. 40BE ¼″ + 26CB; two HP 35670A analysers (swept sine/transfer function below 50 kHz, random noise/power spectra ≥ 50 kHz); 5 cm steps from 0.500 to 1.000 m along five corner traverses, source aimed at the corner (pp. EL70–EL71). Air absorption (Bass et al.) applied before band averaging using measured T/RH (p. EL71).
 - **Problems observed**:
@@ -278,7 +278,7 @@ Page numbers below are the journal pagination printed on the text layer. "(uncle
 - **Differences from the BYU thesis version**: none in the numbers — r0 = 13.7 / 20.6 cm, 22.5 dB (72.2 max) / 10.6 dB (38.2 max), 7.3 λ / 9.2 λ / 1.03 mm, ±1.5 dB tolerance all identical. Wording/coverage differences: (1) the thesis's "pseudo qualification" sentence (thesis p. 8) is absent from the letter, which says only "This method is admittedly not a rigorous qualification of an anechoic chamber as the spacing between microphone positions is 7.3 wavelengths apart at 50 kHz" (p. EL71); (2) the letter's turntable description reads "recording at 2.5 rotations for 360°" (p. EL74; the thesis has "2.5 degree rotations for 360 degrees" — OCR dropped the degree sign); (3) the thesis's per-band Table 1 of sources/signal types is replaced by a reference to the thesis ("The specifics ... are specified in Ref. 11", p. EL70); (4) the letter's conclusion adds the explicit statement "Even when absorption is accounted for, the optimal reference method yield nonphysical estimates for the acoustic center" (p. EL74).
 - **Quotable sentences**: "In the ultrasonic frequency range, anechoic chamber qualification requires that atmospheric absorption be accounted for even for distances of only 1 m." (p. EL74). "Unfortunately, the ORM does not seem to provide an accurate effective acoustic center for ultrasonic sources as, in the case shown in Figs. 2(a) and 2(b), where the ORM estimated r0 as 13.7 cm and 20.6 cm for the cases of with and without accounting for absorption, respectively." (p. EL72).
 
-### Palchikovskiy, Bersenev, Makashov, Belyaev, Korin, Sorokin, Khramtsov & Kustov 2016, AIP Conf. Proc. 1770:030116 (ICMAR 2016) — aipcp2016_palchikovskiy_pnrpu_chamber_tests_aeroacoustics.txt
+### Palchikovskiy, Bersenev, Makashov, Belyaev, Korin, Sorokin, Khramtsov & Kustov 2016, AIP Conf. Proc. 1770:030116 (ICMAR 2016) — Palchikovskiy_2016_AIPConfProc_anechoic-chamber-tests-aeroacoustics.txt
 
 - **Facility / scope**: PNRPU (Perm) anechoic chamber built 2014–2015, 40 cm concrete walls; **chamber dimensions are not given in this paper** (Belyaev et al. 2015 give 11.8 × 8.2 × 5.3 m for the same chamber). Wedge type: basalt superfine fibre in acoustically transparent glass cloth, 30 kg/m³ (chosen in TsAGI reverberation-chamber tests, ref. 1), 20 cm wide × 100 cm long × 80 cm total height, in blocks of five in a 2 mm wire frame; rigid floor coverable with movable wedge blocks; wedge-filled frames close the entrance to "eliminate the reflection effect from the gates"; fans for the jet rig in a separate room with duct silencers (pp. 030116-2, -4/-5). Impedance tube (0.4 × 0.4 m, 5.2 m long, transfer-function method) gives αn ≥ 0.99 above 130 Hz for the framed wedges (p. -2). Qualification method: ISO 3745 [2003], inverse-square deviation by Cunefare's optimal reference method (ref. 4), tolerances ±1.5 dB (≤ 630 Hz), ±1.0 dB (800–5000 Hz), ±1.5 dB (> 6300 Hz) (Table 1, p. -3). Three sources: 15″ loudspeaker 100–2000 Hz, B&K 4295 omnidirectional 125–5000 Hz, JBL Selenium D408 Ti compression driver 5–20 kHz. Two configurations — source near a wall at the expected jet-source location (Config. 1) and at the chamber centre (Config. 2); three radials 0°, 45°, 90°; traverse mic stationary 30 s per step; all mic positions ≥ 1 m from wedge tips (p. -3).
 - **Problems observed**: Only the outcome is reported: deviations stay within tolerance to 2 m from a **tonal** source and 3 m from a **broadband** source (Config. 1, Fig. 4; "The results for the other 1/3-octave frequency bands ... also confirm" it, p. -4). No numeric deviation values or mechanism are given; the smaller tonal radius is stated without explanation (the tone/broadband interference-averaging effect is not discussed). Gate reflections and fan noise are named as design concerns (p. -2, -4/-5).
@@ -286,7 +286,7 @@ Page numbers below are the journal pagination printed on the text layer. "(uncle
 - **Interpretation guidance**: Qualification radius is read as the distance where the ORM deviation curve first crosses the tolerance line (red dashed line in Fig. 4); the chamber's usable region is the smaller (tonal) radius unless the intended signals are broadband. Free-field claims should be backed by reproducing known aeroacoustic phenomena.
 - **Quotable sentences**: "Qualification tests have determined that in the chamber there is a free acoustic field within radius of 2 m for tonal noise and 3 m for broadband noise." (abstract, p. -1). "In measurements it is necessary to provide microphone arrangement at least at the distance of 1 m from the tips of sound-absorbing wedges." (p. -6).
 
-### Belyaev, Golubev, Zverev, Makashov, Palchikovskiy, Sobolev & Chernykh 2015, Acoustical Physics 61(5):606–614 (English translation of Akust. Zh. 61(5):636–644) — acoustphys2015_belyaev_wedge_absorption_anechoic_en.txt
+### Belyaev, Golubev, Zverev, Makashov, Palchikovskiy, Sobolev & Chernykh 2015, Acoustical Physics 61(5):606–614 (English translation of Akust. Zh. 61(5):636–644) — Belyaev_2015_AcoustPhys_wedge-absorption-anechoic-chambers-EN.txt
 
 - **Facility / scope**: Same study as the Russian-original extract above; the English text confirms it. Diffuse-field absorption per ISO 354:2006 of candidate wedges for the PNRPU chamber "11.8 × 8.2 × 5.3 m" (p. 607), measured in TsAGI reverberation chambers AC-3 (V = 125 m³) and AC-11. Baseline AC-2 wedges: wire frame, caprone fibre 80–90 kg/m³, 600 mm total height on 200 × 200 × 150 mm base, blocks of 25 hung 100 mm from the wall; αn ≥ 0.99 at f ≥ 100 Hz except 160 Hz (0.978); AC-2 certified per ISO 3745:2003 for f > 200 Hz (pp. 608–609). BSFF wedges (fibre ≤ 1–2 µm; 20/30/40 kg/m³) 800 × 200 × 1000 mm in E-100 glass cloth, five per metal frame (2 or 4 mm rods); TMF wedges (5–9 µm fibre, 30/50/70 kg/m³) same geometry, plus a version 30 cm taller (110 cm) (pp. 609–611).
 - **Numbers that differ from the Russian-original extract**: **AC-11 volume is printed as V = 230 m³ in the English translation (p. 610) vs 210 m³ in the Russian original (OCR line "объем V = 210 м3")** — a translation/typesetting discrepancy; the Russian is authoritative. Everything else agrees: Aavg (AC-3) 2.9 / 4.6 / 4.5 m²; Aavg (AC-11) 4.2 / 3.5 / 3.7 / 3.7 / 4.4 / 4.4 m² (Tables 1–2, p. 612); block surface areas 7.0 / 8.9 / 12.4 m²; α < 0.7 throughout; agreement between heights only above 1250 Hz; 40 kg/m³ tests "deemed invalid" (p. 609); cloth: glass canvas 25 and 40 g/m², glass cloth 100 g/m², coated Aavg identical to uncoated "within our accuracy limits" (p. 612). The English adds explicitly that 2 mm vs 4 mm frame rods made no "appreciable difference" (p. 610), and that cloth-coated Aavg values are omitted from Table 2 for that reason.

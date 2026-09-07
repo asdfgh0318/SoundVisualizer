@@ -13,7 +13,7 @@ Quality: A peer-reviewed full method + numbers; B conference/report with numbers
 
 ---
 
-### Sun 2012, J. Acoust. Soc. Am. 131(4):2828–2840 — jasa2012_sun_spherical_array_reflection_localization.txt
+### Sun 2012, J. Acoust. Soc. Am. 131(4):2828–2840 — Sun_2012_JASA_spherical-array-reflection-localization.txt
 - Type: journal
 - WHY: Localise an unknown broadband source and its dominant early reflections from a single recording with a compact off-the-shelf spherical array (no RIR, no source reference), and decide which eigenbeam (EB) method — EB-DAS, PWD, EB-MVDR, EB-MUSIC, EB-ESPRIT — is robust enough for practice.
 - HOW: Eigenmike, 32 mics on rigid sphere a = 0.042 m, order N = 4, 44.1 kHz, white Gaussian noise via loudspeaker; two shoebox rooms (T60 ≈ 900 ms and ≈ 400 ms, height 3.03 m), array at 1.41 m height. Focusing frequency 4.5 kHz (k0a = 3.5), frequency-smoothing range 3.2–4.5 kHz (ka ∈ [2.5, 3.5]), FFT 1024, 1° acoustic-map grid, WNG constraint 0.6 dB. SNRs 5 dB (room 1) and 3 / 17 dB (room 2); one parameter set for all cases. Ground-truth DOAs from measured geometry fed to CATT.
@@ -28,7 +28,7 @@ Quality: A peer-reviewed full method + numbers; B conference/report with numbers
 
 ---
 
-### Mabande 2013, J. Acoust. Soc. Am. 134(4):2773–2789 — jasa2013_mabande_room_geometry_inference.txt
+### Mabande 2013, J. Acoust. Soc. Am. 134(4):2773–2789 — Mabande_2013_JASA_room-geometry-inference-spherical-array.txt
 - Type: journal
 - WHY: Infer full 3D room geometry (positions and orientations of boundary planes) from uncontrolled broadband signals (noise or speech) captured by one compact spherical array, without measuring RIRs; the challenge is low reflected-signal SINR and strong coherence between direct sound and reflections.
 - HOW: Two-stage: (1) DOAs from steered EB-RMVDR acoustic image (focusing 4.5 kHz, smoothing 1.3–4.5 kHz i.e. ka ∈ [1, 3.5], WNG ζ = 1.148 = 0.6 dB, 1° grid, peaks kept only if in upper two-thirds of image power range); TDOAs by cross-correlating frequency-dependent EB-RMVDR-extracted direct and reflected signals with an adaptive zero-lag exclusion b. (2) Image-source geometry from known source distance/DOA, plane categorisation across J source positions (dot-product masking), least-squares plane fit, post-processing for highly reflective walls. Eigenmike 32 mics, a = 0.042 m, N = 4, 5 s signals, 44.1 kHz, Q = 1024 bins (~43 Hz). Simulated image-source shoebox (229.32 m³, α = 0.5–0.9, SNR 10–30 dB, open and rigid sphere, plus 240-mic a = 0.111 m array, N = 10) and a real lecture room T60 ≈ 900 ms, height 3.03 m, J = 4, loudspeaker 0.08 m diaphragm, 22.8 °C. Real-room SNR stated as 12 dB in text and figure captions but "SNR = 15 dB" in the Table IX header (inconsistent in text).
@@ -43,7 +43,7 @@ Quality: A peer-reviewed full method + numbers; B conference/report with numbers
 
 ---
 
-### Tervo 2013, J. Audio Eng. Soc. 61(1/2):17–28 (Jan/Feb 2013; file labelled 2012) — tervo2012_spatial_decomposition_method.txt
+### Tervo 2013, J. Audio Eng. Soc. 61(1/2):17–28 (Jan/Feb 2013; file labelled 2012) — Tervo_2013_JAES_spatial-decomposition-method.txt
 - Type: journal
 - WHY: Encode a spatial room impulse response as a set of image-sources (pressure sample + 3D location per sample) using any compact array with few microphones, so that room-acoustic analysis and multichannel convolution reverb are not tied to a specific array or reproduction technique.
 - HOW: Spatial Decomposition Method (SDM): per discrete time step, TDOAs from generalized cross-correlation with exponential-fit interpolation, least-squares slowness vector m̂ = V⁺τ̂ under a plane-wave model, direction n̂ = −m̂/‖m̂‖, distance c·k·Δt; pressure from the centre omni mic. Requirements: ≥4 non-coplanar mics, one omni, array not larger than a head, window L·Δt > 2·dmax/c. Echo-density limit τ1 ≈ 0.0014·√V for one reflection per window. Evaluation: 7-mic open array (6 on a sphere, spacing 100 mm, plus centre), 1.33 ms Hann window, 99% overlap, 48 kHz; image-source simulations of a 30×20×12 m room (RT 2.0 s) and a 5×3×2.8 m room (RT 0.4 s), reflection coefficient 0.85, 45th order; VBAP over 14 loudspeakers; 17 listeners compared SDM to SIRR (7 and 13 mics).
@@ -58,7 +58,7 @@ Quality: A peer-reviewed full method + numbers; B conference/report with numbers
 
 ---
 
-### Meyer-Kahlen 2022, ICA 2022 Proceedings (Gyeongju; Acoustical Society of Korea) — sdm_can_and_cannot_do.txt
+### Meyer-Kahlen 2022, ICA 2022 Proceedings (Gyeongju; Acoustical Society of Korea) — Meyer-Kahlen_2022_ICA_what-SDM-can-and-cannot-do.txt
 - Type: conference
 - WHY: Reconcile divergent reports on SDM ("graininess", poor results in some comparisons) by stating explicitly what the analysis and rendering stages can and cannot do, and give practical guidance.
 - HOW: Position paper with illustrative simulations. Analysis: TDoA (open array ≥4 omnis, interpolated cross-correlation, Nmin = 2·fs·dmax/c) versus pseudo-intensity vector PIV (FOA/tetrahedral, band-limited below spatial-aliasing frequency fsa = c/(2πr)). Tests: two plane waves Δt = 0.05 ms, 6 dB level difference, 0.5 ms window (Fig. 3); anisotropic diffuse field of 180 Gaussian noise sources (Fig. 4; arrays printed as "r = 125 cm", likely a typographic loss of the decimal point — unclear in text). Rendering: nearest-loudspeaker synthesis, Ambisonics encoding, binaural; roughness compensation with Schroeder allpass cascade M = 37, 113, 215; block-wise equalisation against whitening.
@@ -73,7 +73,7 @@ Quality: A peer-reviewed full method + numbers; B conference/report with numbers
 
 ---
 
-### Lovedee-Turner 2019, J. Acoust. Soc. Am. 146(5):3339–3352 (accepted manuscript, White Rose eprint) — lovedee_turner_murphy_3d_reflector_localisation.txt
+### Lovedee-Turner 2019, J. Acoust. Soc. Am. 146(5):3339–3352 (accepted manuscript, White Rose eprint) — Lovedee-Turner-Murphy_2019_JASA_3D-reflector-localisation.txt
 - Type: journal
 - WHY: Localise reflective boundaries and infer geometry for convex and non-convex rooms from few spherical-array SRIRs, with explicit error management for false and higher-order detections, which prior methods lacked.
 - HOW: EDESAR detection: third-order SH SRIR, 0.45 ms frames with 50% overlap, Hann window, band-pass 100 Hz–5 kHz (Eigenmike spatial Nyquist 8 kHz), frames discarded if peak < εa = 0.01 or COMEDIE diffuseness > εd = 30%; MVDR (measured) or PWD (simulated) directional spectrum on a 1° grid; watershed image segmentation to split overlapping regions; DoA from summed spectrum, ToA from beam steered to DoA; 80% region-overlap rule across frames. E-ARC inference: image-source reversion with previous-source search (εes = 30 cm, εO = 15 cm), then reflection-path, line-of-sight and closed-geometry validation. Assumptions: known source distance and temperature, ≥50 cm from boundaries, parallel floor/ceiling, walls perpendicular. Scenarios: CATT simulations (10⁷ rays, WOOD30, diffuse off) of cuboid, octagonal, L and T rooms with 2–3 positions; two L-rooms (320, 360 m³) with 33 source combinations each; real cuboid 10.35 × 13.29 × 4.19 m with Eigenmike EM32 and Genelec 8030, 20 s sweep 100 Hz–20 kHz averaged over four speaker orientations, noise floor 60.2 dBA, 24.4 °C (c = 346.97 m/s), fixed curtains and ceiling piping/railing present.
@@ -88,7 +88,7 @@ Quality: A peer-reviewed full method + numbers; B conference/report with numbers
 
 ---
 
-### Hadadi 2024, arXiv:2409.15484 (preprint, BGU / Meta Reality Labs) — blind_localization_early_reflections_arbitrary_array.txt
+### Hadadi 2024, arXiv:2409.15484 (preprint, BGU / Meta Reality Labs) — Hadadi_2024_arXiv_blind-localization-early-reflections.txt
 - Type: report (preprint)
 - WHY: Blindly estimate DoA and delay of early reflections with no RIR or source knowledge, for arbitrary arrays including wearables; characterise FF-PHALCOR's misses and false alarms versus reflection delay, amplitude and density, and test the perceptual value of the estimates.
 - HOW: FF-PHALCOR: frequency focusing T(f, f0) from pseudo-inverse of steering matrices (900 Fliege-Maier DoAs), phase-aligned spatial correlation, rank-1 SVD per delay, OMP for reflection DoAs, DBSCAN clustering plus proposed k-means sub-clustering (threshold 0.25). Monte Carlo: 300 scenes in four shoebox rooms (6×4×3 to 12×9×5 m, T60 0.62–1.22 s, 7.9–25.6 reflections in first 20 ms), source–array 0.7–1.7 m, DRR −10…10 dB, speech at 16 kHz, STFT 150 ms Hann 75% overlap, 500–5000 Hz in 2 kHz bands, order N = 8; arrays: em32-like 32-mic sphere and 6-mic semi-circular open array. True positive if within 0.5 ms and 15°. MUSHRA with 16 listeners in a 12×7×5 m, T60 = 0.57 s room, RIR truncated at 20 ms, KU-100 HRTF.
@@ -103,7 +103,7 @@ Quality: A peer-reviewed full method + numbers; B conference/report with numbers
 
 ---
 
-### Sprunck 2022, arXiv:2208.14017v2 (preprint, Inria / Strasbourg / Cerema) — gridless_3d_recovery_image_sources.txt
+### Sprunck 2022, arXiv:2208.14017v2 (preprint, Inria / Strasbourg / Cerema) — Sprunck_2022_arXiv_gridless-3D-recovery-image-sources.txt
 - Type: report (preprint)
 - WHY: Recover continuous 3D positions and amplitudes of image sources from a discrete, band-limited multichannel RIR without a spatial grid, avoiding the cubic grid growth, peak-overlap and basis-mismatch limits of existing methods.
 - HOW: Convex relaxation (BLASSO) over Radon measures with a new linear operator from the wave-equation Green's function convolved with the microphone response; adapted Sliding Frank-Wolfe with grid-on-spheres initialisation (~40k points), BFGS refinement, λ = 3·10⁻⁵, spikes < 0.1 dropped. 200 random shoebox rooms (L, W ∈ [2, 10] m, H ∈ [2, 5] m, wall absorption 0.01–0.3), one omni source and one 32-mic open sphere in em32 geometry scaled ×2 (d = 16.8 cm), fs = 16 kHz, Tmax = 50 ms (all image sources within 17.15 m), sinc microphone filter, pyroomacoustics ground truth, c = 343 m/s. Recovered if within 2° and 1 cm of the array centre.
@@ -118,7 +118,7 @@ Quality: A peer-reviewed full method + numbers; B conference/report with numbers
 
 ---
 
-### ISO 26101-2:2024 (ISO/TC 43/SC 1; iTeh preview sample) — iso26101-2-2024_environmental_correction_sample.txt
+### ISO 26101-2:2024 (ISO/TC 43/SC 1; iTeh preview sample) — ISO-26101-2_2024_standard-preview_environmental-correction.txt
 - Type: standard (preview sample: front matter, Scope, Clauses 2–4 and 5.1 only)
 - WHY: Qualify a test environment that approximates a free field near one or more reflecting planes by determining the environmental correction K2, needed for sound-power (ISO 3744/3746) and emission-sound-pressure (ISO 11201/11202/11204) determinations.
 - HOW: Four procedures: absolute comparison test with a reference sound source (Clause 5, preferred, indoors or outdoors, "expected to yield the most accurate results in typical industrial environments"); room-absorption methods (Clause 6: reverberation time, two-surface, RSS direct), assuming an approximately cubic, substantially empty room absorbing only at boundaries; inverse-square-law qualification of parallelepiped/cylindrical measurement surfaces in hemi-anechoic rooms with goal K2 = 0 (Clause 7, "the most accurate method"); approximate estimate of equivalent absorption area A (Clause 8, least accurate). Flowchart Figure 1. Numeric criteria (7.2.2 maximum deviations, 7.2.4 volume, Annex A uncertainty) are outside the sample (unclear in text).
