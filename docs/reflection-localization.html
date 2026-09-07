@@ -357,8 +357,7 @@
               resolves the peak-matching problem automatically. This is the method the room-geometry literature
               converged on.</p>
           </div>
-          <div class="gives"><b>Gives</b> full room geometry from one position. RMS boundary error 2.7–4.7 cm
-            simulated, 11.5–18.9 cm measured.<br>
+          <div class="gives"><b>Gives</b> full room geometry from one position. RMS boundary error 2.7–4.7 cm for simulated cuboid, octagonal and L rooms (16.5 cm for the T room); 15.4 cm RMS for the one real room measured.<br>
             <b>Costs</b> a 32-channel spherical array.<br>
             <b>Misses</b> above its aliasing frequency — 8 kHz for the EM32.</div>
         </div>
@@ -686,7 +685,7 @@ solve  |S′ − Mᵢ| = Rᵢ   for S′        (≥4 mics; subtract pairs → l
           with time-of-arrival. Lovedee-Turner and Murphy recover complete room geometry from a single EigenMike
           EM32 measurement, with the accuracy quoted in the ladder. The constraints are worth repeating: every
           boundary must be at least 50 cm from both source and array, the EM32 aliases above 8 kHz, and accuracy
-          degrades sharply — 16 to 25 cm — once the room stops being convex.</p>
+          is not tied to convexity as such: the simulated L room scored 4.7 cm, the T room 16.5 cm (attributed to angled inferred boundaries), and in the real cuboid individual walls ranged 4–25 cm.</p>
       </div>
 
       <div class="tablewrap">
@@ -871,11 +870,8 @@ solve  |S′ − Mᵢ| = Rᵢ   for S′        (≥4 mics; subtract pairs → l
         </div>
 
         <div class="panel">
-          <p class="eyebrow" style="color:var(--fail)">Not retrieved — need the PDFs</p>
-          <p style="font-size:.86rem;color:var(--ink-2);margin-top:.7rem">All four are publisher-gated. The
-            first two are the foundational spherical-array localisation papers; nothing in §01 or §04 depends on
-            them beyond what their abstracts state, but the accuracy figures quoted for tier 3 come from
-            Lovedee-Turner alone rather than from a body of work.</p>
+          <p class="eyebrow">Read at source since 2026-09-07 (were abstract-only before)</p>
+          <p style="font-size:.86rem;color:var(--ink-2);margin-top:.7rem">Sun 2012 and Mabande 2013 are now held in full (<code>papers/reflection-localization/</code>) and were audited claim by claim on 2026-09-07 (<code>papers/AUDIT-3.md</code>). Sun: EB-MVDR with frequency smoothing localises the direct path plus five first-order reflections to 1–6° at 3–17 dB SNR in T60 0.4–0.9 s rooms. Mabande: wall positions "estimated precisely up to a few centimeters only" from one compact array at 12 dB SNR. The tier-3 accuracy figures therefore no longer rest on Lovedee-Turner alone.</p>
           <ol>
             <li>Sun, H., Mabande, E., Kowalczyk, K., Kellermann, W. <em>Localization of distinct reflections in
               rooms using spherical microphone array eigenbeam processing.</em> JASA 131(4) 2828, 2012.

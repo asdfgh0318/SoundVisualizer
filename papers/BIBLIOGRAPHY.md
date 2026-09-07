@@ -19,22 +19,22 @@ Compiled 2026-09-07 by opening each PDF (pdfinfo + first pages). Filenames follo
 | ISO-26101-1_2021 | ISO 26101-1:2021 *Acoustics — Test methods for the qualification of the acoustic environment — Part 1: Qualification of free-field environments.* iTeh preview (Foreword–5.1.5.1.2 only). |
 | ISO-5305_2024 | ISO 5305:2024 *Noise measurements for UAS (unmanned aircraft systems).* iTeh preview (Foreword–7.3.1 only). |
 | Jiang_2016_JSV | Jiang, C., Zhang, S. & Huang, L. *On the acoustic wedge design and simulation of anechoic chamber.* J. Sound Vib. 381, 139–155, 2016. doi:10.1016/j.jsv.2016.06.020 |
-| Kanda-Wyss_1986_NBS-TN1305 | Kanda, M. & Wyss, J. C. *Evaluation of off-axis measurements performed in an anechoic chamber.* NBS Technical Note 1305, 1986. (Electromagnetic domain.) |
+| Kanda-Wyss_1986_NBS-TN1305 | Kanda, M. & Wyss, J. C. *Evaluation of off-axis measurements performed in an anechoic chamber.* National Bureau of Standards Technical Note 1305, October 1986 (NBS, not NIST — renamed 1988). (Electromagnetic domain.) |
 | Mateljan_nd_ARTA-AN4 | Mateljan, I. *ARTA Application Note No. 4: Loudspeaker free-field response.* Vendor note; year not printed. |
 | Nash_2019_ICA | Nash, A. *Qualification of an anechoic chamber.* Proc. 23rd ICA, Aachen, 2019, pp. 1343–1349. |
 | Okuzono_2024_ApplSci | Okuzono, T. *Computational accuracy and efficiency of room acoustics simulation using a frequency domain FEM with air absorption: 2D study.* Appl. Sci. 14(1), 194, 2024. |
 | Payne-Simmons_1996_NPL-CIRA009 | Payne, R. C. & Simmons, D. J. *[Environmental correction factor K2 — title page garbled by OCR].* NPL Report CIRA(EXT) 009, April 1996. |
-| Prinn_2023_Acoustics | Prinn, A. G. *A review of finite element methods for room acoustics.* Acoustics 5(2), 367–395, 2023. |
+| Prinn_2023_Acoustics | Prinn, A. G. *A review of finite element methods for room acoustics.* Acoustics 5, 367–395, 2023. |
 | Prislan-Svensek_2017_arXiv | Prislan, R. & Svenšek, D. *Ray-tracing semiclassical low frequency acoustic modeling with local and extended reaction boundaries.* arXiv:1705.03825v1, 2017. |
 | Ressl-Wundes_nd_WSEAS | Ressl, M. S. & Wundes, P. E. *Design of an acoustic anechoic chamber for application in hearing aid research.* WSEAS "Recent Advances in Acoustics & Music", ISBN 978-960-474-192-2; year not printed (ISBN corresponds to the 2010 volume — inferred, not printed). |
-| Rodriguez_nd_NSI-MI | Rodriguez, V. *Comparing predicted performance of anechoic chambers to free space VSWR measurements.* NSI-MI Technologies, AMTA-style proceedings; year not printed (cites AMTA 2016). (Electromagnetic domain.) |
+| Rodriguez_nd_NSI-MI | Rodriguez, V. *Comparing predicted performance of anechoic chambers to free space VSWR measurements.* 39th AMTA Symposium, Atlanta, Oct. 2017, doi:10.23919/AMTAP.2017.8123694 (year from Crossref/PDF metadata; not printed in the body). (Electromagnetic domain.) |
 | Russo_2018_Euronoise | Russo, M., Kraljević, L., Stella, M. & Sikora, M. *Acoustic performance analysis of anechoic chambers based on ISO 3745 and ISO 26101: standards comparison and performance analysis of the anechoic chamber at the University of Split.* Euronoise 2018, Crete, pp. 2225–2230. |
 | Schmal_nd_conf_quadcopter-sound-characterization | Schmal, J., Herrin, D. W. & Fernández Comesaña, D. *Quadcopter sound characterization using a UAV test stand.* Conference paper; venue and year not printed (cites Inter-Noise 2023 as its ref. [6], so it is not that paper). |
 | Schmal_nd_conf_acoustic-characterization | Schmal, J., Herrin, D. W. & Fernández Comesaña, D. *Acoustic characterization of a quadcopter using a test stand.* Session "Experimental Acoustic and Flow Measurements"; venue and year not printed (text says "as of December 2022"). |
 | Schneider_2009_JSV | Schneider, S. *Numerical prediction of the quality of an anechoic chamber in the low frequency range.* J. Sound Vib. 320(4–5), 990–1003, 2009. doi:10.1016/j.jsv.2008.08.019 |
 | Vorlander_2013_JASA | Vorländer, M. *Computer simulations in room acoustics: Concepts and uncertainties.* J. Acoust. Soc. Am. 133(3), 1203–1213, 2013. doi:10.1121/1.4788978 |
 | Wang-Tang_1996_EABE | Wang, C.-N. & Tang, M.-K. *Boundary element evaluation on the performance of sound absorbing wedges for anechoic chambers.* Eng. Anal. Bound. Elem. 18, 103–110, 1996. doi:10.1016/S0955-7997(96)00017-3 |
-| beranek_sleeper_1946 (HTML only) | Beranek, L. L. & Sleeper, H. P. *The design and construction of anechoic sound chambers.* J. Acoust. Soc. Am. 18(1), 140–150, 1946. |
+| beranek_sleeper_1946 (HTML only) | Beranek, L. L., Sleeper, H. P. & Moots, E. E. *The design and construction of anechoic sound chambers.* OSRD Report No. 4190, Harvard Electro-Acoustic Laboratory, 1945 (GPO OCR transcription). The JASA 18(1) 140–150, 1946 article is **not** held. |
 
 ## reflection-localization/ (8)
 
@@ -54,7 +54,7 @@ Compiled 2026-09-07 by opening each PDF (pdfinfo + first pages). Filenames follo
 | File | Citation as printed |
 |---|---|
 | Alkmim_2022_JASA | Alkmim, M., Cardenuto, J., Tengan, E., Dietzen, T., Van Waterschoot, T., Cuenca, J., De Ryck, L. & Desmet, W. *Drone noise directivity and psychoacoustic evaluation using a hemispherical microphone array.* J. Acoust. Soc. Am. 152(5), 2735–2745, 2022. |
-| Amiet_1981_NASA-CR3371 | Amiet, R. K. *Refraction and scattering of sound by a shear layer.* NASA CR-3371, 1981. |
+| Schlinker-Amiet_1980_NASA-CR3371 | Schlinker, R. H. & Amiet, R. K. *Refraction and scattering of sound by a shear layer.* NASA CR-3371, December 1980 (NTRS accession 19810008332; 189 pp). |
 | Bahr-Hutcheson-Stead_2020_NASA-NTRS | Bahr, C. J., Hutcheson, F. V. & Stead, D. J. *Unsteady propagation and mean corrections in open-jet and Kevlar wind tunnels.* NASA Langley, NTRS 20205011271 (journal manuscript; extends AIAA 2018-3118). |
 | Bahr_2021_NASA-NTRS | Bahr, C. J. *Toward relating open- and closed-test section microphone phased array aeroacoustic measurements.* NASA Langley, NTRS 20210015848. |
 | Belyaev_2015_AcoustPhys (EN) | Belyaev, I. V., Golubev, A. Yu., Zverev, A. Ya., Makashov, S. Yu., Palchikovskiy, V. V., Sobolev, A. F. & Chernykh, V. V. *Experimental investigation of sound absorption of acoustic wedges for anechoic chambers.* Acoustical Physics 61(5), 606–614, 2015. doi:10.1134/S1063771015050048 |
@@ -64,7 +64,7 @@ Compiled 2026-09-07 by opening each PDF (pdfinfo + first pages). Filenames follo
 | Gallo_2025_ActaAcustica | Gallo, E., De Decker, J., Bresciani, A., Haezebrouck, P., Garone, E. & Schram, C. *Development and commissioning of an aeroacoustic test bench for the investigation of single and coaxial propeller noise.* Acta Acustica 9, 16, 2025. doi:10.1051/aacus/2024085 |
 | Garg_2019_MAPAN | Garg, N., Surendran, P., Dhanya, M. P., Chandran, A. T., Asif, M. & Singh, M. *Measurement uncertainty in microphone free-field comparison calibrations.* MAPAN 34(3), 357–369, 2019. doi:10.1007/s12647-019-00343-7 |
 | Haasjes_2025_PhD-Twente | Haasjes, R. *Towards an active acoustic anechoic chamber.* PhD dissertation, University of Twente, defended 20 Jan 2025 (© 2024). doi:10.3990/1.9789036562836 |
-| Hochbaum_2026_conf | Hochbaum, F., Herold, G. et al. *Drone directivity measurements under realistic flight conditions in an anechoic environment for spectral and psychoacoustic characterization.* Session "UAS/UAM noise modeling"; venue not printed (cites Forum Acusticum/Euronoise 2025; year inferred 2026). |
+| Hochbaum_2026_QuietDrones | Hochbaum, F., Herold, G., Kempen, V. R. & Fiebig, A. *Drone directivity measurements under realistic flight conditions in an anechoic environment for spectral and psychoacoustic characterization.* Quiet Drones 2026, Delft, 29 June–1 July 2026 (venue printed only as a page-1 image, invisible to text extraction). |
 | Jawahar_2025_SciRep | Jawahar, H. K., Hanson, L., Akhter, M. Z. & Azarpeyvand, M. *Porous ground treatments for propeller noise reduction in ground effect.* Scientific Reports 15, 2170, 2025. doi:10.1038/s41598-024-82876-9 |
 | Jenny_2011_BYU-thesis | Jenny, T. (advisor B. E. Anderson). *Ultrasonic anechoic chamber qualification: accounting for atmospheric absorption and transducer directivity.* Senior thesis, Brigham Young University, 2011. |
 | Jenny-Anderson_2011_JASA-EL | Jenny, T. & Anderson, B. E. Same title. J. Acoust. Soc. Am. 130(2), EL69–EL75, 2011. doi:10.1121/1.3606461 |
@@ -80,7 +80,7 @@ Compiled 2026-09-07 by opening each PDF (pdfinfo + first pages). Filenames follo
 | Schlinker-Amiet_1978_NASA-CR145359 | Schlinker, R. H. & Amiet, R. K. *Experimental assessment of theory for refraction of sound by a shear layer.* NASA CR-145359, June 1978. |
 | Simmons-Jobling-Payne_2004_NPL-DQL-AC007 | Simmons, D., Jobling, B. & Payne, R. *Acoustic parameters and uncertainties associated with determining sound power level in hemi-anechoic rooms.* NPL Report DQL-AC 007, August 2004. |
 | Singh_2020_IJAeroacoustics | Sushil, S. K., Garg, M. & Narayanan, S. *Estimation of the lower cut-off frequency of an anechoic chamber: An empirical approach.* Int. J. Aeroacoustics 19(1–2), 57–72, 2020. doi:10.1177/1475472X20905070 |
-| Stephenson_2019_JASA | Stephenson, J. H., Weitsman, D. & Zawodny, N. S. *Effects of flow recirculation on unmanned aircraft system (UAS) acoustic measurements in closed anechoic chambers.* J. Acoust. Soc. Am. 145(3), 1153–1155, 2019. |
+| Stephenson_2019_JASA | Stephenson, J. H., Weitsman, D. & Zawodny, N. S. *Effects of flow recirculation on unmanned aircraft system (UAS) acoustic measurements in closed anechoic chambers (L).* J. Acoust. Soc. Am. 145(3), 1153–1155, 2019. doi:10.1121/1.5092213 (a Letter in the main journal, not JASA Express Letters). |
 | Wang_2019_ActaAcustica_UCMAR | Wang, L., Chen, R., You, Y., Wu, W. & Qiu, R. *A unified correction method for the acoustic refraction (UCMAR) caused by a three dimensional shear layer.* Acta Acustica united with Acustica 105(5), 732–742, 2019. doi:10.3813/AAA.919353 |
 | Weitsman_2020_JASA | Weitsman, D., Stephenson, J. H. & Zawodny, N. S. *Effects of flow recirculation on acoustic and dynamic measurements of rotary-wing systems operating in closed anechoic chambers.* J. Acoust. Soc. Am. 148(3), 1325–1336, 2020. |
 | Whelchel_2023_PhD-VT | Whelchel, J. *Measurement and prediction of rotor noise sources for sUAS in outdoor and laboratory environments.* PhD dissertation, Virginia Tech, 2023. |
@@ -88,3 +88,6 @@ Compiled 2026-09-07 by opening each PDF (pdfinfo + first pages). Filenames follo
 | Zawodny-Haskin_2017_AIAA | Zawodny, N. S. & Haskin, H. H. *Small propeller and rotor testing capabilities of the NASA Langley Low Speed Aeroacoustic Wind Tunnel.* AIAA Aeroacoustics Conf., 2017. |
 
 Corrections made during this pass relative to earlier working names: the Singh first author is printed "Singh K Sushil"; the "internoise2023" Schmal file is not the Inter-Noise 2023 paper; the "quietdrones2022_kim" file is ICSV28; Tervo is 2013 (JAES vol. 61), not 2012; the ultrasonic-qualification authors are Jenny & Anderson, not Cunefare.
+
+## Audit note (2026-09-07, later)
+All 69 documents were audited claim by claim against their own text (`AUDIT-1.md` … `AUDIT-5.md`); the corrections that changed a citation are folded into the table above and the ones that changed a claim are listed in `ERRATA.md`.

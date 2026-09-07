@@ -120,7 +120,7 @@ Evidence: III = controlled measurement with reference/qualification data · VI =
 - Evidence level: III — simulation validated against measurement with an uncertainty budget.
 - Quality: C — EM analogue, preprint.
 
-### Rodriguez (NSI-MI; AMTA-style proceedings, year unclear in text, cites AMTA 2016) — Rodriguez_nd_NSI-MI_EM-predicted-vs-measured-chamber-performance.txt
+### Rodriguez 2017, AMTA 39th Symposium, Atlanta (doi:10.23919/AMTAP.2017.8123694; year from Crossref/PDF metadata, not printed in the body text) — Rodriguez_nd_NSI-MI_EM-predicted-vs-measured-chamber-performance.txt
 - Type: EM-domain (conference)
 - WHY: Quiet-zone (QZ) reflectivity of rectangular RF chambers should be predictable from absorber bistatic reflectivity without full-wave runs.
 - HOW: First-order ray model (end wall + specular points on side walls/floor/ceiling) with a 7th-order polynomial for pyramidal absorber reflectivity vs angle and electrical thickness; checked against CST full-wave (12 × 22 × 12 m at 700 MHz) and free-space VSWR scans of three chambers (18 × 11.5 × 11.5 m at 100 MHz–12 GHz; 13.41 × 6.1 × 6.1 m at 0.8–6 GHz; 12 × 4.12 × 4.27 m at X-band).

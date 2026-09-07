@@ -598,7 +598,7 @@
           </thead>
           <tbody>
             <tr>
-              <td><strong>Quarter-wavelength rule</strong><br><span class="mono" style="color:var(--ink-3)">Beranek &amp; Sleeper 1946</span></td>
+              <td><strong>Quarter-wavelength rule</strong><br><span class="mono" style="color:var(--ink-3)">Beranek, Sleeper &amp; Moots 1945 (OSRD 4190)</span></td>
               <td>First-cut absorber depth for a target cut-off</td>
               <td>Normal incidence, plane wave, fibrous wedge</td>
               <td class="num">minutes<br>on paper</td>
@@ -681,7 +681,7 @@
           <p>The lowest frequency of high absorption is roughly where the wedge length equals a quarter
             wavelength. A better material inside the same depth does not move it much; a deeper structure does.
             Below the cut-off, level versus distance goes flat or steep and the polar shape compresses.</p>
-          <p class="ev"><span class="tier">●</span> Beranek &amp; Sleeper 1946: 40 Hz needs 94 in from tip to
+          <p class="ev"><span class="tier">●</span> Beranek, Sleeper &amp; Moots 1945 (OSRD 4190): 40 Hz needs 94 in from tip to
             backing wall. <span class="tier">●</span> Singh et al. 2020 replace c/(4L) with
             f = 2.25c/(d − l<sub>w</sub> − a) — d the source-to-wall distance, l<sub>w</sub> the wedge length, a the
             source size — and get 312–320 Hz against a measured 315 Hz, "within 3%". Fitted and checked on one
@@ -689,7 +689,7 @@
             0.1–0.3 dB at 100 Hz and 3.0–3.7 dB at 200 Hz below that cut-off.
             <span class="tier">●</span> Jiang et al. 2016: "99% energy absorption means 10% pressure reflection,
             which is still very large" — wedges designed for 100 Hz gave a 9 × 8 × 7 m room an effective cut-off of
-            128 Hz on a 75 %-of-traverse criterion, with only 57 % of the centre-to-corner line inside ±1.5 dB at
+            128 Hz on a 75 %-of-traverse criterion, with only 56.7 % of the centre-to-vertex line inside ±1.5 dB at
             100 Hz. <span class="tier">●</span> Bonfiglio &amp; Pompoli 2013: below the cut-off a free field still
             holds "in a reduced volume of the chamber up to a distance of around 1 m from the boundaries".</p>
         </div>
@@ -750,7 +750,7 @@
           <p>Qualification is per source position, per direction, per distance, per frequency. Publishing
             "measured in an anechoic chamber" without that envelope is publishing an assumption. The envelope
             is usually much smaller than the room.</p>
-          <p class="ev"><span class="tier">●</span> ITMO: qualifies 50–3150 Hz at 0.5–0.9 m in every direction,
+          <p class="ev"><span class="tier">●</span> ITMO: qualifies 50–3150 Hz at 0.5–0.8 m in every direction (0.9 m in three of four),
             but the four directions diverge sharply beyond that; worst deviation found was 15.5 dB.</p>
         </div>
 
@@ -908,7 +908,7 @@
           <circle cx="521.1" cy="112.5" r="5" fill="none" stroke="var(--s1)" stroke-width="2"></circle>
           <line x1="521.1" y1="112.5" x2="521.1" y2="72" stroke="var(--s1)" stroke-width="1" stroke-dasharray="3 3"></line>
           <text x="516" y="66" font-family="IBM Plex Mono, monospace" font-size="10" fill="var(--s1)"
-                text-anchor="end">leaves ±1.5 dB at 1.32 m</text>
+                text-anchor="end">leaves ±1.5 dB at ≈1.32 m (derived from the fit, not printed)</text>
 
           <!-- direct labels -->
           <g font-family="IBM Plex Mono, monospace" font-size="11" font-weight="500">
@@ -1023,9 +1023,7 @@
           conditions that do not match the room. Vorländer's error-propagation analysis <span class="tier">●</span> concludes that "prediction of
           reverberation times with accuracy better than the just noticeable difference requires input data in a
           quality which is not available from reverberation room measurements", and that "it is not adequate to
-          'calibrate' a computer model by modification of input data". Formal uncertainty-quantification studies
-          in wave-based room acoustics target exactly three parameters: the flow resistivity of the porous
-          absorber, its thickness, and the absorption of the remaining hard surfaces.</p>
+          'calibrate' a computer model by modification of input data". Prinn's review of wave-based methods (§6.3.1) reports the same conclusion from the uncertainty studies it surveys: material-parameter uncertainty alone produces "differences between simulated and measured data that exceed just noticeable differences".</p>
         <p><strong>The diagnostic tell.</strong> When two different numerical methods agree with each other but
           both deviate from measurement, the material data is wrong, not the solver. That pattern is reported
           often enough to be treated as a rule.</p>
@@ -1132,7 +1130,7 @@
           the planning tool for it is the image-source method — a simulation, run on the back of an envelope.
           Two numbers govern it. The gate length <span class="mono">t<sub>g</sub></span> sets the lowest
           trustworthy frequency at roughly <span class="mono">1/t<sub>g</sub></span> (ARTA's worked example: a
-          5.604 ms gate is valid above 178 Hz). And the image-source geometry says how high to mount everything:
+          5.604 ms gate is valid above 177.9 Hz). And the image-source geometry says how high to mount everything:
           for a first floor reflection to arrive 5 ms after the direct sound at 0.48 m source–microphone spacing,
           source and microphone must sit at least 1.08 m above the floor. Rearranged for the arc geometry, that
           calculation gives the mounting height that buys a usable gate — and it is a five-line script, not a
@@ -1252,13 +1250,11 @@
               free-field measurements — ITMO University.</em> <span class="doi">arXiv:2603.16556</span></li>
             <li>ISO 26101-1:2021 — qualification of free-field environments (published preview, clauses 3–5).</li>
             <li>ISO 5305:2024 — noise measurements for UAS (published preview, clauses 6–7).</li>
-            <li>Beranek, L. L. &amp; Sleeper, H. P. <em>The design and construction of anechoic sound
-              chambers.</em> OSRD/Harvard report, 1946; JASA 18(1) 140.
-              <span class="doi">doi:10.1121/1.1916351</span></li>
-            <li>Prinn, A. G. <em>A review of finite element methods for room acoustics.</em> Acoustics 5(2) 22,
+            <li>Beranek, L. L., Sleeper, H. P. &amp; Moots, E. E. <em>The design and construction of anechoic sound chambers.</em> OSRD Report No. 4190, Harvard Electro-Acoustic Laboratory, 1945 (GPO transcription, HTML). The JASA 18(1) 140–150, 1946 article by Beranek &amp; Sleeper is <em>not</em> held; all Beranek numbers here come from the 1945 report.</li>
+            <li>Prinn, A. G. <em>A review of finite element methods for room acoustics.</em> Acoustics 5, 367–395,
               2023.</li>
-            <li>Aussal, M. &amp; Gueguen, R. <em>Open-source platforms for fast room acoustic simulations.</em>
-              ICA 2019.</li>
+            <li>Aussal, M. &amp; Gueguen, R. <em>Open-source platforms for fast room acoustic simulations in complex structures.</em>
+              ICA 2019, pp. 6059–6066.</li>
             <li>González, R. &amp; Kob, M. <em>Influence of room acoustics on directivity measurement of
               loudspeakers.</em> DAGA 2026, 1220–1223.</li>
             <li>ARTA AN4 — <em>Loudspeaker free field response</em> (time-gating and image-source geometry).</li>
@@ -1276,7 +1272,7 @@
             <li>Plus: ray-tracing semiclassical low-frequency modelling (arXiv:1705.03825); room-acoustic
               simulation as a substitute for measurement (arXiv:2509.05175); height-dependent rotor noise
               (arXiv:2510.26453); anechoic-chamber modelling with equivalent materials (arXiv:1511.08410, EMC);
-              NIST TN 1305 and NSI-MI chamber prediction (both EM, methodological only).</li>
+              NBS Technical Note 1305 (Kanda &amp; Wyss 1986, a measured off-axis error study) and NSI-MI chamber prediction (Rodriguez, AMTA 2017) — both electromagnetic-domain analogues.</li>
           </ol>
         </div>
 
