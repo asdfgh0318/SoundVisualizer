@@ -21,3 +21,15 @@ Note: Semantic Scholar rate-limited (429) most search calls this session; OpenAl
 
 Summary: 5 PDFs read at source (1, 2, 3, 4, 6), 2 HTML pages (12a, 12b), 5 abstract-only (5, 7, 8, 9, 11), 1 not retrieved (10).
 Paper 5 is flagged open access (CC-BY hybrid) by Unpaywall but ScienceDirect blocks automated download — a browser fetch should work without a proxy.
+
+
+## Update 2026-09-07 (later) — fetched manually by Adam via proxy
+Now held as full PDFs in this directory (text in `txt/`, abstract-only files removed):
+- Singh, Garg & Narayanan 2020 → `ijaeroacoustics2020_singh_lower_cutoff_frequency_empirical.pdf` (PDF read at source)
+- Jenny & Anderson 2011, JASA-EL → `jasael2011_jenny_anderson_ultrasonic_chamber_qualification.pdf` (PDF read at source; thesis version also held)
+- Palchikovskiy et al. 2016, AIP Conf. Proc. → `aipcp2016_palchikovskiy_pnrpu_chamber_tests_aeroacoustics.pdf` (PDF read at source)
+- Belyaev et al. 2015, English Springer version → `acoustphys2015_belyaev_wedge_absorption_anechoic_en.pdf`
+- Garg et al. 2019, MAPAN → `mapan2019_garg_microphone_freefield_calibration_uncertainty.pdf` (PDF read at source)
+- Ma et al. 2022, Applied Acoustics 185:108424 → `appacoust2022_ma_active_control_large_mppa_point_source.pdf` (PDF read at source)
+- Wang et al. 2019, UCMAR, Acta Acustica 105 732–742 → `actaacustica2019_wang_ucmar_shear_layer_refraction.pdf` (PDF read at source)
+Still not retrieved: Hanson 2023 (JSV), Stroud 2010 (AES), Xiang 1990 (Appl. Acoust.), Amiet 1978 (JSV), the miniature medical-device chamber (ResearchGate only).
