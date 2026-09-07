@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
-"""Arc error map from "horizontal prop" validation runs.
+"""Arc error map from the "horizontal" validation runs (arc laid flat).
 
-With the prop axis horizontal and perpendicular to the arc plane every mic sits
+With the arc horizontal and the prop axis vertical every mic sits at one height
 in the prop plane at the same angle to the axis, so an axisymmetric source must
-read the same level at every elevation. Whatever is not a circle is the arc, the
+read the same level at every position. Whatever is not a circle is the arc, the
 room or the mics. This script separates those with a joint least-squares fit
 over many runs:
 

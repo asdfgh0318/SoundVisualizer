@@ -36,14 +36,7 @@
   .hm div{padding:3px 0;text-align:center;color:#fff;min-width:0}
   .hm .lab{background:none;color:var(--ink-2);text-align:right;padding-right:6px}
   .hm .hd{background:none;color:var(--ink-2);writing-mode:vertical-rl;transform:rotate(180deg);text-align:left;padding:0}
-  .pill{font-family:var(--mono);font-size:11px;padding:1px 6px;border-radius:9px;background:#e3e9ec;color:var(--ink-2)} .pill.f{background:#f3dfc9;color:var(--warn)}
-</style>
-</head>
-<body><main>
-<header>
-  <p class="eyebrow">SoundVisualizer · arc validation · horizontal-prop runs, 31 Aug – 2 Sept 2026</p>
-  <h1>Why the polar is not a circle</h1>
-  <p class="sub">With the prop axis horizontal and perpendicular to the arc, all eleven microphones sit in the prop plane at the same angle to the axis. An axisymmetric source must then read the same at every elevation: the polar should be a circle. It is not. This guide separates the three reasons, one microphone, the arc having been turned around for four runs, and the room, and shows each one on the polar, per third-octave, on the actual data.</p>
+  .pill{font-family:var(--mono);font-size:11px;padding:1px 6px;border-radius:9px;background:#e3e9ec;color:var(--ink-2)} .pill.For these runs the arc was laid flat (horizontal) with the propeller axis vertical, so all eleven microphones sit at one height in the prop plane at the same angle to the axis. An axisymmetric source must then read the same at every elevation: the polar should be a circle. It is not. This guide separates the three reasons, one microphone, the arc having been turned around for four runs, and the room, and shows each one on the polar, per third-octave, on the actual data.</p>
   <nav class="toc"><a href="#s1">1 Expected vs measured</a><a href="#s2">2 Effect A: mic 811-1892</a><a href="#s3">3 Effect B: the flipped runs</a><a href="#s4">4 Effect C: the room</a><a href="#s5">5 Explorer</a><a href="#s6">6 Findings and next steps</a><a href="#s7">7 Method</a></nav>
 </header>
 
@@ -89,7 +82,7 @@
 <div class="row">
 <div>
 <p>After removing run gain and mic offsets, what is left is a pattern tied to the physical position on the arc. Since the source is axisymmetric, this pattern is entirely error: reflections from the floor, the stand, the arc frame, the microphone mounts, or the chamber walls. The heat map is that error per position and third-octave; the polar draws one third-octave at a time.</p>
-<div class="card"><b>Three bands, three sizes.</b> The error sits in 200–250 Hz (λ ≈ 1.5 m), 630–1000 Hz (λ ≈ 0.4 m) and 3150 Hz (λ ≈ 0.11 m), and is flat to ±1 dB above 4 kHz. Rajmane and Baumann (DAGA 2016) showed a reflector in an anechoic chamber becomes visible once the wavelength is no longer than its size, so the three bands point at three reflector scales: a floor, table or wall; a stand base or frame member; a clamp or mount. Signs flip between the negative-angle and positive-angle halves of the arc, which is what a reflector on one side of the propeller does. Which room surface that is depends on how the arc stands in the room, and that is not recorded.</div>
+<div class="card"><b>Three bands, three sizes.</b> The error sits in 200–250 Hz (λ ≈ 1.5 m), 630–1000 Hz (λ ≈ 0.4 m) and 3150 Hz (λ ≈ 0.11 m), and is flat to ±1 dB above 4 kHz. Rajmane and Baumann (DAGA 2016) showed a reflector in an anechoic chamber becomes visible once the wavelength is no longer than its size, so the three bands point at three reflector scales: a floor, table or wall; a stand base or frame member; a clamp or mount. Signs flip between the negative-angle and positive-angle halves of the arc. The arc was laid flat for these runs, so floor and ceiling act the same on every microphone; a one-sided pattern means a wall, the corner or an object beside the rig on the −angle side.</div>
 <div class="card bad"><b>The −72° indent.</b> −2.4 to −5.7 dB in 500–2000 Hz in all twelve coherent runs, with 811-1896 there and, during the flip, with 810-8901 there. <b>The +54° bump</b> of +3 to +6 dB is likewise there with three different microphones. Both stay at the physical spot when the arc is turned. That is the definition of a room effect, and it is the one worth chasing.</div>
 </div>
 <div>
