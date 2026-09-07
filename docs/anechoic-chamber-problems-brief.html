@@ -1,0 +1,247 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Reading the Room — anechoic-chamber problems, patterns and fixes</title>
+<style>
+  @page { size: A4; margin: 13mm 14mm 12mm; }
+  :root {
+    --ink:#10171b; --ink-2:#46545c; --ink-3:#74828a; --rule:#c6d0d5; --rule-2:#e0e6e9;
+    --panel:#f1f4f6; --accent:#17566e; --accent-2:#0f7ba8; --signal:#8f5c0d; --fail:#96382a;
+    --serif:"Source Serif 4", Charter, "DejaVu Serif", Georgia, serif;
+    --sans:"IBM Plex Sans", "DejaVu Sans", "Helvetica Neue", Arial, sans-serif;
+    --mono:"IBM Plex Mono", "DejaVu Sans Mono", Consolas, monospace;
+  }
+  * { box-sizing:border-box; }
+  html,body { margin:0; padding:0; }
+  body { font-family:var(--serif); font-size:8.3pt; line-height:1.3; color:var(--ink); background:#fff;
+         -webkit-print-color-adjust:exact; print-color-adjust:exact; }
+  p { margin:0 0 4pt; }
+  a { color:var(--accent-2); text-decoration:none; }
+  code { font-family:var(--mono); font-size:.92em; }
+  b,strong { font-family:var(--sans); font-weight:600; }
+  header { border-bottom:1.5pt solid var(--ink); padding-bottom:5pt; margin-bottom:7pt;
+           display:grid; grid-template-columns:1fr auto; gap:0 8mm; align-items:end; }
+  .eyebrow { font-family:var(--mono); font-size:6.4pt; letter-spacing:.13em; text-transform:uppercase; color:var(--ink-3); margin:0 0 2pt; }
+  h1 { font-family:var(--sans); font-weight:700; font-size:21pt; letter-spacing:-.025em; line-height:.96; margin:0; }
+  .sub { font-size:9pt; color:var(--ink-2); margin:4pt 0 0; max-width:135mm; }
+  .headmeta { font-family:var(--mono); font-size:6.6pt; line-height:1.5; color:var(--ink-3); text-align:right; white-space:nowrap; }
+  .headmeta b { color:var(--ink-2); font-weight:500; font-family:var(--mono); }
+  h2 { font-family:var(--sans); font-weight:700; font-size:11.5pt; letter-spacing:-.015em; margin:11pt 0 4pt;
+       padding-top:5pt; border-top:.7pt solid var(--rule); break-after:avoid; }
+  h2 .n { font-family:var(--mono); font-weight:400; font-size:7pt; color:var(--ink-3); margin-right:6pt; letter-spacing:.08em; }
+  h3 { font-family:var(--sans); font-weight:600; font-size:9pt; margin:7pt 0 2.5pt; break-after:avoid; }
+  .lead { font-size:9.4pt; line-height:1.36; }
+  .quote { border-left:1.8pt solid var(--accent); padding:2pt 0 2pt 4mm; margin:5pt 0 6pt;
+           font-family:var(--sans); font-weight:600; font-size:8.8pt; line-height:1.3; }
+  .quote span { display:block; margin-top:2pt; font-family:var(--mono); font-weight:400; font-size:6.3pt; color:var(--ink-3); letter-spacing:.02em; }
+  ul { margin:0 0 4pt 0; padding-left:4mm; }
+  li { margin:0 0 2.2pt; }
+  li::marker { color:var(--ink-3); }
+  table { border-collapse:collapse; width:100%; margin:4pt 0 6pt; font-size:7.4pt; line-height:1.28; }
+  th { font-family:var(--sans); font-weight:600; font-size:6.8pt; text-transform:uppercase; letter-spacing:.06em; color:var(--ink-2);
+       text-align:left; padding:3pt 4pt; border-bottom:1pt solid var(--ink); vertical-align:bottom; }
+  td { padding:3pt 4pt; border-bottom:.5pt solid var(--rule-2); vertical-align:top; }
+  tr { break-inside:avoid; }
+  td.sym { font-family:var(--sans); font-weight:600; width:31%; }
+  td.cause { width:27%; }
+  td.src { font-family:var(--mono); font-size:6.5pt; color:var(--ink-3); }
+  .panel { background:var(--panel); border-left:1.8pt solid var(--accent); padding:5pt 4mm 4pt; margin:5pt 0 7pt; break-inside:avoid; }
+  .panel h3 { margin-top:0; }
+  .two { display:grid; grid-template-columns:1fr 1fr; gap:0 7mm; }
+  .tag { font-family:var(--mono); font-size:6.3pt; color:var(--ink-3); }
+  .ok { color:var(--accent); } .warn { color:var(--signal); } .bad { color:var(--fail); }
+  .ledger td { padding:2pt 4pt; font-size:7.2pt; }
+  .ledger td:first-child { font-family:var(--mono); font-size:6.6pt; white-space:nowrap; }
+  .foot { margin-top:9pt; padding-top:4pt; border-top:.7pt solid var(--rule); font-size:6.9pt; color:var(--ink-3); line-height:1.35; }
+  .kv { display:grid; grid-template-columns:auto 1fr; gap:1.5pt 5mm; font-size:7.8pt; }
+  .kv dt { font-family:var(--mono); font-size:6.6pt; color:var(--ink-3); padding-top:1.5pt; }
+  .kv dd { margin:0; }
+  .pb { break-before:page; }
+</style>
+</head>
+<body>
+
+<header>
+  <div>
+    <p class="eyebrow">SoundVisualizer · chamber-problems brief · working draft</p>
+    <h1>Reading the Room</h1>
+    <p class="sub">How anechoic-chamber problems show up in measured data — standing waves, interference patterns, recirculation, shear layers — how the literature reads them, and what people actually do about them.</p>
+  </div>
+  <div class="headmeta">
+    <b>2026-09-07</b><br>
+    derived from papers/chamber-problems + papers/anechoic-simulation<br>
+    ● read at source &nbsp;○ abstract only &nbsp;✕ not retrieved<br>
+    source texts govern where this brief disagrees
+  </div>
+</header>
+
+<p class="lead">A chamber is never anechoic; it is anechoic in an envelope of frequency, distance and direction. Every paper collected here reaches the same conclusion by a different route: the number that matters is not the wedge absorption coefficient but the <b>deviation from the inverse-square law</b> measured with the rig in place, and that deviation is an <b>interference pattern</b> — direct wave plus a weak reflection — whose spatial and spectral shape tells you where the reflection comes from. This brief is organised around that pattern: what causes it (§1), how to read it (§2), how qualification methods can hide it (§3), and what has been done to shrink it (§4). §5 applies it to the arc rig; §6 is the evidence ledger.</p>
+
+<h2><span class="n">01</span>Where the deviation comes from</h2>
+
+<div class="two">
+<div>
+<h3>Interference, not absorption, is the observable</h3>
+<p>Cunefare et al. (JASA 2003) put it plainly: the deviation "is due to interference between the direct and reflected components of the wave field", so it varies "on length scales comparable to a fraction of a wavelength". Measured over 80 Hz–10 kHz, the mean spacing of zero-crossings of the deviation was <b>29–41 % of a wavelength</b> (40.8 % at 80 Hz, 29.2 % at 1–2 kHz). ● Jiang, Zhang &amp; Huang (JSV 2016) explain why a "99 % absorbing" wedge still produces this: "99 % energy absorption means 10 % pressure reflection, which is still very large. In some area inside the anechoic chamber, the multi-reflected sound accumulates and violates the 1.5 dB deviation easily." In their 9 × 8 × 7 m simulation, wedges designed for 100 Hz keep only 57 % of the centre-to-corner line inside ±1.5 dB at 100 Hz; the effective cut-off by a 75 %-of-line criterion is <b>128 Hz — 28 % above the design value</b>. ●</p>
+
+<h3>Below the cut-off: modes, not free field</h3>
+<p>Nardari et al. (AIAA 2019) calibrated Amazon's hemi-anechoic rotor room with a loudspeaker: within ±1 dB above 2.2 × BPF "but only within ±4 dB below that, primarily due to the onset of standing waves, which are a consequence of the nearly cuboidal shape of the chamber". ● Schneider (JSV 2009) measured the LMA Marseille chamber (5.4 × 6.3 × 11.4 m, 0.7 m melamine wedges) with pure tones on a 0.2 m grid: "significant deviations from free-field conditions occur in the 100–160 Hz frequency range" and the room "was found to be asymmetric in the 170–190 Hz frequency range". ● Haasjes (PhD, Twente 2025) reads that case as a chamber "designed for 75 Hz" whose real cut-off "lies at 200 Hz rather than 75 Hz", with the lined doors among the identified causes, and generalises from the literature: chambers "suffer from low-frequency sound waves (up to about 200 Hz) reflecting off the walls, in some cases even above the cut off frequency the chamber is designed for". ●</p>
+</div>
+<div>
+<h3>Tones expose what band noise hides</h3>
+<p>This is the single most repeated finding. Cunefare: at 500 Hz, 37 % of a tonal corner traverse was out of tolerance against <b>0 %</b> for band-limited noise on the same span; broadband qualification is "a marginal indicator" and "of dubious value" for chambers used with tonal sources. ● NPL (Simmons, Jobling &amp; Payne, DQL-AC 007) stripped a hemi-anechoic room wedge by wedge: pure-tone deviations reached 9.3 dB at 250 Hz and 14.3 dB at 8 kHz while broadband never exceeded 3.7 dB, "most likely due to averaging of the interference between the limits of the frequency band being analysed". ● Nash (ICA 2019) passed a 51 m³ commercial chamber on pink noise and failed it on tones: the 2056 Hz draw-away fitted <b>−26.4 dB/decade</b>, "a value that is physically impossible", read as "an acoustical cancellation occurring between the arriving wave front and a strong reflection from a nearby surface". ●</p>
+<p>Drone noise is tonal, dominated by blade-passage harmonics. A chamber qualified on noise has not been qualified for this work.</p>
+
+<h3>Discontinuities and fixtures</h3>
+<p>Failures found in practice are rarely "bad wedges everywhere". Rizzi et al. (NASA SALT, 337 m³): all ISO 3745 points passed "except the farthest measurement locations below 250 Hz … close to the room corner opposite the sound source", attributed to "long wavelength sound reflecting from the corners". ● Winker &amp; Stahnke (Inter-Noise 2016): above 10 kHz "the most likely factor is the influence of the measurement system inside the free-field creating reflections that do not appear at lower frequencies … This situation occurs during pure tone qualifications and is not present in broadband qualifications due to signal averaging." ● Zawodny &amp; Haskin (NASA LSAWT): a >5 dB directivity error at one elevation at BPF = 160 Hz "may be due to reflections from the wall-mounted wedges" — the array sat 0.49 m from the wedge tips, and "treating this as a 1/4-wavelength yields a notional cut-on frequency of 175 Hz", below the room's nominal 200 Hz. ●</p>
+</div>
+</div>
+
+<h2><span class="n">02</span>Reading the pattern — a field guide</h2>
+<p>Each row is a symptom the literature has observed in real data, the cause the authors assigned to it, and the check they used. Numbers are theirs.</p>
+
+<table>
+<thead><tr><th>What the data show</th><th>What it usually is</th><th>How they checked, and what to do</th><th>Source</th></tr></thead>
+<tbody>
+<tr><td class="sym">Level vs distance ripples about the −6 dB/doubling line; zero-crossings roughly every λ/3</td><td class="cause">Direct + reflected interference from the boundaries. Present in every chamber; the question is only its amplitude.</td><td>Continuous (or ≤ 0.15 λ) traverse with a <b>pure tone</b>; 0.3 m sampling at 4 kHz "would indicate no performance issues" where the continuous traverse found violations within 1.5 m.</td><td class="src">Cunefare 2003 ●</td></tr>
+<tr><td class="sym">Slope shallower than −6 dB/doubling, and the shortfall grows with distance</td><td class="cause">Reflected energy becoming comparable to the direct field near the boundary. NPL saw ~3 dB/doubling with all wedges removed; Nash saw −16 to −18 dB/decade at 4–8 kHz.</td><td>Plot against a <b>fixed</b> −20 lg(r/r₀) line, not a free-slope regression (ISO 26101 method). "The range under which the chamber follows inverse square law … is obvious without employing either curve fit methodology."</td><td class="src">NPL DQL-AC 007 ●; Nash 2019 ●; Winker 2016 ●</td></tr>
+<tr><td class="sym">Slope steeper than physics allows, or a deep notch at one distance for one tone</td><td class="cause">Cancellation with a strong specular return from a nearby surface (grate, door, port, fixture).</td><td>Aim traverses at every boundary feature with non-uniform treatment (ISO 26101-1 requires this). Nash: expanded-metal floor grate.</td><td class="src">Nash 2019 ●</td></tr>
+<tr><td class="sym">Fitted acoustic-centre offset r₀ is implausible (> 2 × source size; 14–21 cm for a tweeter)</td><td class="cause">The ISO 3745 optimal-reference fit is absorbing a reflection-induced slope change into a fake source position. "A chamber can fully comply with ISO 3745 at certain frequencies while not exhibiting free-field performance."</td><td>Check r₀ against source geometry; NPL: a free-r₀ regression passed "all room states … even when all the absorptive wedges had been removed". Report both fits.</td><td class="src">Cunefare 2003 ●; Jenny 2011 ●; Winker 2016 ●; NPL ●</td></tr>
+<tr><td class="sym">Comb-filter dips in the spectrum; first dip at f = c/(4h), first peak at c/(2h) for a source overhead a microphone at height h over a hard plane</td><td class="cause">Ground reflection at a pole-mounted microphone (hemi-anechoic floor, outdoor plate). Dips &gt; 20 dB, peaks +6 dB, overall +3 dB.</td><td>Broadband can be corrected in principle; "if the source signal contains pure tone components, it will not be possible to do this correction." Flush-mount on a ground board (+6 dB, well defined) or use a full anechoic room.</td><td class="src">Rasmussen 2022 ●; Whelchel 2023 ● (method of images vs finite-board edge scattering)</td></tr>
+<tr><td class="sym">Two adjacent microphones at the same distance and angle disagree by up to 10 dB at BPF; decay departs from 1/R by up to 3 dB</td><td class="cause">Reflecting floor in a hemi-anechoic configuration; the same chamber fully anechoic showed "little difference" and ~0.5 dB repeatability.</td><td>Compare the pair; if they diverge in the low–mid band, the plane is the cause. "Using a hemi-anechoic chamber could considerably degrade the tonal noise assessment accuracy."</td><td class="src">Ma 2022 ●</td></tr>
+<tr><td class="sym">Theoretical directivity nulls (0°, 180° for a rotor) filled in; ripples or plateaus in far-field decay beyond ~3 D</td><td class="cause">Rigid floor redirecting tonal energy "into directions that should otherwise be relatively quiet"; direct/ground interference "yielding frequency- and range-dependent local sound pressure minima and maxima".</td><td>Numerical floor model; exclude the sector shadowed by the pylon; bound OASPL integration at the room cut-off.</td><td class="src">Fasulo 2025 ● (CIRA, same Tyto 1585 stand as ours)</td></tr>
+<tr><td class="sym">Left/right or direction-to-direction asymmetry; flips when rotation sense is reversed</td><td class="cause">Structural or environmental asymmetry — support pylon, door, untreated recess. "Even modest geometric asymmetries, here the support pylon, can shift directivity by up to 4 dB." ITMO: worst direction 15.5 dB off.</td><td>Repeat with reversed rotation sense and with two blade sets; a room effect flips, a source effect does not.</td><td class="src">Fasulo 2025 ●; Schneider 2009 ●; ITMO (Bikmukhametov) ●</td></tr>
+<tr><td class="sym">ISO failures only at the farthest points, only near corners, only below ~250 Hz</td><td class="cause">Long-wavelength corner/wall reflection where the direct field is weakest.</td><td>"Keep an adequate separation distance between the microphones and walls of the room below 250 Hz"; keep the source "as far as possible from the walls".</td><td class="src">Rizzi 2013 ●; Schneider 2009 ●</td></tr>
+<tr><td class="sym">A directivity error &gt; 5 dB at one elevation at the lowest BPF only</td><td class="cause">Reflection from the wedges nearest that microphone; λ/4 of the microphone-to-wedge-tip distance is a practical low-frequency limit.</td><td>Compute c/(4 d_tip) per microphone; treat data below it as trend only.</td><td class="src">Zawodny 2017 ●</td></tr>
+<tr><td class="sym">Deviation appears with tones above ~10 kHz and vanishes with band noise</td><td class="cause">Reflections from the traverse/measurement rig itself, averaged out by the band.</td><td>Minimise rig cross-section; ISO 26101-1: "sound reflection from the microphone support system should be carefully avoided."</td><td class="src">Winker 2016 ●</td></tr>
+<tr><td class="sym">Seconds after steady RPM, BPF harmonics ≥ 2 jump 15–30 dB while BPF itself is unchanged; strongest out of the rotor plane; thrust envelope starts to modulate</td><td class="cause"><b>Flow recirculation</b> — the wake is re-ingested and unsteady loading radiates along the axis. Not an acoustic-room effect but an artefact of the closed room.</td><td>Spectrogram from spin-up; delimit the clean window by the standard deviation of filtered thrust; settle ≥ 5 min between runs; two downstream meshes stretched the clean window from 3.9 s to ~10 s at NASA, but screens did nothing at Virginia Tech — "rotor and anechoic chamber dependent".</td><td class="src">Stephenson 2019 ●; Weitsman 2020 ●; Nardari 2019 ●; Whelchel 2023 ●</td></tr>
+<tr><td class="sym">Free-flying multirotor: OASPL flat, but tones broaden or split and spectral entropy rises after ~30 s</td><td class="cause">Recirculation in a large room with a vehicle whose rotor speeds fluctuate; energy is dispersed around the harmonics rather than added.</td><td>Spectral entropy (100–2000 Hz) as the onset detector; OASPL "cannot distinguish the transition".</td><td class="src">Ma 2024 ●</td></tr>
+<tr><td class="sym">Spectral peak whose frequency does not change with flow speed but scales with jet-to-collector distance</td><td class="cause">Standing wave of the open-jet column (TU Delft: 168.8 Hz and 125 Hz for two nozzles).</td><td>Vary velocity: source tones move, column modes do not. Peaks present at 0 m/s are electronic.</td><td class="src">Merino-Martínez 2020 ●</td></tr>
+<tr><td class="sym">Tones broaden and lose coherence; worse at higher Mach, higher frequency and downstream angles</td><td class="cause">Shear-layer turbulence scattering in an open-jet tunnel (significant above M 0.2 and 5 kHz). The angular shift from refraction is frequency-independent.</td><td>Amiet refraction correction for angle; coherence-loss model or Kevlar wall for arrays; a frequency-dependent angular shift is <i>not</i> refraction.</td><td class="src">Schlinker &amp; Amiet 1978 ●; Bahr 2020/2021 ●</td></tr>
+<tr><td class="sym">Excess below ~50–100 Hz only at microphones under the rotor</td><td class="cause">Flow pseudo-sound from downwash over the diaphragm, not radiation. 55 % of blocks rejected at TU Berlin.</td><td>Windscreens, block rejection by LF threshold, high-pass; move microphones out of the wake.</td><td class="src">Alkmim 2022 ●; Hochbaum 2026 ●; Kim 2022 ●</td></tr>
+</tbody>
+</table>
+
+<h2 class="pb"><span class="n">03</span>Qualification — why the verdict depends on the method</h2>
+
+<div class="two">
+<div>
+<p>Three families of choice change a pass/fail verdict on the same raw data.</p>
+<p><b>How you sample.</b> Discrete 0.3 m steps versus a continuous traverse (Cunefare); ISO 26101 now demands ≤ λ/10 spacing below 1 kHz and 25 mm above (Winker). Jenny's ultrasonic case is the reductio: at 63 kHz, 5 cm steps are 9.2 wavelengths apart and "up and down swings in the data" are all that survive.</p>
+<p><b>How you fit.</b> ISO 3745 Annex A fits a/(r − r₀) with a free acoustic-centre offset; ISO 26101 fixes the slope at −20 lg(r/r₀) and only fits the level. Cunefare's Table IX: the optimal-reference fit cut the out-of-tolerance fraction at 80 Hz from 56 % to 13 % on identical data. NPL: a free-r₀ regression passed a room with no wedges at all; with the draft limit r₀ &lt; half the source size, broadband "could not be achieved at any frequency even for room state 1". Winker: ISO 3745 only says r₀ "should" fall within 200 mm. The two standards "do not always agree on the verdict" (Russo, Euronoise 2018).</p>
+<p><b>What signal.</b> Tones or band noise — §1. ISO 3745:2012 made tones primary; ISO 26101 allows both.</p>
+</div>
+<div>
+<p><b>Geometry rules.</b> ISO 26101:2012 required traversing to λ/2 of the lowest band, which Winker shows limits a 3.35 × 3.05 × 2.74 m chamber to 214 Hz "due to geometry constraints"; the 2017 revision relaxed it to λ/4, and the University of Split chamber (2.8 × 1.7 × 2.05 m) only reached 250 Hz by moving the source to one wall. Near field: start the fit no closer than r = max(0.5, 95/f) m from (kr)² &gt; 3 — at 80 Hz, starting at 0.5 m "shows a strong near-field impact" (Cunefare Fig. 17).</p>
+<p><b>Uncertainty consequence.</b> NPL translated room quality into sound-power error: rooms that qualify under the 1977 broadband rule can carry A-weighted errors of 6.4–7.3 dB (standard uncertainty ~4 dB), against ~0.02 dB for rooms that qualify on tones. Their conclusion: "the procedure for qualifying rooms using the broad-band noise methodology is over-tolerant of poor acoustic room performance."</p>
+<div class="quote">It is our opinion that anechoic chambers should be tested with pure tones and a continuous traversing system. The counter-argument, that such traversing systems or that discrete sampling on a fine spacing is impractical, is specious: if the intent is to find where the performance deviates from inverse square law, then the physics demand such a spacing.<span>Cunefare et al., JASA 113(2), 2003, p. 892 ●</span></div>
+</div>
+</div>
+
+<h2><span class="n">04</span>What people do about it</h2>
+
+<div class="two">
+<div>
+<h3>a · Design side</h3>
+<ul>
+<li><b>Depth sets the cut-off; material shifts it less.</b> Wang &amp; Tang (BEM, 1996): cut-off "strongly affected by the length of the wedge and the flow resistance"; base and air-gap thickness barely move it. Bonfiglio &amp; Pompoli: the λ/4 rule "is not always respected" — above 10 kPa·s/m² a 100 Hz wedge needs &gt; 85 cm. ●</li>
+<li><b>Truncation is cheap.</b> Cutting 15 % off the tip (12 cm) keeps α &gt; 0.99 (Bonfiglio); 10–20 cm "changes little", 30 cm pushes |R| to 0.1 (Wang &amp; Tang). ●</li>
+<li><b>Hybrid and flat-wall linings.</b> Two-density hybrid wedges lower the cut-off in the same depth (Wang &amp; Tang); Jiang's uniform-then-gradient flat wall beats the wedge by 5 % depth at 100 Hz and gives a lower effective cut-off (120 vs 128 Hz), realisable as 10 discrete layers. ●</li>
+<li><b>Mounting changes the answer.</b> Schneider: impedance-tube data ignoring the wire frame "does not reflect the behavior of the acoustic lining in the chamber"; with melamine, frame motion matters. ●</li>
+<li><b>Design margin.</b> Jiang: "a thorough simulation before real construction is necessary"; expect the effective cut-off 20–30 % above the wedge design value. ●</li>
+</ul>
+
+<h3>b · Placement</h3>
+<ul>
+<li>Source "as far as possible from the walls" (Schneider). Free field survives below cut-off "in a reduced volume of the chamber up to a distance of around 1 m from the boundaries" (Bonfiglio). ●</li>
+<li>Microphones: c/(4 d_tip) per microphone (Zawodny); away from corners below 250 Hz (Rizzi); 1–1.5 m off the jet axis to stay out of the shear layer (Merino-Martínez). ●</li>
+<li>Cover the nozzle of an open-jet tunnel for purely acoustic runs — the settling chamber reverberates (T60 = 0.22 s at Delft). ●</li>
+</ul>
+
+<h3>c · Signal and analysis</h3>
+<ul>
+<li>Qualify with tones; report the envelope (frequency × distance × direction), not "anechoic".</li>
+<li><b>Spatial averaging</b>: NPL rotated the hemisphere array four times (37 positions) — but the standard deviation across rotations (&lt; 0.5 dB) "does not reveal room influence"; only the absolute offset between rooms does. ●</li>
+<li><b>Environmental correction K₂</b> from a reference sound source: A-weighted sound-power error fell from 6.4/7.3 dB to 0.8/0.1 dB in NPL's degraded rooms; they propose K₂ &lt; 0.5 dB as a hemi-anechoic criterion. Applies to sound power, not to directivity. ●</li>
+<li><b>Time gating</b> works where the reflection arrives late relative to the wavelength: Bahr gates laser-plasma pulses with a 600 µs Tukey window; Friot &amp; Gintz report that at low frequency windowing "failed, mainly because … echoes from a scattering body are very difficult to separate from actuator responses", and Stroud's notch-EQ trick (○) exists precisely because the source's own decay outlasts the room. ●</li>
+</ul>
+</div>
+<div>
+<h3>d · Ground plane (hemi-anechoic rooms, outdoor plates)</h3>
+<ul>
+<li>Full anechoic configuration for spectra where it exists (Ma 2022). ●</li>
+<li>Foam under the source: Alkmim covered 2.5 × 2.5 m with 0.07 m foam — reflection "minimized … but not fully suppressed, especially at low frequencies". ●</li>
+<li>Porous ground treatment: Jawahar et al. cut sideline levels ~13 dB in 1.5–10 kHz and the OASPL increment by ≈ 2 dBA with 24 mm 75 PPI foam; even at four radii clearance the bare plate adds 4–8 dB above 1 kHz at shallow angles, absent at 90°. Angle-dependence with unchanged thrust = reflection; thrust-scaled change with new harmonics = aerodynamic ground effect. ●</li>
+<li>Flush-mount the microphone in a ground board: the reflection "becomes well defined and will result in a simple pressure doubling" (Rasmussen). A pole microphone over any plane is the worst case for a hovering source. ●</li>
+</ul>
+
+<h3>e · Recirculation (closed rooms, rotors)</h3>
+<ul>
+<li>Quiescent air: ≥ 5 min settle (Ma 2024, Zawodny); fast ramp-up (3.5 s) to maximise the clean window (Weitsman). ●</li>
+<li>Downstream meshes at 3.3 D and 6 D: clean window 3.9 → ~10 s, random SPL uncertainty ±1.1 → ±0.5 dB; upstream or ducted meshes distort the inflow and make things worse (Weitsman). Not transferable: no benefit at Virginia Tech (Whelchel). ●</li>
+<li>Geometry: wake into a discharge room (Gallo, VKI) or a diffuser (LSAWT); ~6 D floor clearance and &gt; 12 D to the wall along the wake showed no onset in 30 s (Fasulo). ●</li>
+<li>Always record a spectrogram from spin-up and report which window was used.</li>
+</ul>
+
+<h3>f · Modelling the room (before building, or before trusting)</h3>
+<ul>
+<li>Complex-image-source sum with a <b>spherical-wave</b> oblique reflection coefficient (Bonfiglio &amp; Pompoli) reproduces measured decay at the cut-off in 650–800 m³ rooms; Jiang's modification with FEM-derived oblique wedge impedance improves it "in the critical region, where the 1.5 dB deviation is violated". ●</li>
+<li>Locally-reacting admittance from a tube "failed to predict the quality of the chambers at frequencies below ~150 Hz, regardless of the admittance applied"; three linings with α = 0.997/1.0/0.997 give different free-field regions — <b>α alone is not a design index at low frequency</b> (Schneider). ●</li>
+<li>Geometrical (ray) models carry energy, not phase, and cannot represent the failure mode at all (see the parent review, §12). Room-acoustic round robins put simulation-vs-measurement spread at several dB even with fixed input data (Brinkmann 2019 ●; Vorländer 2013 ●).</li>
+</ul>
+
+<h3>g · Active absorption below the passive limit</h3>
+<ul>
+<li>Haasjes: Kirchhoff–Helmholtz integral on a ring of pressure + velocity sensors isolates the reflected field; feedforward FIR control gave 13–15 dB reduction numerically and <b>9.4–9.6 dB in a real-time 2-D rig up to ~600 Hz</b>, with T10 dropping from 0.036 to 0.016–0.026 s. Sensor spacing must be ≤ c/(2 f_max). ●</li>
+<li>Friot &amp; Gintz: ~10 dB reduction of scattered pressure at 280 Hz in the LMA room; scaling to 100 Hz in 10 × 7 × 6 m needs ~3 transducers per wavelength, i.e. ~100 microphones and loudspeakers, and a feedforward reference that "might be problematic for … aeroacoustic noise sources". Post-processing subtraction of the estimated scattered field is the fallback. ●</li>
+<li>Ma et al. (○): a point source inside a large micro-perforated-panel cavity raises absorption "in a wide low frequency range below the cutoff frequency".</li>
+</ul>
+</div>
+</div>
+
+<h2><span class="n">05</span>What this means for the arc rig</h2>
+
+<div class="panel">
+<h3>Our situation, read through the table above</h3>
+<p>Six microphones on a vertical arc, one elevation each, a rotor on a Tyto 1585 stand, tonal sources with BPF in the 150–300 Hz band for two-blade props at 4500–9000 rpm — exactly the band where every chamber in this set is weakest, and exactly the signal type that band-noise qualification cannot see. Fasulo's CIRA study uses the same stand in a 90 Hz semi-anechoic room and reports floor-filled nulls, 4 dB pylon shading and decay ripples. The arc turns a room error into a directivity error directly: a reflection that lifts one elevation by 3 dB is indistinguishable, after the fact, from a lobe.</p>
+<dl class="kv">
+<dt>before any campaign</dt><dd>Tonal draw-away at BPF and 2–3 × BPF along each microphone's radial <b>with the stand and arc in place</b>; plot against a fixed −6 dB/doubling line; record r₀ from the ISO 3745 fit and reject the position if it is implausible.</dd>
+<dt>per microphone</dt><dd>Compute c/(4 d_tip); flag every band below it as trend-only. Keep microphones off corners below 250 Hz.</dd>
+<dt>per run</dt><dd>Spectrogram from spin-up; report the analysis window; test for harmonic growth at the out-of-plane microphones (BPF unchanged, harmonics ≥ 2 rising = recirculation). Settle ≥ 5 min between powered runs.</dd>
+<dt>symmetry check</dt><dd>Repeat one configuration with reversed rotation sense; asymmetry that flips is the room or the stand, not the prop.</dd>
+<dt>hemi-anechoic or floor plate</dt><dd>Adjacent-microphone comparison near the floor; foam under the source; never a pole microphone over a hard plane for a tonal source without stating the comb frequencies c/(4h), c/(2h) in the report.</dd>
+<dt>reporting</dt><dd>State the qualified envelope (Hz × m × direction) and the signal used. "Measured in an anechoic chamber" without it is an assumption.</dd>
+</dl>
+</div>
+
+<h2><span class="n">06</span>Evidence ledger</h2>
+<p>Full texts live in <code>papers/chamber-problems/</code> and <code>papers/anechoic-simulation/</code> with <code>txt/</code> extracts; structured notes in <code>EXTRACTS-core.md</code>, <code>EXTRACTS-local.md</code>, <code>EXTRACTS-downloaded.md</code>; retrieval logs in <code>RETRIEVAL-A.md</code>, <code>RETRIEVAL-B.md</code>.</p>
+
+<table class="ledger">
+<thead><tr><th>Tier</th><th>Source</th><th>Used for</th></tr></thead>
+<tbody>
+<tr><td>●</td><td>Cunefare et al. 2003, JASA 113(2) 881 — 10.1121/1.1527595</td><td>zero-crossing scale, tone vs noise, fixed vs optimal reference, near-field start distance</td></tr>
+<tr><td>●</td><td>Bonfiglio &amp; Pompoli 2013, JASA 134(1) 285 — 10.1121/1.4807820</td><td>CSI method, λ/4 rule, truncation, free field within ~1 m of boundaries below cut-off</td></tr>
+<tr><td>●</td><td>Schneider 2009, JSV 320 990 — 10.1016/j.jsv.2008.08.019</td><td>100–160 Hz perturbations, asymmetry, local admittance failure, α not an index</td></tr>
+<tr><td>●</td><td>Jiang, Zhang &amp; Huang 2016, JSV 381 139 — 10.1016/j.jsv.2016.06.020</td><td>99 % ≠ anechoic, effective cut-off 128/120 Hz, UGFW, modified CSI</td></tr>
+<tr><td>●</td><td>Wang &amp; Tang 1996, Eng. Anal. Bound. Elem. 18 103 — 10.1016/S0955-7997(96)00017-3</td><td>wedge length / flow resistance, hybrid wedges, tip cutting</td></tr>
+<tr><td>●</td><td>Winker &amp; Stahnke 2016, Inter-Noise (ETS-Lindgren)</td><td>ISO 3745 vs 26101 fits, r₀ abuse, λ/2 geometry limit, rig reflections &gt; 10 kHz</td></tr>
+<tr><td>●</td><td>Simmons, Jobling &amp; Payne 2004, NPL DQL-AC 007</td><td>wedge-removal series, tone/broadband deviations, K₂ correction, uncertainty</td></tr>
+<tr><td>●</td><td>Nash 2019, ICA Aachen; Bikmukhametov et al. (ITMO); Russo et al. 2018, Euronoise (Split); Rizzi et al. 2013, RASD (NASA SALT)</td><td>real-chamber qualification cases</td></tr>
+<tr><td>●</td><td>Stephenson 2019; Weitsman 2020 (JASA); Nardari 2019 (AIAA); Whelchel 2023 (PhD VT); Ma 2024 (Acoust. Aust.); Gallo 2025 (Acta Acust.); Zawodny &amp; Haskin 2017 (AIAA)</td><td>recirculation signatures, meshes, facility geometry</td></tr>
+<tr><td>●</td><td>Ma 2022 (Quiet Drones); Rasmussen 2022 (Quiet Drones); Alkmim 2022 (JASA); Fasulo 2025 (Aerospace 12:647); Jawahar et al. 2025 (Sci. Rep.) ; Kim 2022 (ICSV28); Hochbaum 2026</td><td>ground reflection, comb filters, fixtures, pseudo-sound</td></tr>
+<tr><td>●</td><td>Haasjes 2025 (PhD Twente); Friot &amp; Gintz 2009 (arXiv 0911.4639)</td><td>active absorption and reflected-field estimation</td></tr>
+<tr><td>●</td><td>Merino-Martínez et al. 2020, Appl. Acoust. 170; Schlinker &amp; Amiet 1978, NASA CR-145359; Amiet 1981, NASA CR-3371; Bahr et al. 2020, 2021 (NTRS); Jenny 2011 (BYU thesis)</td><td>open-jet tunnels, shear-layer refraction/scattering, ultrasonic qualification</td></tr>
+<tr><td>●</td><td>Belyaev et al. 2015, Akust. Zh. 61(5) 636 (Russian original); Vorländer 2013; Brinkmann et al. 2019 (JASA)</td><td>wedge diffuse-field absorption; simulation uncertainty</td></tr>
+<tr><td>○</td><td>Singh, Garg &amp; Narayanan 2020, Int. J. Aeroacoustics — 10.1177/1475472X20905070</td><td>empirical cut-off formula (±3 %); SAGE blocked — <a href="https://journals.sagepub.com/doi/pdf/10.1177/1475472X20905070">fetch via proxy</a></td></tr>
+<tr><td>○</td><td>Hanson et al. 2023, JSV 559:117751 — 10.1016/j.jsv.2023.117751</td><td>propeller in ground effect; open access but scripted download blocked — <a href="https://www.sciencedirect.com/science/article/pii/S0022460X23002006/pdfft?isDTMRedir=true&amp;download=true">one click in a browser</a></td></tr>
+<tr><td>○</td><td>Garg et al. 2019, MAPAN 34(3) — 10.1007/s12647-019-00343-7; Stroud 2010, AES 129 paper 8170; Ma et al. 2022, Appl. Acoust. 186:108424; Wang et al. 2019 (UCMAR), Acta Acust. — 10.3813/AAA.919353; Jenny &amp; Anderson 2011, JASA-EL 130 EL69 — 10.1121/1.3606461</td><td>cited at abstract level only</td></tr>
+<tr><td>✕</td><td>Palchikovskiy et al. 2016, AIP Conf. Proc. 1770 030116 — 10.1063/1.4964058; Xiang et al. 1990, Appl. Acoust. 29 139 — 10.1016/0003-682X(90)90027-R; Amiet 1978, JSV 58 467 — 10.1016/0022-460X(78)90353-X; "miniature chamber for medical devices" (ResearchGate 293101716 only)</td><td>not retrieved; not used for any claim</td></tr>
+</tbody>
+</table>
+
+<p class="foot">Working draft. Derived from the source texts named above by reading them, not from memory; where this brief and a source disagree, the source governs. The abstract-only (○) items support no numeric claim here. Companion documents: <code>docs/anechoic-simulation.html</code> (chamber-simulation review; its abstract-tagged claims for Bonfiglio, Cunefare, Schneider, Jiang, Vorländer, Brinkmann are now backed by full text in <code>papers/anechoic-simulation/</code> and still need re-checking), <code>docs/reflection-localization.html</code> (how to locate a reflection once a chamber fails). SoundVisualizer, 2026-09-07.</p>
+
+</body>
+</html>
