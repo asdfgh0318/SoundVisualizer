@@ -682,8 +682,16 @@
             wavelength. A better material inside the same depth does not move it much; a deeper structure does.
             Below the cut-off, level versus distance goes flat or steep and the polar shape compresses.</p>
           <p class="ev"><span class="tier">●</span> Beranek &amp; Sleeper 1946: 40 Hz needs 94 in from tip to
-            backing wall. <span class="tier abs">○</span> Singh et al. 2020 fit an empirical cut-off from source
-            volume, chamber volume and wedge height to within ±3% of measurement.</p>
+            backing wall. <span class="tier">●</span> Singh et al. 2020 replace c/(4L) with
+            f = 2.25c/(d − l<sub>w</sub> − a) — d the source-to-wall distance, l<sub>w</sub> the wedge length, a the
+            source size — and get 312–320 Hz against a measured 315 Hz, "within 3%". Fitted and checked on one
+            chamber only, their own 2.6 × 1.7 × 2.2 m room, where the decay per doubling of distance was
+            0.1–0.3 dB at 100 Hz and 3.0–3.7 dB at 200 Hz below that cut-off.
+            <span class="tier">●</span> Jiang et al. 2016: "99% energy absorption means 10% pressure reflection,
+            which is still very large" — wedges designed for 100 Hz gave a 9 × 8 × 7 m room an effective cut-off of
+            128 Hz on a 75 %-of-traverse criterion, with only 57 % of the centre-to-corner line inside ±1.5 dB at
+            100 Hz. <span class="tier">●</span> Bonfiglio &amp; Pompoli 2013: below the cut-off a free field still
+            holds "in a reduced volume of the chamber up to a distance of around 1 m from the boundaries".</p>
         </div>
 
         <div class="card">
@@ -706,7 +714,13 @@
             shortcut and the standard source of optimism.</p>
           <p class="ev"><span class="tier">●</span> Prinn, <em>A Review of FEM for Room Acoustics</em> (2023),
             §6.3.3: extended-reaction models give lower error than locally-reacting ones, verified
-            experimentally.</p>
+            experimentally. <span class="tier">●</span> Schneider 2009, LMA Marseille (5.4 × 6.3 × 11.4 m, 0.7 m
+            melamine wedges): a flat-wall model with a local admittance from the impedance tube "failed to predict
+            the quality of the chambers at frequencies below ~150 Hz, regardless of the admittance applied", missing
+            the measured 100–160 Hz perturbations; three linings with α = 0.997, 1.0 and 0.997 gave "significant
+            differences in the size of the 1.5 dB region", so α alone is not a low-frequency design index. A
+            non-local admittance matrix built from an FEM of the wedge array, mounting frame included, recovered
+            the perturbations.</p>
         </div>
 
         <div class="card">
@@ -770,9 +784,12 @@
             fits <span class="mono">b − 20·log(r/r₀)</span> with r₀ = 1 m fixed. These are different reference
             methods and they do not always agree on the verdict.</p>
           <p class="ev"><span class="tier">●</span> Russo et al. (Euronoise 2018) set both equations side by
-            side. <span class="tier abs">○</span> Cunefare et al. (JASA 2003) report that an optimal reference
-            method "significantly improves the apparent performance of the chamber for pure tone
-            qualifications".</p>
+            side. <span class="tier">●</span> Cunefare et al. (JASA 2003): the optimal-reference fit "is shown to
+            significantly improve the apparent performance of the chamber for pure tone qualifications" — on the
+            same raw 80 Hz corner traverse it cut the out-of-tolerance fraction from 56 % to 13 % (Table IX); the
+            two traverses whose fitted source offset exceeded twice the source dimension were also the worst
+            performers. Their zero-crossing analysis puts the interference pattern's spatial period at 29–41 % of a
+            wavelength, hence the ≤ 15 % sampling rule and the case for continuous traverses.</p>
         </div>
 
         <div class="card">
@@ -801,9 +818,14 @@
           <p>Geometrical acoustics carries energy, not phase. The chamber failure mode is coherent interference
             between the direct wave and a weak reflection — which an energy model cannot represent at all. It
             will return a clean, confident, wrong answer.</p>
-          <p class="ev"><span class="tier abs">○</span> Round-robin studies on room-acoustic software report
-            up to ±5 dB maximum deviation on sound strength and &gt;50% differences on some quantities, with
-            errors concentrated where modal density is low.</p>
+          <p class="ev"><span class="tier">●</span> Brinkmann et al. (JASA 2019) round robin: "most present simulation
+            algorithms generate obvious model errors once the assumptions of geometrical acoustics are no longer
+            met"; none "was able to exactly match the comb filter structure" of even a single reflection from a
+            diffusor, low-frequency reverberation was overestimated by 58 % at 125 Hz and 35 % at 250 Hz, average
+            spectral errors were 2–2.5 dB, and no algorithm met the room parameters within the JND in all bands.
+            <em>(An earlier draft of this card quoted "±5 dB on sound strength" and "&gt;50 % differences … where
+            modal density is low" from a secondary report; those figures are not in Brinkmann and are
+            withdrawn.)</em></p>
         </div>
 
       </div>
@@ -998,9 +1020,10 @@
         <p><strong>The input data is the error, not the solver.</strong> This is the consistent finding across
           the uncertainty literature. Wave-based methods solve the wave equation accurately; what they are
           given to solve is a set of boundary conditions derived from absorption coefficients measured under
-          conditions that do not match the room. Vorländer's error-propagation analysis concludes that the
-          input-data quality needed to predict reverberation time to within a just-noticeable difference is
-          simply not available from reverberation-room measurements. Formal uncertainty-quantification studies
+          conditions that do not match the room. Vorländer's error-propagation analysis <span class="tier">●</span> concludes that "prediction of
+          reverberation times with accuracy better than the just noticeable difference requires input data in a
+          quality which is not available from reverberation room measurements", and that "it is not adequate to
+          'calibrate' a computer model by modification of input data". Formal uncertainty-quantification studies
           in wave-based room acoustics target exactly three parameters: the flow resistivity of the porous
           absorber, its thickness, and the absorption of the remaining hard surfaces.</p>
         <p><strong>The diagnostic tell.</strong> When two different numerical methods agree with each other but
@@ -1244,6 +1267,12 @@
             <li>Schmal et al. — quadcopter characterisation on a UAV test stand, Quiet Drones and
               Inter-Noise 2023 (hemi-anechoic, 6.1 × 6.1 × 3.0 m).</li>
             <li>Computational accuracy of frequency-domain FEM with air absorption. Appl. Sci. 14(1) 194.</li>
+            <li><em>Added 2026-09-07 (full texts, re-checked claim by claim):</em> Bonfiglio &amp; Pompoli 2013, JASA 134(1) 285 ·
+              Schneider 2009, JSV 320 990 · Jiang, Zhang &amp; Huang 2016, JSV 381 139 · Cunefare et al. 2003, JASA 113(2) 881 ·
+              Wang &amp; Tang 1996, Eng. Anal. Bound. Elem. 18 103 · Vorländer 2013, JASA 133(3) 1203 · Brinkmann et al. 2019,
+              JASA 145(4) 2746 · Singh, Garg &amp; Narayanan 2020, Int. J. Aeroacoustics 19 57 (held in
+              <code>papers/chamber-problems/</code>). The companion brief
+              <a href="anechoic-chamber-problems-brief.pdf">anechoic-chamber-problems-brief.pdf</a> builds on the same set.</li>
             <li>Plus: ray-tracing semiclassical low-frequency modelling (arXiv:1705.03825); room-acoustic
               simulation as a substitute for measurement (arXiv:2509.05175); height-dependent rotor noise
               (arXiv:2510.26453); anechoic-chamber modelling with equivalent materials (arXiv:1511.08410, EMC);
@@ -1252,47 +1281,21 @@
         </div>
 
         <div class="panel">
-          <p class="eyebrow"><span class="tier abs">○</span> Not retrieved — paywalled, need the PDFs</p>
-          <p style="font-size:.86rem;color:var(--ink-2);margin-top:.7rem">Every claim above tagged
-            <span class="tier abs">○</span> rests on an abstract or a secondary report, not the full text. The
-            first three are the core methodology papers and the review is incomplete without them.</p>
+          <p class="eyebrow"><span class="tier abs">○</span> Still not retrieved</p>
+          <p style="font-size:.86rem;color:var(--ink-2);margin-top:.7rem">As of 2026-09-07 no claim in this review rests on
+            an abstract: the eight papers that did have been fetched and every tagged claim re-checked against the full
+            text (one correction, card 12). These three remain unread and are cited only as existing.</p>
           <ol>
-            <li>Bonfiglio, P. &amp; Pompoli, F. <em>Numerical methodologies for optimizing and predicting the
-              low frequency behavior of anechoic chambers.</em> JASA 134(1) 285–291, 2013.
-              <span class="doi">doi:10.1121/1.4807820</span></li>
-            <li>Schneider, S. <em>Numerical prediction of the quality of an anechoic chamber in the low
-              frequency range.</em> JSV 320(4–5) 990–1003, 2009.
-              <span class="doi">doi:10.1016/j.jsv.2008.08.019</span></li>
-            <li>Jiang, C., Zhang, S., Huang, L. <em>On the acoustic wedge design and simulation of anechoic
-              chamber.</em> JSV 381 139–155, 2016.
-              <span class="doi">doi:10.1016/j.jsv.2016.06.020</span></li>
-            <li>Cunefare, K. A. et al. <em>Anechoic chamber qualification: traverse method, inverse square law
-              analysis method, and nature of test signal.</em> JASA 113(2) 881–892, 2003.
-              <span class="doi">doi:10.1121/1.1527595</span></li>
-            <li>Singh, K. S., Garg, M., Narayanan, S. <em>Estimation of the lower cut-off frequency of an
-              anechoic chamber: an empirical approach.</em> Int. J. Aeroacoustics, 2020.
-              <span class="doi">doi:10.1177/1475472X20905070</span></li>
             <li>Easwaran, V. &amp; Munjal, M. L. <em>Finite element analysis of wedges used in anechoic
               chambers.</em> JSV 160(2) 333–350, 1993.
               <span class="doi">doi:10.1006/jsvi.1993.1027</span></li>
-            <li>Wang, C.-N. &amp; Tang, M.-K. <em>Boundary element evaluation on the performance of sound
-              absorbing wedges for anechoic chambers.</em> Eng. Anal. Bound. Elem. 18(2) 103–110, 1996.
-              <span class="doi">doi:10.1016/S0955-7997(96)00017-3</span></li>
             <li>Kar, T. &amp; Munjal, M. L. <em>Plane wave analysis of acoustic wedges using the
               boundary-condition-transfer algorithm.</em> Appl. Acoust. 67(9) 901–917, 2006.
               <span class="doi">doi:10.1016/j.apacoust.2005.11.009</span></li>
             <li>Tavakkoli Nejad, M. E., Loghmani, A., Ziaei-Rad, S. <em>The effects of wedge geometrical
               parameters and arrangement on the sound absorption coefficient.</em> Appl. Acoust. 169 107458,
               2020. <span class="doi">doi:10.1016/j.apacoust.2020.107458</span></li>
-            <li>Vorländer, M. <em>Computer simulations in room acoustics: concepts and uncertainties.</em>
-              JASA 133(3) 1203–1213, 2013. <span class="doi">PMID 23463991</span></li>
-            <li>Brinkmann, F. et al. <em>A round robin on room acoustical simulation and auralization.</em>
-              JASA 145(4) 2746, 2019. <span class="doi">doi:10.1121/1.5096178</span></li>
           </ol>
-          <p style="font-size:.86rem;color:var(--ink-2);margin-top:.8rem">AIP, Elsevier and SAGE all block
-            automated retrieval and none of these have an open mirror. If you can pull them through a university
-            proxy, drop the PDFs in <code>papers/anechoic-simulation/</code> and the abstract-tier claims can be
-            upgraded or corrected in one pass.</p>
         </div>
       </div>
     </div>

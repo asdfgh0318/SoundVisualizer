@@ -1,7 +1,7 @@
 # Papers still to fetch
 
 > 2026-09-07: eight of the priority items landed (marked [x] below, filed with descriptive names).
-> The `○`→`●` re-check of `docs/anechoic-simulation.html` against them has NOT been done yet.
+> 2026-09-07 later: the `○`→`●` re-check of `docs/anechoic-simulation.html` IS DONE (see `anechoic-simulation/VERIFICATION-2026-09-07.md`); the one-pager was re-rendered after it. Still pending: `docs/reflection-localization.html` against Sun 2012 and Mabande 2013.
 > A second set for the chamber-problems brief lives in `papers/chamber-problems/` (see its README for its own missing list).
 
 Adam is pulling these through a university proxy. Drop the PDFs into the directory
