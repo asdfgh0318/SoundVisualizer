@@ -1,11 +1,11 @@
 <!doctype html>
 <html lang="en"><head><meta charset="utf-8"><title>Arc Validation — Chamber Findings</title>
 <style>
-@page{size:A4;margin:6mm 8mm 5mm}
+@page{size:A4;margin:5mm 7mm 4mm}
 :root{--ink:#10171b;--ink-2:#46545c;--ink-3:#74828a;--rule:#c6d0d5;--panel:#f1f4f6;--accent:#17566e;--bad:#96382a;--warn:#8f5c0d;--ok:#2f6b3a;
  --sans:"IBM Plex Sans","DejaVu Sans","Helvetica Neue",Arial,sans-serif;--serif:"Source Serif 4",Charter,"DejaVu Serif",Georgia,serif;--mono:"IBM Plex Mono","DejaVu Sans Mono",monospace}
 *{box-sizing:border-box} html,body{margin:0;padding:0}
-body{font-family:var(--serif);font-size:6.3pt;line-height:1.17;color:var(--ink);background:#fff;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+body{font-family:var(--serif);font-size:6.1pt;line-height:1.15;color:var(--ink);background:#fff;-webkit-print-color-adjust:exact;print-color-adjust:exact}
 header{display:grid;grid-template-columns:1fr auto;align-items:end;border-bottom:1.5pt solid var(--ink);padding-bottom:3pt;margin-bottom:5pt}
 .eyebrow{font-family:var(--mono);font-size:5.6pt;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-3);margin:0 0 1pt}
 h1{font-family:var(--sans);font-weight:700;font-size:16pt;letter-spacing:-.025em;line-height:1;margin:0}
@@ -28,7 +28,7 @@ code{font-family:var(--mono);font-size:.92em}</style></head><body>
 <p class="sub">For these runs the arc was laid flat (horizontal), with the propeller axis vertical. All microphones then sit at the same height, in the propeller plane, around the propeller. A perfect setup reads the same level at every position: a circle. We did this twelve times (keys prop7–18, 1–2 Sept 2026, PWM 1900). What is left after we remove each microphone's own offset is the effect of the room.</p></div>
 <div class="meta">2026-09-08<br>data: laptop backup of 2 Sept<br>script: scripts/arc_error_map.py<br>full guide: docs/arc-validation-guide.html</div></header>
 
-<img src="analysis/brief-fig1-polars.png" alt="" style="width:84%;margin:1pt auto">
+<img src="analysis/brief-fig1-polars.png" alt="" style="width:78%;margin:1pt auto">
 <div class="two">
 <div>
 <h2>What the room does</h2>
@@ -45,7 +45,7 @@ code{font-family:var(--mono);font-size:.92em}</style></head><body>
 </div>
 </div>
 <h2 style="margin-top:3pt">Fig. 2 · Room error at each position and frequency band, in dB from a circle (microphone offsets removed; run-to-run scatter 0.6–2.3 dB)</h2>
-<img src="analysis/brief-fig2-errormap.png" alt="" style="width:86%;margin:1pt auto">
+<img src="analysis/brief-fig2-errormap.png" alt="" style="width:80%;margin:1pt auto">
 <div class="three">
 <div><h2>Fig. 3 · Two positions, twelve runs, three microphones</h2><img src="analysis/brief-fig3-position-vs-mic.png" alt=""><p style="font-size:6pt;color:var(--ink-2)">500–2000 Hz, microphone offsets removed; * = arc turned around. The dip at −72° and the bump at +54° keep their size no matter which microphone sits there.</p></div>
 <div><h2>Where it points</h2><p>With the arc flat, all microphones are at the same height. Floor and ceiling reflect the same into every microphone and cannot make one half of the arc differ from the other. The pattern we see is one-sided: the −36°/−54°/−72° side reads low, the +36°/+54° side reads high. So the surface is beside the propeller, in the horizontal plane: the wall, the corner or an object on the −angle side of the rig. The dip at 240 Hz that moves with motor speed means the bounced path is about 0.7 m longer than the direct one (half a wavelength), so that surface is close, within about half a metre of the microphones. The −72° dip at 630–1000 Hz (wavelength about 0.4 m) is a smaller object at the −90° end of the arc, on the corner side.</p></div>
@@ -57,6 +57,8 @@ code{font-family:var(--mono);font-size:.92em}</style></head><body>
 </div>
 <h2 style="margin-top:2pt">Measurements plotted (all figures): the last PWM-1900 capture in each key <code>2004__6in__unset__dp1-baseline-horizontal-&lt;key&gt;</code>, 11 microphones × 2.0 s, calibrated; microphone serials 810-/811-xxxx given by their last four digits</h2>
 <div class="three" style="gap:0 3mm"><table style="white-space:nowrap"><thead><tr><th>key</th><th>capture (PWM 1900)</th><th>arc</th><th>+72/+54</th></tr></thead><tbody><tr><td>prop7</td><td>2026-09-01 16:42:31</td><td>norm</td><td>1892/8901</td></tr><tr><td>prop8</td><td>2026-09-01 16:44:39</td><td>norm</td><td>1892/8901</td></tr><tr><td>prop9</td><td>2026-09-01 16:50:45</td><td>norm</td><td>1892/8901</td></tr><tr><td>prop10</td><td>2026-09-01 16:55:35</td><td>norm</td><td>1892/8901</td></tr></tbody></table><table style="white-space:nowrap"><thead><tr><th>key</th><th>capture (PWM 1900)</th><th>arc</th><th>+72/+54</th></tr></thead><tbody><tr><td>prop11</td><td>2026-09-02 13:18:49</td><td>180°</td><td>8901/1892</td></tr><tr><td>prop12</td><td>2026-09-02 14:24:12</td><td>180°</td><td>8901/1892</td></tr><tr><td>prop13</td><td>2026-09-02 14:34:37</td><td>180°</td><td>8901/1892</td></tr><tr><td>prop14</td><td>2026-09-02 14:37:02</td><td>180°</td><td>8901/1892</td></tr></tbody></table><table style="white-space:nowrap"><thead><tr><th>key</th><th>capture (PWM 1900)</th><th>arc</th><th>+72/+54</th></tr></thead><tbody><tr><td>prop15</td><td>2026-09-02 15:48:59</td><td>norm</td><td>8901/1892</td></tr><tr><td>prop16</td><td>2026-09-02 15:54:26</td><td>norm</td><td>8901/1892</td></tr><tr><td>prop17</td><td>2026-09-02 16:52:44</td><td>norm</td><td>8901/1892</td></tr><tr><td>prop18</td><td>2026-09-02 17:08:19</td><td>norm</td><td>8901/1892</td></tr></tbody></table></div>
-<p style="font-size:5.8pt;color:var(--ink-2);margin-top:1pt">Left out of every figure: the 31 Aug keys (<code>…-2026-08-31</code>, <code>-2</code>…<code>-6</code>) and <code>prop1</code>–<code>prop6</code> (1 Sept morning). Their patterns match neither arc orientation, so the rig or the room was different then. "180°" means the label +e was physically at −e; those four runs are mirrored before plotting. The offset of microphone 811-1892 is removed everywhere. Figs. 1–2 show the fitted position term P; Fig. 3 shows single runs.</p>
-<p class="foot">Method: Welch spectrum (4096-point Hann), UMIK-2 calibration as the app applies it, third-octave sums from 125 Hz to 8 kHz. Model: level = run gain + position term P + microphone term M, fitted by least squares over prop7–18 with prop11–14 mirrored. Every number comes from the files named above; CSV tables in docs/analysis/. Literature: papers/small-chamber/ and papers/chamber-problems/.</p>
+<p style="font-size:5.8pt;color:var(--ink-2);margin-top:1pt">Left out: the 31 Aug keys and <code>prop1</code>–<code>prop6</code>; their patterns match neither arc orientation, so the rig or room was different then. "180°" = label +e was physically at −e.</p>
+<h2 style="margin-top:3pt">How the numbers were made (not a sum, not an average)</h2>
+<p>Every level in the twelve runs (11 microphones × 19 third-octave bands × 12 runs) is written as three parts added together: <b>run gain + position error + microphone offset</b>. The three parts are found by least squares, i.e. the single set of values that fits all 12 × 11 levels best in every band. <b>Run gain</b> takes up any level difference between runs (RPM, day, load). <b>Microphone offset</b> takes up each serial's own error after calibration. <b>Position error</b> is what is left that belongs to a spot on the arc; it is forced to average zero over the eleven spots, so it reads as dB from a circle. That is what Figs. 1 and 2 show.</p>
+<p>The turned-around runs are handled before the fit: for prop11–14 the label +e is entered as physical −e, so "−72°" always means the same spot in the room. The four microphone offsets and the eleven position errors can be told apart only because the same spot was covered by different microphones (the swap after prop10 and the four turned runs). Without that, a low microphone and a low spot would be indistinguishable. Fig. 3 is not from the fit: each bar is one run, level at the spot minus the mean of all eleven microphones in that run, with that microphone's fitted offset subtracted. Checks: mirroring prop11–14 lowers the run-to-run scatter; the −72° dip and the +54° bump keep their size with three different microphones in the spot. Spectra: Welch 4096-point Hann, UMIK-2 calibration as the app applies it, third-octave sums 125 Hz–8 kHz. Code: <code>scripts/arc_error_map.py</code>, function <code>fit</code>; inputs and outputs in <code>docs/analysis/</code>.</p>
 </body></html>
