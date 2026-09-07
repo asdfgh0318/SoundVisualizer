@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><title>Arc Validation — Chamber Findings</title>
+<style>
+@page{size:A4;margin:7mm 9mm 6mm}
+:root{--ink:#10171b;--ink-2:#46545c;--ink-3:#74828a;--rule:#c6d0d5;--panel:#f1f4f6;--accent:#17566e;--bad:#96382a;--warn:#8f5c0d;--ok:#2f6b3a;
+ --sans:"IBM Plex Sans","DejaVu Sans","Helvetica Neue",Arial,sans-serif;--serif:"Source Serif 4",Charter,"DejaVu Serif",Georgia,serif;--mono:"IBM Plex Mono","DejaVu Sans Mono",monospace}
+*{box-sizing:border-box} html,body{margin:0;padding:0}
+body{font-family:var(--serif);font-size:7pt;line-height:1.25;color:var(--ink);background:#fff;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+header{display:grid;grid-template-columns:1fr auto;align-items:end;border-bottom:1.5pt solid var(--ink);padding-bottom:3pt;margin-bottom:5pt}
+.eyebrow{font-family:var(--mono);font-size:5.6pt;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-3);margin:0 0 1pt}
+h1{font-family:var(--sans);font-weight:700;font-size:16pt;letter-spacing:-.025em;line-height:1;margin:0}
+.sub{font-size:7.6pt;color:var(--ink-2);margin:2pt 0 0;max-width:150mm}
+.meta{font-family:var(--mono);font-size:5.6pt;color:var(--ink-3);text-align:right;line-height:1.45}
+h2{font-family:var(--sans);font-weight:700;font-size:8.2pt;margin:4pt 0 1.5pt;letter-spacing:-.01em}
+p{margin:0 0 3pt} b{font-family:var(--sans);font-weight:600}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:0 5mm} .three{display:grid;grid-template-columns:1fr 1fr 1fr;gap:0 4mm}
+.card{background:var(--panel);border-left:1.6pt solid var(--accent);padding:3pt 3mm 2pt;margin:3pt 0}
+.card.bad{border-color:var(--bad)} .card.warn{border-color:var(--warn)} .card.ok{border-color:var(--ok)}
+img{width:100%;display:block;margin:2pt 0 1pt}
+table{border-collapse:collapse;width:100%;font-size:6.6pt;margin:2pt 0}
+th{font-family:var(--sans);font-weight:600;font-size:5.8pt;text-transform:uppercase;letter-spacing:.05em;color:var(--ink-2);text-align:left;padding:1.5pt 3pt;border-bottom:1pt solid var(--ink)}
+td{padding:1.5pt 3pt;border-bottom:.4pt solid #e0e6e9;vertical-align:top;font-family:var(--mono);font-size:6.3pt} td.t{font-family:var(--serif);font-size:6.8pt}
+.neg{color:#0f7ba8;font-weight:700}.pos{color:var(--bad);font-weight:700}
+ol{margin:0;padding-left:4mm} li{margin:0 0 1.5pt}
+.foot{margin-top:4pt;padding-top:2pt;border-top:.6pt solid var(--rule);font-size:5.6pt;color:var(--ink-3);line-height:1.35}
+</style></head><body>
+<header><div><p class="eyebrow">SoundVisualizer · arc validation · what the chamber does to the polar</p><h1>The arc is fine above 4 kHz. Below 2 kHz the room bends it by up to 8 dB.</h1>
+<p class="sub">Twelve "horizontal prop" runs (prop7–18, 1–2 Sept 2026, PWM 1900): prop axis perpendicular to the arc, so every microphone sits in the prop plane and a perfect setup reads a circle. The deviation from that circle, with the microphones' own offsets removed, is the room.</p></div>
+<div class="meta">2026-09-08<br>data: laptop backup of 2 Sept<br>script: scripts/arc_error_map.py<br>full guide: docs/arc-validation-guide.html</div></header>
+
+<img src="analysis/brief-fig1-polars.png" alt="">
+<div class="two">
+<div>
+<h2>What the room does</h2>
+<div class="card bad"><b>Indent at −72°: −2.4 to −5.7 dB, 500–2000 Hz, in all twelve runs.</b> Strongest in the 630 and 800 Hz third-octaves (−4.5 dB). Present with microphone 811-1896 in that spot and, in the four runs with the arc turned 180°, with 810-8901 there. This is the position near the chamber corner.</div>
+<div class="card bad"><b>Bump at +36°/+54°: +3 to +7 dB, 200–250 Hz and 630–1000 Hz.</b> Three different microphones sat at +54° across the runs; the bump did not move.</div>
+<div class="card warn"><b>Mirror pattern in the BPF band (200–250 Hz):</b> −36° reads −7.6 dB and +36° +4.8 dB; −54° −3 dB, +54°/+72° +2 dB. Opposite signs above and below the prop plane, in the band the blade-passage tone sits in. The notch moves with RPM (−9 dB at 1900, −2 dB at 2000), the signature of a reflection whose comb dip sweeps through the tone.</div>
+<div class="card ok"><b>Above 4 kHz the arc is a circle to ±1 dB at every position;</b> 0°, ±18° and ±90° are within ~1 dB in every band.</div>
+</div>
+<div>
+<h2>What it is not</h2>
+<p><b>Not the microphones</b>, with one exception. A joint fit over the twelve runs separates each microphone's offset from each position's error (they are separable because the mics at +72°/+54° were swapped after prop10 and the arc was turned 180° for prop11–14). Ten microphones sit within ±1.8 dB in every third-octave. <b>811-1892 reads 2–6 dB low from 125 Hz to 2.5 kHz</b>: its calibration file (Sens Factor −10.63 dB, the least negative of the set) does not match the capsule, whose raw output is ~1 dB low. It made the room indent look 7 dB when it sat at +54°. Retire or re-measure it.</p>
+<p><b>Not a mislabelled arc.</b> prop11, 12, 13 and 14 were measured with the arc turned around (correlation with the mirror image of the other runs +0.79 to +0.98). Read by label their polars show the indent on the other side; read by physical position they land on the others.</p>
+<p><b>Not one frequency.</b> The error lives in three separate bands, 200–250 Hz, 630–1000 Hz and 3150 Hz, and nowhere else (Fig. 2). Rajmane and Baumann (DAGA 2016) placed steel plates in a qualified chamber and found a reflector shows up once the wavelength is no longer than its size: 35 cm from 1.25 kHz, 10 cm only from 3.15 kHz. Three bands mean three reflector sizes: about 1.5 m (floor, table or wall), about 0.4 m (stand base, arc frame member), about 0.1 m (mic clamp or mount).</p>
+</div>
+</div>
+<h2 style="margin-top:3pt">Fig. 2 · Arc error map: dB from a circle per physical position and third-octave (mic offsets removed; run-to-run noise 0.6–2.3 dB)</h2>
+<img src="analysis/brief-fig2-errormap.png" alt="">
+<div class="three">
+<div><h2>Fig. 3 · Same spots, twelve runs, three mics each</h2><img src="analysis/brief-fig3-position-vs-mic.png" alt=""><p style="font-size:6pt;color:var(--ink-2)">500–2000 Hz, mic offsets removed; * = arc turned 180°. The −72° indent and the +54° bump keep their size whichever microphone sits there.</p></div>
+<div><h2>Where it points</h2><p>Signs flip across the prop plane, so the reflector is on one side of it, and the low-side positions (−36°, −54°, −72°) carry the deep notches. The RPM-swept BPF notch at −36°/−54° gives a reflected path about 0.7 m longer than the direct one (half a wavelength at 240 Hz). At the arc radius in use that is the floor, the table top or the stand base below the prop, not a far wall. The −72° indent at 630–1000 Hz (λ ≈ 0.4 m) is a smaller object near the low end of the arc on the corner side.</p></div>
+<div><h2>Next test (one afternoon)</h2><ol>
+<li>Take 811-1892 off the arc.</li>
+<li>Put a small loudspeaker on the stand, no prop. Record the arc with sine bursts at 250 and 800 Hz. The second arrival at each mic, times 343 m/s, is the extra path; only one surface fits all eleven. No flow means anything left is geometry.</li>
+<li>Record the geometry in docs/mic_arc.md: arc radius, prop height over floor, distances to floor, table, walls, corner.</li>
+<li>Treat or move that surface; re-run scripts/arc_error_map.py. Foam only fixes the 3 kHz band; the 250 Hz band needs distance.</li></ol></div>
+</div>
+<p class="foot">Method: Welch 4096 Hann, UMIK-2 calibration as the app applies it; third-octave sums 125 Hz–8 kHz; model L = g(run) + P(position) + M(mic), least squares over prop7–18 with prop11–14 mirrored. Every number is computed from the files named above; CSVs in docs/analysis/. Literature: papers/small-chamber/ and papers/chamber-problems/.</p>
+</body></html>
