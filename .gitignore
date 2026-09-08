@@ -45,13 +45,8 @@ venv/
 # locally but not worth bloating the repo. The two generated reports in docs/
 # (psychoacoustics_report{,_pl}.pdf) are tracked separately. Recursive so
 # topic subfolders (shroud_comparison/, etc.) are also ignored.
-docs/references/**/*.pdf
 
-# Research paper library — same policy as docs/references: useful locally,
-# not worth bloating the repo. Derived text/scrapes go too; the write-ups in
-# docs/ (anechoic-simulation*.html/pdf) are tracked instead.
-papers/**/*.pdf
-papers/**/*.html
-papers/**/txt/
-papers/**/refetch-txt/
-papers/**/doi_lookup.txt
+# Research paper library: since 2026-09-08 `papers/` and `docs/references/` are
+# symlinks into the private repo github.com/asdfgh0318/papers (clone at
+# ../papers). Only the symlinks are tracked here; the PDFs, text dumps and
+# extracts live there. The write-ups in docs/ stay here.
