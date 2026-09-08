@@ -1,0 +1,957 @@
+International
+Standard
+
+ISO 5305
+Noise measurements for UAS
+(unmanned aircraft systems)
+
+First edition
+2024-01
+
+Mesures de bruit pour les UAS (aéronefs sans pilote)
+
+iTeh Standards
+(https://standards.iteh.ai)
+Document Preview
+
+ISO 5305:2024
+https://standards.iteh.ai/catalog/standards/iso/da198847-93e9-4702-86fd-c69cb1debae9/iso-5305-2024
+
+Reference number
+ISO 5305:2024(en)
+
+© ISO 2024
+
+ISO 5305:2024(en)
+
+iTeh Standards
+(https://standards.iteh.ai)
+Document Preview
+ISO 5305:2024
+https://standards.iteh.ai/catalog/standards/iso/da198847-93e9-4702-86fd-c69cb1debae9/iso-5305-2024
+
+COPYRIGHT PROTECTED DOCUMENT
+© ISO 2024
+All rights reserved. Unless otherwise specified, or required in the context of its implementation, no part of this publication may
+be reproduced or utilized otherwise in any form or by any means, electronic or mechanical, including photocopying, or posting on
+the internet or an intranet, without prior written permission. Permission can be requested from either ISO at the address below
+or ISO’s member body in the country of the requester.
+ISO copyright office
+CP 401 • Ch. de Blandonnet 8
+CH-1214 Vernier, Geneva
+Phone: +41 22 749 01 11
+Email: copyright@iso.org
+Website: www.iso.org
+Published in Switzerland
+
+﻿
+
+© ISO 2024 – All rights reserved
+
+ii
+
+ISO 5305:2024(en)
+
+Contents
+
+Page
+
+Foreword....................................................................................................................................................................................................................................................... v
+Introduction............................................................................................................................................................................................................................................ vi
+1
+2
+3
+4
+5
+6
+
+7
+
+8
+
+9
+
+Scope.............................................................................................................................................................................................................................................. 1
+Normative reference documents..................................................................................................................................................................... 1
+Terms and definitions................................................................................................................................................................................................. 1
+
+Abbreviated terms.......................................................................................................................................................................................................... 5
+
+Instrumentation................................................................................................................................................................................................................ 5
+5.1
+General.........................................................................................................................................................................................................................5
+5.2
+Calibration................................................................................................................................................................................................................5
+
+General requirements................................................................................................................................................................................................. 5
+6.1
+General.........................................................................................................................................................................................................................5
+6.2
+Requirements of acoustic far-field condition............................................................................................................................ 6
+6.3
+Requirements of position of UAS to reduce aerodynamic flow effect.................................................................6
+6.4
+Requirements of position control........................................................................................................................................................6
+6.4.1 General......................................................................................................................................................................................................6
+6.4.2 Requirement of position accuracy.................................................................................................................................... 6
+6.4.3 Requirement of speed accuracy.......................................................................................................................................... 7
+6.5
+Requirements of background noise...................................................................................................................................................7
+
+Anechoic chamber tests............................................................................................................................................................................................ 7
+7.1
+General.........................................................................................................................................................................................................................7
+7.2
+Requirements of anechoic chamber..................................................................................................................................................8
+7.2.1 Size................................................................................................................................................................................................................ 8
+7.2.2 Anechoic chamber qualification......................................................................................................................................... 8
+7.3
+Measurement configurations.................................................................................................................................................................. 8
+7.3.1 General......................................................................................................................................................................................................8
+7.3.2 Hover and yaw: 4-microphone approach................................................................................................................10
+7.3.3 Hover and yaw: multiple microphone approach.............................................................................................. 12
+ISO 5305:2024
+7.3.4 Take-off and landing.................................................................................................................................................................
+13
+https://standards.iteh.ai/catalog/standards/iso/da198847-93e9-4702-86fd-c69cb1debae9/iso-5305-2024
+7.3.5 Cruise flight...................................................................................................................................................................................... 15
+
+iTeh Standards
+(https://standards.iteh.ai)
+Document Preview
+
+Anechoic wind tunnel tests................................................................................................................................................................................ 16
+8.1
+General......................................................................................................................................................................................................................16
+8.2
+Requirements of anechoic wind tunnel.......................................................................................................................................16
+8.2.1 General...................................................................................................................................................................................................16
+8.2.2 Wind tunnel test configurations.....................................................................................................................................16
+8.2.3 Refraction correction................................................................................................................................................................ 17
+8.2.4 Microphone clearance distance.......................................................................................................................................17
+8.2.5 Anechoic chamber size............................................................................................................................................................. 17
+8.3
+Measurement configurations............................................................................................................................................................... 17
+8.3.1 General...................................................................................................................................................................................................17
+8.3.2 Take-off and landing..................................................................................................................................................................18
+8.3.3 Cruise flight...................................................................................................................................................................................... 20
+
+Outdoor tests..................................................................................................................................................................................................................... 22
+9.1
+General..................................................................................................................................................................................................................... 22
+9.2
+Recommendations of the test site................................................................................................................................................... 23
+9.3
+Recommendations and requirements of the meteorological conditions......................................................24
+9.4
+Microphone configuration and layout..........................................................................................................................................24
+9.4.1 Microphone configuration....................................................................................................................................................24
+9.4.2 Microphone layout.......................................................................................................................................................................24
+9.5
+Measurement corrections and limitations.............................................................................................................................. 25
+9.6
+Measurement procedures....................................................................................................................................................................... 26
+9.6.1 General.................................................................................................................................................................................................. 26
+﻿
+
+© ISO 2024 – All rights reserved
+
+iii
+
+ISO 5305:2024(en)
+
+10
+
+11
+
+9.6.2
+9.6.3
+9.6.4
+
+Hover and yaw................................................................................................................................................................................ 26
+Take-off and landing................................................................................................................................................................. 26
+Cruise flight.......................................................................................................................................................................................27
+
+Uncertainties..................................................................................................................................................................................................................... 27
+10.1 General......................................................................................................................................................................................................................27
+10.2 Uncertainty sources and requirements......................................................................................................................................27
+10.3 Evaluation of the uncertainty............................................................................................................................................................. 28
+
+Information to report............................................................................................................................................................................................... 29
+11.1 Test methods...................................................................................................................................................................................................... 29
+11.2 Selected noise metrics............................................................................................................................................................................... 29
+11.3 UAS under test.................................................................................................................................................................................................. 29
+11.4 Test environment........................................................................................................................................................................................... 29
+11.5 Data acquisition system........................................................................................................................................................................... 29
+11.6 Measurement..................................................................................................................................................................................................... 30
+11.7 Results...................................................................................................................................................................................................................... 30
+
+Annex A (Informative) Examples of the procedures to compute noise metrics from the recorded
+sound pressure signals........................................................................................................................................................................................... 31
+
+Annex B (Informative)  Numerical examination of the acoustic far-field condition.................................................. 34
+Annex C (Informative)  Measurement of far-field condition for a UAS propeller noise.......................................... 38
+Annex D (Informative) An example of adjusting the UAS location to realize different equivalent
+observer angles............................................................................................................................................................................................................... 40
+
+Annex E (Informative) The effect of using windscreen for UAS propeller noise measurements................ 41
+
+iTeh Standards
+Annex G (Informative) Uncertainty analysis example of a UAS noise measurement
+(https://standards.iteh.ai)
+Bibliography
+Document Preview
+
+Annex F (Informative)  Examples of ground-board mounted microphone configurations................................ 43
+............................................... 45
+
+.......................................................................................................................................................................................................................................... 48
+
+ISO 5305:2024
+https://standards.iteh.ai/catalog/standards/iso/da198847-93e9-4702-86fd-c69cb1debae9/iso-5305-2024
+
+﻿
+
+© ISO 2024 – All rights reserved
+
+iv
+
+ISO 5305:2024(en)
+
+Foreword
+ISO (the International Organization for Standardization) is a worldwide federation of national standards
+bodies (ISO member bodies). The work of preparing International Standards is normally carried out through
+ISO technical committees. Each member body interested in a subject for which a technical committee
+has been established has the right to be represented on that committee. International organizations,
+governmental and non-governmental, in liaison with ISO, also take part in the work. ISO collaborates closely
+with the International Electrotechnical Commission (IEC) on all matters of electrotechnical standardization.
+The procedures used to develop this document and those intended for its further maintenance are described
+in the ISO/IEC Directives, Part 1. In particular, the different approval criteria needed for the different types
+of ISO document should be noted. This document was drafted in accordance with the editorial rules of the
+ISO/IEC Directives, Part 2 (see www.iso.org/directives).
+
+ISO draws attention to the possibility that the implementation of this document may involve the use of (a)
+patent(s). ISO takes no position concerning the evidence, validity or applicability of any claimed patent
+rights in respect thereof. As of the date of publication of this document, ISO had not received notice of (a)
+patent(s) which may be required to implement this document. However, implementers are cautioned that
+this may not represent the latest information, which may be obtained from the patent database available at
+www.iso.org/patents. ISO shall not be held responsible for identifying any or all such patent rights.
+Any trade name used in this document is information given for the convenience of users and does not
+constitute an endorsement.
+
+For an explanation of the voluntary nature of standards, the meaning of ISO specific terms and expressions
+related to conformity assessment, as well as information about ISO's adherence to the World Trade
+Organization (WTO) principles in the Technical Barriers to Trade (TBT), see www.iso.org/iso/foreword.html.
+
+iTeh Standards
+This document was prepared by Technical Committee ISO/TC 20, Aircraft and space vehicles, Subcommittee
+(https://standards.iteh.ai)
+SC 16, Unmanned aircraft systems.
+Any feedback or questions on this
+document should be Preview
+directed to the user’s national standards body. A
+Document
+complete listing of these bodies can be found at www.iso.org/members.html.
+ISO 5305:2024
+https://standards.iteh.ai/catalog/standards/iso/da198847-93e9-4702-86fd-c69cb1debae9/iso-5305-2024
+
+﻿
+
+© ISO 2024 – All rights reserved
+
+v
+
+ISO 5305:2024(en)
+
+Introduction
+Within the last decade, multirotor unmanned aircraft systems (UAS) have greatly impacted the global
+market with unique and cost-effective vehicle systems for photography, industrial surveying, logistics,
+modern agricultural, civil engineering inspection, etc. A UAS can exert a significant impact on the living
+environments of the human and wildlife during its operation at low altitudes. The adverse environmental
+impacts include UAS noise. In urban applications, the UAS noise can be more annoying than road traffic or
+aircraft noise at similar noise levels[1].
+
+The characteristics of UAS noise vary in different operating conditions. The modern agricultural UAS are
+designed to operate at a few meters above ground level. The logistic UAS are operated mainly in cruise
+conditions. The UAS for civil engineering inspection may operate in both hover and cruise conditions.
+The flight conditions of UAS are different from large civil transport aircraft and traditional rotorcraft[2].
+Therefore, the noise characteristics are perceived differently, making the existing noise test codes used for
+large aircraft, helicopter, and tilt-rotor vehicles unsuitable. These test codes were developed for aircraft
+that typically operate far above civilians and urban regions, which are remotely related to the multirotor
+UAS. Currently, there is no internationally agreed procedures for measuring UAS noise in different working
+conditions.
+
+The recently published European Commission Delegated Regulation EU 2019/945[3] for UAS details a noise
+test code following ISO 3744[4]. The EU 2019/945 considers UAS with maximum take-off mass (MTOM) up
+to 25 kg. The test code measures the sound power level of UAS in indoor and outdoor environments. The
+regulation was later amended by EU regulation 2020/1058 [5] as regards new UAS classes. However, the
+measurement is limited only to the UAS in hover. In addition, the microphone arrangement is not specified
+to avoid the influence of unsteady aerodynamic flow induced by the UAS on the acoustic measurement. Also,
+the directional nature of the noise produced by UAS was not considered. Recently, a guidance on the noise
+measurement of UAS lighter than 600 kg was published by EASA[6].
+
+iTeh Standards
+This document specifies the
+noise measurement methods for multirotor-powered UAS with an MTOM less
+(https://standards.iteh.ai)
+than 150 kg. The noise due to the multirotor-powered UAS contains both tonal and broadband content, both
+of which may have a significant impact
+on humans. The Preview
+tonal noise can cause annoyance because humans
+Document
+are sensitive to pitch characteristics , while the broadband noise can affect the human brainstem auditory
+[7]
+[8]
+evoked response . Both the tonal and broadband noise produced by multirotor-powered UAS is dependent
+
+on the working conditions, leading to significant
+differences
+ISO
+5305:2024at different microphone locations.
+
+Thishttps://standards.iteh.ai/catalog/standards/iso/da198847-93e9-4702-86fd-c69cb1debae9/iso-5305-2024
+document aims at characterizing the UAS noise in different working conditions, but the efforts are left to
+the manufactures or client requirement to decide the needed measurements. It is not necessary to perform
+all measurements, and the measurer should select the measurement method according to the purpose. It
+provides procedures for performing noise measurements at the typical UAS flight-phases including hover,
+take-off, landing, and cruise. Configurations of the microphones are specified to ensure measurements are
+made at different locations to quantify the directivity of UAS noise. It also specifies the requirements of how
+measurements are conducted with the acoustic far-field conditions satisfied. This document focuses on the
+methods of measuring the sound pressure signals of the UAS under different working conditions, based on
+which post-processing of the recorded data can be conducted. For example, by computing the narrow-band
+noise spectra, the tonal noise components can be extracted. However, requirements for signal processing
+and evaluation of the measured data are not specified in this document. Instead, depending on the test
+condition, several common noise metrics are recommended, and the procedures to compute these metrics
+based on the recorded data are given in Annex A. This document can promote the understanding of the
+noise characteristics of UAS and provide reference methods for both manufacturers and regulatory bodies
+to assess the UAS noise.
+
+﻿
+
+© ISO 2024 – All rights reserved
+
+vi
+
+International Standard
+
+ISO 5305:2024(en)
+
+Noise measurements for UAS (unmanned aircraft systems)
+1 Scope
+This document specifies methods for recording the time history of instantaneous sound pressure in
+several positions around rotor powered unmanned aircraft systems (UAS) with a maximum take-off mass
+(MTOM) of less than 150 kg in accordance with ISO 21895[9]. The UAS can be either electrically powered
+or fuel-powered. It is not applicable to the tilt-rotor or tilt-wing UAS. It does not account for the UAS noise
+certification or regulation
+
+This document can also be applied to measure the sound pressure from a UAS with either multiple rotors or
+a single rotor.
+This document specifies:
+a)
+
+recommendations and requirements for three different test facilities for the noise measurements of
+various categories of multirotor-powered UAS:
+
+— requirements and recommendations of UAS noise tests in anechoic chambers (Clause 7);
+
+— requirements and recommendations of UAS noise tests in anechoic wind tunnels (Clause 8);
+
+iTeh Standards
+b) requirements and recommendations
+for the configuration of noise measurement for multirotor(https://standards.iteh.ai)
+powered UAS in hover, vertical take-off and landing, and horizontal cruise;
+Preview
+c) recommendations for the testDocument
+configuration and procedures
+to minimize the influence of meteorological
+— requirements and recommendations of UAS noise tests in outdoor environments (Clause 9);
+
+effects.
+
+ISO 5305:2024
+2 https://standards.iteh.ai/catalog/standards/iso/da198847-93e9-4702-86fd-c69cb1debae9/iso-5305-2024
+Normative reference documents
+
+The following documents are referred to in the text in such a way that some or all of their content constitutes
+requirements of this document. For dated references, only the edition cited applies. For undated references,
+the latest edition of the referenced document (including any amendments) applies.
+ISO 26101-1, Acoustics — Test methods for the qualification of the acoustic environment — Part 1: Qualification
+of free-field environments
+
+ISO/IEC Guide 98-3, Uncertainty of measurement — Part 3: Guide to the expression of uncertainty in
+measurement (GUM:​1995)
+IEC 60942, Electroacoustics — Sound calibrators
+
+IEC 61094-4, Electroacoustics — Measurement microphones – Part 4: Specifications for working standard
+microphones
+IEC 61260-1, Electroacoustics — Octave-band and fractional-octave-band filters - Part 1: Specifications
+IEC 61672-1, Electroacoustics — Sound level meters – Part 1: Specifications
+
+3 Terms and definitions
+
+For the purposes of this document, the following terms and definitions apply.
+﻿
+
+© ISO 2024 – All rights reserved
+
+1
+
+ISO 5305:2024(en)
+ISO and IEC maintain terminology databases for use in standardization at the following addresses:
+— ISO Online browsing platform: available at https://​w ww​.iso​.org/​obp
+— IEC Electropedia: available at https://​w ww​.electropedia​.org/​
+3.1
+anechoic chamber
+test room in which a free sound field is obtained
+
+[SOURCE: ISO 3745:2012[10], 3.7, modified — The admitted terms have been removed.]
+3.2
+anechoic wind tunnel
+wind tunnel enclosed in an anechoic chamber (3.1) for indoor testing
+
+Note 1 to entry: It has sufficiently low background noise (3.3) and the reflection of the sound from the test section is
+minimized.
+
+3.3
+background noise
+noise from all sources other than the noise source under test
+
+Note 1 to entry: Background noise also includes the airborne noise, structure-borne noise and electrical noise in the
+instrumentation.
+
+3.4
+sound pressure
+p
+difference between an instantaneous total pressure and the corresponding static pressure
+
+iTeh Standards
+(https://standards.iteh.ai)
+Note 1 to entry: Sound pressure
+is expressed in pascals (Pa).
+3.5
+Document Preview
+A-weighted sound pressure level
+
+Lp,A
+ISOof5305:2024
+ten times the logarithm to the base 10 of the ratio
+the square of A-weighed frequency-band-limited sound
+pressure
+p
+to
+the
+square
+of
+the
+reference
+pressure
+of
+p0=20 μPa
+https://standards.iteh.ai/catalog/standards/iso/da198847-93e9-4702-86fd-c69cb1debae9/iso-5305-2024
+ p2 
+Lp ,A = 10 log10  A 
+ p2 
+ 0 
+
+Note 1 to entry: See the definition for "sound pressure level" in ISO/TR 25417[11].
+Note 2 to entry: The frequency band shall be reported.
+
+3.6
+slow time-weighted A-weighted sound pressure level
+Lp,A,S
+ten times the logarithm to the base 10 of the ratio of the running time average of the time weighted square of
+the A-weighted frequency-band-limited sound pressure to the square of the reference pressure of p0=20 μPa
+
+ 1 
+ τ 
+Lp ,A,S ( t ) = 10 log10   s 
+
+
+
+
+where
+
+t
+
+∫ t0
+
+t −ξ
+
+−
+τs
+2
+
+dξ
+pA ( ξ ) e
+
+
+p02
+
+
+
+
+
+
+
+﻿
+
+© ISO 2024 – All rights reserved
+
+2
+
+ISO 5305:2024(en)
+τs
+
+= 1 s is the exponential time constant for the slow time weighting;
+
+t
+
+is the time
+
+t0
+
+is the starting time;
+
+[SOURCE: IEC 61672-1: 2013, 3.6, modified — Only applies to the slow time weighting.]
+
+3.7
+maximum slow time-weighted A-weighted sound pressure level
+Lp ,A,Smax
+greatest slow time-weighted A-weighted sound pressure level within a stated time interval
+[SOURCE: IEC 61672-1: 2013, 3.7, modified — Only applies to the slow time weighting.]
+
+3.8
+A-weighted sound exposure
+EA,T
+integral of the square of A-weighted frequency-band-limited sound pressure pA over a stated time interval
+or event of duration T (starting at t 1 and ending at t 2 )
+E A ,T =
+
+t2 2
+p A ( t ) dt
+t1
+
+∫
+
+Note 1 to entry: The frequency band and frequency resolution shall be reported.
+
+iTeh Standards
+3.9
+A-weighted sound exposure
+level
+(https://standards.iteh.ai)
+L
+ten times the logarithm to the base
+10 of the ratio ofPreview
+the sound exposure, E
+Document
+Note 2 to entry: See the definition for "sound exposure" in ISO/TR 25417[10].
+E,A,T
+
+E0 = 4 × 10
+
+−10
+
+2
+
+Pa s
+
+A ,T , to a reference value
+
+ISO 5305:2024
+ E A ,T 
+L
+=10
+log
+
+E , A ,T
+10 
+https://standards.iteh.ai/catalog/standards/iso/da198847-93e9-4702-86fd-c69cb1debae9/iso-5305-2024
+ E0 
+
+3.10
+nominal height
+target height of the unmanned aircraft system (UAS) (3.16) under test
+
+3.11
+hover
+operation condition of an unmanned aircraft system (UAS) (3.16) that the vertical and horizontal positions
+and orientation are relatively unchanged
+3.12
+yaw
+operation condition of an unmanned aircraft system (UAS) (3.16) that the vertical position is relatively
+unchanged, while the UAS is rotating with respect to the vertically oriented axis
+3.13
+take-off
+operation condition of an unmanned aircraft system (UAS) (3.16) that the height is kept increasing
+
+Note 1 to entry: In this document, it is restricted to vertical motion and the speed is constant except for the initial
+acceleration process.
+﻿
+
+© ISO 2024 – All rights reserved
+
+3
+
+ISO 5305:2024(en)
+3.14
+landing
+operation condition of an unmanned aircraft system (UAS) (3.16) that the height is kept decreasing
+
+Note 1 to entry: In this document, it is restricted to vertical motion and the speed is constant except for the final
+deacceleration process.
+
+3.15
+cruise
+operation condition of an unmanned aircraft system (UAS) (3.16) that moves unidirectionally at a fixed height
+Note 1 to entry: In this document, it means that the speed is constant.
+
+3.16
+UAS
+unmanned aircraft system
+aircraft and its associated elements which are operated remotely or autonomously
+
+Note 1 to entry: In this document, it refers to the vehicles equipped with single or multiple rotors.
+Note 2 to entry: This document is not valid to the tilt-rotor or tilt-wing UAS.
+
+3.17
+UAS diameter
+DA
+unmanned aircraft system diameter
+diameter of the smallest cylinder that encompasses the projection shape of the unmanned aircraft system
+(UAS) (3.16) on a plane
+
+iTeh Standards
+3.18
+(https://standards.iteh.ai)
+UAS centre
+unmanned aircraft system centre
+centre of the cylinder that encompasses
+the projection of the
+unmanned aircraft system (UAS) (3.16) shape on
+Document
+Preview
+a plane
+3.19
+ISO 5305:2024
+propeller
+diameter
+https://standards.iteh.ai/catalog/standards/iso/da198847-93e9-4702-86fd-c69cb1debae9/iso-5305-2024
+DR
+diameter of each propeller employed for the multi-propeller powered unmanned aircraft system (UAS) (3.16)
+Note 1 to entry: A schematic of DA and DR is shown in Figure 1.
+
+Figure 1 — A schematic of UAS diameter DA and propeller diameter DR
+﻿
+
+© ISO 2024 – All rights reserved
+
+4
+
+ISO 5305:2024(en)
+
+4 Abbreviated terms
+MTOM
+
+maximum take-off mass
+
+RPM
+
+revolution per minute
+
+PSD
+
+power spectral density
+
+5 Instrumentation
+5.1 General
+
+The instruments shall record the time history of measured instantaneous sound pressure signals in the
+frequency range from 20 Hz to 20 kHz. The sound pressure data shall be stored as digital information in a
+non-compressed file format at a sampling frequency of at least 48 kHz.
+
+For measurements in anechoic chambers and anechoic wind tunnels as described in this document, the
+microphones shall be either free-field microphone type WS2F or WS3F as defined in IEC 61094-4.
+
+For outdoor measurements using ground boards as described in this document, the microphones shall be
+pressure microphones type WS2P or WS3P as defined in IEC 61094-4.
+
+The instruments for measuring sound pressure signals, including microphone(s) as well as cable(s),
+windscreen(s), recording devices, and other accessories, if used, shall meet the relevant requirements for
+a class 1 instrument according to IEC 61672-1, as appropriate over the range of meteorological conditions
+specified in the method. Filters shall meet the requirements for a class 1 instrument according to IEC 61260-1.
+
+iTeh Standards
+5.2 Calibration
+(https://standards.iteh.ai)
+Before and after the measurements, a sound calibrator meeting the requirements of IEC 60942 class 1
+Document
+Preview
+shall be applied to each microphone
+to verify the calibration
+of the entire measuring system at one or more
+
+frequencies within the frequency range of interest. Without any adjustment, the difference between the
+readings made before and after each series of measurements shall be less than or equal to 0,5 dB. If this
+ISO 5305:2024
+value is exceeded, the results of the series of measurements
+shall be discarded.
+
+https://standards.iteh.ai/catalog/standards/iso/da198847-93e9-4702-86fd-c69cb1debae9/iso-5305-2024
+
+The calibration of the sound calibrator, the conformity of the instrumentation system with the requirements
+of IEC 61672-1 and the conformity of the filter set with the requirements of IEC 61260-1 shall be verified at
+intervals in a laboratory making calibrations traceable to appropriate standards.
+The sound calibrator should be calibrated at intervals not exceeding 1 year; the conformity of the
+instrumentation system with the requirements of IEC 61672-1 should be verified at intervals not exceeding 1
+year; and the conformity of the filter set with the requirements of IEC 61260-1 should be verified at intervals
+not exceeding 1 year.
+
+6 General requirements
+6.1 General
+
+The characteristics of UAS noise shall be addressed in the measurements.
+a)
+
+The condition of noise measurements shall satisfy the far-field condition.
+
+c)
+
+The unsteady aerodynamic flow induced by the UAS rotors can affect the noise measurements if
+impinging to the microphones. Therefore, aerodynamic requirements on the measurement locations are
+specified in 6.3.
+
+b) The UAS noise is directional, and the sound pressure at different locations shall be measured.
+
+﻿
+
+© ISO 2024 – All rights reserved
+
+5
+
+ISO 5305:2024(en)
+The tests can be conducted in either an anechoic chamber, an anechoic wind tunnel or outdoors, depending
+on the MTOM, size and flight speed of the UAS. The measurement requirements in the anechoic chamber,
+anechoic wind tunnel and outdoor tests are specified in Clause 7, Clause 8 and Clause 9, respectively.
+NOTE
+This document focuses on methods to record the sound pressure signals in both indoor and outdoor
+tests. Requirements and recommendations in different facilities are provided, but the selection of the facility is not
+compulsorily specified.
+
+6.2 Requirements of acoustic far-field condition
+
+The far-field condition is dependent on the properties of noise sources, including frequency, and the spatial
+distribution of the noise source (including its size). When the far-field condition is satisfied, the noise level
+decreases inversely with the microphone distance, and the UAS noise can be characterized by acoustic
+directivity. Therefore, there is a requirement for a minimum distance between the UAS and the microphones,
+which depends on the size of the UAS. For UAS noise measurements, to ensure the acoustic far-field condition,
+the microphone distance R shall be at least 5DA , i.e.
+R ≥ 5DA
+
+(1)
+
+For sound at a high frequency, the significant interference pattern can affect the validity of the far-field
+condition proposed in Formula (1). However, the effect can be minimized when summing in a frequency
+band, for example, a 1/3-octave band, is performed. An illustration of the validity of the far-field condition
+using numerical experiments is given in Annex B. An experimental measurement of the acoustic far-field
+condition for a UAS propeller in an anechoic chamber following ISO 26101-1 is given in Annex C.
+
+iTeh Standards
+To avoid an aerodynamic ground effect on the UAS propellers, the height of the UAS to the ground shall be at
+least the maximum of H =(https://standards.iteh.ai)
+1 , 2 m and 2D , where D is the UAS diameter.
+H ≥ max ( 2D , H )
+(2)
+Document Preview
+6.3 Requirements of position of UAS to reduce aerodynamic flow effect
+s
+
+0
+
+NOTE 1
+
+A
+
+A
+
+s
+
+A
+
+The aerodynamic ground effect for propellers was described by Betz in the 1930s[12].
+
+ISO 5305:2024
+
+NOTE
+2
+The height of UAS refers to the height of UAS centre to ground.
+https://standards.iteh.ai/catalog/standards/iso/da198847-93e9-4702-86fd-c69cb1debae9/iso-5305-2024
+
+6.4 Requirements of position control
+6.4.1
+
+General
+
+The variation in the position of the UAS can lead to noise measurement uncertainties. The location of the
+UAS shall be recorded with the measurement error within 3 %. The orientation angle of the UAS shall be
+recorded with a measurement error within 3 .
+NOTE 1
+The requirements in this subclause only apply for UAS in flight conditions. For wind tunnel tests, the UAS is
+mounted at fixed locations.
+NOTE 2
+
+6.4.2
+
+For flight conditions, this document only considers unidirectional motion at constant speed.
+
+Requirement of position accuracy
+
+For the UAS in hover and yaw, during the measurement period (at least 20 s), the deviation of the UAS
+position shall be within ±5 % of the shortest distance between UAS and microphone. For example, if the
+shortest observer distance is taken as R = 5DA , the requirement for the deviation of UAS position shall be
+∆y ≤ 0 , 25DA during the measurement, where y is the coordinate of the UAS centre from the closest
+microphone position.
+﻿
+
+© ISO 2024 – All rights reserved
+
+6
+
+ISO 5305:2024(en)
+For the UAS in the take-off and landing conditions for anechoic chamber tests, during the measurement
+period (at least 5 s), the position accuracy in the lateral direction shall be within 0 , 1 L , where L is the
+distance of the target UAS path to the lateral microphones (see Figure 5). For outdoor tests, the position
+accuracy in the horizontal direction shall be within 0,1 H , where H is the height of the centre of the UAS
+above the ground at the mid-point of the flight path.
+For the UAS in the cruise condition in anechoic chamber tests, during the measurement period (at least 5 s),
+the position accuracy of the lateral location shall be within 0 , 1 L , where L is the lateral distance of the
+target UAS to the lateral microphones. The accuracy in the vertical direction shall be within 0 , 1 H , where H
+is the nominal height of the UAS.
+For outdoor tests, the location of the centre of the UAS shall be determined to be within 0 , 1 H in the vertical
+direction and within 0 , 1 H to the target flight path in the lateral direction, where H is the nominal height of
+the centre of the UAS above the ground during the cruise.
+6.4.3
+
+Requirement of speed accuracy
+
+For the tests of UAS in take-off, landing and cruise, the speed of the UAS shall have reached the target
+operation speed at the middle point of the flight path. The deviation of the UAS speed at the middle point of
+the flight path shall be within ±5 % of the target operation speed.
+
+6.5 Requirements of background noise
+
+During the measurements, the A-weighted sound pressure level Lp ,A of the UAS noise shall be sufficiently
+higher than that of the background noise. The frequency band used to compute Lp ,A shall be reported. The
+procedures to compute the sound pressure level in different frequency bands are given in Annex A.
+
+iTeh Standards
+In tests in anechoic chambers and anechoic wind tunnels, L of the background noise at the microphone
+(https://standards.iteh.ai)
+locations shall be at least 6 dB, preferably more than 15 dB, below the corresponding sound pressure level of
+the measured UAS noise.
+Document Preview
+p ,A
+
+If the 6-dB criterion is not satisfied, data may still be taken and reported, but the accuracy of the results can
+be reduced. In this case, the frequency ranges that do not satisfy the background noise requirement shall be
+ISO 5305:2024
+clearly stated.
+
+https://standards.iteh.ai/catalog/standards/iso/da198847-93e9-4702-86fd-c69cb1debae9/iso-5305-2024
+
+In outdoor tests, at the measurement positions, the background noise (including wind noise at the
+microphones) measured in each of the frequency bands of interest shall be at least 6 dB below the uncorrected
+level of the source measured in the presence of this background noise. In practice, suitable windscreens are
+needed to meet the signal to noise ratio requirement.
+
+7 Anechoic chamber tests
+7.1 General
+
+Tests using an anechoic chamber can provide a controllable condition for noise measurements of UAS at
+different flight conditions.
+
+However, the finite size of the anechoic chamber can limit the size and operation speeds of the UAS. This
+document specifies the requirements for the anechoic chamber and the details of noise measurement.
+NOTE
+The anechoic chamber tests are often applicable to light and small UAS, for example, with the MTOM less
+than 4 kg.
+
+For UAS with MTOM ranges from 4 kg to 25 kg, anechoic chamber tests are also suitable once the
+requirements for far-field conditions, aerodynamic flow effects and clearance distances are met. Otherwise,
+the tests should be conducted in either wind tunnels or the outdoor environment.
+﻿
+
+© ISO 2024 – All rights reserved
+
+7
+
+ISO 5305:2024(en)
+Environmental conditions having an adverse effect on the microphones used for the measurements, for
+example, strong electric or magnetic fields, high or low temperatures, high humidity, shall be avoided. The
+instructions of the manufacturer of the measuring instrumentation regarding adverse environmental
+conditions shall be followed.
+
+7.2 Requirements of anechoic chamber
+7.2.1
+
+Size
+
+The anechoic chamber shall provide sufficient space for noise measurements of UAS. The distance can be
+influenced by the requirements on the distances between the UAS to microphones, UAS to walls, floor, and
+ceiling (or wedge tips if there are wedges) in the anechoic chamber, the UAS operation distance, and the
+microphone distance to the walls, floor, and ceiling (or wedge tips).
+7.2.2
+
+Anechoic chamber qualification
+
+The validity of the inverse square law defined in ISO 26101-1 shall be ensured for all source positions and
+measurement directions specified in this document.
+The maximum allowed deviation from the inverse square law in any of the measured directions for any of
+the microphone positions shall not exceed the values given in Table 1.
+Table 1 — Maximum allowed deviation from the inverse square law for anechoic chamber
+qualification.
+
+Allowable deviation (dB)
+iTeh
+Standards
+± 1,5
+125 to 630
+± 1,0
+800 to 5 000
+(https://standards.iteh.ai)
+±
+1,5
+≥6 300
+Document
+For the source positions (UAS locations)
+defined in 7.3.2Preview
+and 7.3.3, the sound source used in ISO 26101-1
+One-third-octave mid-band frequency (Hz)
+
+shall be positioned in the positions closest to the wall, floor and ceilings and shall be tested with microphone
+traverse directions along the measurement directions
+defined by the microphone positions.
+ISO 5305:2024
+
+https://standards.iteh.ai/catalog/standards/iso/da198847-93e9-4702-86fd-c69cb1debae9/iso-5305-2024
+All microphones
+shall be placed within the region in the anechoic chamber satisfying the qualification. This
+distance of the microphone to the walls, floor, and ceiling (or the wedge tips) is denoted as H m .
+
+7.3 Measurement configurations
+7.3.1
+
+General
+
+This subclause specifies the requirements of microphone configurations and UAS operation in anechoic
+chamber tests. The microphones shall be placed on acoustically treated support to minimize reflections.
+When the location and attitude of the UAS, and the location of a microphone, are fixed, observer angles θ
+and ϕ can be determined, a schematic of which is shown in Figure 2.
+
+﻿
+
+© ISO 2024 – All rights reserved
+
+8
+
+

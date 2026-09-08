@@ -19,6 +19,7 @@ plane. All 11 serials known.
 | **−90°**  | 810-8904      | `8108904.txt` |
 
 Notes:
+- **Ring size (Adam, 2026-09-08): about 1.68 m across.** Diameter or radius still to be confirmed (if diameter, the capsules sit at r ≈ 0.84 m). Hub height above the floor, room dimensions, foam thickness and what stands at the −90° end are still unrecorded — see `docs/arc-validation-remedies.pdf` §14 for the list to fill in before the next campaign.
 - Order was given top-down (+90 → −90); all 11 serials recorded.
 - USB device index (`hw:N`) is intentionally **not** recorded here — it shifts per boot/port. Map physical mic → device at capture time with the Setup page's 🎤 Listen meter.
 - **Calibration files**: miniDSP UMIK-2 per-serial `.txt` (REW format). Each serial yields two files: `<serial>.txt` (on-axis / 0°) and `<serial>_90deg.txt`. Use the **on-axis** file — the arc mics point at the source. Download is Cloudflare-gated, so it must be done in a real browser (see below); `scripts/load_mic_arc.py` then uploads them + builds a Setup preset.

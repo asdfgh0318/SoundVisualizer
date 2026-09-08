@@ -1,0 +1,484 @@
+International
+Standard
+
+ISO 26101-2
+Acoustics — Test methods for
+the qualification of the acoustic
+environment —
+
+First edition
+2024-06
+
+Part 2:
+iTeh Standards
+Determination of the environmental
+(https://standards.iteh.ai)
+correction
+
+Document Preview
+
+Acoustique — Méthodes d’essai pour la qualification de
+l'environnement acoustique —
+
+ISO 26101-2:2024
+Partie 2: Détermination de la correction d’environnement
+
+https://standards.iteh.ai/catalog/standards/iso/e24c2474-e8f6-4202-80e7-f9c93203daf3/iso-26101-2-2024
+
+Reference number
+ISO 26101-2:2024(en)
+
+© ISO 2024
+
+ISO 26101-2:2024(en)
+
+iTeh Standards
+(https://standards.iteh.ai)
+Document Preview
+ISO 26101-2:2024
+https://standards.iteh.ai/catalog/standards/iso/e24c2474-e8f6-4202-80e7-f9c93203daf3/iso-26101-2-2024
+
+COPYRIGHT PROTECTED DOCUMENT
+© ISO 2024
+All rights reserved. Unless otherwise specified, or required in the context of its implementation, no part of this publication may
+be reproduced or utilized otherwise in any form or by any means, electronic or mechanical, including photocopying, or posting on
+the internet or an intranet, without prior written permission. Permission can be requested from either ISO at the address below
+or ISO’s member body in the country of the requester.
+ISO copyright office
+CP 401 • Ch. de Blandonnet 8
+CH-1214 Vernier, Geneva
+Phone: +41 22 749 01 11
+Email: copyright@iso.org
+Website: www.iso.org
+Published in Switzerland
+
+﻿
+
+© ISO 2024 – All rights reserved
+
+ii
+
+ISO 26101-2:2024(en)
+
+Contents
+
+Page
+
+Foreword..................................................................................................................................................................................................................................................... iv
+
+Introduction.............................................................................................................................................................................................................................................. v
+1
+2
+3
+4
+
+5
+
+6
+
+7
+
+Scope.............................................................................................................................................................................................................................................. 1
+
+Normative references.................................................................................................................................................................................................. 1
+Terms and definitions................................................................................................................................................................................................. 1
+
+Qualification procedures for the acoustic environment........................................................................................................ 3
+4.1
+General.........................................................................................................................................................................................................................3
+4.2
+Absolute comparison test........................................................................................................................................................................... 3
+4.3
+Methods based on room absorption..................................................................................................................................................3
+4.4
+Inverse-square-law qualification of parallelepiped and cylindrical measurement
+surfaces....................................................................................................................................................................................................................... 3
+4.5
+Approximate method based on an estimation of the equivalent absorption area..................................3
+Absolute comparison test........................................................................................................................................................................................ 4
+5.1
+General.........................................................................................................................................................................................................................4
+5.2
+Locations of reference sound source in test environment............................................................................................ 5
+5.3
+Information to be recorded and reported.................................................................................................................................... 5
+Determination of the environmental correction based on room absorption................................................. 6
+6.1
+General.........................................................................................................................................................................................................................6
+6.2
+Reverberation method...................................................................................................................................................................................6
+6.3
+Two-surface method........................................................................................................................................................................................6
+6.4
+Determination of the equivalent absorption area with a reference sound source (direct
+method)....................................................................................................................................................................................................................... 7
+6.5
+Information to be recorded and reported.................................................................................................................................... 8
+
+iTeh Standards
+(https://standards.iteh.ai)
+Inverse-square-law qualification of parallelepiped and cylindrical measurement
+surfaces
+Document Preview
+7.1
+General
+
+....................................................................................................................................................................................................................................... 8
+......................................................................................................................................................................................................................... 8
+7.2
+Qualification criteria....................................................................................................................................................................................... 9
+ISO 26101-2:2024
+7.2.1 General......................................................................................................................................................................................................
+9
+https://standards.iteh.ai/catalog/standards/iso/e24c2474-e8f6-4202-80e7-f9c93203daf3/iso-26101-2-2024
+7.2.2 Maximum allowable deviations from inverse square law..........................................................................9
+7.2.3 Frequency range to be qualified......................................................................................................................................... 9
+7.2.4 Maximum qualified volume....................................................................................................................................................9
+7.3
+Installation of test sound sources and microphone traverses................................................................................10
+7.3.1 Test sound source requirements.....................................................................................................................................10
+7.3.2 Test sound source location...................................................................................................................................................10
+
+7.4
+
+8
+
+7.5
+
+7.3.3
+
+Microphone traverse paths for parallelepiped and cylindrical measurement
+surfaces..................................................................................................................................................................................................10
+Test procedure.................................................................................................................................................................................................. 12
+7.4.1 Analysis bandwidth................................................................................................................................................................... 12
+7.4.2 Generation of sound................................................................................................................................................................... 12
+7.4.3 Spatial resolution of the measurement points................................................................................................... 12
+Information to be recorded and reported................................................................................................................................ 13
+
+Approximate method based on an estimation of the equivalent absorption area................................. 13
+8.1
+General..................................................................................................................................................................................................................... 13
+8.2
+Information to be recorded and reported................................................................................................................................ 13
+
+Annex A (informative) Uncertainty of the environmental correction..................................................................................... 14
+Bibliography.......................................................................................................................................................................................................................................... 15
+
+﻿
+
+© ISO 2024 – All rights reserved
+
+iii
+
+ISO 26101-2:2024(en)
+
+Foreword
+ISO (the International Organization for Standardization) is a worldwide federation of national standards
+bodies (ISO member bodies). The work of preparing International Standards is normally carried out through
+ISO technical committees. Each member body interested in a subject for which a technical committee
+has been established has the right to be represented on that committee. International organizations,
+governmental and non-governmental, in liaison with ISO, also take part in the work. ISO collaborates closely
+with the International Electrotechnical Commission (IEC) on all matters of electrotechnical standardization.
+The procedures used to develop this document and those intended for its further maintenance are described
+in the ISO/IEC Directives, Part 1. In particular, the different approval criteria needed for the different types
+of ISO document should be noted. This document was drafted in accordance with the editorial rules of the
+ISO/IEC Directives, Part 2 (see www.iso.org/directives).
+
+ISO draws attention to the possibility that the implementation of this document may involve the use of (a)
+patent(s). ISO takes no position concerning the evidence, validity or applicability of any claimed patent
+rights in respect thereof. As of the date of publication of this document, ISO had not received notice of (a)
+patent(s) which may be required to implement this document. However, implementers are cautioned that
+this may not represent the latest information, which may be obtained from the patent database available at
+www.iso.org/patents. ISO shall not be held responsible for identifying any or all such patent rights.
+Any trade name used in this document is information given for the convenience of users and does not
+constitute an endorsement.
+
+For an explanation of the voluntary nature of standards, the meaning of ISO specific terms and expressions
+related to conformity assessment, as well as information about ISO's adherence to the World Trade
+Organization (WTO) principles in the Technical Barriers to Trade (TBT), see www.iso.org/iso/foreword.html.
+
+iTeh Standards
+This document was prepared by Technical Committee ISO/TC 43, Acoustics, Subcommittee SC 1, Noise, in
+(https://standards.iteh.ai)
+collaboration with the European
+Committee for Standardization (CEN) Technical Committee CEN/TC
+211, Acoustics, in accordance with the Agreement on technical cooperation between ISO and CEN (Vienna
+Document Preview
+Agreement).
+A list of all parts in the ISO 26101 series can be found on the ISO website.
+
+ISO 26101-2:2024
+
+Any
+feedback or questions on this document should be directed to the user’s national standards body. A
+https://standards.iteh.ai/catalog/standards/iso/e24c2474-e8f6-4202-80e7-f9c93203daf3/iso-26101-2-2024
+complete listing of these bodies can be found at www.iso.org/members.html.
+
+﻿
+
+© ISO 2024 – All rights reserved
+
+iv
+
+ISO 26101-2:2024(en)
+
+Introduction
+This document is one of the series ISO 26101, which specify various methods for qualifying the acoustic
+environment. The methods specified in this document permit the qualification of an acoustic environment
+that approximates to an acoustic free field near one or more reflecting planes. In other words, an acoustic
+environment in which the effect of reflected sound on sound pressure level measurements is sufficiently
+small, so that it can be corrected for with the so-called environmental correction K2. K2 can be needed to
+determine the sound power level, see e.g. ISO 3744 or ISO 3746[3], or the emission sound pressure level, see
+e.g. ISO 11201[6], ISO 11202[7] and ISO 11204[8].
+
+It is expected that the qualification procedures outlined in this document will be referred to by other
+International Standards and industry test codes. In such cases, these documents making reference to this
+document can specify qualification criteria based on the environmental correction K2 determined according
+to this document.
+
+iTeh Standards
+(https://standards.iteh.ai)
+Document Preview
+ISO 26101-2:2024
+https://standards.iteh.ai/catalog/standards/iso/e24c2474-e8f6-4202-80e7-f9c93203daf3/iso-26101-2-2024
+
+﻿
+
+© ISO 2024 – All rights reserved
+
+v
+
+iTeh Standards
+(https://standards.iteh.ai)
+Document Preview
+ISO 26101-2:2024
+https://standards.iteh.ai/catalog/standards/iso/e24c2474-e8f6-4202-80e7-f9c93203daf3/iso-26101-2-2024
+
+International Standard
+
+ISO 26101-2:2024(en)
+
+Acoustics — Test methods for the qualification of the acoustic
+environment —
+Part 2:
+Determination of the environmental correction
+1 Scope
+
+This document specifies methods for qualifying an environment that approximates to an acoustic free field
+near one or more reflecting planes. The goal of the qualification is to determine the environmental correction
+K 2 , which is used to correct for reflected sound when determining the sound power level or sound energy
+level of a noise source from sound pressure levels measured on a surface enveloping the noise source
+(machinery or equipment) in such an environment.
+In practice, the K 2 value determined will be a function of both the reflected sound from the test environment
+and the shape and size of the measurement surface used for the K 2 determination. For the purposes of this
+document and the documents that refer to it, the differences between K 2 values determined with different
+measurement surfaces are assumed to be included in the stated measurement uncertainty for the test method.
+
+iTeh Standards
+2 Normative references
+(https://standards.iteh.ai)
+The following documents are referred to in the text in such a way that some or all of their content constitutes
+Document
+Preview
+requirements of this document. For
+dated references, only
+the edition cited applies. For undated references,
+the latest edition of the referenced document (including any amendments) applies.
+
+ISO 26101-2:2024
+
+ISO 3744:2024, Acoustics — Determination of sound power levels of noise sources using sound pressure —
+https://standards.iteh.ai/catalog/standards/iso/e24c2474-e8f6-4202-80e7-f9c93203daf3/iso-26101-2-2024
+Engineering
+methods for an essentially free field over a reflecting plane
+
+ISO 3745:2012, Acoustics — Determination of sound power levels and sound energy levels of noise sources using
+sound pressure — Precision methods for anechoic rooms and hemi-anechoic rooms
+
+ISO 6926, Acoustics — Requirements for the performance and calibration of reference sound sources used for
+the determination of sound power levels
+ISO 26101-1, Acoustics — Test methods for the qualification of the acoustic environment — Part 1: Qualification
+of free-field environments
+
+3 Terms and definitions
+For the purposes of this document, the terms and definitions given in ISO 3744 and the following apply.
+ISO and IEC maintain terminological databases for use in standardization at the following addresses:
+— ISO Online browsing platform: available at https://​w ww​.iso​.org/​obp
+— IEC Electropedia: available at https://​w ww​.electropedia​.org/​
+
+﻿
+
+© ISO 2024 – All rights reserved
+
+1
+
+ISO 26101-2:2024(en)
+3.1
+reverberation time
+T
+〈room acoustic parameters〉 duration required for the space-averaged sound energy density in an enclosure
+to decrease by 60 dB after the source emission has stopped
+Note 1 to entry: Reverberation time, T, is expressed in seconds.
+
+Note 2 to entry: T can be evaluated based on a smaller dynamic range than 60 dB and extrapolated to a decay time of
+60 dB. It is then labelled accordingly. Thus, if T is derived from the time at which the decay curve first reaches 5 dB
+and 25 dB below the initial level, it is labelled T20. If decay values of 5 dB to 35 dB below the initial level are used, it is
+labelled T30.
+
+[SOURCE: ISO 3382-2:2008[1], 3.5]
+
+3.2
+measurement surface
+hypothetical surface of area, S, on which the microphone positions are located at which the sound pressure
+levels are measured, enveloping the noise source under test and terminating on the reflecting plane(s) on
+which the source is located
+[SOURCE: ISO 3744:2024, 3.12]
+
+3.3
+environmental correction
+K2
+correction applied to the mean (energy average) sound pressure levels over all the microphone positions on
+the measurement surface (3.2), to account for the influence of reflected or absorbed sound
+
+iTeh Standards
+Note 1 to entry: Environmental correction, K , is expressed in decibels.
+(https://standards.iteh.ai)
+Note 2 to entry: The environmental correction is frequency dependent; the correction in the case of a frequency band
+is denoted K , where f denotes the relevant mid-band frequency, and that in the case of overall A-weighting is denoted
+Document
+Preview
+K , which is determined from A-weighted
+sound pressure level
+measurements.
+2
+
+2A
+
+2f
+
+Note 3 to entry: In general, the environmental correction depends on the area of the measurement surface and usually
+ISO 26101-2:2024
+K2 increases with S.
+
+https://standards.iteh.ai/catalog/standards/iso/e24c2474-e8f6-4202-80e7-f9c93203daf3/iso-26101-2-2024
+
+[SOURCE: ISO 3744:2024, 3.15, modified “determined as described in Annex A or in ISO 26101-2:2024“ and
+“Note 4 to entry” have been omitted.]
+
+3.4
+sound absorption coefficient
+α
+at a given frequency and for specified conditions, the relative fraction of sound power incident upon a surface
+which is not reflected
+[SOURCE: ISO 3741:2010[2], 3.9, modified — The NOTE has been deleted.]
+
+3.5
+equivalent absorption area
+A
+product of the area and sound absorption coefficient (3.4) of a surface
+
+Note 1 to entry: A hypothetical surface area with a sound absorption coefficient of 1,0 that would have the same total
+sound absorption as the test environment that is being qualified.
+
+[SOURCE: ISO 3741:2010[2], 3.10, modified term “sound” has been omitted and the NOTE has been replaced
+by a Note 1 to entry with different content.]
+
+﻿
+
+© ISO 2024 – All rights reserved
+
+2
+
+ISO 26101-2:2024(en)
+
+4 Qualification procedures for the acoustic environment
+4.1 General
+Environmental influences shall be evaluated by selecting one of four qualification procedures (see 4.2 to
+4.5) used to determine the magnitude of the environmental correction K2. These qualification procedures
+shall be used to determine if any undesired environmental influences are present and to qualify a given
+measurement surface for an actual noise source under test in accordance with this document. Information
+on the uncertainty of the environmental correction can be found in Annex A.
+
+4.2 Absolute comparison test
+
+The absolute comparison test (see Clause 5) is carried out with a reference sound source (RSS) and may
+be used outdoors and indoors. This is the preferred procedure for qualifying a test environment according
+to ISO 3744, particularly if data in frequency bands are required, and if the noise source under test can be
+removed from the test site. However, it may also be used, if the noise source under test cannot be removed
+from the test site (see 5.2). This method is expected to yield the most accurate results in typical industrial
+environments[9].
+
+4.3 Methods based on room absorption
+
+The methods based on room absorption (see Clause 6) require the determination of the equivalent
+absorption area, A , of the test room and can be less accurate than the absolute comparison test in typical
+industrial environments. These tests are based on the assumption that the room has approximately a cubic
+shape, is substantially empty, and that sound is absorbed at the room boundaries only. Three methods are
+specified in which A is calculated either from measurements of reverberation time (see 6.2), from
+measurements of sound pressure levels from the noise source under test using a secondary measurement
+surface (see 6.3) or from measurements on a reference sound source (see 6.4).
+
+iTeh Standards
+(https://standards.iteh.ai)
+4.4 Inverse-square-law qualification of parallelepiped and cylindrical measurement
+Document Preview
+surfaces
+
+This third qualification procedure (see Clause
+may be used to qualify hemi-anechoic test rooms for
+ISO 7)
+26101-2:2024
+parallelepiped
+or
+cylindrical
+measurement
+surfaces
+up to a maximum volume (qualification with the goal
+https://standards.iteh.ai/catalog/standards/iso/e24c2474-e8f6-4202-80e7-f9c93203daf3/iso-26101-2-2024
+K 2 = 0 ). It is the preferred method to qualify a hemi-anechoic room and represents the most accurate
+method. To qualify an anechoic or a hemi-anechoic chamber for hemi-spherical measurement surfaces, see
+ISO 26101-1 and ISO 3745.
+NOTE
+
+In hemi-anechoic rooms, the other qualification procedures can yield unreliable results.
+
+4.5 Approximate method based on an estimation of the equivalent absorption area
+This method (see Clause 8) is based on an estimation of the equivalent absorption area A of the test room
+and is considered to be the least accurate method.
+
+Figure 1 is a flowchart which provides guidance for the selection of a method to determine the environmental
+correction K 2 . The method specified in Clause 5 may be used indoors and outdoors, while the methods
+specified in Clauses 6 and 8 may be used indoors only. As indicated in Figure 1, the inverse-square law
+method according to Clause 7 may be used in hemi-anechoic chambers only.
+NOTE
+In some industrial buildings, which are of low height and have reflecting surfaces, the sound propagation
+can be distorted. In these conditions, the qualification procedures according to Clause 6 and Clause 8 might not be
+applicable.
+
+﻿
+
+© ISO 2024 – All rights reserved
+
+3
+
+ISO 26101-2:2024(en)
+
+iTeh Standards
+(https://standards.iteh.ai)
+Document Preview
+ISO 26101-2:2024
+https://standards.iteh.ai/catalog/standards/iso/e24c2474-e8f6-4202-80e7-f9c93203daf3/iso-26101-2-2024
+
+Figure 1 — Flowchart to select a method to determine K2
+
+5 Absolute comparison test
+5.1 General
+This method represents the preferred method to determine the environmental correction according to
+ISO 3744:2024, Annex A.
+﻿
+
+© ISO 2024 – All rights reserved
+
+4
+
+

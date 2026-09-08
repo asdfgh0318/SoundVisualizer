@@ -1,0 +1,1704 @@
+JANUARY 28 2003
+
+Anechoic chamber qualification: Traverse method, inverse
+square law analysis method, and nature of test signal
+Kenneth A. Cunefare; Van B. Biesel; John Tran; Ryan Rye; Aaron Graf; Mark Holdhusen; Anne-Marie Albanese
+
+J. Acoust. Soc. Am. 113, 881–892 (2003)
+https://doi.org/10.1121/1.1527595
+
+ 
+View
+Online
+
+Export
+Citation
+
+Articles You May Be Interested In
+Considerations related to the standardization of methods for the qualification of free field test
+environments.
+J. Acoust. Soc. Am. (October 2009)
+
+On the qualification of anechoic chambers; Issues related to signals and bandwidth
+J. Acoust. Soc. Am. (August 2006)
+
+J. Acoust. Soc. Am. (August 2005)
+
+01 September 2026 16:47:31
+
+A hemispherical noise source for hemi‐anechoic chamber qualification
+
+Anechoic chamber qualification: Traverse method, inverse
+square law analysis method, and nature of test signal
+Kenneth A. Cunefare,a) Van B. Biesel, John Tran, Ryan Rye, Aaron Graf,
+Mark Holdhusen, and Anne-Marie Albanese
+The George W. Woodruff School of Mechanical Engineering, The Georgia Institute of Technology,
+Atlanta, Georgia 30332-0405
+
+共Received 7 March 2002; revised 28 September 2002; accepted 14 October 2002兲
+Qualification of anechoic chambers is intended to demonstrate that the chamber supports the
+intended free-field environment within some permissible tolerance bounds. Key qualification issues
+include the method used to obtain traverse data, the analysis method for the data, and the use of pure
+tone or broadband noise as the chamber excitation signal. This paper evaluates the relative merits of
+continuous versus discrete traverses, of fixed versus optimal reference analysis of the traverse data,
+and of the use of pure tone versus broadband signals. The current practice of using widely space
+discrete sampling along a traverse is shown to inadequately sample the complexity of the sound field
+extant with pure tone traverses, but is suitable for broadband traverses. Continuous traverses, with
+spatial resolution on the order of 15% of the wavelength at the frequency of interest, are shown to
+be necessary to fully resolve the spatial complexity of pure tone qualifications. The use of an
+optimal reference method for computing the deviations from inverse square law is shown to
+significantly improve the apparent performance of the chamber for pure tone qualifications. Finally,
+the use of broadband noise as the test signal, as compared to pure tone traverses over the same span,
+is demonstrated to be a marginal indicator of chamber performance. © 2003 Acoustical Society of
+America. 关DOI: 10.1121/1.1527595兴
+PACS numbers: 43.55.Pe, 43.58.Vb 关SLE兴
+
+Anechoic chambers are now a common feature within
+many industrial, academic, and governmental laboratories.
+An informal survey of U.S.-based anechoic chamber manufacturers indicates that as of the time of this writing over 500
+hemi- and full anechoic chambers have been built around the
+world since 1980, with the majority of the chambers going
+into industry facilities. Of critical concern to those who have
+acquired these facilities is the initial qualification of their
+free-field performance, that is, the determination of to what
+extent does the chamber yield a free field, and over what
+volume of the interior of the chamber. While there have been
+a number of methods proposed for the qualification of
+anechoic chambers,1–5 and work in this regard continues
+today,6 there is but one method that is embodied within ANSI
+and ISO standards. ANSI S12.35 and ISO 3745 define procedures for the qualification of anechoic chambers. The focus of the paper at hand is a detailed investigation into aspects of the implementation of an ANSI S12.35/ISO 3745
+qualification test applied to an anechoic chamber, with attention paid to comparison between alternatives. While the subject matter may seem to be time sensitive to the standards of
+the day, the fundamental issue of demonstrating suitable inverse square law performance within an anechoic chamber is
+timeless 共indeed, at the time of this writing the ISO 3745
+standard is under revision, with many technical comments
+focused on the qualification issues alone兲.
+The objective of qualifying an anechoic chamber is to
+a兲
+
+Electronic mail: ken.cunefare@me.gatech.edu
+
+J. Acoust. Soc. Am. 113 (2), February 2003
+
+determine the maximum allowable radius between a test
+source and a measurement location where inverse square law
+spreading is observed, within some tolerance, and where the
+location is not in the near field of the source. The process of
+qualifying the free-field performance of an anechoic chamber
+may be summed up through a paraphrased, slightly reworded
+segment of the ISO 3745/ANSI S12.35 standard: ‘‘A microphone shall be moved continuously along radial paths and
+the sound pressure levels recorded. These levels are to be
+compared with the decay predicted by the inverse square law
+and the differences between the measured and theoretical
+levels.’’ 7,8 These two sentences embody the very conundrum
+of free-field performance qualification: how does one actually sample the sound pressure levels along a path, and, then,
+with the data in hand, how does one analyze it? A related
+issue is the nature of the signal used in the qualification
+effort, i.e., pure tone versus broadband noise.
+Elements of the procedure described in the standards
+共ANSI S12.35-1990 and ISO 3745:1977 are not materially
+different in their qualification procedures兲 include specifications and recommendations for the sound sources to be used
+in different frequency ranges, the test frequencies, the use of
+pure tone or broadband noise signals, the traverse directions,
+the requirement for a continuously moving microphone, and
+the permissible deviations from the inverse square law.
+Pass–fail determination is based upon permissible deviations
+from free-field performance, listed in Table I.
+The generic procedure for a qualification test is to position a sound source within a chamber, and then to make
+acoustic pressure measurements along radials extending
+from the source. We will call such measurements along a
+
+0001-4966/2003/113(2)/881/12/$19.00
+
+© 2003 Acoustical Society of America
+
+881
+
+01 September 2026 16:47:31
+
+I. INTRODUCTION
+
+TABLE I. Maximum allowable difference in anechoic rooms between measured and theoretical free-field levels per ISO 3745 and ANSI S12.35.
+One-third octave band
+center frequency 共Hz兲
+
+Allowable difference 共dB兲
+
+⬍630
+800 to 5000
+⬎6300
+
+⫾1.5
+⫾1.0
+⫾1.5
+
+882
+
+J. Acoust. Soc. Am., Vol. 113, No. 2, February 2003
+
+Cunefare et al.: Anechoic chamber qualification: Traverse, analysis, signal
+
+01 September 2026 16:47:31
+
+radial a traverse. We classify traverses as being either continuous or discrete. A continuous traverse is obtained when
+one continuously moves a microphone along a radial, continuously recording data as the microphone moves. A continuous traverse generally yields pressure measurements that
+represent a very fine spatial resolution along the traverse
+共typically, continuous traverse data is averaged over some
+span, converting a continuous data record to a sequence of
+finely spaced discrete samples兲. In contrast, a discrete
+traverse is obtained when one moves a microphone in discrete steps along a radial, with the microphone motionless
+during data acquisition at each microphone location. Discrete
+traverses on a fine spacing are very time consuming, such
+that the usual practice is to employ a spacing that is quite
+coarse as compared to what is attainable through the use of a
+continuous traverse. As of this writing, the common practice
+is to employ discrete traverses. This practice notwithstanding, ANSI S12.35 and ISO 3745 both call for a continuously
+moving microphone, that is, a continuous traverse.
+Once the pressure data have been obtained, the next issue of concern becomes how to compare the measured levels’ decay with distance against a theoretical free-field decay.
+To compute a theoretical free-field decay, one needs to know
+the separation distance between the source and the observation point. However, the acoustic center for the test sound
+source may not be known a priori, which introduces significant uncertainty and potential for error into the computation
+of the predicted decay. The current standards lack specificity
+on the issues of source center and on the actual method of
+performing the comparison to free-field decay. The common
+practice is to base the theoretical free-field decay upon the
+sound pressure level at a fixed reference distance 共typically 3
+ft兲 from the source.
+With the data acquired and analyzed, it is then compared
+to the values in Table I in the following manner. For each
+traverse and each frequency, there will generally be a location along each of the traverses where the data first exceeds
+the tolerance limits of Table I. The minimum distance to the
+locations of these exceedances establishes the maximum
+measurement radius. The purpose of a qualification test is to
+find the minimum distance along any traverse at which the
+tolerance limits of Table I are exceeded.
+The need to qualify the free-field performance of an
+anechoic chamber was recognized from the inception of
+these facilities,1,2,9–12 with the performance assessed by measuring the spreading loss away from a sound source. Much of
+the qualification data presented in the literature has been
+based on discrete traverses.1,2,9–15 The discrete traverse
+method generally uses measurements at 0.5- to 1-ft spacing
+along the traverse. Some more recent discrete traverses have
+
+employed finer spacings,6,15 but, nonetheless, they still represent a coarse sampling of the test sound field. In contrast,
+there have been only a limited number of publications that
+document implementations of continuous traverses, and, interestingly, most such are earlier work. Rivin16 developed an
+electro-mechanical method of performing a continuous
+traverse, with the deviation from free-field performance recorded directly upon a chart recorder. Ingerslev et al.17 and
+Bell et al.3 employed Rivin’s method in their own qualification efforts. In contrast to the discrete traverse methods, the
+continuous traverses of Rivin, Ingerslev, and Bell clearly indicate a great deal more structure and complexity in the
+sound field generated by the test source. Indeed, in examining their traverse data, it is not difficult to realize that discrete traverse methods will miss much of the structure of the
+sound field, particularly at higher frequencies, though this
+point was not explored in these publications. Further, it is not
+difficult to conclude that a discrete traverse could easily miss
+regions of a traverse where the chamber’s free-field performance is unacceptable, an issue equally unexplored. Finally,
+the literature considered here does not contain comparisons
+of traverses at different resolutions, nor attempts to substantiate a minimum resolution.
+The issue of appropriate spatial resolution for traverses
+has been recently reinforced through Duda’s18 numerical
+modeling of the wave field due to pure tone and broadband
+sources within an anechoic chamber undergoing a qualification test. Duda used a method-of-images approach to model
+the wave field within an example anechoic chamber, approximating the bounding surfaces of the room as planes. By comparing numerically modeled traverses sampled at different
+resolutions, he demonstrated that for a pure tone test signal,
+the wave field within an anechoic chamber will be more
+complex than can be adequately sampled using discrete
+traverses at 1-ft spacings. While Duda did not argue for the
+use of continuous traverses 共reflecting a concern for the difficulty of setting up such systems兲, he did argue for the need
+to sample at much finer spacings than 1 ft, particularly above
+1 kHz. Duda touched upon the impact of using broadband
+noise versus pure tone signals for testing chamber performance, and demonstrated that pure tones provide the most
+stringent test of performance. Duda’s analysis paralleled the
+earlier work of Wang and Cai,19 however, Wang and Cai’s
+use of the analysis was for modeling of free-field deviation,
+and did not address the issue of spatial resolution.
+There are two common approaches documented in the
+literature for comparing acquired traverse data to a theoretical decay. The most common approach, the fixed reference
+method, uses the measured level at a given reference position
+from the source and applies the inverse square law to compute levels at other distances.2,12,20–22 In contrast, the second
+approach, the optimal reference method, seeks to estimate a
+source strength and source center offset location that yields a
+theoretical decay that matches the observed decay in some
+optimal sense. This method is motivated by recognition that
+the effective acoustic center of a sound source may not coincide with a visually identifiable point on or near the source.
+Such position uncertainty makes the measurement of separation distance between the source center and an observation
+
+A. Chamber description
+
+Figure 1 provides a simple depiction of the major elements and components of the anechoic chamber evaluated
+here. The chamber is isolated from and is free-standing
+within an enclosing building. The chamber uses a proprietary
+commercial perforated metal wedge for the anechoic
+treatment.24 The outer surface of the wedges is 42% open
+area perforated metal sheet: the inner surface of the perforate
+J. Acoust. Soc. Am., Vol. 113, No. 2, February 2003
+
+FIG. 1. Georgia Tech Anechoic Chamber, plan view 共a兲 and elevation 共b兲.
+90-m3 interior volume, entrance on west wall, wire-mesh floor.
+
+is lined with a fiberglass layer. The chamber volume within
+the wedge tips is approximately 90 m3. The design frequency
+range of the chamber is 80 to 10 000 Hz. Mounts for test
+samples and fixtures extend from the floor and ceiling. An
+edge-supported wire mesh floor is suspended 32 cm above
+the floor wedge tips.
+II. ANALYSIS METHODS
+
+As with previous researchers, we find that a plot of the
+deviation from the free-field decay versus linear distance
+from the source is most effective for assessing free-field
+performance.3,15–17 The deviation from the inverse square
+law is
+⌬L pi ⫽L pi ⫺L p 共 r i 兲 ,
+
+共1兲
+
+where L pi is the sound pressure level at each measurement
+position, and L p(r i ) is the level at distance r i estimated by
+either the fixed reference or optimal reference method. With
+the fixed reference method, the theoretical free-field decay is
+computed by
+
+冋 册
+
+L p 共 r i 兲 ⫽L p 共 r ref兲 ⫺20 log10
+
+ri
+,
+r ref
+
+共2兲
+
+where L p (r ref) is the sound pressure level at a selected reference or normalization distance r ref . Typical practice in the
+U.S. has been to use a reference distance of 3 ft.
+For the optimal reference method, the theoretical freefield decay is computed from
+
+冋 册
+
+L p 共 r i 兲 ⫽20 log10
+
+a
+,
+r i ⫺r o
+
+共3兲
+
+where a represents the apparent strength of the source and r o
+is an offset distance between the physical location of the
+
+Cunefare et al.: Anechoic chamber qualification: Traverse, analysis, signal
+
+883
+
+01 September 2026 16:47:31
+
+point problematic. To ameliorate this issue, investigators
+have used either analog compensation methods3,16,17 or
+mathematical compensation13,15 to determine an effective
+source center position. The analog compensation method
+used clever electronics to generate strip-chart recordings of
+the deviation from inverse square performance, with the
+source offset introduced by a resistance. The mathematical
+compensation method uses a linear least square fit of traverse
+data to an inverse square model, computing both an effective
+source position and a source strength. 共Note that Ballagh23
+developed an optimal reference method using a nonlinear,
+logarithmic fitting technique, but it has not gained widespread acceptance.兲 We are unaware of published comparisons between the fixed reference method and the optimal
+reference method.
+Finally, as to the nature of the test signal to use, it appears that pure tone signals have been used for most published qualifications. However, the current and draft ISO
+standards permit the use of broadband noise sources, with
+the draft structured to specify broadband noise as the preferred signal. Both Wang and Cai19 and Duda18 demonstrated
+numerically that broadband noise traverses should show
+much less spatial structure than pure tone traverses. We are
+unaware of published comparisons between actual traverses
+obtained with these signal types.
+The above issues, how the microphone is moved along a
+traverse, how one computes the theoretical free-field decay
+for a traverse, and whether to use pure tone or broadband
+noise signals, are the fundamental issues of interest in the
+paper at hand. The question of spatial resolution is addressed
+by considering traverses sampled at alternative spacings. The
+corollary issue, what spatial resolution is appropriate, is addressed through consideration of the structure of traverses
+obtained with pure-tone and broadband noise. The effect of
+the data analysis method is addressed by applying each
+method to the same data and assessing their impact. Finally,
+the significance of the choice of test signal is brought out by
+consideration of traverses over the same physical span but
+acquired separately with pure tone and broadband noise signals. Other issues relevant to chamber qualification, including test source design and the number of traverses to perform, are beyond the scope of the present paper.
+In the following, we present our implementation of a
+continuous traversing microphone system. We then present
+the analysis procedures that we use for analyzing the resulting data. Finally, we present and discuss the results obtained,
+with the focus being on addressing the issues raised above,
+when these tools were applied to the qualification of an
+anechoic chamber at the Georgia Institute of Technology, the
+configuration of which we describe below.
+
+source and its effective acoustic center. The a and r o parameters are computed from the measured sound pressure levels
+as
+a⫽
+
+N
+N
+r i 兲 2 ⫺N 兺 i⫽1
+r 2i
+共 兺 i⫽1
+
+共4兲
+
+N
+N
+N
+兺 i⫽1
+r i 兺 i⫽1
+q i ⫺N 兺 i⫽1
+r iq i
+
+and
+r o ⫽⫺
+
+冋
+
+N
+N
+N
+N
+兺 i⫽1
+r i 兺 i⫽1
+r i q i ⫺ 兺 i⫽1
+r 2i 兺 i⫽1
+qi
+N
+N
+N
+兺 i⫽1
+r i 兺 i⫽1
+q i ⫺N 兺 i⫽1
+r iq i
+
+册
+
+,
+
+共5兲
+
+where
+q i ⫽10⫺0.05L pi .
+
+共6兲
+
+r⫽MAX共 0.5,95/f 兲 m,
+
+共7兲
+
+where f is the frequency of interest in Hertz. The r⫽95/f
+criterion in Eq. 共7兲 is traceable to the far field requirement25
+that (kr) 2 Ⰷ1, specifically, requiring (kr) 2 ⬎3.
+III. TRAVERSE MEASUREMENT SYSTEM
+
+The continuous traverse system employed in the work at
+hand comprises a microphone traverse system, sound
+sources, a reference microphone, and a data acquisition system as depicted in Fig. 2. Each of these four major components of the measurement system is described below.
+A. Microphone traverse system
+
+The objective of the microphone traverse system is to
+move a microphone away from a sound source in a continuous, repeatable manner, while providing accurate position
+data. The system is comprised of a traverse wire, a microphone carriage, and a computer-controlled motion control
+system. The traverse wire was a 1.6-mm braided steel cable,
+chosen as a balance between strength and small acoustic profile. The traverse line was anchored to opposite faces of the
+chamber and made taut using a turnbuckle at one end. A
+random-incidence microphone 共 21-in. Larson-Davis, model
+2560兲 was suspended from the traverse line by a wire car884
+
+J. Acoust. Soc. Am., Vol. 113, No. 2, February 2003
+
+FIG. 2. Traverse system components and configuration.
+
+riage as depicted in Fig. 3. Plastic sleeves on the carriage
+allowed it to move smoothly and quietly along the traverse
+line. The microphone carriage was pulled up the traverse line
+by a take-up line. The take-up line is routed to the exterior of
+the chamber through a pulley system to a take-up spool
+mounted on a computer controlled stepper motor. The
+take-up line, pulley system, take-up spool, and its control
+system comprise the motion control system.
+To avoid slipping on the traverse line and to ensure constant traverse velocity, the microphone carriage was always
+pulled up the traverse line against gravity, either toward or
+away from the sound source, depending on the test orientation. The traverse direction was accounted for in the postprocessing stage of the procedure. With horizontal traverses, the
+direction of travel was toward the source.
+The take-up line was fused Kevlar fishing line 共‘‘Fire
+Line’’ 20 lb. test兲. This 0.13-mm-diam line was chosen to
+ensure that there would be negligible change in the take-upspool’s diameter as line collected on it. Also, the take-up line
+exhibited no measurable stretch for this application and
+therefore resulted in highly stable and repeatable movement
+and positioning of the microphone 共a take-up-line that can
+stretch leads to jerky, erratic motion of the microphone carriage as it ‘‘stick-slips’’ along the traverse wire兲.
+The pulley system routes the take-up line outside the
+chamber via a cable-pass-through pipe, which penetrates the
+chamber wall from outside to inside. Additional pulleys on
+the outside of the chamber guides the line onto the take-upspool mounted on a stepper motor 共Superior Electric Slo-Syn
+
+FIG. 3. Traverse microphone carriage.
+
+Cunefare et al.: Anechoic chamber qualification: Traverse, analysis, signal
+
+01 September 2026 16:47:31
+
+In Eqs. 共4兲 and 共5兲, N is the number of measurement points
+along the traverse, and the L pi and r i are as defined previously. Equations 共4兲 and 共5兲 follow from a linear least square
+fit to Eq. 共3兲 of the traverse data, as introduced by Koidan
+and Huska.13
+The traverse data used in the optimal reference method
+will span from some starting point close to a sound source
+out to some maximum distance. The maximum distance from
+the source is typically constrained by the geometry and configuration of the chamber under test. The closest point on the
+traverse, though, is subject to some selection. The closest
+traverse point to the test source should be in the source’s far
+field. The standards extant at this writing do not define the
+minimum distance between the traverse microphone and the
+sound source. Some guidance on this point may be taken
+from the sound-power measurement portions of the ISO and
+ANSI standards, where the measurement surface is constrained to be no closer than 1 m to the source. In addition,
+the ISO 3745 draft extant at this writing may be construed to
+define the minimum distance as
+
+TABLE II. Description of test sound sources.
+Frequency
+共Hz兲
+⬍400
+
+400 to 2000
+
+⭓2000
+
+TABLE IV. Sampling rate, traverse time, and file sizes for random noise
+traverses.
+
+ISO 3745 specified source
+
+Source tested
+
+25-cm-diam speaker
+in a closed, damped box
+
+15-cm diam Radio Shack
+40-1331B, in a closed,
+damped box
+Two 10-cm diam
+Radio Shack 40-1022B
+
+Two 10-cm speakers,
+mounted face-to-face,
+in phase
+Baffled speaker
+with a cylindrical tube
+共⬍1.5-cmdiameter兲
+
+Baffled Radio Shack
+40-1289A, mid-range tweeter,
+1.5-cm i.d. tube 共50-cm length兲
+
+Motor, Model M062-L809兲. Motor noise was not detectable
+inside the chamber. Lightweight Harken marine-grade compact ball-bearing pulleys were used throughout, as ordinary
+pulleys were found to produce squeaks while in motion, contaminating the test data. The take-up spool/stepper motor
+was controlled using a ‘‘LabView’’ virtual instrument.
+Constant angular speed of the take-up spool as it rotated
+through a known total angle resulted in microphone motion
+along the traverse line at a constant velocity from one known
+position to another. Relating velocity and time to distance
+traveled provided accurate position data.
+B. Sound sources and excitation system
+
+TABLE III. Sampling rate, traverse time, and file sizes for pure tone
+traverses.
+Frequency
+共Hz兲
+
+Sampling rate
+共Hz兲
+
+Traverse time
+共s兲
+
+Data file size
+共MB兲
+
+80
+125–250
+500
+1000–2000
+4000
+6300–10 000
+
+512
+2560
+5120
+12 500
+25 600
+51 200
+
+120
+120
+120
+120
+60
+60
+
+1
+5
+10
+24
+24
+48
+
+J. Acoust. Soc. Am., Vol. 113, No. 2, February 2003
+
+Sampling rate
+共Hz兲
+
+Traverse time
+共s兲
+
+Data file size
+共MB兲
+
+80–250
+500–2000
+4000–10 000
+
+2560
+12 500
+51 200
+
+2360
+600
+156
+
+92
+118
+122
+
+filtered using a Wavetek band-pass filter, Model 432, prior to
+amplification by a Ling Dynamic Systems power amplifier,
+Model PA25E.
+C. Reference microphone
+
+To provide a quality check on the traverse data, a random incidence microphone 共 21-in. Larson-Davis, model 2560兲
+was placed in a stationary position in the chamber. The data
+from this microphone provided the means to assess the stability of the source over the time span of a traverse.
+D. Data acquisition system
+
+Sound pressure was recorded using a PC-based, twochannel analyzer 共DSP Technology, Siglab acquisition system, Model 50-21兲. Analog low-pass filters were used to
+anti-alias the data. The sampling rate was selected to be at
+least 2.5 times the highest frequency of interest for each
+traverse. Matlab-based Siglab software 共version 3.2兲 was
+used to store the time-domain, acoustic pressure data. Postprocessing of the data is described in a later section.
+IV. TEST PROCEDURE
+
+Traverse data were collected in each radial direction, for
+each frequency 共or frequency range兲, in the following manner: Measurement parameters of the traverse were determined and used to configure the motion control and acquisition software; the acoustic source was turned on, its level set,
+and dynamic range of the data acquisition system adjusted;
+the traverse microphone was set into motion and its data
+recorded. These basic steps are detailed below.
+Measurement parameters were the start and stop positions defining the traverse span, the data acquisition samTABLE V. The rms computation parameters for LNE and WW traverses.
+Pure tone excitation.
+
+Frequency
+共Hz兲
+80
+125
+250
+500
+1000
+2000
+4000
+6300
+8000
+10 000
+
+Data points per Averages per
+average
+wavelength
+
+Spatial
+resolution
+共cm兲
+
+Ratio of spatial
+resolution to
+wavelength 共%兲
+
+LNE
+
+WW
+
+LNE
+
+WW
+
+LNE WW
+
+LNE
+
+WW
+
+1997
+2356
+1997
+1997
+1997
+1997
+1997
+2000
+1997
+1997
+
+1997
+4219
+2110
+2120
+2650
+1997
+1997
+2000
+1997
+1997
+
+37.1
+100.6
+59.4
+60.6
+79.8
+40.0
+21.5
+27.3
+21.5
+17.4
+
+64.9 11.6
+100.3 2.7
+100.3 2.3
+100.1 1.1
+100.2 0.4
+66.5 0.4
+32.7 0.4
+41.5 0.2
+32.7 0.2
+26.2 0.2
+
+2.7
+1.0
+1.7
+1.6
+1.3
+2.5
+4.7
+3.7
+4.6
+5.8
+
+1.5
+1.0
+1.0
+1.0
+1.0
+1.5
+3.1
+2.4
+3.1
+3.8
+
+6.6
+2.7
+1.4
+0.7
+0.3
+0.3
+0.3
+0.1
+0.1
+0.1
+
+Cunefare et al.: Anechoic chamber qualification: Traverse, analysis, signal
+
+885
+
+01 September 2026 16:47:31
+
+Three sound sources were used to cover the design frequency range of the chamber, 80–10 000 Hz. The sources
+were constructed in accordance with the recommendations in
+ISO 3745, and are listed in Table II. The sources were
+mounted using the available floor and ceiling mounts within
+the chamber. Source location was near the center of the
+chamber, just below the traverse line and in line with the
+microphone traverse, with the exception of the lowfrequency source. Due to its large size, the center of the
+low-frequency source was offset from the traverse microphone by 0.3 m; this offset distance was compensated for in
+postprocessing using a cosine correction in the traverse distance vector. Note that the focus of the paper at hand is upon
+the traverse and data processing methods, and not upon
+source design or suitability for qualification testing: such
+considerations are manifest in their complexity, and beyond
+the scope of the current paper.
+A Larson-Davis function generator, Model SRC20, was
+used to generate both sinusoidal and broadband random
+noise signals. The random noise signals, to maximize the
+sound energy within the frequency band of interest, were
+
+Frequency range
+共Hz兲
+
+TABLE VI. The rms computation parameters for LNE and WW traverses.
+Random noise excitation.
+
+Frequency
+共Hz兲
+80
+125
+250
+500
+1000
+2000
+4000
+6300
+8000
+10 000
+
+Data points per
+average
+
+Averages per
+wavelength
+
+Spatial
+resolution
+共cm兲
+
+Ratio of spatial
+resolution to
+wavelength 共%兲
+
+LNE
+
+LNE
+
+LNE WW
+
+LNE
+
+WW
+
+4.4
+2.7
+1.4
+0.7
+0.4
+0.4
+0.4
+0.4
+0.4
+0.4
+
+1.0
+1.0
+1.0
+1.0
+1.3
+2.5
+4.4
+7.0
+8.9
+11.1
+
+1.0
+1.0
+1.0
+1.0
+1.0
+1.8
+3.0
+4.7
+5.9
+7.4
+
+WW
+
+WW
+
+74 156 111 282 100.0 100.0
+46 715 70 104 100.0 100.0
+23 358 35 052 100.0 100.0
+15 924 21 889 100.0 100.1
+9997 10 944 79.7 100.1
+9997
+9997 39.8 54.8
+9997
+9997 22.5 33.7
+9999
+9999 14.2 21.2
+9997
+9997 11.2 16.9
+9997
+9997
+8.9 13.4
+
+4.4
+2.7
+1.4
+0.7
+0.3
+0.3
+0.3
+0.3
+0.3
+0.3
+
+FIG. 4. Difference between two successive 1-kHz pure tone traverses into
+lower northeast corner.
+
+V. POSTPROCESSING
+
+Prior to computation of the inverse square law deviation
+as previously described, the traverse data was postprocessed
+to correct the distance vector if necessary, to band-pass filter
+the data, and to calculate the rms pressure along the traverse
+length. As stated above, the low-frequency sound source was
+significantly offset from the traverse line. This offset was
+corrected for in the distance-vector using a cosine correction.
+When the configuration of the traverse line required the microphone to be pulled toward the source, the distance-vector
+and level data were reversed, yielding data as if the microphone had moved away from the source. The time data was
+digitally band-pass filtered about the excitation frequency of
+interest. One-third octave and full octave filters were used for
+broadband noise excitations as appropriate to the test frequency. For pure tone excitations a narrow band-pass filter
+(bandwidth⫽ 201 of the center frequency兲 was used to improve the signal-to-noise ratio.
+TABLE VIII. Standard deviation of reference signal for all traverse data.
+Standard deviation of reference signal 共dB兲
+
+TABLE VII. Traverse range used for optimal reference method. Minimum
+was constrained by near field, maximum by room dimensions.
+
+886
+
+Frequency 共Hz兲
+
+Lower northeast
+corner traverse
+
+West wall
+traverse
+
+80
+125
+250
+⬎250
+
+1.19–3 m
+0.76 –3 m
+0.5–3 m
+0.5–3 m
+
+1.19–2 m
+0.76 –2 m
+0.5–2 m
+0.5–2 m
+
+J. Acoust. Soc. Am., Vol. 113, No. 2, February 2003
+
+LNE
+
+WW
+
+Frequency
+共Hz兲
+
+Pure tone
+
+Random noise
+
+Pure tone
+
+Random noise
+
+80
+125
+250
+500
+1000
+2000
+4000
+6300
+8000
+10 000
+
+0.01
+0.02
+0.00
+0.01
+0.01a
+0.01
+0.03
+0.03
+0.04
+0.08
+
+0.22
+0.09
+0.11
+0.26
+0.18
+0.16
+0.28
+0.32
+0.32
+0.23
+
+0.02
+0.02
+0.01
+0.03
+0.05
+0.02
+0.07
+0.04
+0.05
+0.10
+
+0.15
+0.04
+0.05
+0.21
+0.17
+0.15
+0.30
+0.31
+0.35
+0.22
+
+a
+
+Reference signal standard deviation for repeatability measurements depicted in Fig. 4 were 0.009 and 0.005 dB.
+
+Cunefare et al.: Anechoic chamber qualification: Traverse, analysis, signal
+
+01 September 2026 16:47:31
+
+pling frequency, the traverse duration 共time required to complete the traverse兲, and the speed of microphone movement.
+The start and stop positions of the traverse microphone were
+constrained by the physical location of the source and wedge
+tips. The sampling frequency was set to be at least 2.5 times
+the highest test frequency. Traverse duration was limited by
+the data storage capacity of the data acquisition system 共128
+MB兲. This limitation was significant for high frequencies
+共⬎1000 Hz兲 and for random noise excitation. Finally,
+traverse velocity was computed as the ratio of traverse length
+and duration. Traverse times, sampling frequencies, and data
+file size for the traverse measurements presented here are
+shown in Tables III and IV for pure tone and noise traverses,
+respectively.
+The source level was set at the traverse microphone’s
+outermost position, at a level at least 10 dB above the ambient noise floor of the frequency band of interest. This was
+done to ensure an adequate signal-to-noise ratio along the
+entire traverse. The traverse microphone was then moved to
+the traverse measurement position nearest the source, where
+the dynamic range of the microphone power supply and data
+acquisition hardware were adjusted to avoid data clipping
+during the traverse.
+The traverse microphone was placed in its starting position. The motion control system was then triggered to set the
+traverse microphone in motion, pulling the microphone up
+the traverse line, and, simultaneously, triggering the data acquisition system. Output voltage data for the two microphone
+channels 共traverse microphone and reference microphone兲
+were recorded for the duration of the traverse.
+
+FIG. 7. Deviation from inverse square law by fixed reference method, referenced to level at 1 m, for pure tone continuous traverses into the west
+wall.
+
+The filtered data was divided into blocks of equal length,
+and the rms pressure computed for each block. Block length
+was determined as a compromise between samples per wavelength at each frequency and number of available data points
+per average 共constrained by system memory limitations兲. A
+target of 100 rms pressure values per wavelength was desired
+at each frequency; the spatial resolution of a traverse, expressed in terms of fractional wavelengths, is inversely proportional to the number of rms values per wavelength along
+the traverse. The 100 rms samples per wavelength yield a
+spatial resolution of 1% of a wavelength. This resolution was
+decreased when data acquisition memory limited the total
+number of data points along the traverse; these limitations
+
+manifest themselves on longer traverse and higher frequencies. The exact number of rms samples per wavelength was
+adjusted so that each rms average was calculated over as
+close to an integer number of periods as possible at the frequency of interest, thereby yielding an accurate calculation
+of the rms level of each block of data.
+The parameters used to compute rms pressure for the
+data presented below are displayed in Tables V and VI for
+pure tone and random noise traverses, respectively. Those
+instances in Tables V and VI where the spatial resolution is
+greater than 1% of a wavelength are due to memory limitations preventing acquisition of sufficient samples.
+With the rms pressures and source-microphone separation distances in hand, the deviation from inverse square law
+performance may be calculated using the procedures detailed
+in Sec. II. For the optimal reference method, only that portion of the data that met the requirements of Eq. 共7兲 was
+included in the analysis, yielding the traverse spans listed in
+Table VII. For the fixed reference method, 1 m from the
+source was selected as the reference distance.
+
+VI. RESULTS
+
+FIG. 6. Deviation from inverse square law by optimal reference method for
+pure tone continuous traverses into LNE corner.
+J. Acoust. Soc. Am., Vol. 113, No. 2, February 2003
+
+In the following we present the results obtained for two
+traverse directions, one into the lower northeast corner
+共LNE兲 of the anechoic chamber, and the other into the vertical center of the west wall 共WW兲, 0.1 m to the south side of
+the wedge basket hinge. These directions were selected as
+the current standards emphasize traverses into the corners of
+the room under test, with other traverses selected at the user’s discretion. The traverse toward the door was selected
+anticipating that the structure of the wedge basket support
+and gaps around its perimeter might generate reflections. Of
+course, the full qualification test for the chamber has more
+traverses than those documented here.
+
+Cunefare et al.: Anechoic chamber qualification: Traverse, analysis, signal
+
+887
+
+01 September 2026 16:47:31
+
+FIG. 5. Deviation from inverse square law by fixed reference method referenced to the level at 1 m for pure tone continuous traverses into LNE
+corner.
+
+FIG. 8. Deviation from inverse square law by optimal reference method for
+pure tone continuous traverses into the west wall.
+
+FIG. 10. Deviation from inverse square law by fixed reference method,
+referenced to 1 m. Data points taken from pure tone continuous traverse data
+at 0.3-m increments, west wall traverse.
+
+A. Traverse repeatability and source stability
+
+traverse is the temporal stability of the test sound source.
+Table VIII presents the statistics for the source stability, as
+measured at the reference microphone, during each of the
+traverses discussed below. We judge that the source was acceptably stable during the traverses. The data for the pure
+tone traverses clearly has a lower deviation than the broad
+band noise, but such is to be expected given the nature of
+these two signals. Indeed, the longer traverse times for the
+broad band noise tests were driven by the need to obtain
+stable source level statistics for each of the computed averages during a traverse.
+B. Qualification traverses with pure tones
+
+FIG. 9. Deviation from inverse square law by fixed reference method, referenced to level at 1 m. Data points taken from pure tone continuous
+traverse data at 0.3-m increments into LNE corner.
+888
+
+J. Acoust. Soc. Am., Vol. 113, No. 2, February 2003
+
+Figure 5 presents the deviation from free-field performance obtained using the fixed reference method for pure
+tone traverses into the lower north east corner of the chamber. Figure 6 presents the deviation obtained using the optimal reference method. It is important to note that both figures were generated based on the same underlying raw data;
+the differences arise due to the method of processing the
+data. Figures 7 and 8 present the comparable data for
+traverses into the west wall. For these plots, the frequency
+labels along the right vertical axis define the position of the 0
+dB deviation for that frequency; the dashed lines above and
+below the 0-dB line are the permissible variations from freefield performance, Table I. Had the measured data matched
+free-field performance, the deviation would have tracked
+identically the 0 dB line; such is clearly not the case. For the
+purposes of chamber qualification, though, the data in Figs.
+5– 8 may be used to determine the minimum distance at
+which the tolerance limits at any frequency exceed the tolerance limits, Table I. For example, for the 1-kHz band and
+fixed reference method, the first exceedance occurs at 1.25
+m. Interestingly, the magnitude of the variation of the deviation is appreciably less along this traverse as compared to
+
+Cunefare et al.: Anechoic chamber qualification: Traverse, analysis, signal
+
+01 September 2026 16:47:31
+
+A significant value of the traversing system detailed here
+is its ability to produce repeatable results with high spatial
+resolution. The need for establishing the repeatability of the
+system comes down to one’s confidence in comparing the
+derived difference data to the tolerance limits for chamber
+qualification, Table I. Figure 4 depicts the difference between
+two successive pure tone traverses at 1000 Hz into the chamber’s lower northeast corner. The standard deviation of the
+difference between the two data sets is 0.07 dB. Similar repeatability was obtained regardless of traverse direction and
+frequency.
+An associated concept to the spatial repeatability of the
+
+FIG. 11. Overlay of deviation from inverse square law for pure tone continuous traverse data and 0.3-m spacing data, fixed reference method referenced to 1 m, LNE corner.
+
+FIG. 13. Deviation from inverse square law by fixed reference method,
+referenced to 1 m, for random noise continuous traverses into the LNE
+corner.
+
+C. Discrete versus continuous traverses, pure tone
+
+As is observable in the previous publications,3,16,17 the
+deviation from inverse square performance varies significantly along a traverse. As the deviation is due to interference between the direct and reflected components of the
+wave field, the spatial variation is expected to occur on
+length scales comparable to a fraction of a wavelength, and
+this is, in fact, observed in the data presented in Figs. 5– 8;
+the shorter the wavelength, the shorter the spatial scale of the
+deviation. The problematic significance of this observation,
+though, is whether or not discrete sampling methods are capable of elucidating this spatial complexity.
+Figures 9 and 10 depict the results one would obtain by
+sampling the traverse data at discrete intervals, 0.3 m 共⬃1
+ft兲, analyzed using the fixed reference method. The data was
+extracted from the continuous traverses of Figs. 5 and 7.
+While this data does indicate some performance issues with
+the chamber, it is a poor representation of the full complexity
+of the sound field, as may be best seen by overlaying the
+discrete data on the corresponding continuous traverses, as is
+depicted in Figs. 11 and 12. Clearly, the inability of coarsely
+spaced discrete samples to capture the complexity of the deviation increases with increasing frequency. For example, for
+the 4-kHz traverse in Fig. 12, the 1-ft spacing discrete
+traverse would indicate no performance issues with the
+chamber over the entire traverse, while the continuous
+traverse identifies clear violations of the tolerance limits
+within 1.5 m of the source.
+D. Qualification traverses with broadband noise
+
+FIG. 12. Overlay of deviation from inverse square law for pure tone continuous traverses and 0.3-m spacing data, fixed reference method referenced
+to 1 m, west wall.
+J. Acoust. Soc. Am., Vol. 113, No. 2, February 2003
+
+Next, consider the free-field performance obtained using
+broadband random noise for the excitation signal. As evident
+from Table IV, the use of broadband noise leads to much
+longer traverse times and larger data sets. Figures 13 and 14
+are the resulting free-field deviation plots for traverses into
+
+Cunefare et al.: Anechoic chamber qualification: Traverse, analysis, signal
+
+889
+
+01 September 2026 16:47:31
+
+that observed along the traverse into the LNE corner. Apparently, the structure about the wedge basket and the door on
+the west wall are not significant reflectors.
+Discussion of the relative performance of the optimal
+reference method versus the fixed reference method will be
+deferred until after presentation of the data using broadband
+noise. However, qualitatively comparing Figs. 5 and 6, and 7
+and 8, it is evident that the optimal reference method acts to
+bring more of the traverse within the tolerance limits, with
+the greatest observable impact in the lower frequencies 共principally 80 and 125 Hz兲.
+
+FIG. 16. Deviation from inverse square law by optimal reference method for
+random noise continuous traverses into west wall.
+
+the lower northeast corner, analyzed using the fixed reference
+and optimal reference methods, respectively. Figures 15 and
+16 are the equivalent plots for traverses into the west wall.
+The optimal reference method again has impact on the lowest frequencies, bringing much of the deviation to within the
+tolerance bounds. With the exception of the data at 80 and
+125 Hz, though, there is very little deviation from inverse
+square law performance over these traverses, regardless of
+the analysis method. Indeed, for these traverses there is no
+question that even very coarsely spaced discrete samples
+would yield adequate representations of the chamber performance. In contrast to the results obtained with the pure tone
+excitations 共Figs. 5 and 6, and Figs. 9 and 10兲, the deviations
+
+observed using broadband noise are unremarkable. These results support the conclusion that discrete samples at just
+about any spacing would seem to be suitable for broadband
+noise qualification.
+
+FIG. 15. Deviation from inverse square law by fixed reference method,
+referenced to level at 1 m, for random noise continuous traverses into west
+wall.
+890
+
+J. Acoust. Soc. Am., Vol. 113, No. 2, February 2003
+
+E. Optimal versus fixed reference method; pure tone
+versus broadband noise
+
+Drawing visual comparisons between Figs. 5 and 6, and
+between Figs. 7 and 8, it is evident that the optimal reference
+technique serves to bring more of the deviation data within
+the tolerance limits. The effect is most prevalent at the lower
+frequencies. The optimal reference method analyses that underlie the data in Figs. 6 and 8 used only those portions of a
+traverse data set that satisfied the requirements of Eq. 共7兲
+with respect to the minimum microphone to source separation distance. Figure 17 illustrates the results that may be
+obtained if the minimum separation distance is permitted to
+be closer to the source than as defined by Eq. 共7兲. The three
+
+FIG. 17. Impact of minimum source to microphone separation distance on
+results of optimal reference method for 80-Hz pure tone continuous traverse
+into LNE corner. Traverse span noted along right-hand y axis.
+
+Cunefare et al.: Anechoic chamber qualification: Traverse, analysis, signal
+
+01 September 2026 16:47:31
+
+FIG. 14. Deviation from inverse square law by optimal reference method,
+for random noise continuous traverses into the LNE corner.
+
+TABLE IX. Percentage of traverse samples that exceed tolerance limits for optimal reference method and fixed
+reference method, pure tone and noise traverses. Fixed reference method normalized to level at 1 m.
+LNE traverses
+Pure tone
+
+WW traverses
+Noise
+
+Optimal
+
+Fixed
+
+Optimal
+
+Fixed
+
+Optimal
+
+Fixed
+
+Optimal
+
+80
+125
+250
+500
+1000
+2000
+4000
+6300
+8000
+10 000
+
+56
+53
+29
+37
+16
+14
+15
+2
+1
+9
+
+13
+52
+25
+51
+10
+11
+9
+1
+1
+1
+
+54
+30
+4
+0
+0
+0
+0
+0
+0
+0
+
+10
+5
+0
+0
+0
+0
+0
+0
+0
+0
+
+0
+0
+8
+22
+11
+14
+4
+0
+0
+0
+
+0
+0
+3
+18
+9
+4
+2
+0
+0
+0
+
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+
+Optimized source offset
+共normalized by source dimension兲
+LNE
+Pure tone
+1.92
+⫺0.05
+⫺0.42
+2.05a
+⫺0.38
+0.19
+0.21
+1.26
+0.65
+⫺0.64
+
+a
+
+2.02
+0.02
+⫺0.33
+⫺0.40
+⫺0.39
+⫺0.08
+0.11
+⫺0.09
+0.21
+0.52
+
+Pure tone
+
+Noise
+
+0.90
+⫺0.53
+⫺0.33
+1.15
+⫺0.19
+⫺0.74
+⫺0.12
+0.60
+0.71
+⫺0.03
+
+0.98
+⫺0.35
+⫺0.06
+⫺0.55
+⫺0.41
+⫺0.24
+0.16
+0.01
+0.07
+0.29
+
+a
+
+Optimized source offset exceeds twice the largest source dimension; exceeds the source offset constraint in the draft ISO 3745 qualification specification.
+
+J. Acoust. Soc. Am., Vol. 113, No. 2, February 2003
+
+F. Spatial sampling
+
+The deviations from inverse square law performance as
+depicted in any of the figures with pure tone continuous
+traverses exhibit a variation consistent with an interference
+pattern. A measure of the spatial variation within the pattern
+TABLE XI. Estimated averaged spatial separation of zero crossings in deviation from inverse square law for pure tone traverse data.
+
+WW
+Noise
+
+erance limits, the use of pure tones is a much more stringent
+test of the chamber’s performance than the use of random
+noise.
+A side benefit of the optimal reference method is that
+one need not know the exact source-to-microphone separation distance, as the method will compensate for that through
+the computation of the source offset 共however, the spacing
+between microphone positions along the traverse must be
+known accurately兲.
+The source offsets calculated in the optimal reference
+method, Eq. 共5兲, are listed in Table X. Of particular interest
+are the two instances noted in the table where the calculated
+source offset exceeds twice the maximum source dimension
+共at the time of this writing, there was a draft ISO 3745 in
+circulation that proposed a maximum permissible source offset of two times the largest source dimension兲. Of note, these
+two cases of excessive source offset correspond to traverses
+with poor performance with respect to the tolerance bounds,
+as well 共Figs. 6 and 14, and the 80- and 500-Hz LNE data in
+Table IX兲.
+
+Frequency
+共Hz兲
+
+Wavelength
+共m兲
+
+80
+125
+250
+500
+1000
+2000
+4000
+6300
+8000
+10 000
+
+4.288
+2.744
+1.372
+0.686
+0.343
+0.172
+0.086
+0.054
+0.043
+0.034
+
+Estimated spatial period 共m兲
+LNE
+
+WW
+
+Average
+
+% Wavelength
+
+1.750
+1.100
+0.500
+0.250
+0.100
+0.050
+0.028
+0.022
+0.016
+0.012
+
+1.000
+0.400
+0.250
+0.100
+0.050
+0.029
+0.019
+0.015
+0.013
+
+1.750
+1.050
+0.450
+0.250
+0.100
+0.050
+0.029
+0.020
+0.016
+0.012
+
+40.8
+38.3
+32.8
+36.4
+29.2
+29.2
+33.3
+37.0
+36.5
+36.0
+
+Cunefare et al.: Anechoic chamber qualification: Traverse, analysis, signal
+
+891
+
+01 September 2026 16:47:31
+
+TABLE X. Source offset calculated by optimal reference method, normalized by characteristic source dimension.
+
+80
+125
+250
+500
+1000
+2000
+4000
+6300
+8000
+10 000
+
+Noise
+
+Fixed
+
+deviation lines in Fig. 17 were derived from the exact same
+set of physical traverse data, with the only difference being
+the starting point of the data that was included in the analysis
+of Eqs. 共3兲–共5兲. The traverse data passed to the analysis
+started at distances of 0.5, 1.0 and 95/f m. The analysis starting at 0.5 m shows a strong near-field impact, that at 1.0 m
+less so, and that at 95/f even less. The results indicate that
+the selection of a minimum separation distance should account for the frequency-dependent near-field characteristics
+of the test source.
+To further quantify the impact of the optimal reference
+method, as well as the use of pure tone versus broadband
+noise, consider Table IX. Table IX contains the percentage of
+each traverse that exceeds the defined performance limits
+共Table I兲 over the fitting range of the traverse 共Table VII兲.
+With the exception of the 500-Hz traverse into the LNE corner, the optimal reference method improves the fit of the
+traverse curve within the tolerance limits, bringing a greater
+fraction of the traverse within the bounds. The optimal reference method effectively affords the traverse data its best
+chance to qualify within the tolerance bounds. Further, as
+evidenced by the percentage of samples that violate the tol-
+
+Frequency
+共Hz兲
+
+Pure tone
+
+Frequency
+共Hz兲
+
+may be obtained by estimating the average separation distance between zero crossings of the deviation data. The average zero crossing separation is a measure of the spatial
+scale which a traverse must be capable of resolving in order
+to adequately sample the field. Table XI presents the results
+of such an analysis applied to the pure tone traverse considered here. Expressed in terms of percentage of a wavelength,
+the average zero crossing separation ranged from a low of
+29.2% at 1000 and 2000 Hz to a high of 40.8% at 80 Hz. If
+one takes a Nyquist-criterion perspective on these results,
+then the minimum spatial sampling should be at least twice
+the minimum spatial scale of interest 共note that higher resolution means shorter spacing between samples兲. For the data
+presented in this paper, this would imply a minimum spatial
+resolution 共distance between samples兲 of 15% of a wavelength at the frequency of interest. At low frequencies such a
+spacing is relatively easy to achieve with discrete sampling
+methods; it is much less practicable at higher frequencies.
+This is further indication that a continuous or, at the very
+least, a systematically densely sampled traverse is vital to
+achieve meaningful qualification results with the use of pure
+tones.
+VII. CONCLUSIONS
+
+1
+
+E. H. Bedell, ‘‘Some data on a room designed for free field measurements,’’ J. Acoust. Soc. Am. 8, 118 –125 共1936兲.
+2
+L. L. Beranek and H. P. Sleeper, Jr., ‘‘The design and construction of
+anechoic sound chambers,’’ J. Acoust. Soc. Am. 18, 140–150 共1946兲.
+
+892
+
+J. Acoust. Soc. Am., Vol. 113, No. 2, February 2003
+
+E. C. Bell, L. N. Hulley, and N. C. Mazumder, ‘‘The steady-state evaluation of small anechoic chambers,’’ Appl. Acoust. 6, 91–109 共1973兲.
+4
+J. L. Davy, ‘‘Evaluating the lining of an anechoic room,’’ J. Sound Vib.
+132共3兲, 411– 422 共1989兲.
+5
+v. H. G. Diestel, ‘‘Messung des mittleren Reflexionsfaktors der Wandauskleidung in einem reflexionsarmen Raum’’ 共‘‘Measurement of the averaged pressure reflection coefficient of the absorbing lay-out of an
+anechoic room’’兲, Acustica 20, 101–104 共1968兲.
+6
+F. J. Babineau and B. D. Tinianov, ‘‘Research into quality assessment
+methods for anechoic chambers,’’ in CD-ROM Proceedings of Noise-Con
+2000 共Newport Beach, CA, 2000兲, paper 1pNSb6, available from Institute
+of Noise Control Engineering, Saddle River, NJ.
+7
+ANSI, ANSI S12.35-1990, ‘‘Precision methods for the determination of
+sound power levels of noise sources in anechoic and hemi-anechoic
+rooms’’ 共Standards Secretariat, Acoustical Society of America, Melville,
+NY, 1990兲.
+8
+ISO, ISO 3745, ‘‘Acoustics—Determination of sound power levels of
+noise sources—Precision methods for anechoic and semi-anechoic rooms’’
+共International Organization for Standardization, Geneva, Switzerland,
+1977兲.
+9
+H. F. Olson, ‘‘Acoustic laboratory in the new RCA Laboratories,’’ J.
+Acoust. Soc. Am. 15, 96 –102 共1943兲.
+10
+H. P. Sleeper, Jr., E. E. Moots, and L. L. Beranek, ‘‘The Harvard anechoic
+chamber,’’ CIR-51, Electro-Acoustic Laboratory, Harvard University,
+1945.
+11
+P. J. Mills, ‘‘Construction and design of Parmly Sound Laboratory and
+anechoic chamber,’’ J. Acoust. Soc. Am. 19, 988 –992 共1947兲.
+12
+H. C. Hardy, F. G. Tyzzer, and H. H. Hall, ‘‘Performance of the anechoic
+room of the Parmly Sound Laboratory,’’ J. Acoust. Soc. Am. 19, 992–995
+共1947兲.
+13
+W. Koidan and G. R. Hruska, ‘‘Acoustical properties of the National Bureau of Standards anechoic chamber,’’ J. Acoust. Soc. Am. 64, 508 –516
+共1978兲.
+14
+M. Pancholy, A. F. Chhapgar, and V. Mohanan, ‘‘Design and construction
+of an anechoic chamber at the National Physical Laboratory of India,’’
+Appl. Acoust. 14, 101–111 共1981兲.
+15
+R. R. Boullosa and A. P. Lopez, ‘‘Some acoustical properties of the
+anechoic chamber at the Centro de Instrumentos, Universidad Nacional
+Autonoma de Mexico,’’ Appl. Acoust. 56, 199–207 共1999兲.
+16
+A. N. Rivin, ‘‘An anechoic chamber for acoustical measurements,’’ Sov.
+Phys. Acoust. 7共3兲, 258 –268 共1962兲.
+17
+F. Ingerslev, O. J. Pedersen, and M. P. K. Molller, ‘‘New rooms for acoustic measurements at the Danish Technical University,’’ Acustica 19共4兲,
+185–199 共1968兲.
+18
+J. Duda, ‘‘Inverse square law measurements in anechoic rooms,’’ Sound
+Vib. December, 20–25 共1998兲.
+19
+J.-q. Wang and B. Cai, ‘‘Calculation of free-field deviation in an anechoic
+room,’’ J. Acoust. Soc. Am. 85, 1206 –1212 共1989兲.
+20
+N. Olson, ‘‘Acoustic properties of anechoic chamber,’’ J. Acoust. Soc. Am.
+33, 767–770 共1961兲.
+21
+J. Duda, M. C. Hastings, and R. D. Godfrey, ‘‘Qualification of the sound
+field in a Metadyne anechoic chamber,’’ in Proceedings of ASME International Mechanical Engineering Congress and Exposition, Dallas, TX,
+1997, available from ASME, NCA Vol. 24, pp. 93–96.
+22
+J. Impeduglia, ‘‘Acoustic testing facilities raises plant capacity,’’ Sound
+Vib. July, 6 – 8 共1999兲.
+23
+K. O. Ballagh, ‘‘Calibration of an anechoic room,’’ J. Sound Vib. 105共2兲,
+233–241 共1986兲.
+24
+P. G. Lynde and R. J. Buelow, ‘‘Development of an alternative metal
+anechoic wedge,’’ Sound Vib. October, 6 –16 共1993兲.
+25
+L. L. Beranek, Acoustics 共Acoustical Society of America, Woodbury, NY,
+1986兲.
+
+Cunefare et al.: Anechoic chamber qualification: Traverse, analysis, signal
+
+01 September 2026 16:47:31
+
+We have demonstrated here that it is feasible and practical to implement a system to perform continuous traverses
+for the purposes of qualification of anechoic chambers. We
+find that the optimal reference method to be merited for the
+analysis of the data obtained from such continuous traverses.
+In light of the marked differences between the pure tone and
+broad band noise traverses observed in our facility, it is our
+opinion that the use of broadband noise as the test sound
+signal is of dubious value for qualification purposes in chambers where sources with pure tone components are to be
+tested. If only sources with broadband characteristics are of
+interest, then broadband qualification is clearly appropriate.
+It is our opinion that anechoic chambers should be tested
+with pure tones and a continuous traversing system. The
+counter-argument, that such traversing systems or that discrete sampling on a fine spacing is impractical, is specious: if
+the intent is to find where the performance deviates from
+inverse square law, then the physics demand such a spacing
+for pure tone testing. For chambers that will only be used to
+test broad band noise sources, then discrete sampling at
+coarse intervals would seem to be valid.
+
+3
+
+

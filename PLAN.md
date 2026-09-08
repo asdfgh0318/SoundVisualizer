@@ -76,7 +76,13 @@ These were not in the original 2.md scope but came up during development:
 
 ## Open questions
 
-(none currently)
+Raised by the arc validation (Sept 2026) and its remedies report (`docs/arc-validation-remedies.pdf`, 2026-09-08):
+
+- **Rig geometry is unrecorded** — arc radius, hub height, room size, foam thickness, what stands at the −90° end and near the ±36°/±54° mics. Every quantitative check (image-source fit, far-field distance, floor comb dips) is blocked on this. Goes in `docs/mic_arc.md`.
+- **Room or rotor at the blade-passage frequency?** The tone polar is ±8 dB while the broadband floor beside the tone is flat; narrow room modes and a non-axisymmetric inflow (stand, wall) both fit. Decided by a loudspeaker at the hub (sweep for the room transfer function, tones at 216/238/258 Hz) plus a reversed-rotation run.
+- **Analysis-side changes the app should grow:** store the BPF read from the audio in `meta.json` (there is no RPM channel; `telemetry.csv` has rpm = 0), report tone levels per harmonic and broadband as tone-notched third-octaves instead of one mixed band, and drop captures whose BPF is >3 % off the run median (prop7 ran at 164 Hz where the others ran at 238 Hz).
+- **Capture bookkeeping to explain:** why the PWM-1800 WAVs are 0.2–1.8 s long in nine of twelve runs, why PWM 1200 never spins up a tone, and why prop18's PWM-2000 step reached no tone.
+- **Next campaign** (report §15): geometry → loudspeaker session (arc flat) → speed ladder of 12–15 PWM steps with a cyclic mic rotation across runs → treat/move what the sweep names → loudspeaker session (arc vertical) → calibrator session for the eleven UMIK-2s.
 
 ## Resolved
 

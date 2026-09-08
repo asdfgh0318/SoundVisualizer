@@ -1,0 +1,847 @@
+[The Design and Construction of Anechoic Sound Chambers (Relevant to Service Control Nos. Na-108 and Ac-9)]
+[From the U.S. Government Publishing Office, www.gpo.gov]
+
+OFFICE OF SCIENTIFIC RESEARCH AND DEVELOPMENT NATIONAL DEFENSE RESEARCH COMMITTEE
+The Design and Construction of Anechoic Sound Chambers
+Report of October 15Z 1945
+O.S.R.D. NO. 4190
+ELECTRO-ACOUSTIC LABORATORY CRUFT BUILDING-HARVARD UNIVERSITY CAMBRIDGE 38, MASSACHUSETTS
+ELECTRO-ACOUSTIC LABORATORY
+Cruft Building
+Harvard University Cambridge jQ, Massachusetts
+INITIAL MAILING- LIST
+THE DESIGN AND CONSTRUCTION OF ANECHOIC SOUND CHAMBERS
+October 15, I9U5 - OSRD No. U190
+0.S.R.D«
+Dr. Irvin Stewart, Executive Secretary
+N.D.R.C. (Section 17.5)
+Dr.. Harvey Fletcher, Section Chief
+Dr. P. M. Morse, Project Supervisor
+Dr. C. T. Morgan, Technical Aide Section Members:
+Dr. Hallowell Davis
+Dr. F. A. Firestone
+Prof. V. 0. Knudsen
+Dr. S. S. Stevens
+NAVY DEPARTMENT
+Bureau of Snips, Shipbuilding Division
+Att: Capt. J. B. Duval
+ORI, Planning Division, EXOS
+ORI, Naval Research Laboratory
+Att: Director
+Att: Weiant Wathen-Dunn
+U.S. Navy Yard, Washington, D. C.
+Naval Ordnance Laboratory, Washington
+Navy Yard
+Att: C. F. Langford
+Naval Air Material Center,
+Naval Air Experimental Station, Aeronautical Radio and Radar Lab
+WAR DEPARTMENT
+ATSC, Engineering Division
+Att: Mi’. J. E. Wilson. TSERR2B5
+Att: Dr. 0. R. Rogers, TSEAL-2E
+Squier Signal Laboratory, Special Equipment Branch
+Att: SPSGS-SSE
+BRITISH
+Advisory Comm, on Army Tele. Instrumente
+Att: Mr. W. G. Radley
+Signals Res. and Dev. Establishment
+Att: Chief Superintendent
+S.J. Gray, Director of Signals and
+Radar Research
+AUSTRALIAN
+Radio-Physics Laboratory
+Research Laboratories, Postmaster-
+General's Department
+National Standards Laboratory
+CANADIAN
+RCAF, Otológica! Laboratory
+Att: Flight Lt. R„ W. White
+National Research Council
+U.S. Department of Commerce Bureau of Standards
+Att: Dr. R. K. Cook
+OSRD Report No. 4190
+Copy No.
+OFFICE OF SCIENTIFIC RESEARCH AND DEVELOPMENT
+NATIONAL DEFENSE RESEARCH COMMITTEE
+DIVISION 17 SECTION 5
+Contract OEMsr-658
+THE DESIGN AND CONSTRUCTION OF ANECHOIC SOUND CHAMBERS
+(Relevant to Service Control Nos. NA-108 and. AC-9)
+OSRD Report No. 4190
+October 15, 19^5
+ELECTRO-ACOUSTIC LABORATORY Cruft Building Harvard. University Cambridge, Massachusetts
+SUBMITTED BY
+L. L. Beranek
+H. P. Sleeper, Jr.
+E. E. Moots
+APPROVED FOR THE CONTRACTOR
+L. L. Beranek, Director Electro-Acoustic Laboratory Cruft Building
+Harvard University
+APPROVED FOR HDRC
+Harvey Fletcher
+Chief, Section 17.5
+P. M. Morse
+Project Supervisor
+iv
+THE DESIGN AND CONSTRUCTION OF ANECHOIC CHAMBERS
+Table of Contents
+Page No.
+I•      Introduction    1
+II.     Summary 5
+A.      Historical      Background      5
+B.      Rank order of Sound Absorbing Structures (according to performance)     6
+1.      Harvard Long Wedge      6
+2.      Exponential Pyramid     8
+5.      Exponential Wedge       8
+4.      Long Pyramid    8
+5.      Short Pyramid   8
+6.      Medium Linear Wedge     8
+7.      Short Linear Wedge      8
+8.      Blanket Layers  9
+9.      Sheet Layers    9
+C.      Generalized Wedge Specifications        14
+D.      Constructional Features of the Chambers 18
+E.      Calibration of the Completed Anechoic   Chambers        18
+III.    Design of the Chamber Lining    22
+A.      Fundamental Considerations      22
+B.      Types of Structures Tested      25
+C.      Comparative Data        24
+1.      Sheet Layer Structures  25
+2.      Blanket Layer Structures        26
+5.      Stuffed Pyramidal Structures    27
+4.      Semi-Rigid Pyramidal Structures 28
+5.      Linear Wedge Structures 28
+6.      Exponential Wedge and Pyramidal Structures      51
+v
+Page No.
+D.      Generalized. Data for the Design of     Linear  Wedge
+Structures      51
+IV.     Calibration of the Anechoic Chambers    52
+A.      Method of Calibration   52
+B.      Apparatus       52
+C.      Procedure       55
+D.      Data for Largest Anechoic       Chamber 54
+E.      Data for Electro-Acoustic       Laboratory Anechoic
+Chamber No. 2   60
+F.      Data for Psycho-Acoustic Laboratory Anechoic
+Chamber 60
+V.      Construction of the Large Anechoic Chamber and Control
+Rooms   66
+A.      Site    66
+B.      Sound Chamber   66
+C.      Additional Features     of the  Acoustical Laboratory   69
+1.      Control Rooms   69
+2.      Service Apparatus Room  69
+5.      Sound Lock and Suspended Track  71
+4.      Storage Room, Supply Entrance and Corridor to the Cruft Laboratory      72
+D.      Installation of Acoustical      Treatment       72
+1.      Main Support for the Wedges     72
+2.      Auxiliary Chain Supports        78
+5.      Installation of Wedges on the Floor     78
+E.      Interior Acoustical     Doors   78
+VI.     Fabrication of the Acoustical Wedges    84
+VII.    Constructional Features of the Small Electro-Acoustic and Psycho-Acoustic Anechoic Chambers     92
+Appendix I      Absorption Measurement  97
+Appendix II     Flow Resistance Measurement     99
+vii
+INTERIOR VIEW
+OF LARGE ANECHOIC CHAMBER
+FIG. I
+vili
+THE DESIGN AND CONSTRUCTION OF ANECHOIC* SOUND CHAMBERS
+I.      INTRODUCTION
+During World. War II, the National Defense Research Committee sponsored, a program of acoustical research at the Cruft Laboratory, Harvard. University, dealing with many problems of acoustic transmission and. the development of acoustical instruments. In order to perform the more complex of these problems as efficiently as possible, it was found necessary to construct acoustical chambers in which echoes were reduced to very low values.
+One of these chambers, having internal dimensions before addition of acoustical treatment of 58 x 50 x 58 feet (See Fig. 1), was designed to permit the investigation of large directional devices which, in normal use, would receive sound from sources located at a distance of several hundred feet in free space. In this room a source of sound located approximately 20 to 30 feet from the device under test will establish a reasonably plane sound wave over an area of approxlmat.ely 20 square feet. Similar freedom from reflecting surfaces is to be found only in open space a thousand or more feet above the earth, and it was in order to solve a sound transmission problem under such circumstances that the chamber was built. Moreover, the chamber is valuable because the research can proceed independent of weather conditions .
+Two smaller chambers having dimensions before treatment of approximately 11 x 15 x 10 feet and 12 x 20 x 12 feet were designed to assist in the development of microphones, handsets, earphone cushions and in the studies of the acoustical properties of gas and oxygen masks.
+In all, the specific problems for which these anechoic chambers have been used are as follows:
+1.      Determination of the response and directional characteristics of acoustical locating devices, microphones and loudspeakers.
++ No adjectival word exists in the English language meaning ’’free from echo.” In an attempt to avoid the customary expressions, "dead roam," "highly absorbent sound chamber," "absorptive chamber," "free-fleld roam," etc., the word anechoic was devised. The word is made up of the Greek prefix an- meaning not or without, the Greek word echo meaning echo and the adjectival suffix -ic, meaning characterized by. We prefer to pronounce it e_oh6 _io fa * Ik).
+2.      Development of loudspeakers and. intense noise sources.
+5.      Measurement of the response and. directional characteristics of outdoor announcing systems.
+1|-. Precise free-field calibration of microphones.
+5.      Tests and calibrations of microphones, loudspeakers, voice tubes and other electro-acoustical equipment.
+6.      Performance of auditory measurements dealing with the determination of the threshold of hearing, the loudness and pitch of sounds, and the precision of ■binaural localization.
+The first part of this report is a lengthy summary of the research program. Following the summary is a section devoted to a chronological review of the experiments which led to the development of the acoustical lining that was finally selected for the largest chamber. In Section IV the behaviors of the finished chambers are compared with the behaviors of the more important of other anechoic chambers known to be in existence. Section V deals with the construction of the building in which the largest of the three chambers is housed, while Section VI describes the methods of fabrication of the wedge lining. Finally, certain constructional features of the smaller chambers are discussed.
+-2-
+II.     SUMMARY
+A.      Historical Background.
+Before discussing the previous literature, a brief description of the apparatus used for obtaining the experimental data is given.
+To measure the sound absorbing characteristics of the structures, a tube method using principles described in the literature^ was employed. The structure to be tested is placed at one end of a steel tube 15 feet long and 8 inches square, shown in Fig. 59 of Appendix I. A loudspeaker is located at the opposite end of the tube and produces a sound wave which travels down the tube and is reflected from the structure under test. If the absorption is not perfect, then the reflected wave will combine with the incident wave to form a standing wave pattern. This pattern is examined with the aid of a moving microphone and the maximum and minimum sound pressures are determined and used for calculation of the percentage sound reflection. The tube measurements cover the frequency range between 50 and 1500 ops. Other data were taken in a reverberation chamber to determine the percentage reflection in the frequency range between 1500 and 4000 cps. For frequencies above 4000 cps, it is believed that the acoustic Impedance at the surface of the material should be made as near 42 pc units as possible based on the assumption that because of the thickness of the material, no reflection will occur from the rear surface. The degree to which this requirement at high frequencies is met can be determined from calculations based on a knowledge of the specific flow resistance of the material.
+In expressing the performance of the acoustical structure under test, it has been decided not to adopt the conventional quantity, percentage sound energy absorption, as an index of the absorbing efficiency. The percentage sound energy absorption is defined as 100 times the, ratio of the sound energy absorbed by the structure to the sound energy incident upon it. Instead it was decided to plot the percentage sound pressure reflection, which is defined as 100 times the ratio of reflected sound pressure to the incident sound pressure for sound normally incident on the structure. This choice of ordinate is desirable because the region between 99 and 100 per cent energy absorption corresponds to 10 to 0 per cent pressure reflection respectively. Thus using the latter scale, one obtains a more sensitive indication of differences among highly absorbent structures.
++
+H. J. Sabine, ’’Notes on Acoustic Impedance Measurement,” Jour.Acous.
+Soc.Am., 14, 145 (1942)
+-5-
+In this report, th© percentage sound pressure reflection appears as the left hand ordinate of all the pertinent graphs and is plotted linearly with 0 per cent reflection at the bottom. See the left hand ordinate for Structure A, page 10 as an example. Analytically, the percentage pressure reflection R, is related to the percentage energy absorption A, by the expression R = 10 / 100 - A. For convenience in interpretation, the percentage energy absorption is indicated on the right hand ordinate scale on the graph, and as can be seen, is not linear with respect to R.
+Historically, two essentially different types of sound absorbing structures have been described in published papers. The earlier of the two papers was presented by E. H. Bedell^ the Bell Telephone Laboratories in 1956. He described a treatment consisting of ten sheets of muslin and six sheets of flannel stretched and subspaced -within a depth of 18 1/2 inches from the wall. The acoustical behavior of thia structure is given on page 10, Structure B as interpreted from Bell Laboratories' data. A diagram of the structure and a list of component parts accompanies the graph. Further details on the properties of the materials are given in Table I on page 24. The reflection coefficient is seen to decrease from a value of 25^ at 100 cps to a value of 15^ at 150 cps and averaging approximately 16^ from 120 to 500 cps. Above 1000 cps the reflection coefficient is 3^ or less.
+The second paper was published by E. Meyer, G. Ruchmann and A. Schoch^"*- of Berlin in 1940 and the approach used is of a radical ly different nature. Their anechoic chamber was lined with thousandr of acoustical stalagmites and stalactites projecting from the wal1 r, ceiling and floor. These acoustical units consisted of long p yr amid-shaped muslin bags stuffed with loose rock wool to a density of about 12 Lbs/ft< Sagging was prevented by placing a wooden lath in the center of the structure. The base of the pyramid consisted of a triangle of plywood board covering slightly more than one half of the area and so shaped that it received the lath to form a rigid unit whlnh could be hung on hooks at the wall. The remaining area of the base was covered with perforated cardboard to hold the rock wool in place. The pyramid was 1 meter long and 15 centimeters square at the bottom and Included a prismatic base section 15 centimeters high whl ch butted tightly against the neighboring pyramids. Thirty-two thousand of these
++ - -------------------------------------------------—------------------------
+E. H. Bedell, "Some Data on a Room Designed, for Free-Field. Measurements,” Jour .A cous. Soo .Am., 8, 118 (1956)
++ Meyer, Buchmann and. Schoch, "A Novel, Highly Effective Sound.-Absorbing Arrangement and. the Construction of a Dead. Roam,” Akustische Zelts., 5, 552 (1940). Review in English by Young and. Schuck, Jour.Acous.Soc. Am., 15, 191 (1941).
+-4-
+units were used to line the chamber. The walls, but not the floor and. ceiling, were built of hollow tile blocks which effectively formed, an additional air space behind, the pyramids.
+Data were not given in the Berlin paper on the experimental behavior of a pyramid of the exact dimensions which they used in their chamber. However, based on the data which they did present and on data which we took on a structure made as similar to theirs as possible, the reflection characteristic is shown on page 10 structure C for comparison with the sheet layer structure previously described. For this pyramid, the reflection coefficient is 5^ or less for frequencies between 150 and 2000 cps and rises to 10^ at about 115 cps.
+It is obvious that the behavior of this pyramid structure is superior to that of the sheet layer structure. However, it is both difficult and expensive to construct, and it does not absorb well at frequencies below 150 cps. According to Meyer, it took eleven worlmen ¡1/2 months to stuff and install the 52,000 pyramids In the Berlin chamber, the dimensions of which were 50 x 55 x 50 feet. If an eighthour day were adhered to, this should represent about 9500 man hours of labor, while the wall area covered was 82^ of that of the Harvard Chamber. By direct proportion installation of the Berlin pyramids in the Harvard Chamber would represent 11,600 man hours of work. (About 8000 hours were required for the equivalent work on the Harvard Chamber using the Fiber-glas wedges).
+Because of the expense involved, it was decided that unless more efficient manufacturing techniques could be developed, this method of treatment with its higher acoustical efficiency would have to be abandoned. On the other hand, the immediate alternative of stretching a large number of sheets of cloth close together over large floor, ceiling and wall areas, contained many inherent difficulties of installation. Hence, an extensive research program was undertaken for the purpose of developing a structure which more nearly meets all requirements.
+Since completion of the Harvard Chamber, a paper has been published by H. F. Olson of the RCA Laboratories, giving data on a type of structure made up of blankets of Ozite mounted perpendicular to the side walls and consuming a total depth of 8 feet. No absorption tube measurements have been made on this structure at Harvard, nor were any data of this type given in the RCA paper. Data were given, however, on the properties of the room as a whole, and these are included in a later section of this report dealing with the calibration of completed anechoic chambers.
++ H. F. Olson, "Acoustic Laboratory in the New RCA Laboratories," Jour.Acous.Soc.Am., 15, 98 (19^5)
+-5-
+B.      Rank Order of Sound. Absorbing Structures according to Performance
+The graphs on pages 10 to 15 show the pressure reflection and. energy absorption coefficients for eleven acoustical structures investigated. as part of the general program; each of which was the best designed, for its particular type of configuration. With the exception of the comparisons on page 10, the structures are ranked in order of their acoustical merit. The curves on page 10 are included to show a comparison between the Harvard long wedge structure and the two structures previously described in the literature.
+On all the graphs the percentage pressure reflection is plotted as a function of frequency over a range extending from approxlmat.ely 50 to 1500 cps. On the right hand ordinate of each of the graphs, the two small black lines near 100^ absorption indicate values of 99.5 and 99*9# energy absorption.
+Our research has shown in general that the acoustical properties of a given material are correlated best with its specific flow resistance, i.e., the flow resistance per unit thickness. A method of measurement of the resistance to air flow by a material is given in detail in Appendix II. The apparatus required is sufficiently simple so that flow resistance tests may easily be made on production samples of material for a check on uniformity.
+Unfortunately, the P.F. Fiberglas board used in the experimental development of absorbing units did not have a constant specific flow resistance for a given nominal density. The flow resistance character, istics of P.F. Fiberglas vary with the average fiber size, the orientation of the fibers and the amount of phenol-formaldehyde binder used in the semi-rigid board. In Fig. 5, page 17 the range of flow resistance characteristics usually encountered for the Fiberglas material is given as a function of measured volume density.
+The materials used in the experimental structures diagrammad here are designated only by their nominal densities. The average flow resistance and volume density associated with these nominal densities are contained in Table I, page 24. In the early experiments, P.F. board stock having a thickness of two inches was used for all semi-rigid board structures. For the mass production of long wedge structures the P.F. stock used was four inches in thickness.
+!• NDRC-Harvard Long Wedge Structure, No, A, page 10
+This long wedge structure was the best of the wedge structures developed and the one adopted for use in the large anechoic chamber -The overall length of the structure is approximately 56 5/4 Inches excluding the 1 inch of cork insulation cemented to the rigid wall backing. The main body of the wedge is fabricated from phenol
+-6-
+formaldehyde impregnated. Flberglas (P.F. Flberglas), with a nominal density of 2.5 lbs/ft^. At the base of the wedge are two 1 inch blankets of P.F. Flberglas with a nominal density of 5»25 lbs/ft5 and a 7 inch square frame of wood. The entire wedge is covered with a thin muslin bag which stretches around and is stapled to the wooden base. The pressure reflection for an average production wedge is approximately 5^ in the frequency region above 70 cps, increasing to only 10^ at 70 ops. The spread in performance obtained due to variations among wedges produced on a production basis is given in Fig. 2. The center curve on this graph is the average. Actually, the small wiggles in the curves shift about along the frequency scale more than is indicated here. These curves represent the reflection coefficients obtained for typical "bad,” "average" and "good" wedges measured.
+HARVARD 57" WEDGE STRUCTURE
+FIG. 2
+Six inches of the eight inch square base of the wedge are in the form of a prismatic section and the frame at the base is made 7 inches square so that on Installation adjacent wedges are compressed tightly together. The 1 inch of cork against the rigid wall backing is used in the anechoic chamber for heat Insulation and to prevent sweating of the walls in cold weather. In the laboratory experimental tube, this rigid backing wall is a 1/4 inch steel plate, while in the building it is 1 foot or more of reinforced concrete .
+The P.F. Fiberglas is manufactured in various densities in the form of semi-rigid boards 2 feet wide, 4 feet long and in various thicknesses up to 4 inches. The components of the wedges were cut from these boards by band saws and put together in such a way as to form a wedge unit with an 8 inch square base. Complete details of construction are given in Section VI.
+-7-
+2.      Exponential Pyramidal Structure, No. 62, page 11
+An attempt was made to see if a convex exponential pyramid would be appreciably better than a linear pyramid. The behavior of this structure approached that of the linear wedge except for a rise in reflection to 7# at 125 ops. It is possible that more research on the proper flow resistance characteristics and the proper rate of taper would yield a better structure for a given length than the linear wedge. However, the expense of the fabrication, the waste of material and the lack of more time restricted further research in this direction.
+5.      Exponential Wedge Structure, No. 65, page 11
+The best convex exponential wedge developed from P.E. Fiberglas was 55 inches long and the pressure reflection averaged about 5# above 90 ops, which is somewhat greater than that for the 1 inear shaped wedge.
+4.      Long Linear Pyramidal Structure, No. 42, page 11
+The best of the linear pyramidal structures yielded the percentage pressure reflections shown on the graph. The valurr averaged about 5# above 150 cps except for a rise to 5# at approximately 275 ops. The percentage pressure reflection increased to 10# at 100 cps.
+5» Short Pyramidal Structure, No.. 41, page 12
+At one stage of the development, it appeared that a structure containing a short pyramid backed by a substantial air space might be satisfactory for adoption. The best short pyramid tested had a length of 55 inches and was made from P.F. Fiberglas having a nominal density of 5*25 Ibs/ft^. It was backed by 1 inch of 2.5 lbs/ft5 p.F. blanket and an air space of 12 inches. The curve obtained is similar in shape to that of the long pyrami dal structure except for the rise in reflection to 11# at 200 cps.
+6.      Medium Length Linear Wedge Structure, No. 59, page 12
+A linear wedge of 21 inches length was developed for use as a lining of medium depth for our second anechoic chamber (11 x 15 x 1.0 feet). A cutoff frequency of 150 cps, i.e., the frequency at which R reaches 10#, was obtained for a total depth of 25 inches.
+7«      Short Linear Wedge Structure, No. 60, page 12
+A third chamber (12 x 20 x 12 feet) was lined with short wedges to allow for more working space. Those wedges were very similar to that shown for Structure No. 60. The lack of low frequency absorption
+-8-
+was compensated, for to a small degree by making the room asymmetrical in shape. This high density structure has a cutoff frequency of about 250 cps for a depth of 15 inches.
+8.      Blanket Layer Structure, No. 24, page 1^
+The best blanket layer structure developed yielded a pressure reflection of about 12^ above 90 cps and rose to 20^ at 70 cps. The total depth, the different materials and the spacings in the structure are shown in the sketch.
+9.      Sheet Layer Structure, No. 7, page 15
+Measurements on this sheet layer structure were made at the Cruft Laboratory, and the results compare well with the data obtained at the Bell Laboratories. Fifteen sheets of cloth, nine of muslin and six of flannel, are mounted with varying spacing from the rigid wall backing. The average pressure reflection above 1J0 cps is about 16#, with considerable deviation from the average. Below 150 cps there is a rapid increase in reflection. Data were taken on the structure with the cloth sheets stretched and with them loose. The curve plotted is for stretched sheets and the performance was found to be superior to that for the unstretched sheets.
+A survey of our data leads to the conclusions that a linear wedge structure is the most practical structure tested. The pressure reflection coefficient for it is lower than that for a linear pyramid or any type of blanket or sheet layer structure, and it is not difficult to fabricate and mount. Structures with an exponential convex taper, while showing promise, were believed to be so difficult and wasteful in terms of material to manufacture, that a highly refined design was not developed. The use of P.F. Flberglas in the fabrication of wedges makes them practical for installation in chambers of any size.
+-9-
+HARVARD
+LINEAR WEDGE STRUCTURE
+STRUCTURE NO. A
+E.H.BEDELL-BELL TELEPHONE LABORATORIES
+SHEET LAYER STRUCTURE
+STRUCTURE NO. B
+MEYER, BUCHMANN, AND SCHOCH-BERLIN
+PYRAMIDAL STRUCTURE
+STRUCTURE NO. C
+-10-
+EXPONENTIAL PYRAMIDAL STRUCTURE
+STRUCTURE NO. 62
+EXPONENTIAL WEDGE STRUCTURE
+STRUCTURE NO. 63
+LONG LINEAR PYRAMIDAL STRUCTURE
+STRUCTURE NO. 42
+-11-
+SHORT PYRAMIDAL STRUCTURE
+STRUCTURE NO. 41
+MEDIUM LINEAR WEDGE STRUCTURE
+STRUCTURE NO. 59
+SHORT LINEAR WEDGE STRUCTURE
+STRUCTURE NO. 60
+12
+BLANKET LAYER STRUCTURE
+STRUCTURE NO. 24
+SHEET LAYER STRUCTURE
+STRUCTURE NO. 7
+-13-
+C.      Generalized. Wedge Specifications
+Each of the three types of wedge structures used in the anechoic chambers at Harvard was hand tailored to achieve optimum absorption over a wide frequency range. In particular, the dimensions of the lining finally adopted for the large anechoic chamber were not finally fixed until the five carloads of material were on the siding in Cambridge. The finishing touches, based on measurements of the material as actually received, consisted of adding two layers of 1 inch Fiberglas blanket at the base of the wedges and changing the depth of the air space by several Inches in order to remove a small peak in reflection which occurred in the vicinity of 180 cps.
+If the optimal physical characteristics of the material of the wedge were known, and if they could be closely enough controlled in production, there would be no need for final adjustments in design based upon what actually arrives in the carload shipment. With this thought in mind, we subsequently entered into a research program designed to yield the optimal dimensions of linear wedges for various overall dimensions or desired cutoff-frequencies, and to determine the flow resistance which should be specified to the manufacturer in order to yield a uniform absorption coefficient over the entire frequency range. Over 500 wedge structures with different dimensions and flow resistance characteristics were subsequently constructed and their pressure reflection coefficients measured in the 8 inch square tube.
+The dimensional design specifications for the P.F. Fiberglas wedge structures are summarized as a function of desired cutoff frequency in Fig. 3« The cutoff frequency is defined as that frequency at which the '’-.pressure reflection rises to 10^ of the pressure in a normally incident -•sound wave. This corresponds to the frequency at which the absorption sound energy drops to 99^ or at which there is a sound reduction of -SD-’db a single reflection. The independent variables were taken as taper length, base length and air space, and the dependent variables . are -then the total depth and the base depth. The base depth is speci-fled-because experimentally this dimension is fairly critical, whereas a'chajige in the ratio of base length to air space is not quite so important. No layers of blanket were added at the base. A range of lower cutoff frequencies between 50 and 400 cps was covered.
+It must be emphasized that these design characteristics hold only for wedges sliced diagonally (See Section VI) from Fiberglas board manufactured in thicknesses of two or four inches and with the bases of adjacent wedges compressed approximately 3^ to prevent 1 eakage of sound at the interfaces between them. Other methods of formi ng the wedges may lead to different results.
+In addition to its dimensions, the behavior of a wedge atrncture is a function of its flow resistance characteristic. The optimal val ne a
+-14-
+DIMENSIONAL SPECIFICATIONS FOR PF. FIBERGLAS WEDGE STRUCTURES FIG. 3
+-15-
+FLOW RESISTANCE SPECIFICATIONS FOR P.F. FIBERGLAS WEDGE STRUCTURES
+FIG. 4
+-16-
+FLOW RESISTANCE CHARACTERISTICS OF P.F. FIBERGLAS BOARD FIG. 5
+-17-
+of specific flow resistance are given as a function of the desired, cutoff frequency in Fig. 4 together with the range of flow resistance over which there is no appreciable change in wedge behavior (i.e., the reflection remains below 5^)» This range corresponds to about +20^ of the recommended resistance. The range of flow resistance measured on production samples with a number of different densities Is given in Fig. 5» The flow resistance of P.F. Flberglas for production wedges must be controlled in order to obtain reasonably uniform results. The allowable limits of variation should not exceed those of Fig. 4.
+D.      Constructional Features of the Chambers
+Every effort was made in the construction of the large anechoic chamber to reduce noise from the outside as much as possible and to keep to a minimum the reflecting surfaces inside the room. To this purpose a suspended track was installed in the room which can be made into a solid working surface by rolling in the smel 1 flat cars shown in Fig. 1. But, when highly accurate measurements are being made, the cars can be removed from the room, leaving only a few square feet of track to act as reflecting surfaces. Equipment used during tests can be hung from the overhead. The side walls are made of 12 inches of poured concrete. The floor plan of the building (Fig. 6) shows that there is only one entrance to the room and this is guarded by three sets of doors.
+The working space is 29 x 41 x 29 feet after treatment. The air space, shown behind the wedges, is filled with an egg crate structure made from 1/2 inch Celotex wall board and having 16 inch square cells to prevent standing waves from forming at low frequencies. This insures that there will be a minimum variation of absorption coefficient with angle of incidence of the sound. The knife edges of the wedges are successively alternated to prevent possible diffraction grating effects. A total of nineteen thousand wedges was required to cover the interior. The manner in which they were installed on the six surfaces of the room is shown in Fig. J.
+In the two smaller chambers, the general Installation plan is the same except that grills cover the floor Just above the edges of the wedges. Special doors for preventing the transmission of sound from outside into the chamber were installed at the entrances.
+E.      Calibration of the Completed Anechoic Chambers
+The degree to which the anechoic chambers approach conditions which would exist in quiet air at a point free from all reflecting surfaces was tested by checking the Inverse square law in the chamber. The decrease in sound pressure of a signal produced by a sound source was measured as a function of distance over a frequency range of 50 to 10,000 ops. The pressure level in decibels is plotted vs distance from the source on
+-18-
+ANECHOIC CHAMBER SECTION ELECTRO-ACOUSTIC LABORATORY HARVARD UNIVERSITY
+FIG. 6
+METHOD OF INSTALLING WEDGES FIG. 7
+semi-logarithmic paper for each of the frequencies investigated.. The observed, rate of decrease in level may be compared with the theoretical slope of 6 db for each doubling in distance. A sample of these data can be seen in Figs. 11 to 15, page 55 to 56 of Section IV.
+When the removable platform of cars is not in the large anechoic chamber, the data taken along a diagonal axis of the chamber ten feet above the tracks show that for frequencies from 70 to 10,000 ops, the inverse square law holds to within +0.5 db up to 10 feet from the source; to within +0.5 db up to 20 feet from the source; to within +1.0 db up to JO feet from*the source; and to within +1.5 db up to 40 feet from the source. Beyond UO feet there are evidences of standing waves as the microphone comes in proximity to the walls. A detailed plot of the measured maximum deviations as a function of frequency are presented in Fig. 1U, page 57 of Section IV. The introduction of the removable cars into the chamber produced marked sound pressure variations at frequencies above 1500 cps. Less favorable results were obtained when the measurements were made at a few feet above and parallel to the tracks.
+-20-
+A test was run parallel to and. at a distance of 2 1/2 feet out from one of the -walls. In this case, a slightly anomalous increased, rate of attenuation was found, to occur "below 200 cps. This rate of increase was much less marked, than the anomalous increase which was discovered, at all frequencies in the Meyer chamber in Berlin. It is "believed, that the apparently "better characteristics of the Harvard, chamber are due to the more nearly optimum impedance match "between the acoustic impedance of the wedges and. the specific acoustic resistance of air. This satisfactoriness of impedance match can "be attributed to two factors, first, the low flow resistance of the P.P. Fiberglas, secondly, to the gradual and linear increase in quantity of absorbing material as one passes from unobstructed air down to the base of the absorbing structure, and finally, to the constancy of the absorption as a function of angle of incidence brought about at the low frequencies by the addition of the egg-crate structure behind the wedges.
+Similar data taken in the smaller chambers are given in Section IV.
+-21-
+III. DESIGN OF THE CHAMBER LINING
+A. Fundamental Considerations
+Basic considerations involved in the design of an anechoic chamber have been described in the literature. 01son+ publishes a formula giving the ratio of generally reflected to direct sound in an enclosure as follows:
+Er /Ep = (16 itr2 /Sa) (1 - a)
+Er = energy density of reflected sound
+Ep = energy density of direct sound r = distance of the detector from a uniformly radicating (point) source in cm. o
+S = surface area of the room in cm
+a = average energy absorption coefficient of the bounding surface
+From this formula it is seen that in order to reduce to a minimum the generally reflected sound, the surface area must be large and the absorption coefficient of the lining must approach unity. The effect of the reflected sound on the measurements is also a function of the separation of the source and the detector as is seen by the term r in the equation. While it is possible to make measurements very near a source in certain cases, It is not possible to do so if a plane wave is required over a large area for proper operation of the instrument under test.
+In designing an anechoic chamber, a first consideration should be to make it as large as possible. The large size not only reduces the Er /Ed ratio to a minimum, but it permits greater working space. A second consideration is that of providing on all surfaces of the room a lining which will be maximally effective in absorbing the incident sound. It is the purpose of the investigation described in this part of the report to determine by acoustical measurements a type of acoustical lining which,
+(a)     provides maximum and uniform percentage sound energy absorption as a function of frequency over a wide frequency range,
+(b)     can be manufactured and installed by mass production techniques, and
++ H. F. Olson, "Elements of Acoustical Engineering," (D. Van Nostrand Company, New York, 19^0) p. 5O5
+-22-
+(c)     is macle from a commercially available, reasonably priced, material.
+Meeting these requirements within the limits of time, money and. wartime controls on materials that existed, in late 19^2, required, the setting up of a vigorous testing program. The first moves were, of course, to see whether any of the existing methods of treatment could be adapted to our requirements. This line of thought finally led us through a series of tests involving the measuring of over five hundred acoustic structures. On the pages immediately following will be found samplings of these data covering the absorbing characteristics of several variations of each of the six categories of structures which were included in the series. These data are presented in chronological form for the most part and are followed by a brief description of data taken after the large chamber was completed. Those data taken following the completion of the chamber were for the purpose of determining generalized specifications of the dimensions and acoustical properties of wedges for a variety of cutoff frequencies or overall allowable lengths. About five hundred additional structures were included in this series, of which all were of the linear wedge shaped type.
+The apparatus used for the measurements has been briefly outlined in the Summary and is described in more detail in Appendix I. As was mentioned in the Summary, the characteristics of the acoustical structures are described by the percentage pressure reflection R, defined as being 100 times the ratio of reflected to normally incident sound pressure. R is related to the more faml liar normal incidence energy absorption coefficient, a, by the expression R = 100 / 1 - a and is plotted as the left hand ordinate of all graphs. For purposes of comparison, the percentage energy absorption A, equal to 100^, is plotted as the right hand ordinate of all graphs. Thus a pressure reflection (R) of 10^ corresponds to an energy absorption (a) of 99^, while R = corresponds to A = 99 «9^»
+B.      Types of Structures Tested      •
+As has already been mentioned, data were taken during the course of the investigation on six categories of structures as follows:
+1.      Sheet layer structures
+2.      Blanket layer structures 3* Stuffed pyramidal structures 4. Semi-rigid pyramidal structures
+5.      Wedge-shaped structures
+6.      Exponentially tapered pyramidal and wedge structures
+Of the 500 different structures investigated only data on a selection are presented here. In many cases, only the best design with respect to a given variable is shown. The rigid-walled tube used for the measurements was 15 feet long and 8 inches square.
+-23-
+C, Comparative Data
+The physical characteristics of the materials used in the absorptive structures are given in Table I. At the time most of these measurements were made it was not realized that for a given density of material, substantially different acoustical performance would be obtained when different samples were selected. Later it was learned that in general the acoustical properties of a given material correlate fairly well with the specific flow resistance of the sample. The flow resistance is a function not only of the density and type of material but also of the statistical distribution of the fibers comprising it. We then went back and measured flow resistance on those samples that were still available and the average values are tabulated in Table I. It should also be noted that the densities quoted with each graph and diagram on the following pages are the nominal densities. The average density is given in Table I and differs by 10^ or more in some cases.
+A method of measuring resistance to air flow by the material is described in Appendix II. The apparatus is so simple to build and use that it is within the reach of any laboratory to gauge the adherence of any particular material to specifications.
+TABLE I
+Physical Characteristics of Materials Used in Absorptive Structures
+Cloth Sheets
+Material        Surface Density lb/ft2  Flow Resistance         -5 gm cm c sec  Structure                       Comments
+Muslin Flannel  0.019 0.035     6 15            BTL Sheet               Flameproof ed
+Muslin Flannel  O.O25 O.O35     6 15            'Harvard' Sheet ,               Flameproof ed
+Muslin Fiberglas        0.016 0.01U     1 2             Harvard' Wedge          Flameproofed Fireproof
+(Continued on next page)
+-2U-
+Table I continued.
+Blankets and. P.F. Board.
+Material        Thickness inches Nominal        Volume Density lb/ft^           Specific Flow Resistance gm cm"^ sec“^ per inch Average
+                Nominal Average
+Akoustikos Feit 0.9     9.0     9.0     72
+Fiberglas Wool  2.0     1.5     1.5     9
+P.F. Fiberglas  1.0     5.25    5.5
+P.F. Fiberglas  2.0     2.5     5.0     12
+P.F. Fiberglas  2.0     5.25    5.5     17
+P.F. Fiberglas  2.0     6.0     7.0     43
+P.F. Fiberglas  4.0     2.5     2.75    7.5
+Detailed, data in the form of graphs for each of several variations within each major category follow in the next six sub-sections.
+1.      Sheet Layer Structures
+Structures 1 to 7 on pages 52 and. 55 were tested, to see if any simple change in the Bell Telephone Laboratories’ sheet layer structure would, result in a lowered, pressure reflection characteristic. A sketch of each structure appears beside the corresponding graph of R vs f.
+Special attention should be directed toward structures 7 and 1. It is seen that they are alike in configuration, but that the reflection characteristics are substantially different. The difference between the two structures as measured is that the layers of cloth were stretched in the case of No. 7, while they were merely held in place in the other case. This difference in reflecting properties clearly indicates the necessity for a complicated and precise installation of the materials if the results are to be as good as shown for structure No. 7»
+The arrangement used to hold the layers of sheets in place during test is shown in Fig. 61, Appendix I. It consisted of a family of wooden frames with inside dimensions equal to those of the rigid walled tube, namely 8 inches square and with outside dimensions of 12 inches on a side. The frames varied in thickness from 1/2 inch to 2 inches. The squares of cloth were tacked to the faces of the frame and were separated by the desired amount through the choice of suitable frames.
+Inspection of the data for sheet layer structures shows that Increasing the overall length extends the region of low reflection to a lower frequency. The data on structures 4, 5 and 6 were taken
+-25-
+to see if uniformly high absorption over a wide frequency range can be accomplished, by a succession of layers of material whose flow resistance increases as the wall is approached.. Apparently a more careful design of the characteristics and spacing of the sheets would be necessary to bring about a satisfactorily low percentage reflection. The uniformly poor results and the large number of individual sheets which would be required in the chamber led to the abandonment of this type of structure.
+2.      Blanket Layer Structures
+The next set of measurements was planned to yield a low pressure reflection coefficient down to frequencies of the order of 80 or 90 cps using a minimum number of layered elements. The data on some of the more significant types of structures, l.e., structures 8 to 24, are shown on pages 54 to 58.
+The materials selected for these structures were Johns-Man vilie Akoustikos Felt, Crown Bairfelt, Flberglas Wool and Seaman Paper Co. Kapok Kwilko. The flow resistances and other pertinent characteristics of these materials are summarized in Table I.
+Structure No. 8 was designed so that each successive element approaching the wall had a higher flow resistance. It was believed that the muslin layers on the front would absorb the higher frequency sounds and that each successive blanket would be effective in ah-sorbing sounds of lower frequency, say in the region around 500 to 500 cps. This arrangement seems to provide satisfactory absorption in the vicinity of 1000 cps but the reflection below 400 cps is quite large.
+Structure No. 10 becomes quite good by comparison with. Structure No. 8 because of the greater overall length and because the quantity of material is not excessive. If too much acoustical material is used, the pressure reflection coefficients are significantly increased. A comparison between structures 9 and 10 serves to demonstrate thi s.
+A series of structures starting with No. 11 and extending through No. 20 were investigated to determine the optimum spacing of the heavier blankets to produce the most uniform pressure reflection characteristic. The three muslin sheets were not used in part of the tests because they did not contribute significantly to the absorption below 700 cps. The best structures of thia group seem to be Nos. 19 and 20.
+Beginning with structure No. 21, muslin sheets were again introduced to see what their effect would be upon the absorption characteristic. In structure 21, one of the Flberglas wool sheets was replaced with five sheets of muslin. In structure 22, further Improvement was obtained by changing the spacing of the heavier
+-26-
+blankets and reducing the number of muslin sheets to three. Still in    further improvement was obtained in structure 25 by rearranging the
+spacing and adding another layer of Akoustikos Felt. A slightly better characteristic is obtained if still another layer of Akoustikos Felt is added in a position near the wall. This structure is shown as No. 24.
+18      In summary, the research on blanket layer structures shows
+that a fairly uniform pressure reflection coefficient extending from 80 cps to frequencies above 1000 cps can be obtained if the structure is deep enough and if the proper number, spacing and kind of acoustical blankets are used. The absolute value of the percentage pressure reflection is, on the average, about 11^. The best structure tested consists of seven elements as compared with sixteen for the best sheet layer structure, and a substantial improvement in acoustical behavior is obtained. Part of this improvement, of course, is due to the overall depth of 51 1/2 inches shown for structure 24.
+5.      Stuffed Pyramidal Structures
+Trial construction in a small-sized room was undertaken about this time to see if a suitable method of installing blanket layer structures in the large chamber which we were contemplating building could be found. Because of the extreme size in plan of the projected chamber (58 x 50 feet), innumerable difficulties presented themselves in the devising of a method for covering the celling or floor. So discouraging were the model tests that it was decided that an effort should be made to see if pyramidal absorbing units similar to those of Meyer could be developed which would be simple to manufacture and install.
+Following this decision, measurements were made on many pyrami dal units filled with varying densities of rock wool insulation, Flberglas wool, loose kapok and cotton. Also, the performance as a function of the length, air space and construction of the pyramidal units was to be investigated. A representative set of curves for stuffed units ■ are shown for structures 25 to 5^ inclusive.
+It is seen from the data for Noe. 25 to 54 that the pressure reflection characteristic for all of the stuffed pyramidal structures is excellent in the frequency region above 500 cps. At the lower frequencies, the best absorption characteristics are obtained for long units mounted against the wall or for shorter units mounted with an air space between the base and the wall. The measurements show that even at low frequencies the lowest reflection is obtained for pyramids filled with low density material. One such example can be seen in structure 55 which was filled with 1 1/2 lbs/ft^ of loose kapok. For this particular structure, the pressure reflection remains below 10^ for frequencies between 100 and 400 cps find below 4^ for frequencies above 400 cps.
+-27-
+In spite of the superior performance of structure 55, it was not practical to manufacture these units. The problem of filling a muslin bag with loose kapok to the proper uniform density on a mass production basis seemed insurmountable. This difficulty will be appreciated even further when it is realized that flow resistance is a radical function of density for kapok.
+4.      Semi-Rigid Pyramidal Structures
+Discussions then followed with Mr. 0. C. Eckel, the local agent of the Owens-Corning Fiberglas Company, and it was learned that it was possible to fabricate any shape of structure easily from a semi-rigid Fiberglas board, now commercially available. These Fiber-glas boards, made of glass fibers impregnated with a phenol formal -dehyde binding solution are manufactured in 4 foot lengths, various widths and can be made to any thickness up to 4 inches in several different volume densities. Samples of this semi-rigid Flberg!as board which consists of glass fiber impregnated with phenol formal -dehyde, were obtained and made up into pyramids of different dimensions and densities. Data on a variety of constructions and spacings are shown for structures 55 to 44 inclusive on pages 4-1 to 45. Inspection of the curves shows that the reflection characteristics are satisfactory. The best results were obtained for structures 56 and 42. For these two structures the pressure reflection was approximately 5# in the frequency range extending from I50 to above 1000 cps and increased to 10# at 100 cps. The overall length of the two structures varied between 45 inches and 48 inches.
+5« Wedge-shaped Structures
+It was at this point that it was discovered on re-reading the paper of Meyer, et al., that they had obtained some data on wedge-shaped structures as well as on pyramidal ones. For some reason, however, they decided that there was no substantial improvement in the performance of a wedge over that of a pyramid, although their data do show a difference. The next measurements at the Cruft Laboratory were made to establish conclusively the relative merits of each type of structure, i.e., pyramidal and wedge. Structures 45 to 60 (linear wedge-shaped structures) were fabricated from P.F. Fiberglas board having various volume densities. Almost all of the measurements were run with 1 inch of cork cemented against the rigid wall backing. The cork was installed in the chamber as heat insulation.
+Inspection of the data shows that the lowest frequency at which small percentage pressure reflections are obtained is almost entirely a function of the overall length of the structures, the length being measured from the knife edge of the wedge to the rigid backing wall. In fact, the lowest frequency at which good absorp
+-28-
+tion is obtained, is that for which the length of the wedge equals approximately one-fourth of a wave length. A prismatic section should, be provided, at the base of each wedge to prevent leakage around the edges. The uniformity of the pressure reflection curve over the frequency range is determined by the length of the prismatic section, the depth of the air space and the flow resistance of the material. It appears for these particular lots of material that placing a single layer of Fiberglas P.F. blanket having a density slightly greater than that of the wedge at the base of the wedge aids in producing a more uniform frequency characteristic. It will be seen later that by optimal design a layer or layers of blanket material at th * base of the wedge can be eliminated.
+The wedge structure finally adopted using the material as received from the Owens-Corning Fiberglas Corporation is shown mounted in different ways in the form of structures 5^ to 58 inclusive. It is seen that the best reflection characteristic for this particular wedge was obtained when the wedge was spaced out from the wall by a distance of 10 3/4 inches and when its base contained 2 inches of 5«25 lbs/ft^ of P.F. Fiberglas blanket. The density of the main body of the wedge was 2.5 lbs/ft*. Data on the flow resistance are given in Table I, page 24. The pressure reflection characteristic is uniform and of the order of 3^ over the frequency range from 70 to well above 1000 cps, decreasing to 10^ at 60 cps, which defines the cutoff frequency.
+The air space at the base of the wedge was found to be not overly critical, that is, it can be specified to + 1 inch from the value shown. The cork cemented to the outer wall"heed not be covered with asbestos cement as was believed to be necessary at one time. The muslin bag In which the P.F. Fiberglas wedge material is encased is of very light density, i.e., 40 x 44 threads per Inch, but still heavy enough to contribute to the support of the structure. Its flow resistance is very low, being 1 acoustic ohm.
+During the construction of the chamber measurements were made on the wedges as they were manufactured, to determine uniformity. Unfortunately, the production samples did not appear to be quite as good as was Structure 58» Presumably this was due to irregularities in the Fiberglas board from which the wedges were cut. The average and range of data for the production samples were shown in Fig. 2 of the summary.
+At frequencies between 1500 and 4000 cps, measurements were made in the reverberation chamber of the Johns-Manville Company, and it was found that the absorption characteristic remains excellent out to high frequencies because the muslin covering and the Fiberglas have low flow resistance. The real test of the magnitude of absorption at high frequencies is to be found in Section IV of this report
+-29-
+in which measurements of the deviation from the inverse square law are described. There is no indication that the absorption at 10,000 cps is any less than that obtained between 5000 and 10,000 cps.
+The design of the adopted wedge structure was completed at almost the same time that the concrete chamber was nearing completion. This meant that if the construction of the chamber were not to be held up, research must stop. Hence, many interesting factors were left uninvestigated, although generalized specifications covering the optimal dimensions and flow resistance of P.F. Flberglas wedges were Investigated later.
+It is known that further improvement in the absorbing properties of the wedge structure will result if longer wedges are used. Investigation of the graphs shown in Fig. 5 of the summary shows that for absorptions down as low as 40 cps, a wedge structure would need to have a total length of 94 Inches measured from its tip to the rigid backing wall. The graphs of Fig. 4 show that for this length the optimum flow resistance R of the material would need to be 4.8 acoustic ohm per inch, which corresponds approximately to a Flber-glas board density of about 1.7 Ibs/ft^. This is a very low density and results in wedges which are frail, and hence, might be difficult to manufacture and install.
+At the time the materials were purchased for the construction of the wedges for the Harvard Chamber, P.F. Flberglas boards were being made with a maximum length of 4 feet. This meant that the maximum length of wedge which we could use was about 44 Inches, excluding the blankets at the base. In the case longer wedges are desired, some difficulties may be encountered in that because the lower density material is more flexible, more then two points of support will be required when mounting the wedge in the chamber. Also, unless Flberglas is made in larger boards, it may be necessary to build the wedge in more sections which will increase the cost of construction. A further factor involved is that stuffing of the wedge into the muslin bag requires that the acoustical materi al be rigid enough to stand a certain amount of hand! 1ng. However, a possible way of eliminating the use of muslin bags has been suggested by the Bell Telephone Laboratories (See Section VI). All of the difficulties Just named were taken into consideration in the design of the Harvard chamber. As will be discussed later, other methods of covering and supporting the wedge are about to be tried by other laboratories and perhaps these particular obstacles will no longer exist to 11ml t extending the use of wedges to lower frequencies .
+Data for th.© h©st two shorter wedges are shown for structures 59 and 60. These were adopted respectively for use in the small anechoic chambers at the Electro- and Psycho-Acoustic Laboratories of Harvard.
+-50-
+6.      Exponential Tapered. Pyramidal and. Wedge Structures
+Additional data were taken on exponential wedge and pyramidal structures to see if a linear rate of taper was optimum. Structures No. 61 to 64 on page 48 are shown as examples. The pressure reflection curve for a 55 inch long convex exponential pyramid with a nominal density of 5*25 Ibs/ft^ (Structure 61) is shown. Its behavior is seen to be comparable to that of some of the poorer wedge structures. The optimum exponential pyramid developed was greater in length than No. 61 and of lower density. It is shown as Structure No. 62. The results are «imllar to those obtained for the best wedge structure. Further Improvement might have been effected with more research, but the difficulty of and the waste of material involved in the manufacture of such a shaped pyramidal wedge made it seem unsuitable for adoption.
+A similar investigation was made of exponential tapered wedge structures. Those which performed best are shown as structures Nos. 65 and 64, page 48. In those cases, the performance is not so good as that of the linear-tapered wedge. It was decided, therefore, that the linear wedge structure already described should be adopted for use in the Harvard chambers.
+D. Generalized Data for the Design of Linear Wedge Structures
+In endeavoring to determine the optimum shape and material for use in a wedge structure in order to obtain low reflection over a wide frequency range, one is confronted by a great number of variables which must be considered, the more important of which are:
+1.      Type of material
+2.      Flow resistance of the material
+5.      Base area
+4.      Taper length (Lt )
+5.      Base length (12)
+6.      Air space at the base (lj)
+If, for a variety of materials, we expected to achieve the best values for each of these variables, we would end up by performing many thousands of experiments. Believing that a broad approach was out of the question, we concentrated on certain Umi ted aspects of the problem. In the first place, we limited our studies to the use of Fiberglas boards impregnated with phenol formaldehyde. Further, we tested only wedges made from boards having a thickness of 4 inches and in a few cases, 2 inches, and which were manufactured by the procedures described in Section VI of this report. Next, we restricted the studies to a consideration of wedges having square bases, 64 square inches in area. This particular area was determined by the size of measuring apparatus available and by the fact that two 4-inch thick Fiberglas boards form an 8-inch wide base without waste. (Continued on page 49).
+-51-
+SHEET LAYER STRUCTURES
+STRUCTURE NO. I
+STRUCTURE NO. 2
+STRUCTURE NO. 3
+STRUCTURE NO. 4
+-52-
+SHEET LAYER STRUCTURES
+(continued)
+STRUCTURE NO. 5
+STRUCTURE NO. 6
+STRUCTURE NO. 7
+-35-
+BLANKET LAYER STRUCTURES
+STRUCTURE NO. 8
+STRUCTURE NO. 9
+STRUCTURE NO. IO
+STRUCTURE NO. 11
+-5^-
+BLANKET LAYER STRUCTURES
+(continued)
+STRUCTURE NO. 12
+STRUCTURE NO. 13
+STRUCTURE NO. 14
+STRUCTURE NO. 15
+-55-
+BLANKET LAYER STRUCTURES
+(continued)
+STRUCTURE NO. 16
+STRUCTURE NO. 17
+STRUCTURE NO. 18
+STRUCTURE NO. 19
+-36-
+BLANKET LAYER STRUCTURES
+(continued)
+STRUCTURE NO. 20
+STRUCTURE NO. 21
+STRUCTURE NO. 22
+STRUCTURE NO. 23
+-37-
+BLANKET LAYER STRUCTURES
+(continued)
+STRUCTURE NO. 24
+-58-
+PYRAMIDAL STRUCTURES
+STRUCTURE NO. 25
+STRUCTURE NO. 26
+STRUCTURE NO. 27
+STRUCTURE NO. 28
+-59-
+PYRAMIDAL STRUCTURES
+(continued)
+STRUCTURE NO. 29
+STRUCTURE NO. 30
+STRUCTURE NO. 31
+STRUCTURE NO. 32
+-4o-
+PYRAMIDAL STRUCTURES
+(continued)
+STRUCTURE NO. 33
+STRUCTURE NO. 34
+STRUCTURE NO. 35
+STRUCTURE NO. 36
+-Ul-
+PYRAMIDAL STRUCTURES
+(continued)
+STRUCTURE NO. 37
+STRUCTURE NO. 38
+STRUCTURE NO. 39
+STRUCTURE NO. 40
+-42-
+PYRAMIDAL STRUCTURES
+(continued)
+STRUCTURE NO. 41
+STRUCTURE NO. 42
+STRUCTURE NO. 43
+STRUCTURE NO. 44
+-43-
+LINEAR WEDGE STRUCTURES
+STRUCTURE NO. 45
+STRUCTURE NO. 46
+STRUCTURE NO. 47
+STRUCTURE NO. 48
+-U-
+LINEAR WEDGE STRUCTURES
+(continued)
+STRUCTURE NO. 49
+STRUCTURE NO. 50
+STRUCTURE NO. 51
+STRUCTURE NO. 52
+-US-
+LINEAR WEDGE STRUCTURES
+(continued)
+STRUCTURE NO. 53
+STRUCTURE NO. 54
+STRUCTURE NO. 55
+STRUCTURE NO. 56
+-1|6-
+LINEAR WEDGE STRUCTURES
+(continued)
+STRUCTURE NO. 57
+STRUCTURE NO. 58
+STRUCTURE NO. 59
+STRUCTURE NO. 60
+A7-
+SPECIAL STRUCTURES
+EXPONENTIAL PYRAMIDAL STRUCTURES
+STRUCTURE NO. 61
+STRUCTURE NO. 62
+EXPONENTIAL WEDGE STRUCTURES
+STRUCTURE NO. 63
+STRUCTURE NO. 64
+-48-
+(Continued, from page 51)
+We then have left four variables to be investigated, on a detailed, basis, namely, flow resistance, taper length, base length and air space depth. A variety of densities of Fiberglas board were obtained from the manufacturer and served to give a wide choice of flow resistances to choose from. These boards were then formed into approximately 500 wedges and data on each were obtained using the tube method of measuring the reflection R at normal incidence as a function of frequency.
+A typical set of data are shown in Table II and the actual graphs corresponding to three of the cases are given in Fig. 8. In this table Li and L5 were varied while Lg was maintained constant. In the fourth column is tabulated the cutoff frequency obtained for each case, i. e., the frequency at which the reflection rises to 10^. The numbers in the fifth column indicate the maximum value which the pressure reflection coefficient R achieves above the cutoff frequency, and in the sixth column the integrated average value of R lying between the cutoff frequency and 500 cps is given. For the particular flow resistance and base length of the wedges tested in Table II, it appears that the optimum dimensions are Li = 15, Lg = 5 smd L5 = 2 inches respectively. A great many such tabulations were made and the averaged results are presented in Figs. 5 and U on pages 15 and 16 of the summary.
+The flow resistance values given by the solid line in Fig. 4 are not overly critical, and can on the average vary by +20^. This is fortunate, because the flow resistance values for Fiberglas boards vary widely in production for different lots with the same nominal density and thickness. Data were given in Fig. 5, page 17 of the summary showing the magnitude and variation of flow resistance as a function of volume density, when P.F. Fiberglas with a given average density is compressed. This flow resistance characteristic will not vary much for samples from a given board or for boards in the same lot, but samples from boards in different lots may vary considerably. If the fiber distribution in the
+-49-
+TABLE II
+Determination of Li and L5. Rj_ = 55 ohms/inch P.F. Fiberglas
+L1      l2      L5      fc      Max. R (#) above fc     Average R (^) Below 500 ops
+7       3       0       545     7       4.8
+7       5       1       500     6       4.0
+7       5       2       290     9       7
+9       4       0       240     9       5
+9       4       1       280     9       5.4
+9       4       2       325     9       7
+15      5       1       187     5       4
+15      5       2       178     4.5     3.5
+15      3       3       175     6.5     4
+16      3       1       165     8       5
+16      3       2       145     7       4.2
+16      3       3       137     8       5.3
+P.F. board could be kept very uniform, the flow resistance characteristic* R/T vs p, would be independent of the nominal density and thickness of the board. In practice, most of the lots fall in the area marked "average,” while occasionally there are deviations as large as those indicated by the limits in Fig. 5» It is this variation from lot to lot whi ch necessitates a careful check on flow resistance choracteriRtlcr for production wedges.
+In all of the measurements of flow resistance, samples having a diameter of 2 inches were used, cut perpendicularly through the 4 x 24 x 48 inch boards parallel to the 4 inch dimension. A range of densities covering the values 2.5 to 9 Ibs/ft^ was investigated. The spread in flow resistance is a function of the average fiber diameter, the orientation of the fibers and the amount of phenol formaldehyde which happened to accumulate in that particular area of board. The manufacturer feels that each of these three variables is difficult to control in production and that the specification of flow resistance can never be made to too close tolerances. However, R1 for a given lot can be maintained fairly constant.
+R, meaning flow resistance in acoustic ohms, should not be confused with R, meaning percentage pressure reflection. The dual use of R is customary in acoustic literature.
+-50-
+It is our feeling that with more refinement production can and. should he controlled in such a way as to yield desired flow resistance characteristics .
+-51-
+IV. CALIBRATION OF THE ANECHOIC CHAMBERS
+A.      Method, of Calibration
+At least three methods might be used for calibrating an anechoic sound chamber to determine the degree to which it approaches infinite free space. The first and most logical of these is to determine the decrease in pressure obtained as an observer moves away from a source of sound. If there are no reflections then the energy in a sound wave ought to decrease according to the inverse square law out to distances as great as the dimensions of the chamber will allow, i.e., the pressure decreases inversely with distance. A second method of evaluating the chamber would be to use a highly directional microphone and to measure the ratio of the sound which travels directly to the microphone from the source to the sound which arrives at the microphone from al 1 other directions. If there are any reflections from the walla, sound waves should arrive from directions other than that of the source and can be measured accordingly. A third method of measurement would be to produce a very short pulse of sound and to measure the echo occurring at a later time due to reflection from the walls. Presumably the microphone and source of sound could be separated in such a way that, a substantial time delay would exist between the directly received pul rr and the reflected pulse. Because of the lack of time, the first and most simple of these tests was all that was performed in the Harvard Chamber.
+B.      Apparatus
+A block diagram of the apparatus used for performing the measurement of sound pressure as a function of distance from the source is shown in Fig. 9» In the frequency range between 60 and 5000 ops a W.E.
+-52-
+6J0-A dynamic microphone was used, to measure the sound, pressure. Above that range, a W.E. 6^0-AA condenser microphone was used. The data were taken first by turning on the oscillator and adjusting the gain of amplifier No. 1 with the switch in position 1 until a fairly high but undistorted sound level was produced. Then the switch was thrown in position No. 2 and the gain of amplifier No. 2 was adjusted until a convenient meter reading on the voltmeter V-2 was obtained with approximately JO db of attenuation set into the attenuator. As the microphone was moved away from the source, the magnitude of the decrease in sound level was measured by readjusting the attenuator to give the same meter reading with the switch in either position. The difference between any particular attenuator setting and any previous one was a measure of the decrease of sound as a function of change in microphone position. A carefully calibrated attenuator was used and the precision of a measurement was believed to be + 0.1 db.
+Four loudspeakers were employed over the frequency range. At the very low frequencies, a large folded horn was used. When the wave length of radiated sound became of the order of a lateral dimension of the horn, a smaller horn was substituted. This was done to avoid using a loudspeaker so directional that no reflections would be obtained from the side walls. Actually, however, the best data were obtained when a very small source was used. Apparently this happened because with a very small source, there was little opportunity for reflections to occur from the body of the horn itself.
+In the experiments, the source was suspended from one of the overhead monorails. The microphone was suspended from an overhead traveling crane which was marked off in one-foot intervals. At each setting of the microphone, a series of attenuator readings were obtained as a function of frequency. The data were then plotted on semi-logarithmic paper with distance as an abscissa and decibels’ decrease in sound level as an ordinate. A separate plot was prepared for each frequency.
+C.      Procedure
+Inverse square law measurements were made for various axes of the roam. In one case, the source of sound was mounted at one comer of the room and the microphone moved in 1-foot intervals diagonally across the room. These data were taken with the microphone U feet and 10 feet above the tracks. Data were also taken perpendicular to the side walls along the two central axes. Finally, one set of data was taken parallel to and 2 1/2 feet out from a side wall along a horizontal line.
+It was believed that the data would show which part of the room was the more desirable to use and would indicate to what degree the tracks were responsible for deviations from inverse square law in any part of the frequency range. Data were also taken with the carts in the room as well as out. They served to show the disturbing effect of added equipment in the room.
+-55-
+The room was temperature controlled., and. the humidity was not permitted. to rise above 60^. Throughout the measurements, the temperature was recorded, and. in the frequency region above 5000 ops, the humidity was checked with a sling psychrometer. At the higher frequencies, it was necessary to correct the data for absorption in the air according to the curves shown in Fig. 10.
+D. Data for Largest Anechoic Chamber
+Typical graphs obtained in the frequency region between 60 and 10,000 cps for the case of the carts removed from the room with the mi crophone moving diagonally across the room and 10 feet above the tracks are shown in Figs. 11 to 13. The maximum deviation observed at distances up to 10, 20, 50 and 40 feet respectively as a function on frequency are shown In Fig. 14.
+A summary of the data taken in all the frequency regions Investigated is shown plotted in the form of distribution curves in Fig. 15. The standard deviation of each of the curves is indicated on the graphs. Two lines are drawn on each graph to delineate the maximum expected deviation from Inverse square law. A few points fall outside these lines and it is believed that disregarding 19 out of a total of 571 points is Justified on the premises that errors in the measuring equipment were not reduced below 0.1 of a decibel, and also it was difficult to measure accurately the distances between the microphone and loudspeaker thus introducing the possibility
+54-
+-55-
+of another 0.1 db of error. In summary, it is seen from these data that in the frequency region between 70 and 10,000 ops, the deviations from inverse square law are « + 0.J db in the region from U feet to 10 feet; + 0.5 db in the region 10 feet to 20 feet; + 1.0 db in the region 20 feet to JO feet; and + 1.5 db in the region JO feet to 40 feet. In the frequency region above J000 cps, a slight tendency was noticed for the points to fall off less rapidly than does the inverse square law. This systematic and progressive deviation from the inverse square law approached a maximum of 0.J of a decibel at 10,000 cps and became progressively less as the frequency was lowered.
+Dataware shown in Table III for measurements made U feet above the tracks along the long axis of the room with and without the cars in place. It is seen that even without the cars in the room, the deviations from inverse square law are higher in that case. With the cars in place, the deviations from inverse square law are quite pronounced.
+It is of interest to compare the data taken in this large anechoic chamber with those published for the two other chambers mentioned in the historical summary at the beginning of this report, which are substantially of the same size. Reference should be made to Figs. 16 and 1? to see these data. It is not clearly stated in the different authors’ papers how their
+-56-
+HARVARD ANECHOIC CHAMBER 57“ PE FIBERGLAS WEDGE LINING FIG 14
+-57-
+DECIBEL DEVIATIONS FROM INVERSE SQUARE LAW 70 to 10,000 CPS FIG. 15
+curves were obtained.. They do not state whether their data represent the maxi mum observed deviation or whether statistical curves were plotted and the standard deviation determined. It can be seen, however, that over the entire frequency range the large Harvard anechoic chamber compares well with those previously built.
+-58-
+-59-
+TABLE III
+Deviations in Decibels from Inverse Square Law Longitudinal Axis —      4 feet above tracks
+Frequency       Cars    below 10 ft     10-20 ft        20-50 ft
+1000    out     + 0.5   + 1.0   + 1.5
+        in      + 1.0   + 1.0   + 5-0
+4000    out     + 0.1   + 0.5   + 1.0
+        in      + 0.2   + 1.0   + 1«5
+5000    out     + 0.2   + 0.7   + 1.5
+        in      + 0.5   +       + 2.5
+10,000  out     + 0.7   + 0.8   + 2.0
+        in      + 1.0   + 2.0   + 1.5
+E.      Data for Electro-Acoustic Laboratory Anechoic Chamber No« 2
+Inverse square law data were obtained on the small anechoic chamber in the Cruft Laboratory Building using essentially the same apparatus as was used for the large chamber. The chamber is rectangular and its dimensions before the 25-inch wedge structure was installed were 11 x 15 x 10 feet, leaving after treatment, a working space of about 7 x 11 x 6 feet. This size of room is somewhat crowded for any other than small apparatus measurements. Plots of the data taken along the longitudinal and transverse axes of the room are shown in Figs. 18 and 19« In Rummary, these curves indicate that in the frequency range from 500 to 5,000 ops the deviations from Inverse square law are + 0.5 db out to 5 feet and + 1.0 db out to 10 feet. For frequencies between 5,000 and 10,000 cps, these values are + 1.0 db and + 2.0 db respectively. The greater deviations at the higher frequencies are caused by the presence of the iron grills and the supporting steel structure which cover about one half the total area of the floor.
+It is interesting to compare these data with those reported in 1956 by Bedell of the Bell Telephone Laboratories for their small chamber. Their published results are shown in Fig. 20 and the deviations from inverse square law for their chamber between 500 and 5,000 cps are + 5 db out to 5 feet and + 5 out to 10 feet.
+F.      Data for Psycho-Acoustic Laboratory Anechoic Chamber
+The chamber at the Psycho-Acoustic Laboratory is of an odd shape, (See Fig. 5&, page 9M, and before the wedges were added it was lined
+-60-
+.........   %2  F «     cu
+i       sì*
+B       A O
+o\      tí cu
+a       ox h    a
+>>      • g H-st        H
+ä       § . h -
+>h <0 m W       °!
+pq Í4 p H te    H
+OOP     Q _     03
+H > ©   A A     UO-P
+< rH O  O ® g   AO
+W £ g   M £ X   0
+g0«     gs° 5 .
+ass     Is      -ô
+d m     tí H
+Q > d   Sfe     ®
+H à     5       O       > X
+Eh d    A       "H
+g««r    g       §       “in
+8^      @       H
+< d ©   o       O X
+7 ¿h oo a
+O Hà 'O œ       ® »
+pi H -H eh      tí H
+^■ri h  CQ      © A
+¿> tí a g       a m
+□m§     S       32
+-P O    _       . ©
+£       §       &J-
+Il 1 |5&§       F.
+02
+S A
+S
+I
+-61-
+-62-
+with a 2-inch layer of rock wool spaced, out 2 inches from the side walls.
+The "sq.uared.-off” dimensions of the roam were about 12 x 20 x 12 feet before treatment, leaving a sizeable working space after the addition of the 15-inch wedge structure of 10 x 18 x 10 feet approxl mat Aly.
+Inverse square law data were taken before the wedges were added and are presented in Fig. 21. In the frequency range of 400 to 5,000 cps the deviations are of the order of +5 db out to 5 feet; + 5 db out to 10 feet; and + 10 db out to 15 feet. Addition of the short" wedges, however, reduced"these values to the order of + 2 db, + 2 db and _+ 5 db respectively, as is shown in Fig. 22.
+Because of the short length and the high density of the wedges, it is believed that this roam would not be nearly as satisfactory if the side walls did not form oblique angles with each other. The presence of a grill completely covering the floor contributes to reflections at frequencies above 5,000 cps.
+-65-
+-64-
+65
+V. CONSTRUCTION OF THE LARGE ANECHOIC CHAMBER AND CONTROL ROOMS
+A.      Site
+The large anechoic chamber at Harvard, was constructed, on a site conveniently located adjacent to the Cruft Laboratory Building. Salient features contributing to the choice of this location included: generally low ambient noise levels due to the absence of heavy vehicular traffic in the vicinity; the comparative absence of subways and other sources of earth-conducted noises; convenience in receiving supplies and equipment; and accessibility to the Jefferson and Cruft Physical Laboratories. A photograph of its location on Oxford Street is given in Fig. 25.
+To assist in a physical study of the foundation conditions, a 4-foot test well was driven to a depth of 50 feet on the site. The test well revealed that below a depth of 6 or 7 feet there were layers of sand with coarse to fine gravel and an occasional small boulder which alternated with layers of blue clay.
+Ground water was observed approximately 17 feet below the ground surface - an elevation which is safely below the footings and floor of the structure. Upon investigation, it was found that only once during the last twelve years had the ground water been as high as the proposed floor elevation of the new chamber. Accordingly, any heavy waterproofing of surfaces and other costly means of protection against ground water under pressure were regarded as unwarranted. Considerable care, however, was given throughout to the construction of tight Joints and to the production of a well-vibrated and dense concrete.
+B.      Sound Chamber
+The anechoic chamber proper constitutes the central feature of the acoustical laboratory, (See Fig. 24). This chamber is rectangular in shape and is built of concrete carefully proportioned and adequately reinforced with steel.
+The floor is 12 inches thick and rests on a sand and gravel foundation mechanically compacted In place. At the edges, the floor slab rests on the footings and extends to within one-half inch of the inside wall surfaces of the chamber. This space is calked with asphaltic filler to form a tight Joint which will maintain a seal during variations in temperature and/or displacements caused by relative settling of walls and floor. The floor surface was floated with a small gradient to drain into a sump placed at the south end of the chamber.
+Approximately one third of the chamber volume lies below ground level. The corresponding portion of the walls is 2 feet in thickness and was poured continuously and mechanically vibrated.
+-66-
+EXTERIOR VIEW OF LARGE ANECHOIC CHAMBER FIG. 23
+SECTIONAL VIEW OF LARGE ANECHOIC CHAMBER FIG. 24
+67-
+To help reduce transmitted ground waves, a vertical fill of fine cinders 4 feet thick and extending from the footings to the ground surface was imbedded in a trench dug around the chamber Just outside of the walls.
+Above the ground level the walls were 12 inches in thickness. At the top they were built to Join continuously with a 9-Inch horizontal roofing slab which was built in one piece and entirely covered the chamber.
+The inside measurements of the reinforced concrete chamber are 50 feet 4 inches long by 58 feet 4 inches wide by 58 feet high. There are no columns or structural supports inside the chamber. The walls are stiffened on the outside by eight pilasters properly spaced and built integrally with the walls. At the top, opposite pilasters on the sidewalls Join continuously with long horizontal girders 50 Inches x 60 inches in section which extended over and support the roof slab. The girders also are used as purlins to support the timbers of a low-pitched roof which forms the outside top covering of the chamber.
+A 6-inch layer of cinder concrete was spread over the 9-inch ceiling slab of concrete as additional sound Insulation.
+Nine inserts of short pieces of 2 1/2 inch gas pipe were placed along three rows in the celling, through which drop cords can be lowered for lighting the chamber or through which cables might be dropped to add other structural elements. Three incandescent lamps along the central axis of the room are used. To facilitate a replacement of the lamps, extra drop cord was coiled above each gas pipe and is paid out in lowering the light until it can be reached from within the chamber. a scuttle opening 50 Inches square in the form of an inverted frustum was constructed at the center of the celling slab. The scuttle was filled with a removable concrete plug.
+Fir plywood 5/8 inch thick was used throughout to build forme for the concrete. The initial cost of plywood was comparatively high but in the long run it proved to be economical because of the large size of the sheets (U feet x 8 feet) which were relatively easy to erect, and which were reset several times for progressive concrete pourings.
+Forms for the walls of the chamber consisted of inside and outside layers of plywood, each backed by 4 inches x 4 Inches fir vertical ribs frequently spaced and rigidly held from spreading by numerous tie anchors of alloyed steel. The forms were braced laterally with additional timbers to Insure true walls when under the pressure of green concrete.
+A platform of plywood, well supported by wooden Joists and stringers was built as a form to carry the fresh 9-inch concrete cell 1ng slab end other loads, including reinforcing steel and roof girders. Struts resting on the ground floor rose to support this plywood ceiling structure. Two
+-68=
+rows of these struts, 50 inches apart, and. of 6 inches by 6 inches timbers, set at intervals of 6 feet in a row, were placed, under each of the two girder forms. The rest of the celling was supported, by other struts or columns 4 inches by 6 inches, spaced. 6 feet each way. All verticals were scabbed, and. braced, horizontally and. diagonally with 1 inch by 6 inch rough fir boards securely nailed..
+Spool anchors to support the framework for the acoustical treatment set flush with the concrete, were drilled, and. threaded, for inserting 5/8 inch bolts. These anchors were placed in the walls and ceiling at intervals of 4 feet each way. Additional rows of anchors were set in the ceiling to hold three small monorails.
+Anchors of two other types - knees and lead sheaved bolts - (See Figs. 5^ and 51), were set in the concrete along the comers to hold cables which supported diagonally four ways a two-rail track extending the length of the chamber at approximately 12 feet above the floor. The track was properly aligned and rigidly held by means of turnbuckles to adjust the cable tension (See Fig. 25).
+A 1-inch layer of sheet cork was cemented with hot asphalt to the walls and floor of the chamber to provide for moisture and thermal insulation.
+The foundations for the wooden section of the acoustical laboratory including the floor of the heating and ventilating room, were built entirely separate from the anechoic chamber. This provision was for the purpose of holding to a minimum the transfer of mechanical vibrations from external sources.
+C.      Additional Features of the Acoustical Laboratory
+In addition to the anechoic chamber itself, attention may be called to several other features (See Fig. 26).
+Control Rooms There are three research or control rooms whose primary function is to service the anechoic chamber during experimentation (Rooms 101, 102 and 105). The rooms are equipped with benches with built-in drawers, various electrical sources, including 110 volt direct, 110 and 220 volt alternating current, and 1000 cps standard frequency. Wires from each of the rooms may be run into the chamber via rectangular ducts with removable covers built into the floor. These ducts connect with the anechoic chamber through nine 2 1/2 inch diameter conduits which are set in the concrete at each side of the main entrance. Electrical cables, telephones, air, etc., leading from the chamber to any control room may be threaded through the tubes and laid along the floor duct as far as necessary.
+Service Apparatus Room (Room 106) In this room is set the air conditioning unit which controls the air supplied to the
+-69-
+VIEW FROM INSIDE OF ANECHOIC CHAMBER SHOWING ENTRY-WAY AND SUSPENDED TRACK FIG. 25
+FLOOR PLAN OF ANECHOIC CHAMBER FIG. 26
+-70-
+anechoic chamber. Outside air is filtered and properly humidified, then heated or cooled, depending on the season of the year.
+The conditioned air enters the chamber through a removable plug in the acoustical treatment and is directed towards the center of the chamber. During the periods of experimentation in the chamber, the intake and discharge ducts of the conditioner, which have been hinged and made removable, are disconnected and rolled away from the chamber, after which an acoustical plug made up of wedges is set in place and a heavy door framed in the concrete wall is closed and sealed. Air is withdrawn from the chamber through a tapered rectangular duct with air intakes at the floor level behind the acoustical treatment. A vertical closed channel was formed in the concrete wall and extended up to the floor level of the service room and thence to an exhaust fan of the air conditioning unit. From here all of the air or any portion of it may be recirculated and the complementary part may be discharged outside of the building.
+Sound Lock and Suspended Track
+An acoustical trap or sound lock 8 x 10
+x 9 feet was built at the entrance to
+the anechoic chamber. The walls, ceiling and floor of this lock were hollow or shell constructed and filled with a densely packed acoustical felt. Two different pairs of doors, one pair closing each end of the lock, were built of wood and sheets of "transite” with interior spaces packed with soundproofing material (See Fig. 27). They were fitted with ball-thrust hinges,
+FIG. 27
+carrying caster wheels, double astrakals, three heavy level compression clamps for each pair of doors, and a complete set of sponge rubber calking strips which operate in compression when the doors are closed. The sound lock and doors were built integrally with the concrete chamber, and to minimize the transfer of vibration, they were carefully separated by a small, continuous air space from other sections of the building. A 4-foot track with two 2x2 inch angles for rails starts at the south entrance to the acoustical laboratory and proceeds at floor level along the corridor of the wooden annex, then passes through the sound lock and continues to the north end of the anechoic chamber. The elevation of the track
+is approximately 12 feet above
+-71-
+the concrete floor. Seven st eel-wheeled., framed, and. mesh-covered, carts coupled, together may he pushed, along the track into the chamber. They serve dually to carry apparatus and to act as a floor.
+Storage Room, Supply Entrance and A storage room of 16 x 28 feet is Corridor to the Cruft Laboratory provided as a part of the wooden building which adjoins the anechoic chamber (Room 104). It furnishes a space to stack the seven steel cars when not in use, and for packing, unpacking and storing instruments and equipment. It also serves as working space for emergency Jobs. A supply entrance is located at one side of the building where the tracks end. The acoustical building connects with the Cruft Laboratory by means of an enclosed wooden runway 6 feet wide and 12 feet long, equipped with double doors at each end and heating and lighting services.
+D.      Installation of Acoustical Treatment
+Main Support A wooden framework 10 1/2 inches deep measured from the for the    cork surfacing to the base frames of the wedges was built
+Wedges  to give mechanical support to the acoustical treatment of
+the anechoic chamber. This framework was held in place by 5/8 inch steel studbolts, 11 1/2 inches long, threaded on both ends and screwed into spool anchors placed at intervals of 4 feet in the concrete walls and celling (See Fig. 28).
+Wood blocks, 5 1A * 5 5A x 10 inches long, and 5 5/8 x 1 5/8 inches horizontal nail girths were drilled edgewise and pushed over the bolts; nuts were then screwed against the girths which in turn held the blocks tightly against the cork-covered wall. Next, 1/2 inch Celotex wallboard was cut in strips 8 Inches wide, notched and fitted together in egg crate fashion to form cells approximately 16 x 16 x 8 inches deep. This crate assembly was made to fit snugly between adjacent horizontal girths, to which it was securely nailed after the outer edges had been placed flush with the corresponding edges of the nail girths (See Fig. 29). This arrangement provided approximately a 7/8 inch space between the Inner edges of the egg crate cells and the cork surfacing for ventilation purposes. Strips of furring 1 1/2 inches wide and 1 j/h Inches deep were nailed to the horizontal girths at intervals of 7 5/4 inches on centers. The girths are located 4 feet apart (See Figs. 28 to 50).
+Before the installation of the wedges, strips of 1 inch felting 45 inches wide, l.e., the overall wedge length, were fastened to the nal1 strips and run as an outside border completely around the cel ling and lower wall surfaces. Vertical strips of the same width were placed similarly in each corner of the chamber. These strips of felt served to reduce reflections from the base surfaces which would otherwise occur in the regions of overlap (See Fig:. 51).
+The acoustical wedges were supported by attaching their bases directly to the nail strips. By rabbettlng the base frames on two opposite edges,
+-72-
+SAMPLE. CONSTRUCTION OF WEDGE SUPPORTING FRAMEWORK
+FIG. 28
+-73-
+FIG. 29
+FIG. 30
+-7^-
+FIG. 31
+FIG. 32
+-75-
+each wedge could be installed by setting one 2 1/4 inch round-headed screw on the leading rabbetted edge and driving it into the supporting nail strip immediately underneath. The opposite or following rabbetted edge was anchored by slipping it under the screwed edge of the wedge last set, thus forming a simple but rigidly interlocking system of bases, easy to install (See Figs. 55 and 5M• All wedges as erected in the chamber were snugly placed with their prism-shaped bases compressed in good contact with each other. The first wedges inata]led were on the side walls, Just below the ceiling (See Fig. 52). Following that, the entire ceiling was covered with the exception of the 45 inch border previously treated with the 1 inch of felting. It was found to be time-saving in setting the wedges to install four or five rows at a time in a direction at right angles to the nail strips. The screws, one to a wedge, were driven with automatic screw drivers. The completed ceiling is shown in Fig. 56. The wood struts erected earlier to support the concrete roof slab were shortened to hold a new floor at a lower elevation, which was used as a scaffolding by the workmen while Installing the wedges on the ceiling. The production of a diffraction grating effect by the walls was prevented by turning the dihedral of adjoining wedges through 90 degrees. Twied lately after the ceiling treatment was finished, all scaffolding, timbers and 1 umber were removed from the chamber. Portable staging with adjustable platform brackets was used as scaffolding when installing acoustical wedges on the wall surfaces (See Figs. 57 and 58). To prevent sagging of the
+WOOD BASE FRAME FOR MOUNTING WEDGES FIG. 33
+-76-
+FIG. 34
+FIG. 35
+-77-
+wedges, a second point of support was provided "by means of a ladder of chain and wire. A good picture of this structure can be seen in Fig. 55, and a discussion follows shortly. When the floor level was approached, the installation of wedges on the side walls was stopped 45 inches from the floor. A vertical border of 1 inch felting lined the bottom part of the walls and wedges were installed on the floor next to the felt strip below the horizontal wedges. (See Fig. 59). Vertical edges were similarly constructed. Wedges starting any horizontal course were set against the 45 inch vertical felted strip and continued away from the corner until tenninated at a place 45 inches from the next corner following. Here as above, at right angles to those Just preceding, wedges were set against the felt and continued along the next wall; thus the course proceeded horizontally around the chamber.
+Auxiliary Chain All wedges installed on the walls of the chamber were Supports supported at the middle sections to avoid sagging (See Fig. 55) • Lengths of sash chains were suspended from reinforced nail strips at the ceiling and allowed to hang to the floor every 7 5/4 Inches on either side of the vertical tiers of wedges. Individually, each wedge was lifted and held horizontally in position by placing under it a short piece of No. 9 wire, the ends of which had been pushed through appropriate links of the nearby chains. To keep the wires from slipping out of the chains, one end of each one was first given a U bend and then when the wire was in position under the wedge, this end was closed tightly with pliers to form an eye around a half-link of the sash chain. After three years, a slight sagging of the tips of those wedges whose dihedrals are placed horizontally, can be noticed. It is possible that some further support should have been arranged for these.
+Installation of Wedges  The Installation of wedges over the floor of the
+on the Floor    chamber was quickly accomplished. During this
+operation, staging was reduced to a minimum, since the crew of workmen, while setting the wedges, were able to stand on a platform of boards resting on the nail strips. The work was further simplified by fastening the wedges with 5-d box nails in place of the usual screws. In completing the floor, wedges were filled in from different directions until there remained under the track at the end nearest the door, only a small area approximately 51 x 51 inches in size. To fill this opening, a square plug of sixteen wedges was framed together and lowered by ropes into the space provided. If at any time it should be found necessary, for repairs or adjustments, to remove some of the floor wedges, as a first step the 51 x 51 inch plug could be hoisted. A man would then be able to stand In the space vacated, and by means of a small D-handled shovel or other tool, could readily pry loose the 5-d nails and remove the wedges without damage. Also, the wedges could readily be replaced in their original position.
+E.      Interior Acoustical Doors
+After the acoustical wedges were placed on the wall, ceiling and
+-78-
+-79-
+FIG. 38
+FIG. 39
+-80-
+METAL FRAMEWORK OF DEEP BASKET DOORS FIG. 40
+-81-
+floor surfaces of the anechoic chamber, there still remained to be treated the space 8 feet wide by 9 feet high immediately Inside of the entry way.
+A pair of doors, each 9 feet high by 4 feet wide and 45 inches deep were constructed for this entrance (See Fig. 40). The depth was determined from the overall length of an acoustical wedge, in order to maintain an interior treatment of uniform thickness. The doors were built of a strong, lightweight framework of inch gas pipe, well braced with smaller pipe sizes against skewing and sagging. The Joints were welded. This door has sagged slightly in three years and presumably should have been built heavier.
+The adjacent surfaces of the two doors when in a closed position are cylindrical in shape. The radii were designed to accomplish a quick separation without slipping and rubbing of surfaces as the doors opened.
+Several brackets equal in length to the depth of the acoustical treatment are welded to the main door frames and extend into the chamber. Three hinges are fastened to the inner ends of these brackets and the doors are hung from them. When closed, the inner surfaces of the doors form a part of the chamber's boundary and give continuity to the acoustical lining.
+The doors when opened, swing through arcs of 180° each way, and when in this position, completely clear the full width of the passageway (See Fig. 41).
+FIG. 41
+82-
+Nail strips to hold, the rabbetted wedge bases were set against the gas pipe frames. Wedges and acoustical treatment were installed in the usual manner to fill the spaces within the basket doors, so as to make each door a compact acoustical unit. It was necessary to tailor a number of wedges to fit the cylindrical surfaces which are nearly in contact with each other when the doors are closed.
+-83-
+VI.     FABRICATION OF TBE ACOUSTICAL WEDGES
+The acoustical wedges were fabricated, from P.F. Fiberglas board, shipped, in blocks having dimensions 4 x 24 x 48 inches. These blocks were sawed, into the shape of a wedge using a standard, band saw and were covered with a muslin bag as shown in the accompanying figures.
+The first step in the process of manufacture is shown in Fig. 42. The Fiberglas board was sawed into three units each having the dimensions 4 x 8 x 48 inches. The second process of manufacture is shown in Figs. 45 and 44 where the 8 inch wide unit was sawed diagonally to form the two halves of the wedge. On completion of this operation, the two halves were placed back to back as shown in Fig. 45»
+The next step in the assembly was to place two light gauge metal plates on the two sides of the wedge. These plates were held in place by two small wooden clamps as shown in Fig. ^6. The following operation was to draw the muslin bag down over the outside of the structure as shown in Figs. 47 and 48. A workman then removed the metal plates ("shoe horns") from inside the muslin bag as shown in Fig. 49.
+The muslin-covered wedges were then placed in a holding Jig as shown In Fig. 5$» The two acoustical blankets, having dimensions 1x8x8 Inches were next inserted into the base of each of the wedges as shown in Fig. 51» The workman then put the wooden frame in place as shown in Fig. 52, and stapled the muslin bag to the inside of the wooden frame at approximately four places (See Fig. 53).
+The final operation in the assembly of the wedge was to insert a number of additional staples into the frame at the base of the wedge using an automatic stapling gun as shown in Fig. 54. After completion the wedges were then placed in the original cartons, having dimensions 18 x 24 x 48 inches (See Fig. 55) and- trucked to the anechoic chamber where they were installed immediately following their manufacture.
+To manufacture these wedges, a small factory was formed under the supervision of Mr. 0. C. Eckel of the Mundet Cork Company of Cambridge, which supplied the Fiberglas and by working two shifts of twelve people each, it was possible to fabricate approximately 1000 wedges per day. By actual count, 5785 man (and woman) hours of labor were expended in producing 20,000 wedges, or 5*28 wedges per man hour. In addition, 800 man hours were consumed in producing the wooden frames for the base and 250 in sewing the muslin bags. The total Job added up to 4.15 wedges per man hour. Based on 1942 prices, the 50,000 yards of flame-proofed muslin cost $5,475, while the Fiberglas cost about $6,500 delivered.
+-84-
+FIG. 42
+FIG. 43
+-85-
+FIG. 44
+FIG. 45
+-86-
+FIG. 47
+FIG. 46
+FIG. 48
+FIG. 49
+-87-
+FIG. 50
+FIG. 51
+FIG. 52
+-88-
+FIG. 53
+FIG. 54
+-89-
+FIG. 55
+* Fabrication and Installation Experience
+With the experience which the Electro-Acoustic Laboratory has accumulated from the fabrication and installation of wedge linings for three anechoic chambers, it is possible to evaluate new suggestions for design variations.
+At least two other laboratories are planning the construction of large anechoic chambers using P.F. Fiber glas wedges. One of these, the Bell Telephone Laboratories, expects to cut the wedges so that they will have an 8 x 24 inch base and to
+mount them in groups of threes, i.e., forming a square block, 2 feet on a side. Each of these three wedges is to be encased in a metal cage made of hardware cloth, and cut to fit snugly over each 24 x 8 inch wedge. The hardware cloth will probably be spot welded to a metal base which will in turn be bolted to metal stringers in the chamber. The 24 x 24 inch blocks will be alternately rotated to prevent possible diffraction grating effects.
+The second chamber is being built by the Naval Ordnance Laboratory in Washington, D.C. Their plans call for a similar arrangement of three 8 x 24 inch wedges, except they expect to preserve the muslin rtoverlng over each of the wedges. The bases of these square wedge panels are to be inserted a distance of 7 inches directly into a 24 inch square egg crate cell and cemented to the side partitions of the cell to leave a rear sir space of about 4 inches. Since rigid base frames are no longer needed as the major means of support for the wedges, it should be necessary to use only thin cardboard stiffeners at the base of the wedge to support and stretch the muslin bag covers, which would be glued together. They have also spoken of replacing the muslin covers by a thin light Fiberglas bonded mat which has a low flow resistance and desirable fireproof characteristics. They hope to eliminate the chain ladder support one-half way down the wedge by stiffening the wedge structures with wooden laths Inserted down the center and extending part way to the tip. This will necessitate a rigid connection between the laths and the base of the wedge panel.
+-90-
+The plans of these two laboratories will fully meet the acoustical requirements imposed, by our experience. The BTL design looks unusually simple to build and has the advantage of being basically non-inflammable.
+To obtain an efficient structure of greater depth than 44 inches and a cutoff frequency below 80 cps, it is necessary to use P.F. Fiberglas board with a specific flow resistance of less than 10 ohms per inch and of greater length than 48 inches. It is possible that the manufacturer would produce such boards on request. Trimming ” shims” of P.F. Fiberglas blanket placed at the base of the wedges may be used to overcame the effects on absorption produced by any non-uniformity in production material. However, these last-minute modifications should not be necessary if the production is carefully controlled by means of flow resistance measurements.
+-91-
+VII.    CONSTRUCTIONAL FEATURES OF THE SMALL ELECTRO-ACOUSTIC AND PSYCHOACOUSTIC ANECHOIC CHAMBERS
+The two smaller anechoic chambers were built in the two laboratories in order that experiments, where the source and. receiver might be brought very near to each other, could, be carried, on simultaneously with experiments requiring the use of the large chamber. The one in the Electro-Acoustic Laboratory was built in a small rectangular room formerly used, by Drs. D. Griffin, R. Galambos and. G. W. Pierce to study the ability of bats to ”fly blind" using ultra-sonic waves as their "radar." The treatment in the room at the time we took it over consisted of a 2-inch layer of rock wool spaced out 2 inches from the wall. This treatment was not removed. The room was 11 x 15 i 10 feet in size, and it was decided to use as deep an acoustical treatment on the wall a as could be managed. The treatment finally selected consisted of a 21-inch wedge, which when installed foimed a structure approximately 25 inches deep, this leaving a usable working space of about 7 x 11 x 6 feet. Adjacent to the room is a control room which fortunately is large because it is not unusual for several experimenters to have their apparatus set up at one time -
+The wedges were built without wooden frames at the bottoms and were fastened against 1x2 inch furring strips by means of staples ejected with considerable force from an automatic stapling machine - No second point of support other than staples at the base was required, although with buffeting, some of them tend to work loose in time. The wedges would remain more secure if a flat perforated square of cardboard had been included in the base inside the muslin and if the staples had been driven through the cardboard. The floor of the room Is covered with a removable grill work which is supported Just above the dihedral edges of the wedges by a steel framework. About one half of the total area is left uncovered. The details of this support are shown in Fig. 56 and a general photograph of the room can be seen in Fig. 57* The outer entrance is closed by a suitable "ice-box" door.
+A floor plan of the Psycho-Acoustic Laboratory chamber is shown in Fig. 58A and a photograph in Fig. 58B. This chamber was also lined with 2 Inches of rock wool batts backed by a 2-inch air space. The batts were enclosed in a chicken-netting type of wire screen and it seemed easiest to fasten the wedges to their surfaces by meana of safety pins. The entire floor of this room is covered with a steel mesh and because a depth of only 15 Inches is consumed by the treatment the room is much more usable than is the one previously described.
+-92-
+STEEL FRAMEWORK USED IN ELECTRO-ACOUSTIC LABORATORY ANECHOIC CHAMBER FOR SUPPORTING FLOOR OF REMOVABLE GRILL
+FIG. 56
+INTERIOR VIEW OF ELECTRO-ACOUSTIC LABORATORY ANECHOIC CHAMBER FIG. 57
+-95-
+58 A
+58 B
+FLOOR PLAN AND INTERIOR VIEW OF PSYCHO-ACOUSTIC LABORATORY ANECHOIC CHAMBER
+-9^-
+ÜJ CD
+O H
+cr ZD en < ÜJ
+s
+O
+I“ en ZD CD o m o < o
+U- Ü_ o
+UJ
+_j < Z O
+O ÜJ (D
+-95-
+APPENDIX I
+The tube method of measuring absorption coefficients has been described in many papers in the literature and the reader is referred to a summary article -written by Bale J. Sabine, “Notes on Impedance Measurement," Jour. Acous. Soc. Am., 14, 143 (1942) for greater detail than is given here.
+The tube used in this laboratory is made of steel with a loudspeaker mounted at one end and a termination to receive the sample at the other end (See Pig. 59). The overall length of the main portion of the tube is 12 feet and "It is 8 Inches square. A rigid steel plate mounted on a lead screw and contained in a square section the same size as the main tube is mounted on the end of the wooden section in which the sample is contained. This steel plate acts as a rigid wall which can be moved to
+provide for more or less air space at the base of a sample. The electrical circuit is shown in Fig. 60. For the cloth layer structures, a special sample holder was devised as shown in Fig. 61. As seen in the figure, it consisted of a great many wooden frames having various thicknesses corresponding to the separations of the sheets or blankets desired. The cloths were stretched across the faces of the frames and were tacked in place on the outside edges. Long bolts extended through the frames and were drawn tight to prevent air leaks.
+After the sample is mounted in place, the loudspeaker is turned on. If perfect absorption does not take place at the sample the incident sound wave will be partially reflected back toward the source, thus setting up a standing wave pattern in the tube. A traveling microphone in the tube controlled by a wire and pul 1 ey system is used to explore this pattern. The electrical output from the microphone is measured at the points of minimum and maximum pressure nearest the sample-. The ratio, N, of the maximum and minimum sound pressure is then obtained. The percentage pressure reflection R at normal incidence is then given simply by the formula
+R - JLlA N + 1
+-97-
+FIG. 61
+A limitation of the tube method, of measurement is that the range of frequencies over which accurate measurements can be made is restricted by the cross-sectional dimensions of the tube. For an 8-inch square cross section, the pressure reflection coefficient can be measured only out to 1500 cps with fair accuracy. At higher frequencies, measurements are not possible because of transverse resonances in the tube.
+-98-
+APPENDIX II
+Measurement of Flow Resistance of Acoustical Materials
+In determining the flow resistance of acoustical materials, the quantities to be measured, are:
+p = pressure differential between the two faces of the sample, in dyne/cm^
+v = velocity of linear flow of air through the sample, in cm/sec produced by the pressure differential p
+The velocity v is the most conveniently determined by measuring the volume flow v/t, in cm^/sec, per unit area A, in cm^, of sample;
+v = v/At cm/sec
+The flow resistance R is then
+R = p/v = pAt/v gm cm"2 sec“^ in the c.g.s. system of units.
+The essential equipment required is therefore;
+1.      A means of mounting the sample to be tested.
+2.      A means of drawing air at a uniform rate through the sample.
+3.      A gauge for measuring the pressure drop across the sample.
+4.      A gauge, or other means, for measuring the rate of volume flow of air through the sample.
+The equipment used in this laboratory is shown schematically in Fig. 62 and is described below in detail.
+1.      Sample Holder The sample holder consists of a brass tube, A, in Fig. 62, Fig. 63 and Fig. 64, of 2 1/8 inches inside diameter, about 10 inches long and circular in cross section. Samples are cut with a circular punch, as shown in Fig. 65, which may be used with a hammar or a drill press, or by hand. The inside diameter of the punch is about 2 5/52 inches so that the sample is cut slightly larger than the I.D. of the mounting tube in order to insure a snug fit against the wall of the tube.
+A thin sleeve, B, in Fig. 62, is attached to the inside of the mounting tube about 1 inch from its lower end. This supports a loose circular
+-99-
+FLOW-RESISTANCE APPARATUS FIG. 62
+-100-
+FIG. 63
+-101-
+FIG. 64
+-102-
+screen of 1/4 inch mesh, C, in Fig. 62 and. Fig. 64, against which the lower face of the sample rests. This screen is left loose to facilitate removal of samples from the tube after testing. It should, he mounted, at least 1 inch from the lower end. of the tube in order to equalize the pressure over the lower face of the sample.
+Compression of the sample is achieved by means of another 1/4 inch mesh screen attached to a thin movable sleeve, D, in Fig. 62 and Fig. 64. This screen and sleeve may be advanced along the tube by means of the screw, E, which runs through a yoke, F, attached by a bayonet lock to the top of the tube. A graduated scale, G-, indicates the thickness to which the sample is compressed. Obviously, the yokes attaching the screw to the movable sleeve and to the top of the tube should be as open as possible, so as not to Interfere significantly with the air flow through the tube.
+The sample holder slips on a base, H, which has two short tubes mounted in it to allow attachment of rubber tubes for the pressure gauge and for drawing air through the sample. The sample holder may be removed easily from the base to permit introduction or removal of the test sample. It is Important that the sample holder be sealed to the base during measurements to prevent leakage of air Into the chamber below the sample. Stopcock grease or rubber cement may be used as a sealing agent'.
+For measurements of the flow resistance of trim cloths a sample holder as shown at Q, Fig. 62 and in Fig. 66, has been used. If the cloth being measured is of very low flow resistance, several layers may be mounted as indicated, with spaces between them. The average flow resistance per layer is then the total resistance divided by the number of layers . (This holder need not be square in cross section).
+2.      Air Supply Any of a number of systems which will supply up to about 0.5 liter of air per second at pressures up to about 5 inches of water may be used.. The arrangement shown in Fig. 62 is simple and reliable, involving only standard plumbing supplies, and it has been used for all flow resistance measurements in this laboratory.
+A cylindrical ’’range boiler” type of tank, J, in Fig. 62 is suspended near the ceiling. Piping connected to the bottom side of the tank permits filling it with water from the mains by opening valve K. (A water-level gauge on the tank is imperative, to aid in avoiding overflow). With valve E closed, water may be drained from the tank by opening valve L until a desired rate of flow Is obtained. As the water flows out, air is drawn into the top of the tank to replace it, through pipe M, and this air is drawn through the sample. The fineness of control of the rate at vhl ch air is drawn through the sample is almost entirely dependent on the fineness of adjustment of valve L. A regular 1/2 inch gate valve has been found satisfactory.
+-105-
+FIG. 65
+FIG. 66
+-104-
+If a sample is in place when the tank is being filled., it is necessary to disconnect the rubber tubing from the sample holder, so as to avoid, disturbing the sample by reversed, air flow, and. particularly, to avoid, blowing the fluid, out of the pressure gauge.
+5.      Pressure Gauge The pressure gauge used, in this laboratory, N, is Figs. 62 and 63, is the Ellison Inclined Draft Gauge, (Ellison Draft Gauge Company, Chicago, Illinois), which is a slant type manometer, giving pressure in inches of water. Two sizes have been used, with full scale readings of 1.0 inch of water and 5.0 Inches of water, respectively. The 1.0 inch scale type suffices for the general range of aircraft acoustical materials.
+4.      Flow meter The flow meter used in this laboratory for measurement of cm5/sec of air flow through the sample is a Type 12HCB Rotameter made by Fischer and Porter, Hatboro, Pennsylvania. It is shown at P in Fig. 63. This Instrument, placed in the line between the sample holder and the water tank, gives the rate of flow of air directly in am?/sec. It has a scale range of 10 to 220 cm5/sec, which is generally adequate. Other types of flow or gas meters might also be used.
+If a flow meter Is not available, a simple method of measuring rate of flow is suggested, as follows: For practical purposes, the volume of air flowing through the sample and into the tank during a given time is equal to the volume of water flowing out of the tank. Hence, if the water flowing from the tank over a known period of time is caught in a graduate And measured, the rate of flow In cm?/sec may be determined. A stopwatch for measuring the time interval is useful in this procedure. The water is turned on and allowed to run until the pressure drop across the sample has reached equilibrium; then the graduate is quickly inserted under the stream and at the same time the stopwatch is started. When several hundred am? of water have been collected, the graduate is removed quickly from the stream, and the watch stopped. At any given pressure, several measurements should be made, and the results averaged to insure accuracy.
+Detailed Procedure for Flow Resistance Measurement:
+When the flow resistance, R, of a material with a given volume density, p, and thickness, T, is to be determined, the steps outlined below are followed. The method assumes that the thickness of the sample and Its density are fairly uniform.
+1.      Cut circular samples from the material such that the diameter, D, in cm is slightly larger than that of the sample holder.
+2.      The flow resistance is given by
+1? AP
+-105-
+where A = area of sample in cm p = pressure across sample in dyne/cm2
+= 2490 times the number of inches of water read, on the manometer
+(v/t) = volume velocity of the water in cc/sec as read, hy the flow meter
+5.      Measure the flow resistance of several samples. Then determine the flow resistance per cm (or inch) of thickness by dividing by the thickness of the sample T in cm (or inches). Finally, determine the arithmetic average of the resistances for unit thickness.
+For materials of less uniform density and thickness, a more complex procedure may be followed:
+1.      Measure the average volume density p in of a large sample of material.
+This figure will be needed later.
+2.      Cut a number of circular samples from the material as before, each with a diameter D in cm. Samples should be chosen which range in thickness from 2 to 6 cm, by splitting if necessary.
+5.      Measure the weight G in grams of each of the several samples at whatever thickness each is. Then calculate the surface density S = g/a in gm/cm^ for each.
+4.      Measure the flow resistance R as a function of thickness T for the several samples with the plunger E, Fig. 64. Then plot values of R vs T for each individual sample separately on loglog paper and draw the best straight line through the points. From these graphs determine R1? the flow resistance for 1 cm thickness, for each of the samples. Next, on log-log paper, plot R^ vs S, using the one datum point for each sample and draw the best straight line through the points. Note that now S is Identically equal to the volume
+-IO6-
+density at one cm thickness which we shall call p^. Hence, we shall label , the abscissa of this graph p^.
+5.      Using the value of p determined, in (1) above, find a value of R^ from the graph Just completed. This value of R-^ should be approximately the average flow resistance per cm thickness for the large sample.
+6.      If the sample is a blanket several cm thick, the total flow resistance will be equal to the value of R^, Just determined times the thickness.
+General Comments
+Flow resistance is often a function of velocity of air flow through the sample. It is usually found desirable to make measurements at two or three different rates of air flow and to extrapolate the results to zero air flow. However, for many types of acoustical material the variation in resistance as a function of air flow is decidedly secord order. Little variation in resistance was found for the Fiberglas samples discussed in this report. However, the rate of air flow may influence markedly the value of flow resistance measured for certain trim cloths. Hence, in testing trim cloths, it is suggested that the measurements be extended to take this into account.
+It is of prime importance that there be no air leaks in the system. If air enters at any point other than through the sample, the measured results will be incorrect.
+When inserting the sample into the holder, a rod should be used to tamp gently the edges so that the entire lower surface is in contact with the screen. When the plunger is inserted the entire upper surface should also be in contact with the upper screen. If these precautions are not taken, the thickness as read on Scale G of Fig. 64 will be incorrect.
+After opening Valve L, Fig. 65, sufficient time should be allowed for the pressure and air flow to come to equilibrium before making measurements .
+If the pressure differential, p, is measured in inches of water, it must be multiplied by the conversion factor 2490 to give p in dyne/cm^. If the area of the sample A is measured in square inches, it must be multiplied by 6.45 to convert to cm . To convert from volume density in gm/cc, multiply by 62.4 to obtain the answer in lb/ft3.
+-IO?-
+Pressure differentials of less than 0.5 inch of water should, he preferably used, since the sound, pressures encountered, in practice are selclom greater than 1000 dyne/cm .
+-108-
+

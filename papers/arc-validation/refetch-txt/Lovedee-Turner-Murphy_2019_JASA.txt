@@ -1,0 +1,1387 @@
+eprints@whiterose.ac.uk
+https://eprints.whiterose.ac.uk
+Universities of Leeds, Sheffield and York
+
+Deposited via The University of York.
+White Rose Research Online URL for this paper:
+https://eprints.whiterose.ac.uk/id/eprint/153179/
+Version: Accepted Version
+Article:
+Lovedee-Turner, Michael James and Murphy, Damian Thomas (2019) 3D Reflector
+Localisation and Room Geometry Estimation using a Spherical Microphone Array. The
+Journal of the Acoustical Society of America. pp. 1-15. ISSN: 1520-8524
+https://doi.org/10.1121/1.5130569
+
+Reuse
+Items deposited in White Rose Research Online are protected by copyright, with all rights reserved unless
+indicated otherwise. They may be downloaded and/or printed for private study, or other acts as permitted by
+national copyright laws. The publisher or other rights holders may allow further reproduction and re-use of
+the full text version. This is indicated by the licence information on the White Rose Research Online record
+for the item.
+Takedown
+If you consider content in White Rose Research Online to be in breach of UK law, please notify us by
+emailing eprints@whiterose.ac.uk including the URL of the record and the reason for the withdrawal request.
+
+3D Reﬂector Localisation and Room Geometry
+Estimation using a Spherical Microphone Array
+Michael Lovedee-Turner1, a) and Damian Murphy1
+AudioLab, Communication Technologies Research Group, Department of Electronic Engineering,
+University of York, UK
+
+The analysis of room impulse responses to localise reﬂecting surfaces and estimate room geometry is applicable in numerous aspects of acoustics, including source localisation, acoustic
+simulation, spatial audio, audio forensics, and room acoustic treatment. Geometry inference
+is an acoustic analysis problem where information about reﬂections extracted from impulse
+responses are used to localise reﬂective boundaries present in an environment, and thus
+estimate the geometry of the room. This problem however becomes more complex when
+considering non-convex rooms, as room shape can not be constrained to a subset of possible
+convex polygons. This paper presents a geometry inference method for localising reﬂective
+boundaries and inferring the room’s geometry for convex and non-convex room shapes. The
+method is tested using simulated room impulse responses for seven scenarios, and real-world
+room impulse responses measured in a cuboid-shaped room, using a spherical microphone
+array containing multiple spatially distributed channels capable of capturing both time- and
+direction-of-arrival. Results show that the general shape of the rooms is inferred for each
+case, with a higher degree of accuracy for convex shaped rooms. However, inaccuracies generally arise as a result of the complexity of the room being inferred, or inaccurate estimation
+of time- and direction-of-arrival of reﬂections.
+c 2019 Acoustical Society of America.
+[http://dx.doi.org(DOI number)]
+[XYZ]
+
+Pages: 1–13
+
+I. INTRODUCTION
+
+A room impulse response (RIR) is the characteristic
+response of a room to excitation from a known broadband
+test signal. These RIRs are comprised of a superposition
+of the direct source-to-receiver component, discrete early
+reﬂections produced through limited interactions with
+boundaries within the room, and a densely-distributed
+and exponentially decaying reverberant ﬁeld. RIRs are
+therefore representations of the reverberant characteristics of a room, and are uniquely deﬁned by the geometric constraints of the room and the source/receiver locations. This property makes RIRs an invaluable resource
+for acoustic analysis and acoustic scene rendering. One
+key application for RIR analysis is geometry inference a form of acoustic analysis focusing on the estimation of
+a room’s geometry from the reﬂections captured across a
+number RIRs. The ability to create an accurate model
+of the geometric constraints of a given room has numerous further applications in acoustics ranging from: sound
+source localisation, room acoustic simulation, spatial audio, audio forensics, and the acoustic treatment of rooms.
+Geometry inference algorithms can typically be split into
+one of two categories1 : image-source reversion1–5 and direct localisation1,6–10 .
+
+a) mjlt500@york.ac.uk; Funding was provided by a UK Engineering
+
+and Physical Sciences Research Council (EPSRC) Doctoral Training Award.
+Code will be made available at: 10.5281/zenodo.2563643
+
+J. Acoust. Soc. Am. / 7 October 2019
+
+Previous work has been shown to be able to infer
+the geometry of a room from a set of RIRs, however,
+they are only presented for the case of a simple cuboid
+room, and in some cases require large numbers of RIRs to
+work successfully. Furthermore, most do not present error management techniques for reducing the impact that
+inaccurately detected reﬂections or incorrectly computed
+reﬂection paths have on the inferred geometry.
+In this paper the problem of geometry inference is
+considered from the perspective of both convex and nonconvex 3D room shapes, which has not been considered previously in the literature. To achieve this the
+Eigenbeam Detection and Evaluation of SimultaneouslyArriving Reﬂections (EDESAR) reﬂection detection
+method is proposed based on spherical harmonic decomposition of spatial room impulse responses (SRIRs),
+which allows simultaneously arriving reﬂections from different direction-of-arrivals (DoA) to be detected as individual reﬂections. Furthermore, an extension to existing image-source reversion techniques is proposed, the
+Acoustic Reﬂection Cartographer method. A geometry
+validation process is then proposed to reﬁne the inferred
+room’s geometry to ideally that of the desired room.
+The following assumptions are made when inferring the
+room’s geometry,
+• Source-receiver distance and room temperature are
+known a priori
+• There is at least a 50 cm distance from the source
+and receiver to the boundaries (half the standard
+
+Lovedee-Turner et al.: 3D reﬂector localisation and geometry estimation
+
+1
+
+measurement distance17 allowing for analysis of
+smaller/complex rooms)
+• Reﬂections have a dominant specular component
+• Boundaries deﬁne a closed room
+• Floor and ceiling are parallel to each other
+• Walls are perpendicular to both the ﬂoor and ceiling
+The paper is organised as follows: section II presents
+background literature in the ﬁeld of geometry inference, section III presents the problem formulation and
+proposed methodology, section IV discusses the testing
+methodology employed to assess the proposed methods
+accuracy, section V and VI will present and discuss the
+results, and section VII concludes the paper.
+II. BACKGROUND
+
+Image-source reversion deﬁnes the set of techniques
+that ﬁrst estimate the locations of image-sources from
+the ToA, and in some cases DoA, of reﬂections arriving
+at one or more receivers1 .
+Dokmanic et al.2 proposed a technique exploiting the
+properties of Euclidean distance matrices to search for reﬂections with a common image-source across RIRs measured at ﬁve receiver locations, each positioned such that
+they receive a ﬁrst-order reﬂection from each wall. The
+image-source locations are then deﬁned as the common
+point of intersection across spheres centred around the
+receiver positions, with radius values derived from the
+ToA for each reﬂection. This method required a priori
+knowledge of the source and receiver position, and assumed that the room was convex in shape.
+Arteaga et al.3 used the source-receiver distance and
+reverberation time computed from a measured RIR to
+deﬁne the geometries for a set of possible cuboid rooms.
+The RIR for these possible rooms are simulated using the
+image-source method, and a goodness-of-ﬁt is computed
+between the simulated and measured RIRs to ﬁnd the
+cuboid room that produces a RIR similar to that measured.
+Ribeiro et al.4 used a least-squares minimisation
+technique to ﬁt synthetically generated reﬂections to a
+measured RIR. This process detects a sparse set of reﬂections with approximately known DoA. Image-sources
+are then generated from the ToA and DoA, the boundary locations are then estimated from the image-source
+positions. These boundaries are only considered valid
+if at least one second- or third-order reﬂection is also
+detected for the boundary. This technique assumed a
+convex-shaped room when inferring the rooms shape, and
+required a priori knowledge of the source and receiver
+positions, and the microphone arrays response to signals
+from a grid diﬀerent DoA.
+Tervo and Tossavainen5 employed a maximum likelihood approach to ﬁnd the location of the image-source
+2
+
+J. Acoust. Soc. Am. / 7 October 2019
+
+that maximised a utility function from a randomly generated set of points in space. The ﬁst-order reﬂections
+were used to deﬁne the locations of the boundaries. If an
+already deﬁned plane can be used to deﬁne the location
+of an image-source it is assumed to be a higher-order reﬂection and is ignored. This approach assumed that the
+room is convex in shape, and that each RIR contains a
+discrete detectable ﬁrst-order reﬂection from each boundary.
+Remaggi et al.1 used an adaptation of the Dynamic
+Programming Projected Phase-Slope Algorithm11 to detect reﬂections in a RIR, and a delay-and-sum beamformer to ﬁnd the DoA. The image-source locations are
+then deﬁned in the spherical coordinate domain using
+the azimuth, elevation, and ToA computed for each reﬂection. Remaggi et al. assumed that the source and all
+image-sources were at least 2.1 m away from the microphone array, and that at least four measurement positions existed - although more were used in testing.
+Alternatively, direct localisation techniques aim to
+infer boundary positions directly without extracting further information about the reﬂection paths1 .
+Remaggi et al.1 and Nastasia et al.7 , used ToA to
+deﬁne ellipsoids with foci on the source and receiver locations, which are known a priori. Through RIR measurements at diﬀerent source and/or receiver locations,
+a boundary is deﬁned as being at the point where there
+is a common tangent across ellipsoids produced by a reﬂection common across all RIRs. Assumnptions made by
+Remaggiet al. are as above. Nastasia et al. assumed a
+minimum and maximum reﬂector distance from the origin to remove unwanted planes.
+Kuster et al.6 proposed a technique based on inversewave ﬁeld extrapolation of reﬂections captured using a
+linear-array of microphones. The use of large numbers of
+measurement positions allowed the approach to produce
+a detailed mapping of a single boundary in an environment.
+Filos et al.8 proposed a method for estimating room
+geometry using a seven microphone array split into three
+sub-arrays of ﬁve microphones. Each sub-array is positioned to localise planes on two axes, xy, xz, and yz,
+and RIRs are captured using a source position for each
+boundary in the room. The Hough transform is then
+used to ﬁnd the line that is tangential to each ellipse deﬁned by the ToA for the ﬁrst arriving reﬂection in each
+RIR set. Intersections between the infered lines are then
+used to deﬁne the room’s geometry8 . However, the array
+type used limits this approach to geometry inference to
+the case of convex rooms.
+Zamaninezhad et al.9 estimated the distances between two reﬂective boundaries from the location of the
+main resonant frequencies within the frequency domain
+representation of the RIR, the room transfer function.
+The main resonant frequency is detected through minimisation of a cost function of the possible resonances within
+the measured room transfer function. To infer the location of the boundaries, it is assumed that one boundary
+is deﬁned at x = 0 which is closer to the source.
+
+Lovedee-Turner et al.: 3D reﬂector localisation and geometry estimation
+
+Baba et al.10 proposed an extension to the ellipsoid
+based methods. Firstly, they proposed the use of a linear
+Radon transform, an image processing algorithm used
+for line detection, to locate common reﬂections across
+a stacked set of RIRs measured across multiple loudspeaker positions. Knowledge of the array geometry and
+ToA is then used to create an image-microphone. The
+point of reﬂection is then located as the point of intersection between the ellipse and a line going from the imagemicrophone to the source. It is assumed that each wall
+has a uniform-linear loudspeaker array parallel to it, and
+therefore the geometry of the room is constrained to the
+geometry of the loudspeaker array.
+These methods require multiple measured RIRs
+recorded at diﬀerent points in the room, with precise positioning of each source and receiver so that a discrete and
+detectable ﬁrst-order reﬂection for each boundary exists.
+This inherently limits the application of these methods to
+convex rooms, where the source and receiver placement
+requirements can be met, and allows boundaries that are
+not detected across the RIRs to be removed. This, however, does not hold for non-convex shaped rooms, where
+boundaries will not necessarily be visible to all source
+and receiver positions.
+III. PROBLEM FORMULATION AND METHOD
+
+Spherical microphone arrays measure the sound pressure on the surface of a rigid sphere, spatially sampled
+at the microphone positions distributed across this surface. Given a spherical microphone array, the sound ﬁeld
+on the surface of the sphere can be deﬁned using spherical harmonics12 . In the time-domain, when assuming
+frequency independent reﬂection, the RIR H(t) can be
+represented as a superposition of Dirac deltas δ steered
+by the spherical harmonic vector y(Ψi ) in the azimuth
+and elevation DoA, Ψ = [θ, φ], of the arriving direct
+sound and reﬂections, with amplitude α and time-ofarrival (ToA) τ , with the addition of the time-variant
+residual noise component R(t) as,
+H(t) =
+
+∞
+X
+i=1
+
+y(Ψi )αi δ(t − τi ) + R(t)
+
+(1)
+
+where the spherical harmonics column vector of order N ,
+y(Ψ), contains the (N + 1)2 spherical harmonics12 ,
+M
+y(Ψ) = [y00 (Ψ), y1−1 (Ψ), y10 (Ψ), y11 (Ψ), ..., yN
+(Ψ)]T
+
+J. Acoust. Soc. Am. / 7 October 2019
+
+(2)
+
+where (.)T denotes transposition and the real valued
+spherical harmonic of order n and degree m, ynm , is computed as14 ,
+q
+√
+2n+1 (n−m)! m
+
+Pn (cosφ) 2cos(mθ),
+
+
+4π
+(n+m)!
+q
+2n+1 (n−m)! m
+ynm =
+4π (n+m)! Pn (cosφ),
+
+q
+
+
+ 2n+1 (n−m)! P m (cosφ)√2sin(mθ)
+
+if m > 0
+if m = 0
+
+if m < 0
+(3)
+where Pnm is the associated Legendre polynomial of order
+n and degree m.
+Through analysis of the spatiotemporal attributes
+of the reﬂections in the SRIR H, the DoA and ToA
+for individual reﬂections can be extracted. This information can then be used to deﬁne the locale of imagesources that produce the reﬂections arriving at the receiver. The boundary location can then be estimated
+from the image-source, and the previous-source that was
+mirrored in the boundary to produce the image-source,
+by exploiting the properties of the image-source method.
+That is, as an image-source is produced by mirroring the previous-source perpendicularly across a boundary, the distance from previous-source-to-boundary and
+boundary-to-image-source are equal, and the line between the previous-source and image-source is parallel
+e
+to the boundary’s normal. A point on the boundary b
+2
+e can therefore, from , be
+and the boundary’s normal n
+estimated as,
+4π
+
+(n+m)!
+
+n
+
+s+s
+e=e
+b
+2
+e
+s−s
+e=
+n
+||e
+s − s||
+
+(4)
+(5)
+
+e is a point on the candidate boundary, n
+e is the
+where b
+candidate boundary’s normal, e
+s is the location of an
+image-source, and s is the source location.
+Therefore, there are two main stages to the adopted
+approach: the analysis of the spatiotemporal information contained in the SRIRs (subsection III A), and the
+inference of the room’s geometry from this information
+(subsection III B).
+A. Eigenbeam Detection and Evaluation of Simultaneously
+Arriving Reﬂections
+
+To extract the spatiotemporal information, a reﬂection detection and analysis technique using spherical
+beampatterns (eigenbeams) is proposed, the Eigenbeam
+Detection and Evaluation of Simultaneously Arriving Reﬂections (EDESAR) method.
+The proposed method analyses the SRIR iteratively
+over windowed time-frames of 0.45 ms with a 50% frame
+overlap. These short time-frames allow for reﬂections arriving from close DoAs but diﬀerent ToA to be easily
+detected separately. Before any analysis of the impulse
+
+Lovedee-Turner et al.: 3D reﬂector localisation and geometry estimation
+
+3
+
+response is performed, the SRIR is normalised to have a
+maximum sample magnitude of ±1. To reduce the impact of noise, and reduce the likelihood of false positive
+detections, time-frames are ignored if they have a maximum sample value across all channels less than a deﬁned
+threshold value ǫa .
+The time-frames being analysed are windowed using
+a Hann window then low-pass ﬁltered at 5 kHz, and highpass ﬁltered at 100 Hz, reducing the impact of diﬀuse
+spectral components as a result of the spatial Nyquist
+frequency18 , 8 kHz as quoted for the EigenMike EM3219
+as used in this study.
+The diﬀuseness proﬁle for each time-frame is then
+computed using the Covariance Matrix Eigenvalue Diffuseness Estimation (COMEDIE) algorithm20 as implemented in the Spherical-Array-Processing Toolbox (‘getDiﬀuseness CMD’ )14 . This diﬀuseness estimator was
+chosen based on results presented in20 , which showed
+that the COMEDIE algorithm produced a more robust
+estimate of diﬀuseness as a result of being able to disambiguate between multiple correlated/uncorrelated sound
+sources and spatially diﬀuse noise20 . To determine the
+diﬀuseness of a time-frame the diﬀuseness proﬁle is computed for each spherical harmonic order (up to thirdorder in this study), and if a time-frame has any diffuseness proﬁles greater than the threshold value ǫd it
+is ignored. This reduces the likelihood of inaccuracies
+in ToA and DoA estimation, as a result of the number
+of signals or the signal-to-noise ratio, which would impact the algorithms ability to infer reﬂection paths, and
+therefore boundary locations.
+To detect directional signals within the ﬁltered timeframe, the Minimum Variance Distortionless Response
+(MVDR) beamformer21 , based on the ‘sphMVDR’ function in the Spherical-Array-Processing toolbox14 , is used.
+The MVDR beamformer was chosen for its ability to
+minimise the impact of signal variance on the steered
+response of the microphone array, which therefore produces more accurate predictions of DoA15 . The MVDR
+beamformer is computed by steering the response of the
+microphone array in the spherical harmonic domain, by
+spatially ﬁltering the response with a weighted spherical harmonics vector. The spherical harmonics vector is
+weighted to ideally reduce the impact of unwanted noise
+on the DoA estimation, and is computed from the timeframe’s covariance matrix as16 ,
+w(Ψ) =
+
+RH (t − τω )−1 y(Ψ)
+y(Ψ)T RH (t − τω )−1 y(Ψ)
+
+(6)
+
+where (.)−1 denotes matrix inversion, y(Ψ) is the [16 ×
+1] spherical harmonic vector computed using the getSH
+function in the Spherical Harmonic Transform Library 13 ,
+and RH (t−τω ) is the [16×16] covariance matrix for timeframe τω in RIR H(t) computed as14 ,
+RH (t − τω ) = H(t − τω )T H(t − τω ) +
+
+4
+
+J. Acoust. Soc. Am. / 7 October 2019
+
+I(N +1)2
+4π
+
+(7)
+
+FIG. 1. Top: A typical time-frame for a room impulse
+response containing two simultaneously arriving reﬂections,
+where each line represents a diﬀerent channel in the thirdorder spherical harmonic signal. Bottom: The directional
+spectrum computed for the time-frame, where the darker regions indicate the arrival of strong directional components in
+the signal.
+
+where I(N +1)2 is the [(N +1)2 ×(N +1)2 ] identity matrix.
+The MVDR beamformer output is then computed as,
+Λ(Ψ) = w(Ψ)T RH (t − τω )w(Ψ)
+
+(8)
+
+where Λ(Ψ) is the intensity of the signal in the direction
+Ψ calculated by steering the arrays response with the
+[16 × 1] weighted spherical harmonics vector w(Ψ).
+The directional spectrum for each time-frame is then
+computed as the directional intensity of the signal steered
+across a grid of azimuth and elevation positions from 0◦ ≤
+θ ≤ 359◦ and 0◦ ≤ φ ≤ 180◦ in one degree increments.
+An example of this directional spectrum can be seen in
+Figure 1.
+The next step is to detect the darker regions within
+the directional spectrum, which represent the arrival of
+directional signals in the time-frame. When considering
+the nature of the data being analysed as seen in Figure 1, it is evident that two steps are required, separating
+out spatial regions that overlap and detecting the directional regions in the spectrum. These steps can be easily
+achieved through use of existing image processing techniques with small modiﬁcations to the intensity matrix.
+The matrix Λ is ﬁrst converted into a grayscale image - with the darker regions being deﬁned as the points
+of higher intensity using −Λ. The grayscale image is
+mapped such that the values in −Λ that are less than or
+equal to min(−Λ) ∗ 0.5 are set to 0 (black), and values
+greater than or equal to max(−Λ) are set to 1 (white).
+This compresses the dynamic range of the directional
+spectrum ensuring that only the main discrete reﬂections
+in the time-frame are detected.
+To allow reﬂections with overlapping spatial regions
+to be detected as individual events, image processing and
+segmentation algorithms from MATLAB’s Image Processing Toolbox are used to separate overlapping regions
+in the directional spectrum. Firstly, a binary image is
+computed for the grayscale image extracting the darkest
+Lovedee-Turner et al.: 3D reﬂector localisation and geometry estimation
+
+FIG. 2. An example of the binary mask of the directional
+spectrum (as seen in Figure 1) after having an extended minima mask applied. As can be seen the spatial region for the
+two arriving reﬂections overlap.
+
+FIG. 3. An example of the resulting directional regions after
+being masked by the output of the watershed algorithm. The
+overlapping regions as seen in Figure 2 are now separated by
+a white line.
+
+regions of the directional spectrum as the indexes with
+a color value less than ǫmsk . To optimise the segmentation procedure, an extended-minima mask is applied
+to the binary image producing more deﬁned regions, as
+shown in Figure 2. This extended-minima mask is created from the distance transform (distanceTransform =
+-bwdist(∼binaryImage) 22 ) of the binary image using the
+imextendedmin function23 , and applied to the binary matrix using the imimposemin function24 . The watershed
+function25 with default parameters is then used to create a label matrix containing positive valued integers for
+each region, with the regions separated by zero valued
+indices. This label matrix is applied to the binary image,
+by setting the indexes in the matrix where the watershed
+algorithm outputs a 0 to 0, as shown in Figure 3.
+The dark regions in the masked directional spectrum are then detected using MATLAB’s regionprops
+function26 , called as regionprops(watershedMaskedImage,
+directionalSpectrum, ’all’). The convex hull for these detected regions, as shown in Figure 4, represent the arrival
+J. Acoust. Soc. Am. / 7 October 2019
+
+of discrete reﬂections. When considering a 2D image of
+an unwrapped sphere, the wrap around observed at azimuth angles at θ = 0◦ and θ = 359◦ is not represented.
+Therefore, a directional signal occupying this spatial region will exist as two separate dark areas on the directional spectrum. To this extent, if two regions, with the
+same elevation values, exist at θ = 0◦ and θ = 359◦ , the
+regions are combined and considered to be the arrival of
+a single reﬂection. Furthermore, it is important to note
+that this approach will not be able to distinguish between
+two reﬂections arriving from a similar DoA and ToA, and
+will detect these as a single reﬂection.
+As this is an overlapping iterative process, and each
+reﬂection occupies a range of samples in the SRIR, the
+same reﬂection can be present across multiple subsequent
+time-frames. Therefore, each detection is either a reﬂection that was detected in the previous time-frame, or a
+new reﬂection. To resolve this ambiguity, the spatial region for each detection within the current time-frame is
+compared to any detections in the previous time-frame,
+and if any spatial region in the current time-frame had
+an overlap of at least 80% with any in the previous timeframe, they are considered to have been produced by the
+same reﬂection. The value of 80% is chosen to try and
+prevent individual reﬂections arriving from similar directions being detected as the same reﬂection. All reﬂections
+are therefore considered unresolved until their spatial region is no longer present in a subsequent time frame,
+a time-frame is skipped, or the iterative process ends.
+Once a detected reﬂection has been resolved using this
+process, the spatial and temporal region for the reﬂection
+is known and can be used to estimate the ToA and DoA.
+The DoA can be estimated from the spatial region
+within each time-frame for which a reﬂection is present.
+The DoA is computed by adding the directional spectrum across the reﬂection’s time-frames, and taking the
+steered direction, within the reﬂection’s spatial region,
+with the largest intensity as corresponding to the DoA of
+the reﬂection:
+ΨDoA = arg max
+Ψ
+
+X
+i=I
+i=1
+
+Λi (Ψr )
+
+
+
+(9)
+
+where Λi is the directional spectrum matrix for the ith
+time-frame that the reﬂection is present, r deﬁnes the
+sub-array indices in Ψ that deﬁne the spatial region, I is
+the total number of time-frames over which the reﬂection
+is present, and arg max(...) outputs the steered direction
+with highest intensity value.
+The ToA for the reﬂection is then deﬁned as the time
+index containing the maximum peak present in the timeframe of the RIR, starting at the ﬁrst window that the
+reﬂection is present, and ending at the start of the subsequent window where the reﬂection is no longer present.
+To distinguish between multiple reﬂections in a single
+time-frame, the response of the microphone is steered in
+
+Lovedee-Turner et al.: 3D reﬂector localisation and geometry estimation
+
+5
+
+FIG. 4. An example of the detected regions (black contours)
+within the directional spectrum of Figure 1.
+
+the direction of the DoA of the arriving reﬂection through
+spatial ﬁltering with the spherical harmonic transform as,
+T oA = arg max(|y(ΨDoA )HT (t − τr )|)
+
+(10)
+
+τ
+
+where T oA is the time of arrival for the given reﬂection,
+τr is the time-frame that the reﬂection occupies in the
+SRIR, ΨDoA contains the azimuth and elevation DoA
+for the reﬂection, arg max(...) returns the index where
+the maximum value of the expression is, and |...| denotes
+absolute value.
+B. The Acoustic Reﬂection Cartographer Method
+
+Once the discrete reﬂections present in the SRIRs
+have been detected, the geometry of the room can be
+inferred. The proposed geometry inference method, The
+Acoustic Reﬂection Cartographer (E-ARC), has two processing stages: image-source reversion and geometry validation.
+Before any processing is done, the detected reﬂections across all SRIRs are combined into one structure,
+and organised in descending ToA.
+1. Image-source Reversion
+For each candidate detection an estimated ToA and
+DoA value will be extracted from the SRIR. Assuming
+that the ﬁrst arrival at the microphone array belongs to
+the direct sound and all subsequent detections are reﬂections, the source location (if not known a priori ) and
+image-source locations can be deﬁned using directional
+cosines, from27 as,
+
+
+sin(φi ) cos(θi )
+
+
+e
+(11)
+si = m + di  sin(φi ) sin(θi ) 
+cos(φi )
+where m is the [x, y, z] coordinate for the receiver and di
+is the distance travelled by the ith detection, computed
+as ToA ∗ c, where c is the speed of sound. To deﬁne the
+parameters for the candidate boundaries (4), the most-
+
+6
+
+J. Acoust. Soc. Am. / 7 October 2019
+
+likely previous source for each image-source needs to be
+found, and substituted for s in (4).
+For notation purposes in this section e
+si will be used
+to refer the current image-source being tested, e
+sk is a
+candidate previous-source inferred from the kth reﬂection
+which has a ToA less than the reﬂection that produced
+e
+si , and e
+sj is the already detected previous-source for the
+candidate previous-source e
+sk .
+When searching for the most-likely previous-sources
+it is important to consider that each image-source is either produced by a ﬁrst-order reﬂection from a new or
+existing boundary, a higher-order reﬂection from an existing boundary, or a false-positive detection. Following
+the deﬁnition of the SRIR in Section III, it can be assumed that at least the ﬁrst two detections after the
+direct sound from each SRIR, that are a consequence
+boundary more than 50 cm away from the source and
+receiver, are ﬁrst-order. Furthermore, it is assumed that
+the ﬁrst detection that can produce either the ﬂoor or
+ceiling for each source/receiver pair is ﬁrst-order, and
+that the mean boundary position for these is assumed
+to be the ﬂoor and ceiling location. For subsequent reﬂections the assumption of ﬁrst-order does not hold, as
+the ﬁrst arriving second-order reﬂection will likely arrive before the last ﬁrst-order2 . Therefore, for subsequent reﬂections the most likely previous-source needs to
+be found, which will either be the source location or an
+image-source produced by a reﬂection with a ToA less
+than the reﬂection that produced the image-source being
+analysed. This search is constrained based on the aforementioned assumptions, which ideally will eliminate the
+majority of false-positive detections made by the reﬂection detection method.
+The ﬁrst consideration in the process is to ascertain
+whether the image-source is as a result of a reﬂection
+from a known boundary. This is tested for the source
+and all image-sources (e
+sk ) that are deﬁned by reﬂections
+with a ToA less than that of the reﬂection that produced
+e
+si as,
+e l −e
+previousSource = e
+sk , if ||(e
+sk +2 hb
+sk , n̂l in̂l )−e
+si || ≤ ǫes
+(12)
+where e
+sk is the image-source for the kth reﬂection, l =
+1 : L is the number of inferred boundaries deﬁned by
+ﬁrst-order reﬂections, h., .i denotes dot product, and ǫes is
+an empirically deﬁned threshold value chosen to allow for
+inaccuracies in ToA and DoA estimation. If any of these
+image-sources tested produce an image-source location
+close to the actual image-source (e
+si ) it is assumed to be
+the most-likely previous-source.
+If no existing boundaries deﬁned by a ﬁrst-order reﬂection are attributable to e
+si , then a new boundary is
+deﬁned. As with the previous work in the literature1,2,5
+an image-source that cannot be deﬁned using existing
+boundaries is assumed to be ﬁrst-order. However, contrary to these works a set of constraints are imposed to
+remove image-sources that are as a result of false-positive
+detections, these constraints are (Figure 5),
+
+Lovedee-Turner et al.: 3D reﬂector localisation and geometry estimation
+
+• The diﬀerence in propagation distance ∆l between
+the image-source-to-receiver path and source-toboundary-to-receiver path should be within a deﬁned threshold such that ∆l ≤ ǫl , where ǫl is the
+threshold
+• The inferred boundary is perpendicular to the ﬂoor
+and ceiling, deﬁned using the z-axis coeﬃcient for
+e z , which should be n
+e z = 0,
+the boundary’s normal n
+e z ≤ ǫne , where ǫne is the threshold
+constrained as n
+value.
+• The inferred boundary is at least 50 cm away from
+the source and receiver, as deﬁned by the minimum
+source-to-boundary and receiver-to-boundary distances.
+• The specular reﬂection produced by the path from
+source-to-boundary should have x and y directional
+cosines close to that of the actual reﬂection path
+from image-source-to-receiver, such that ∆∠ ≤ ǫ∠
+where ǫ∠ is the threshold value used and ∆∠ is cale − [α, β]|| and α
+culated as ||[e
+α, β]
+e, βe are calculated,
+27
+using ray-tracing , as,
+α
+e=α
+eprev − 2cos(υ)µ
+βe = βeprev − 2cos(υ)η
+
+(13)
+(14)
+
+where α
+e and βe are the directional cosines along
+the x and y axes respectively, αprev and βprev are
+the directional cosines computed for a line going
+from the previous-source to the point where the line
+from image-source-to-receiver intersects the boundary br , υ is the angle of incidence, and µ and η are
+the directional cosines of the normal vector of the
+plane along the x and y axes.
+The implication of the assumption of ﬁrst-order is that
+any higher-order reﬂections deﬁned as a ﬁrst-order reﬂection will produce a boundary distant from the desired
+boundary location, and therefore, a geometry validation
+process is required to reﬁne the inferred boundaries. Furthermore, second-order reﬂections that are produced by
+interactions between perpendicular boundaries will produce an angled boundary that will impact the inferred
+shape of the room. Therefore, attempts are made to ﬁnd
+the correct previous-source for image-sources produced
+by these perpendicular reﬂections.
+Reﬂections produced by interactions between perpendicular boundaries are searched for by exploiting
+the properties of the image-source method. Given that
+an image-source is generated by mirroring its previoussource perpendicularly across a boundary, for the case of
+a reﬂection between perpendicular boundaries, the relationship between the image-source, previous-source, and
+the previous-source of the previous-source, can be expressed as a rotation of these image-sources around a
+point in space (Figure 6). From this relationship, this
+J. Acoust. Soc. Am. / 7 October 2019
+
+FIG. 5. Example of the relationship between the previoussource e
+sk , image-source e
+si , and a reﬂective boundary. The
+dotted line denotes the reﬂection path computed for a specular reﬂection using (13) and the red dashed line is the path
+from image-source to receiver m (color online).
+
+point of rotation must be equidistant from these three
+image-source locations in the reﬂection path. Therefore
+from (4) this point of rotation pr can be expressed as,
+sei + sej
+(15)
+2
+where sei is the image-source being analysed and sej is
+the previous-source of the previous-source. The imagesource produced for a reﬂection between perpendicular
+boundaries can therefore be detected if the image-source
+and previous-source are equidistant from this point of
+rotation as,
+pr =
+
+previousSoure = e
+sk , if | ||sei −pr ||−||sek −pr || | ≤ ǫo (16)
+
+If more than one previous-source can be deﬁned using this relationship then the previous-source with the
+smallest error in reﬂection path is used as,
+ez )
+min(∆l + ∆∠ + n
+
+(17)
+
+In the case that none of these steps produce a valid
+candidate previous-source, the image-source in question
+is assumed to be as a result of a false-positive detection
+made by the reﬂection detection method. An overview
+of this process can be seen in Algorithm 1.
+2. Geometry Validation
+From Figure 7 (a), it can be seen that there are three
+types of potentially erroneous boundary detections. (I)
+Boundaries positioned on the corners of the desired geometry as a result of a correct previous-source not being
+detected for a second-order reﬂection between perpendicular boundaries. (II) Boundaries positioned immediately
+after another boundary, which are likely to be a product
+of either noise, or a single reﬂection being detected as
+multiple separate arrivals. (III) Boundaries positioned
+
+Lovedee-Turner et al.: 3D reﬂector localisation and geometry estimation
+
+7
+
+Generate image-sources
+for i = number of reﬂection : -1 : 1 do
+if e
+si is within 1 meter of source or receiver
+then
+remove e
+si as it cannot produce a valid
+boundary
+continue
+end
+if number of detections < 2 then
+if norm(((e
+si + s)/2) - s) > 0.5 and
+norm(((e
+si + s)/2) - m) > 0.5 then
+previousSourcei = s
+number of detections = number of
+detections + 1
+continue
+end
+end
+for l = 1 : L do
+for k = i + 1 : number of reﬂections do
+if norm((e
+sk + 2 * dot(bel - e
+sk , nel -e
+si )
+< ǫs then
+previousSourcei = sek
+number of detections = number of
+detections + 1
+continue
+end
+end
+end
+Deﬁne new boundary using source as
+previous-source
+if ∆l < ǫl and ∆∠ < ǫ∠ and ∆e
+n < ǫne then
+possiblePreviousSource = s;
+if bounday is the ﬁrst that can deﬁne the
+ﬂoor or ceiling then
+previousSourcei = s
+number of detections = number of
+detections + 1
+continue
+end
+end
+store = 1
+for k = i + 1 : number of reﬂections do
+if sek and (sei have a diﬀerence in distance
+≤ ǫo to pr then
+possiblePreviousSource(store, :) = sek
+store = store + 1
+end
+end
+if length(possiblePreviousSource) == 0
+then
+remove sei
+continue
+end
+if length(possiblePreviousSource) > 1 then
+ez )
+[ , minIndex] = min(∆l + ∆∠ + n
+previousSource(ii,:) =
+possiblePreviousSource(minIndex, :)
+number of detections = number of
+detections + 1
+else
+previousSourcei =
+possiblePreviousSource
+number of detections = number of
+detections + 1
+end
+end
+end
+Algorithm 1: Pseudocode for image-source
+reversion process considering a single source and
+receiver.
+8
+
+J. Acoust. Soc. Am. / 7 October 2019
+
+FIG. 6.
+Diagram showing the rotational relationship between the image-source and its previous source, in this case
+Image-Source2 with Image-Source1 and Image-Source3 with
+Image-Source2 (color online). Image-Source1 is produced by
+mirroring the source in the boundary on the right side of
+the square. Image-Source2 is produced by mirroring ImageSource1 in the lower boundary, and Image-Source3 is produced by mirroring Image-Source2 in the left boundary. Point
+of Rotation 1 is the mid-point between Image-Source2 and the
+Source location, and Point of Rotation 2 is the mid-point between Image-Source3 and Image-Source1.
+
+far outside of the desired geometry, which are as a result
+of higher-order reﬂections being deﬁned as ﬁrst-order.
+The latter two of these potentially erroneous boundary
+conditions will be considered here, as they will have the
+largest impact on the accuracy of the geometry inference
+process.
+Ahead of the next step, boundaries that are coincident are removed until only one remains, reducing the
+number of boundaries to be tested. Two boundaries are
+e1
+deﬁned as being coincident if the boundary normals n
+e 2 are parallel and the inferred point on the boundand n
+e 1 and b
+e 2 , where 1 and 2 denote diﬀerent boundaries b
+aries, exists on both boundaries35 , such that,
+e 2 || ≤ ǫpar
+||e
+n1 × n
+e
+e
+e 1 , b1 − b2 > | ≤ ǫpoint
+and | < n
+
+(18)
+(19)
+
+where ǫpar and ǫpoint are empirically deﬁned threshold
+values to account for small variations in boundary position as a result of ToA and DoA errors. An additional
+constraint is required to account for non-convex-shaped
+rooms, where boundaries that are mathematically coincident could deﬁne two separate boundaries. To then
+remove the aforementioned inferred boundaries that are
+positioned outside of the desired geometry of the room,
+a three step geometry validation process is proposed.
+These three steps are as follows, reﬂection path validation, line-of-sight boundary validation, and closed
+geometry validation (Algorithm 2). Each of these
+steps are performed on an approximate estimation of the
+inferred room’s geometry, based on the nearest intersection points35 between non-parallel inferred boundaries.
+
+Lovedee-Turner et al.: 3D reﬂector localisation and geometry estimation
+
+receiver position. Any boundaries that are not in line-ofsight of the receiver could not have produced a reﬂection
+that arrives at the receiver. To test line-of-sight, a set
+of rays are deﬁned with 0 ≤ θ ≤ 359 and φ = 90 using
+(11), with an arbitrary value for di . The ﬁrst boundary
+that intersects36 with each of these rays is considered
+valid. An example of the resulting inferred boundaries
+after this step has been performed can be seen in Figure 7 (c), where the remaining additional boundary from
+Figure 7 (b) has been removed.
+Step 3: Closed Geometry Test
+
+FIG. 7. Example showing the remaining inferred boundaries
+after each step of the geometry validation process. Figure
+(a) shows the unconstrained boundaries before any processing
+is performed, Figure (b) shows the remaining unconstrained
+boundaries after the Reﬂection Path Validation step, Figure
+(c) shows the remaining boundaries after the line-of-sight test,
+and Figure (d) shows the remaining unconstrained boundaries
+after the closed geometry test (color online).
+
+Step 1: Reﬂection Path Validation
+The ﬁrst step is to check if the reﬂection path from
+the image-source-to-receiver is obstructed by additional
+boundaries that are closer to the receiver than the boundary inferred by this image-source. This step will remove
+the majority of boundaries positioned outside of the desired room’s geometry, as the reﬂection path for these
+boundaries will be occluded by the candidate boundaries
+that deﬁne the geometry of the room, as seen in Figure 7
+(a). This step is performed by deﬁning a line from the
+image-source that produced the boundary being tested to
+the receiver, and computing the intersection36 between
+the line and every other boundary. If any other boundary occlude the reﬂection path from the ith boundary
+to the receiver, the ith boundary is removed. Once all
+boundaries have been tested, the shape of the room is inferred from the remaining boundaries and the process is
+repeated until no further boundaries are removed. An example of the resulting inferred geometry after this step
+can be seen in Figure 7 (b), where only one external
+boundary has not been removed.
+Step 2: Line-of-Sight Boundary Validation
+While the majority of incorrect boundaries have now
+been removed, there are still non-valid boundaries that
+exist as a result of the path from image-source to receiver
+not passing through the boundary the image-source produces. Therefore, a line-of-sight test is performed to ensure all inferred boundaries are visible to at least one
+
+J. Acoust. Soc. Am. / 7 October 2019
+
+These ﬁrst two steps will have reﬁned candidate
+boundaries to that of the desired room for the majority of cases. The ﬁnal step is to ensure that the inferred
+geometry of the room produces a closed shape. As with
+the previous two stages the geometry of the room is ﬁrst
+inferred, then any constrained boundaries that do not intersect with two adjacent boundaries, one on each side,
+are removed. An example of the resulting inferred boundaries after this step has been performed can be seen in
+Figure 7 (d), in this case the inferred room had produced
+a closed geometry.
+IV. TESTING
+
+To test the proposed method, three scenarios are presented.
+Scenario One consists of three sets of simulations, one for a convex Cuboid-Shaped room, a convex
+Octagonal-Shaped Room, a non-convex L-Shaped Room,
+and a non-convex T-Shaped Room. The Cuboid, Octagonal, and L-shaped room consist of two measurement
+positions, and the T-Shaped room three, simulated using CATT-Acoustic28 . The SRIRs were simulated using
+omnidirectional sources at three diﬀerent locations. The
+simulations were run with 10,000,000 rays ensuring sufﬁcient excitation of the entire room, with diﬀuse reﬂections turned oﬀ. The boundaries are deﬁned as having
+the absorption properties of a wooden surface, using the
+WOOD30 material in CATT-Acoustic28 . The resulting
+SRIRs are rendered out as third-order spherical harmonic
+domain signals. The geometry and source and receiver
+positions can be seen in Figure 8.
+Scenario Two consists of two L-shaped rooms,
+with volumes 320 m3 and 360 m3 , simulated in CATTAcoustic using the same parameters as the L-Shaped
+room in Scenario One. These rooms are simulated using a single receiver positioned in line-of-sight of every
+boundary, and 15 randomly selected source positions in
+each segment of the room. From these two sets of 15
+source positions for each L-shaped room, a selection of
+33 source combinations that ensure a ﬁrst-order reﬂection from each boundary, are used to test the proposed
+method. This example tests the variability of the performance of the method, quantifying any diﬀerence in
+estimation accuracy between the two rooms.
+Scenario Three consists of two RIR measurements captured using the EigenMike EM32, a 32-channel
+
+Lovedee-Turner et al.: 3D reﬂector localisation and geometry estimation
+
+9
+
+while changesMade ∼= 0 do
+Infer geometry using boundary-boundary
+intersections.
+changeHappened = 0
+Step 1: Check reﬂection path for
+multiple boundary intersections
+for i = 1 : numberOfBoundaries do
+for k = 1 : numberOfBoundaries do
+if boundary k intersects line going
+from point of incidence on boundary
+i and the receiver then
+remove boundary i
+changeHappened = 1;
+end
+end
+end
+if changeHappened == 0 then
+changesMade = 0
+end
+end
+Step 2: line-of-sight test
+for θ = 1 : 359 do
+Deﬁne ray in azimuth direction θ
+for i = 1 : numberOfBoundaries do
+if ray intersects boundary i then
+boundaryIsValid(i ) = 1
+end
+end
+Remove boundaries where boundaryIsValid
+== 0
+end
+Infer geometry using boundary-boundary
+intersections.
+Step 3: Closed Geometry test
+for ii = 1 : numberOfBoundaries do
+Compute the distance between boundary ii
+and adjacent boundaries
+if boundaries do not connect and distance
+between boundaries is < 0.1 then
+remove boundary ii
+end
+end
+Infer geometry using boundary-boundary
+intersection points.
+Algorithm 2: Pseudocode for Geometric Validation
+process
+spherical microphone array, and a Genelec 8030 loudspeaker. The sound source used to capture the response
+of the room was an exponential sine-sweep30 20 seconds
+in length with a frequency range of 100-20 kHz, using the inverse-ﬁlter of the original sine-sweep to produce the SRIR. To better approximate an omnidirectional source, an average of the RIRs measured at four
+speaker orientations (0◦ , 90◦ , 180◦ , and 270◦ ) is taken31 .
+The ﬁnal SRIRs are then normalised to have a maximum sample value of ±1, and converted to third-order
+spherical harmonic domain signals using MH Acoustics’
+EigenStudio32 . The measurement room is cuboid-shaped
+with dimensions 10.35 m×13.29 m×4.19 m, and has a
+number of non-removable, adjustable, ﬂoor length curtains. As it was not possible to remove these curtains,
+they were positioned, as much as is possible, to limit
+their impact on the obtained SRIRs. Hence they were
+arranged in corners of the room, across windows, and,
+where possible, to cover features on the walls such as
+
+10
+
+J. Acoust. Soc. Am. / 7 October 2019
+
+electrical outputs, as well as the computer and interface
+used for the measurements. While it is accepted that
+this is non-ideal, and could have some impact on the results, every eﬀort has been made to minimize their potential inﬂuence on the measurements obtained, and ensure
+that the main reﬂective boundaries are exposed and clear
+from other possibly confounding features. Furthermore,
+the ceiling was covered in large metal piping connected
+to extractor fans and a layer of metal railing approximately 1 m from the ceiling. The noise ﬂoor in the room
+is measured as 60.2 dBA and the room’s temperature
+was 24.4◦ C, and hence the speed of sound is estimated
+as 346.97 m/s. The room’s geometry, loudspeaker and
+receiver positions, and an image of the room can be seen
+in Figure 9.
+The total measurements needed in these scenarios
+are deﬁned by the number needed to ensure ﬁrst-order reﬂections for each boundary are captured. In practice any
+number of SRIRs can be used. The SRIRs being analysed
+are truncated to 3000 and 2000 samples in length for
+the measured and simulated examples respectively. The
+truncation lengths are chosen to allow suﬃcient time for
+the main reﬂections to arrive while reducing the number
+of higher-order reﬂections.
+Three error metrics are used to analyse the accuracy of the inferred boundaries. (I) ∆Position - the
+distance between desired and inferred boundaries1,2,7,10
+measured at 10 cm intervals along the length of the target boundary and the RMS error computed over these
+intervals. (II) Dihedral Angle7,8,10 - the angle between
+desired and inferred boundaries. Dihedral angle is averaged over inferred boundaries if more than one exists.
+(III) ∆Length2 - diﬀerence between desired and inferred
+boundary length.
+The threshold values used were derived empirically
+through examination of results obtained for diﬀerent
+cases, and chosen so all ﬁrst-order reﬂections are detected, while reducing the number of inaccurately inferred boundaries due to noise: ǫa = 0.01, ǫd = 30%,
+ǫmsk = 0.1, ǫes = 30 cm, ǫpar , 0.1, ǫpoint = 0.1, and
+ǫO = 15 cm.
+The SRIRs used in testing are shifted in time to ensure that the ToA of the direct sound matches that expected given the source-receiver distances and speed of
+sound, removing latency introduced by the measurement
+system. Furthermore, the DoA is shifted to ensure that
+θ = 0◦ is aligned with the positive going x axis.
+V. RESULTS
+A. Scenario One
+
+When analysing simulated SRIRs, further consideration of the signal properties, and therefore choice of
+beamformer is required. When simulating SRIRs the arriving reﬂections are highly correlated as a result of each
+reﬂection being treated as a perfect Dirac, which in realworld measurement conditions is not the case. Therefore,
+if there are multiple reﬂections, the directional spectrum
+
+Lovedee-Turner et al.: 3D reﬂector localisation and geometry estimation
+
+FIG. 8. Inferred geometry (dashed line) and desired geometry (solid line) for Scenario One Cuboid-Shaped Room (a),
+Octagonal-Shaped Room (b), L-Shaped Room (c), and TShaped Room (d) (color online).
+
+FIG. 9. Desired geometry (solid line), best case inferred geometry (red dashed line), and worst case inferred geometry
+(blue dotted line) for Scenario Two L-Shaped Room One (a)
+and Scenario Two L-Shaped Room Two (b) (color online).
+
+B. Scenario Two
+
+Room
+Cuboid
+Octagonal
+L-Shaped
+T-Shaped
+
+∆Position
+4.63 cm
+2.69 cm
+4.69 cm
+16.45 cm
+
+Dihedral Angle
+8.59◦
+2.01◦
+14.02◦
+8.03◦
+
+∆Length
+6.32 cm
+9.01 cm
+25.92 cm
+42.45 cm
+
+TABLE I. Results for Scenario One - simulated data for the
+Cuboid, Octagonal, L-shaped, and T-shaped rooms: presenting the RMS diﬀerence in position (∆Position), dihedral angle, and diﬀerence in boundary length (∆length).
+
+produced by the MVDR beamformer will have a lower
+range between the directional response of the reﬂections
+and the directional response of the residual signal, as the
+signals covariance matrix is rank-deﬁcient33 . This reduction in range can lead to ﬁrst-order reﬂections being
+missed. Therefore, when analysing the simulated impulse
+responses the plane wave decomposition14,34 beamformer
+is used instead.
+The results in Table I and Figure 8 show that for
+the Cuboid, Octagonal-, and L-Shaped Room, the shape
+of the room has been inferred, with RMS ∆ Positions of
+4.63 cm, 2.69 cm, and 4.69 cm respectively. However, the
+boundaries of the T-Shaped room are angled, resulting
+in an increase in RMS boundary position errors. For the
+Cuboid- and L-Shaped room the large dihedral angles
+are a result of boundaries being inferred in the corners
+of the room due to incorrectly assigned previous-sources
+for second-order reﬂections. However, the dihedral angles
+for Octagonal- and T-Shaped rooms are attributable to
+inferred boundaries being slightly angled, as a result of
+ToA and/or DoA estimation errors for the reﬂections.
+J. Acoust. Soc. Am. / 7 October 2019
+
+The results in Table II are presented as average
+boundary errors across the test cases. To perform statistical analysis of the data the non-parametric KruskalWallis test, kruskalwallis 38 , is used, and reported as (χ2
+= , p = , degrees of freedom = ). Furthermore, the bootstrap process37 is used to compute the 95% conﬁdence
+interval for the mean values using bootstrapci 39 .
+There is a 7.41 cm diﬀerence between the mean
+boundary positional error across the two L-shaped rooms,
+with the second, larger, L-Shaped room having larger
+boundary positional errors. This increase in boundary
+position error is a consequence of 11 cases for the second L-shaped room having an additional angled boundary being inferred, compared to ﬁve for the ﬁrst. The
+minimum and maximum mean error for the measurement sets in L-shaped Room One are ∆Position =
+[3.95 cm, 35.58 cm], Dihedral Angle = [2.24◦ , 11.22◦ ],
+and ∆Length = [6.48 cm, 110.98 cm], and for the second
+L-Shaped Room, ∆Position = [4.22 cm, 32.81 cm], Dihedral Angle = [1.05◦ , 10.30◦ ], and ∆Length = [8.40 cm,
+85.95 cm]. Comparing the variation in measurement accuracy between the two L-shaped rooms shows no significant diﬀerence for the ∆Position (χ2 = 0.0005, p = 0.98,
+degrees of freedom = 395) and ∆Length (χ2 = 0.35, p
+= 0.55, degrees of freedom = 395). However, there is a
+signiﬁcant diﬀerence for the dihedral angle (χ2 = 10.25,
+p = 0.0014, degrees of freedom = 395), as a result of the
+additional boundaries inferred in the corners of the room
+for L-Shaped Room One. This suggests that while there
+are diﬀerences in the mean values between these two examples, the variability in performance between the two
+sets are comparable. The best and worse cases for each
+L-Shaped room can be seen in Figure 9.
+
+Lovedee-Turner et al.: 3D reﬂector localisation and geometry estimation
+
+11
+
+Room
+∆Position
+Dihedral Angle
+∆Length
+One 11.50±0.1 cm 7.28◦ ±0.048◦ 36.84±0.31 cm
+Two 18.91±0.17 cm 3.69◦ ±0.027◦ 5.63±0.36 cm
+TABLE II. Average error metrics, diﬀerence in position
+(∆Position), dihedral angle, and diﬀerence in boundary
+length (∆length), for Scenario Two L-Shaped Rooms One and
+Two.
+
+VI. DISCUSSION
+
+The results presented show comparable RMS boundary position estimation error to those in1,5,8,10 , which
+reported error values between 0.063 cm to 29.38 cm
+when considering only cuboid-shaped rooms. The results
+showed that the T-Shaped Room had the largest estimation error, as a result of the inferred boundaries being
+angled. This could be as a result of the room’s complexity, or the requirement for more measurement positions,
+which increases the chance of erroneous boundaries being estimated. Results presented in Scenario Two showed
+that the proposed method displayed statistically similar
+performance across two set of 33 measurements for two
+L-Shaped rooms.
+VII. CONCLUSIONS
+
+FIG. 10. Figure (a): Inferred geometry (dashed line) and
+desired geometry (solid line) for Scenario Two (color online).
+Figure (b): image of room setup.
+
+C. Scenario Three
+
+As can be seen in Figure 10 and the results in Table III, the general shape of the room has been inferred
+with small dihedral angle values between the original and
+inferred boundaries. However, there are some inaccuracies in the boundary positions, and therefore the lengths
+of surrounding boundaries. These inaccuracies are likely
+due to either imperfect specular reﬂections, under or over
+estimation of the ToA for reﬂections in the measured impulse responses, or any inaccuracy in the estimated DoA
+of the reﬂections. These lead to incorrect estimation of
+the image-sources desired position, which aﬀects both
+the positioning of the boundary it infers, and subsequent
+boundaries that are deﬁned using this image-source.
+Boundary
+1
+2
+3
+4
+Floor
+Ceiling
+RMS
+
+∆Position
+16.16 cm
+4.02 cm
+25.46 cm
+13 cm
+14.5 cm
+10.60 cm
+15.37 cm
+
+Dihedral Angle
+0.54◦
+2.28◦
+0◦
+0.60◦
+N/A
+N/A
+1.21◦
+
+∆Length
+18.45 cm
+34.63 cm
+1.4 cm
+24.05 cm
+N/A
+N/A
+23.02 cm
+
+This paper has presented a new method reﬂection
+detection and geometry inference, without needing large
+numbers of measurement locations or an assumption of
+convexity of the measured room. This is achieved by
+exploiting directional information contained within spatial room impulse responses measured using a spherical
+microphone array. The method is tested using simulated SRIRs for two convex- and four non-convex-shaped
+rooms, and real-world measurements in a cuboid room.
+The results showed that the inferred room’s geometry
+is close to that of the desired, with generally low RMS
+boundary distance errors and errors in dihedral angle
+generally as a result of angled boundaries in the corners of the room. The RMS boundary position errors
+are comparable to prior work1,5,8,10 with a maximum difference in RMS error of 16.38 cm, using at most three
+measurement positions, compared to 6-64 used in this
+prior work. In addition to this, results presented in Scenario Two showed that the variance in performance of the
+proposed method is statistically similar across the two
+cases presented. Further investigation into non-convex
+geometry inference could explore alternative means of
+retracting higher-order reﬂection paths to improve robustness, and should consider real-world measurements
+of non-convex shaped rooms. Furthermore, subspacebeamformers could be explored to try and improve the
+robustness of the reﬂection detection process to interfering noise.
+ACKNOWLEDGMENTS
+
+Funding was provided by a UK Engineering and
+Physical Sciences Research Council (EPSRC) Doctoral
+Training Award.
+1 L. Remaggi, P. J. B. Jackson, P. Coleman, and W. Wang, “Acous-
+
+TABLE III. Results for Scenario Three, real-world measurements, presenting the diﬀerence in position (∆Position), dihedral angle, and diﬀerence in boundary length (∆length)
+
+tic Reﬂector Localization : Novel Image Source Reversion and
+Direct Localization Methods,” IEEE/ACM Transactions on Audio, Speech and Language Processing 25(2), 296–309 (2017) doi:
+10.1109/TASLP.2016.2633802.
+2 I. Dokmanic, R. Parhizkar, A. Walther, Y. M. Lu, and M. Vet-
+
+terli, “Acoustic echoes reveal room shape,” in Proceedings of the
+
+12
+
+J. Acoust. Soc. Am. / 7 October 2019
+
+Lovedee-Turner et al.: 3D reﬂector localisation and geometry estimation
+
+National Academy of Sciences (2013), Vol. 110, pp. 12186–12191,
+doi: 10.1073/pnas.1221464110.
+3 D. Arteaga, D. Gracia-Garzon, T. Mateos, and J. Usher, “Scene
+inference from audio,” in AES Convention 134, Rome, Italy
+(2013), http://www.aes.org/e-lib/browse.cfm?elib=16794.
+4 F. Ribeiro, D. Florêncio, D. Ba, and C. Zhang, “Geometrically
+constrained room modeling with compact microphone arrays,”
+IEEE Transactions on Audio, Speech and Language Processing
+20(5), 1449–1460 (2012) doi: 10.1109/TASL.2011.2180897.
+5 S. Tervo and T. Tossavainen, “3D Room Geometry Estimation
+
+from Measured Impulse Responses,” in Acoustics, Speech and
+Signal Processing (ICASSP), 2012 IEEE International Conference on, Kyoto, Japan (2012), pp. 513–516, doi: 10.1109/
+ICASSP.2012.6287929.
+6 M. Kuster, D. de Vries, E. M. Hulsebos, and A. Gisolf, “Acoustic
+imaging in enclosed spaces: Analysis of room geometry modiﬁcations on the impulse response,” The Journal of the Acoustical Society of America 116, 2126–2137 (2004) doi: 10.1121/1.1785591.
+7 E. Nastasia, F. Antonacci, A. Sarti, and S. Tubaro, “Localiza-
+
+tion of planar acoustic reﬂectors through emission of controlled
+stimuli,” European Signal Processing Conference 156–160 (2011)
+https://ieeexplore.ieee.org/document/7074175.
+8 J. Filos, A. Canclini, F. Antonacci, A. Sarti, P. A. Naylor, and P. Milano, “Localization of Planar Acoustic Reﬂectors from the Combination of Linear Estimates,” 2012 Proceedings of the 20th European Signal Processing Conference
+(EUSIPCO) (Eusipco), 1019–1023 (2012) https://ieeexplore.
+ieee.org/document/6334299.
+9 L. Zamaninezhad, P. Annibale, and R. Rabenstein, “Localiza-
+
+tion of environmental reﬂectors from a single measured transfer function,” ISCCSP 2014 - 2014 6th International Symposium
+on Communications, Control and Signal Processing, Proceedings
+157–160 (2014) doi: 10.1109/ISCCSP.2014.6877839.
+10 Y. E. Baba, A. Walther, and E. A. Habets, “3D room geometry
+
+inference based on room impulse response stacks,” IEEE/ACM
+Transactions on Audio Speech and Language Processing 26(5),
+857–872 (2018) doi: 10.1109/TASLP.2017.2784298.
+11 P. A. Naylor, A. Kounoudes, J. Gudnason, and M. Brookes, “Estimation of glottal closure instants in voiced speech using the
+DYPSA algorithm,” IEEE Transactions on Audio, Speech and
+Language Processing 15(1), 34–43 (2007) doi: 10.1109/TASL.
+2006.876878.
+12 D. P. Jarrett, E. A. Habets, and P. A. Naylor, Theory and Ap-
+
+plications of Spherical Microphone Array Processing (Springer
+International Publishing, 2017).
+13 A. Politis,
+“getSH,” https://github.com/polarch/SphericalHarmonic-Transform/blob/master/getSH.m (2015).
+14 A. Politis, “Spherical Array Porcessing Toolbox,” (2016), https:
+//github.com/polarch/Spherical-Array-Processing.
+15 H.
+
+Sun,“Localization of distinct reﬂections in rooms using
+spherical microphone array eigenbeam processing,” The Journal of the Acoustical Society of America 131(4), 2828–
+2840 (2012) https://asa.scitation.org/doi/abs/10.1121/1.
+3688476?journalCode=jas.
+16 D. P. Jarrett, E. A. Habets, and P. A. Naylor, “Spherical harmonic domain noise reduction using an MVDR beamformer and
+DOA-based second-order statistics estimation,” ICASSP, IEEE
+International Conference on Acoustics, Speech and Signal Processing - Proceedings 654–658 (2013) doi: 10.1109/ICASSP.2013.
+6637729.
+17 BSI Standard ISO 3382-1 and British Standards Institution,
+“Acoustics - Measurements of room acoustic parameters Part 1:
+Performance Spaces (ISO 3382-1:2009),” (2009).
+
+J. Acoust. Soc. Am. / 7 October 2019
+
+18 B. Rafaely, B. Weiss, and E. Bachmat, “Spatial aliasing in spher-
+
+ical microphone arrays,” IEEE Transactions on Signal Processing
+55(3), 1003–1010 (2007) doi: 10.1109/TSP.2006.888896.
+19 MH
+
+Acoustics, “Eigenbeam Datasheet,” (2016), https://
+mhacoustics.com/sites/default/files/EigenbeamDatasheet_
+R01A.pdf.
+20 N. Epain and C. T. Jin, “Spherical Harmonic Signal Covariance
+and Sound Field Diﬀuseness,” 24(10), 1796–1807 (2016) doi: 10.
+1109/TASLP.2016.2585862.
+21 J. Capon, “High-resolution frequency-wavenumber spectrum
+analysis,” Adaptive Antennas for Wireless Communications
+57(8), 1408–1418 (1969) doi: 10.1109/PROC.1969.7278.
+22 MathWorks, “bwdist,” (2017), https://uk.mathworks.com/
+help/images/ref/bwdist.html.
+23 MathWorks, “imextendedmin,” (2017), https://uk.mathworks.
+
+com/help/images/ref/imextendedmin.html.
+“imimposemin,” (2017), https://uk.mathworks.
+com/help/images/ref/imimposemin.html.
+25 MathWorks, “Watershed,” (2017), https://uk.mathworks.com/
+help/images/ref/watershed.html.
+26 MathWorks, “regionprops,” (2017), https://uk.mathworks.
+com/help/images/ref/regionprops.html.
+27 A. Krokstad, S. Strøm, and S. Sørsdal, “Calculating the Acoustical Room Response by The Use of Ray Tracing Technique,”
+Journal of Sound and Vibration 8, 118–125 doi: 10.1016/
+0022-460X(68)90198-3.
+28 CATT, “CATT-Acoustic,” (2016), http://www.catt.se/.
+29 MathWorks, “imclose,” (2018), https://www.mathworks.com/
+help/images/ref/imclose.html.
+24 MathWorks,
+
+30 A. Farina, “Simultaneous measurement of impulse response and
+
+distortion with a swept-sine technique,” Proc. AES 108th conv,
+Paris, France (2000) http://www.aes.org/e-lib/browse.cfm?
+elib=10211.
+31 F. Stevens and D. Murphy, “Spatial impulse response measure-
+
+ment in an urban environment,” in Presented at the 55th AES
+International Conference, AES, Helsinki, Finland (2014), pp. 1–
+8, http://www.aes.org/e-lib/browse.cfm?elib=17355.
+32 MH Acoustics, “EigenStudio,” (2013), https://mhacoustics.
+com/products.
+33 N.
+
+Huleihel and B. Rafaely, “Spherical array processing for
+acoustic analysis using room impulse responses and time-domain
+smoothing,” The Journal of the Acoustical Society of America
+133(June 2013), 3995–4007 (2013) doi: 10.1121/1.4804314.
+34 D. P. Jarrett, E. A. P. Habets, and P. A. Naylor, “3D Source
+localization in the spherical harmonic domain using a pseudointensity vector,” in Signal Processing Conference, 2010 18th
+European, 5, IEEE, Aalborg, Denmark (2010), pp. 442–446,
+https://ieeexplore.ieee.org/document/7096575.
+35 E. Weisstein, “Plane-Plane Intersection,” http://mathworld.
+wolfram.com/Plane-PlaneIntersection.html.
+36 E. Weisstein, “Line-Plane Intersection,” http://mathworld.
+wolfram.com/Line-PlaneIntersection.html.
+37 B. Efron, “Bootstrap Methods: Another Look at the Jackknife,”
+
+The Annals of Statistics 7(1) (1979) https://projecteuclid.
+org/euclid.aos/1176344552.
+38 MathWorks, “kurkalwallis,” (2006), https://uk.mathworks.
+com/help/stats/kruskalwallis.html.
+39 MathWorks, “bootstrapci,” (2006), https://uk.mathworks.com/
+help/stats/bootci.html.
+
+Lovedee-Turner et al.: 3D reﬂector localisation and geometry estimation
+
+13
+
+

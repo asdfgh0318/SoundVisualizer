@@ -1,0 +1,924 @@
+SEPTEMBER 09 2020
+
+Effects of flow recirculation on acoustic and dynamic
+measurements of rotary-wing systems operating in closed
+anechoic chambers
+Daniel Weitsman; James H. Stephenson; Nikolas S. Zawodny
+
+J. Acoust. Soc. Am. 148, 1325–1336 (2020)
+https://doi.org/10.1121/10.0001901
+
+ 
+View
+Online
+
+Export
+Citation
+
+Articles You May Be Interested In
+Effects of flow recirculation on unmanned aircraft system (UAS) acoustic measurements in closed
+anechoic chambers
+J. Acoust. Soc. Am. (March 2019)
+
+Experimental investigation of low Reynolds number rotor noise
+
+Aeroacoustic and aerodynamic measurements at the rotor plane in the interaction of a small rotor with
+wings
+J. Acoust. Soc. Am. (October 2024)
+
+05 August 2026 13:46:01
+
+J. Acoust. Soc. Am. (June 2021)
+
+ARTICLE
+...................................
+
+Effects of flow recirculation on acoustic and dynamic
+measurements of rotary-wing systems operating in closed
+anechoic chambers
+Daniel Weitsman,1,a) James H. Stephenson,2 and Nikolas S. Zawodny3
+1
+
+Pennsylvania State University, University Park, Pennsylvania 16802, USA
+United States Army Combat Capabilities Development Command, Aviation and Missile Center, Hampton, Virginia 23681, USA
+3
+National Aeronautics and Space Administration Langley Research Center, Hampton, Virginia 23681, USA
+2
+
+ABSTRACT:
+An experimental campaign was undertaken to identify the effects posed by flow recirculation on the dynamic
+performance and acoustic emissions of an isolated rotor, operating in hover in a sealed anechoic chamber. It is
+shown that flow recirculation is an artifact of testing rotary-wing systems in an enclosed environment, and results in
+a significant amplification of tonal and broadband noise components. The acoustic emissions produced while the
+recirculated flow is ingested into the rotor disk vary from those emitted by similar rotors operating in clean inflow
+conditions. A variety of turbulence suppression screens were employed to impede the propagation of the rotor wake,
+in an effort to delay the onset of recirculation. This mitigation strategy proved to be effective for one treatment configuration and significantly extended the duration available to acquire clean measurements. The presence of this
+treatment is thought to alter the coherent structures comprising the recirculated flow and thus the noise emissions folC 2020 Acoustical Society of America. https://doi.org/10.1121/10.0001901
+lowing the onset of flow recirculation. V
+
+I. INTRODUCTION
+
+Small Unmanned Aircraft Systems (sUAS), which are
+often rotary-wing in nature and considered to weigh less
+than 55 lb (25 kg),1 have recently attracted attention from
+commercial, private, and government sectors for their potential to be utilized in a wide array of applications, ranging
+from postal delivery services to military reconnaissance
+operations. This increased prominence has created a growing concern over their impact on community noise levels.
+The acoustic emissions of rotary-wing systems are a result
+of three primary aerodynamic noise generation mechanisms:
+the displacement of the fluid medium by the rotor blades
+(thickness source), the steady and unsteady pressure distributions on the blade surface (loading source), and off-body
+effects like turbulence and shock formation (quadrupole
+source).2–4 The aerodynamically generated noise sources are
+common amongst all rotary-wing systems, however, their
+individual contributions to the overall noise emissions vary
+with the scale and operating conditions of the system.
+The primary advantage of rotary-wing systems is their
+ability to operate in hover. Researchers have begun to evaluate the aerodynamic performance and acoustic emissions of
+sUAS in hover, while drawing comparisons to conventional
+rotary-wing systems, such as helicopters.5–9 These studies
+are conducted in anechoic chambers, where background
+noise levels and sound reflections are minimized. However,
+a)
+
+Electronic mail: dfw5266@psu.edu
+
+J. Acoust. Soc. Am. 148 (3), September 2020
+
+emulating free flight hover conditions in such a confined
+environment becomes challenging due to the effects posed
+by flow recirculation.
+The generation of thrust results in the movement of
+fluid and the formation of a rotor wake. In an enclosed
+chamber, the wake propagates around the test facility and
+upstream toward the rotor, where it is ingested by the
+rotary-wing system. Due to the variety of coherent turbulent
+structures comprising the recirculated flow, fluctuating loads
+are imposed upon the rotor blades as it is ingested into the
+rotor, thus altering the unsteady loading noise emissions of
+the rotary-wing system.10–12
+Piziali et al.13 conducted one of the first of only a few
+studies dedicated to characterizing the effects posed by flow
+recirculation. They tested a fully articulated, four bladed
+rotor, in hover within an enclosed test facility and identified
+large random variations from the mean thrust, torque, and
+blade flapping measurements. Smoke flow visualization was
+then used to reveal that large scale turbulent structures composing the recirculating flow were being ingested by the
+rotor. Piziali et al. attributed the formation of the flow irregularities to the room geometry and the measurement fluctuations to the interactions between the rotor wake and the
+returning recirculated flow. Since the aerodynamically generated noise of a rotary-wing system is a direct consequence
+of blade loading, these dynamic variations have significant
+implications on the system’s acoustic emissions.
+More recently, Nardari et al.14 employed LatticeBoltzmann method (LBM) to simulate the acoustic and
+
+0001-4966/2020/148(3)/1325/12/$30.00
+
+C 2020 Acoustical Society of America
+V
+
+1325
+
+05 August 2026 13:46:01
+
+(Received 2 January 2020; revised 31 July 2020; accepted 16 August 2020; published online 9 September 2020)
+[Editor: Anurag Agarwal]
+Pages: 1325–1336
+
+https://doi.org/10.1121/10.0001901
+
+II. EXPERIMENTAL SETUP
+
+This experiment was conducted in the Small Hover
+Anechoic Chamber (SHAC, formally known as the Small
+Anechoic Jet Facility) at the NASA Langley Research
+Center (LaRC). The test facility is treated with woven fiberglass acoustic wedges, which absorb 99% of incident sound
+energy above 250 Hz. The interior dimensions (wedge tip to
+wedge tip) of the facility measure 10.67 ft (3.25 m) in
+1326
+
+J. Acoust. Soc. Am. 148 (3), September 2020
+
+FIG. 1. Top view of the SHAC outlining microphone positions.
+
+height, 8.38 ft (2.55 m) in width, and 12.67 ft (3.86 m) in
+length. The previous use of this test facility required an inlet
+and an outlet to facilitate flow as depicted in Fig. 1. To
+ensure low background noise levels and that the full effects
+of recirculation are observed, the inlet and outlet of the
+SHAC are sealed with an acoustically treated baffle and
+melamine foam wedges, respectively.
+A total of six, 1/4 in. type 4939 free-field Br€uel & Kjaer
+microphones, defined as M1–M6 in Fig. 1, are used to measure the acoustic emissions from the rotor. An azimuthal
+array was not employed as the acoustic emissions of an isolated rotor in hover should be symmetric. Table I provides
+the radial, axial, and polar locations of the microphones.
+Since the microphone closest to the rotor, M4, is located at a
+radial distance greater than 12 rotor radii from the rotor hub,
+the microphones are considered to be located in the acoustic
+far-field of the rotor.
+A DJI 9450 Phantom 3 dual bladed rotor is selected for
+this study because of its commercial availability and similarity to rotors utilized in previous studies at NASA LaRC.5,6
+This rotor has a fixed pitch, a diameter of 9.4 in. (0.24 m),
+and a weight of 0.43 oz (12.1 g). The rotor is mounted horizontally on an acoustically treated test stand as pictured in
+Fig. 2, which positions the rotor plane 5.52 ft (1.68 m) from
+the frontal edge of the inlet nozzle and elevates the rotor
+hub 5.21 ft (1.59 m) above the floor of the test facility. The
+rotor is driven by a DJI 2312 A motor. The rotational rate of
+the motor is regulated by a DJI E300 15 A-OPTO electronic
+speed controller (ESC), which receives pulse-width modulation commands from a Pololu Mini Maestro 12 channel
+USB servo controller. The rotation rate of the motor is measured using a laser sensor-tachometer that provides a DC
+voltage as well as a transistor-transistor logic pulse signal
+indicating each subsequent revolution of the motor housing.
+TABLE I. Microphone locations.
+
+Radius (in)
+Axial distance from M4 (in)
+Elevation angle (h)
+
+M1
+
+M2
+
+M3
+
+M4
+
+M5
+
+M6
+
+83.6
+57.6
+43.6
+
+82.8
+37.0
+27.6
+
+74.9
+8.6
+6.6
+
+74.6
+0
+0
+
+78.9
+25.3
+18.7
+
+89.5
+51.3
+34.9
+
+Weitsman et al.
+
+05 August 2026 13:46:01
+
+dynamic performance of a lightly loaded rotor, operating in
+hover within a confined and unconfined environment.
+Instantaneous visual renderings of the flow-field in the confined case revealed that the vortical structures composing the
+inflow and slipstream were distorted in comparison to the
+unconfined case, thus increasing the unsteady blade loading
+and the unsteady loading noise emissions of the rotor. The
+objective of this study is to document the magnitude of this
+effect and to provide a potential mitigation strategy to limit it.
+The irregularities composing the recirculated flow are
+not encountered when a rotary-wing system is operating in
+hover, outside of a confined environment in the absence of
+wind gusts or ground effect, nor are they typically accounted
+for in computational predictions. Therefore, if the intent of a
+research campaign is to emulate the performance of a
+rotary-wing system, hovering at quiescent conditions, it is
+imperative that the effects of flow recirculation are mitigated. It has been suggested that the coherent structures
+comprising the recirculated flow are comparable to those
+induced by natural elements such as wind turbulence.14
+However, due to the variability of atmospheric conditions,
+in order to ascertain this claim, a comparative study between
+the recirculated and ambient flow fields must be conducted.
+Recirculation is inherent to operating a rotary-wing system in an enclosed environment, and although it has been
+acknowledged in prior studies5,6,15,16 and analyzed from an
+aerodynamic standpoint,13,17 to the authors’ knowledge,
+aside from the findings of Nardari et al.,14 its impact on
+acoustic measurements has yet to be thoroughly documented
+in the literature. This causes new researchers in the field to
+overlook the significance of recirculation, particularly considering that it is a transient phenomenon that is difficult to
+detect. This article supplements the preliminary finding published by Stephenson et al.18 by providing a more comprehensive analysis of the results and a potential mitigation
+strategy for delaying the onset of recirculation.
+This mitigation strategy involves using woven screen
+meshes as turbulence suppression devices, which function
+similarly to flow straighteners commonly found in the inlet
+of wind tunnels. These screen meshes establish a pressure
+drop, effectively reducing the length scales and intensities
+of the coherent structures comprising the rotor wake.19–21
+The effectiveness of these screen meshes in delaying the
+onset of recirculation depends on their geometric properties
+and placement within the test facility. These parameters
+were varied to identify the most effective mesh configuration for the test setup considered in this study.
+
+https://doi.org/10.1121/10.0001901
+
+III. RESULTS
+A. Baseline condition
+
+Over the course of this test campaign, more than 350
+data points were collected, corresponding to a slew of mesh
+
+FIG. 2. (Color online) Test stand configuration including motor, rotor, and
+load cell.
+J. Acoust. Soc. Am. 148 (3), September 2020
+
+TABLE II. Mesh specifications.
+
+Mesh #
+1
+2
+3
+4
+5
+6
+
+Model
+number
+
+Mesh opening
+(lm)
+
+Wire diameter
+(lm)
+
+% Open
+area
+
+07-115/36
+07-180/46
+07-1100/35N
+07-2000/51
+07-3400/60
+07-5000/72
+
+115
+180
+1100
+2000
+3400
+5000
+
+70
+64
+700
+800
+1000
+900
+
+36
+46
+35
+51
+60
+72
+
+treatment configurations and placements within the SHAC
+facility. These data points are compared against baseline
+measurements, which were acquired prior to the installation
+of the mesh treatment. The spectrogram corresponding to
+the baseline test condition is displayed in Fig. 3. It was generated using the acoustic data acquired with microphone M1
+because loading noise is best observed at radiation angles
+away from the rotor plane.5 The thrust and rotational rate
+time histories are also presented in Fig. 3.
+In order to ensure that no lingering turbulent structures
+from previous trials contribute to the onset of recirculation,
+quiescent ambient conditions were established in the chamber before beginning data acquisition. The rotor was initially
+stationary and quickly brought up to the predetermined rotational rate. The duration of this ramp up region, which is
+shown to occur 3.5 s after the start of the trial in Fig. 3, was
+minimized to provide an ample timeframe to acquire measurements prior to the onset of recirculation.
+Assessing the spectrogram reveals that the ramp up
+region is followed by the clean region, which is sustained
+from 3.5 to 7.4 s. The extents of the clean region were determined by tracking the standard deviation of the moving
+mean of the filtered thrust time series. Since the standard
+deviation reflects the magnitude of fluctuations in the signal,
+any abrupt variations in the filtered thrust time series were
+detected whenever the standard deviation exceeded a preset
+tolerance condition. The tolerance condition chosen for this
+data set was 0.0045, which is the average standard deviation
+of the test point that exhibited the least amount of fluctuations. The longest time interval where this tolerance is not
+surpassed corresponds to the clean region. In this region, the
+sound pressure level (SPL) of the BPF remains steady at
+approximately 42 dB and exceeds that of the corresponding
+upper order harmonics, which are located at frequencies that
+are integer multiples of the BPF. This is consistent with past
+research on lightly loaded isolated rotors in hover.5 Note
+that in this region the mean thrust of 0.76 lbf (3.38 N) and
+the width of the thrust envelope remain constant. There are
+also minimal fluctuations in the RPM.
+The effects of recirculation becomes evident 7.4 s after
+the beginning of the trial, in both the acoustic and dynamic
+measurements, as shown on the right side of the spectrogram
+in Fig. 3. The BPF harmonics are significantly amplified in
+contrast to their SPL in the clean region, with the first three
+harmonics exhibiting an amplification of nearly 20 dB. The
+SPL of the BPF harmonics fluctuate due to the variety of the
+Weitsman et al.
+
+1327
+
+05 August 2026 13:46:01
+
+A six-component ATI-IA Mini40 multiaxis load cell is
+employed to measure the generated torque and axial thrust.
+The load cell is mounted behind the rotor-motor apparatus
+via a thermal isolator made out of polycarbonate plastic.
+The maximum error, as a percentage of the full scale load, is
+0.75% for an axial load of 7.5 lbf (33.36 N) and 2% for a torque of 5 lbf-in. (0.23 Nm).
+Considering that the duration prior to the onset of recirculation is a function of the room geometry, operational
+thrust condition, and rotor size, a rotational rate of 5200
+RPM is deemed adequate for providing a sufficient duration
+to acquire clean measurements. This shaft rotational rate
+corresponds to a blade passage frequency (BPF) of 173 Hz,
+a figure of merit (FM) of 0.64, and a mean thrust and torque
+of 0.76 lbf (3.38 N) and 0.48 lbf-in. (0.05 Nm), respectively.
+The acoustic and dynamic data are acquired synchronously
+for 20 s at a sampling rate of 80 kHz, using National
+Instruments PXI-4472B dynamic signal acquisition modules
+installed in a PXI 1045 chassis.
+The acoustic measurements are visualized using spectrograms and narrowband spectra of specific time segments.
+The spectrograms and narrowband spectra are computed
+with a Hanning window and 75% overlap, and have a frequency resolution of 25 and 5 Hz, respectively. The periodic
+noise components are extracted by calculating the RMS of
+the ensemble-averaged pressure time history over a specific
+number of shaft revolutions. This tonal extraction technique
+is well documented by Zawodny et al.5 A fourth order low
+pass Butterworth filter with a cutoff frequency of 150 Hz is
+applied to the dynamic data sets for improved visual clarity.
+Six different polyethylene terephthalate (PETP) woven
+screen meshes are utilized as turbulence suppression devices. These meshes vary in their opening length, wire diameter, and percentage open area, as specified in Table II. The
+meshes should have a sufficient percentage open area,
+allowing the incident flow to penetrate them, while still providing an impedance to effectively reduce the mean flow
+velocity and turbulence length scales. A large variety of
+meshes are utilized in this study, as a priori information was
+not available to guide the selection process. Henceforth, the
+meshes will be referred to by their numerical designation.
+
+https://doi.org/10.1121/10.0001901
+
+coherent structures being ingested by the rotor. The mean
+thrust of 0.76 lbf (3.38 N) remains constant, while the width
+of the thrust envelope modulates. There are also evident
+fluctuations in the RPM. These features persist throughout
+the remainder of the trial and are indicative of an increase in
+unsteady loading on the rotor blades. The torque time series
+was also examined, although it presented no distinct indications of turbulence ingestion.
+The tones that reside at 4.9 and 7.3 kHz are believed to
+be attributed to the electromagnetic forces that develop
+within the motor casing, as they correspond to the eighth
+and twelfth harmonic of the fundamental line frequency of
+the supply current. The presence of these tones is consistent
+with the findings of previous studies.22
+To provide a more comprehensive insight into the effects
+of recirculation, Fig. 4 presents a spectral representation of the
+baseline acoustic measurements acquired using microphones
+M1, M4, and M6, which correspond to locations above,
+within, and below the rotor plane. The background noise,
+motor only noise, narrowband random noise, and the extracted
+periodic noise components of the first five BPF harmonics are
+displayed in Fig. 4. These quantities were computed prior to
+and following the onset of recirculation. It should be noted
+that the motor only noise measurements were acquired without the rotor mounted. The unloaded motor likely exhibits different SPL from the loaded motor and should only serve as an
+indication of the frequency content of the motor noise. The
+spectral average prior to the onset of recirculation was computed between 4 and 6 s, as shown in Fig. 3, while the average
+following the onset of recirculation was computed between 9
+1328
+
+J. Acoust. Soc. Am. 148 (3), September 2020
+
+and 11 s into the run. With a frequency resolution of 5 Hz, this
+averaging interval yields an autospectral random uncertainty
+of er ¼ 22:80%, which results in a random SPL uncertainty of
+ur;SPL 2 f1:12; þ0:89g dB.23 The same time interval was
+used to extract the periodic noise components of the BPF harmonics prior to the onset of recirculation. However, the amplitudes of the BPF harmonics following the onset of
+recirculation were computed between 9 and 20 s into the run.
+As shown in Fig. 3, prior to the onset of recirculation,
+the SPL of the BPF surpasses that of the upper order harmonics at all three measurement locations. The SPL of the
+BPF is also greater in the rotor plane, whereas the broadband noise levels are greater outside of the rotor plane.
+These directivity trends in the acoustic emissions are
+expected for a lightly loaded rotor.5
+Since the amplitudes of the first five BPF harmonics are
+extracted on a per revolution basis, only the deterministic noise
+components that are associated with steady loading are
+retained. Hence, the difference between the SPL of the
+extracted BPF harmonics and the narrowband random noise
+data accounts for the unsteady loading noise contributions.
+Prior to the onset of recirculation, the extracted SPL of the BPF
+harmonics are in close agreement with the narrowband random
+noise outside of the rotor plane. Whereas, in the plane of the
+rotor, the extracted SPL of the higher order BPF harmonics fall
+below the narrowband data. This is attributed to the low signalto-noise ratio since the narrowband signal in this frequency
+range is close to the noise floor of the test facility.
+As presented in the spectrogram in Fig. 3 and the narrowband random spectra in Fig. 4, once recirculation
+Weitsman et al.
+
+05 August 2026 13:46:01
+
+FIG. 3. (Color online) Spectrogram of microphone M1 data, thrust, and RPM showing recirculation effects.
+
+https://doi.org/10.1121/10.0001901
+
+develops, the BPF harmonics are amplified at the three
+microphone locations. The greatest tonal amplification is
+evident outside of the rotor plane, where the first three BPF
+harmonics are amplified by nearly 20 dB. It is important to
+consider that these SPL fluctuate as shown in Fig. 3. The
+broadband noise levels are also amplified, at all three measurement locations, following the onset of recirculation.
+The extracted SPL of the BPF harmonics reveal some
+similarities in the periodic noise components prior to, and
+following the onset of recirculation. The SPL of the BPF
+remains constant throughout the course of the trial at each
+observer location. There is close agreement between the
+SPL of the third BPF harmonic outside of the rotor plane
+as well as the second and fourth BPF harmonic in the plane
+of the rotor. Therefore, the significant tonal amplification
+that is shown in the narrowband random spectra is attributed to unsteady loading and thus is not captured by the
+tonal extraction technique. The difference between the
+extracted periodic noise components for the remaining
+BPF harmonics suggests that the ingestion of the recirculated flow has an effect on both the steady and unsteady
+loading noise.
+B. Recirculation mitigation
+
+In order to delay the onset of recirculation the meshes
+specified in Table II were utilized in a variety of configurations, as illustrated in Fig. 5. These configurations were
+J. Acoust. Soc. Am. 148 (3), September 2020
+
+positioned in numerous locations throughout the SHAC
+facility. The extensive number of mesh configurations and
+placements were tested because an a priori method, such as
+a sufficiently accurate model of the recirculation vortices,
+was not available to determine the optimal arrangement for
+the treatment.
+Figure 6 outlines the effectiveness of each mesh treatment configuration at prolonging the duration of the clean
+region, which spans from approximately 3.5 to 7.4 s for the
+baseline condition, as shown in Fig. 3. Two measurement
+points were acquired for each treatment configuration, however, due to the statistically random nature of the turbulent
+structures comprising the recirculated flow there are slight
+variations in its onset from trial to trial, even for the same
+mesh treatment configurations. Therefore, the minimum and
+maximum observed durations, prior to the onset of recirculation, are represented by the extents of the shaded regions in
+Fig. 6. It is evident that several of the mesh configurations
+adversely affect the duration of the clean region, since they
+significantly alter the composition of the inflow. The downstream mesh configurations generally proved to be effective
+at prolonging the time to acquire clean measurements,
+which is further elongated with the inclusion of a second
+downstream mesh.
+The first configuration, pictured in Fig. 5(a), consists of
+a single mesh positioned parallel to, and upstream of the
+rotor plane, effectively conditioning the inflow to the rotor.
+Weitsman et al.
+
+1329
+
+05 August 2026 13:46:01
+
+FIG. 4. (Color online) Spectra from before and after recirculation manifests for microphones M1 (above), M4 (in plane), and M6 (below).
+
+https://doi.org/10.1121/10.0001901
+
+FIG. 6. (Color online) Effectiveness of mesh configurations.
+1330
+
+J. Acoust. Soc. Am. 148 (3), September 2020
+
+Weitsman et al.
+
+05 August 2026 13:46:01
+
+FIG. 5. (Color online) Examples of five tested mesh treatment configurations. (a) Upstream mesh. (b) Ducted mesh. (c) Orthogonal meshes. (d) Downstream
+mesh. (e) Dual downstream meshes.
+
+https://doi.org/10.1121/10.0001901
+
+The presence of recirculation, as shown in Fig. 7, indicates that the upstream meshes prove to be ineffective in
+establishing isotropic inflow conditions and increasing the
+duration prior to the onset of recirculation. These upstream
+meshes are thought to introduce coherent structures from the
+shedding of vortices off the individual wire strands, that are
+not present at quiescent ambient conditions. This exemplifies how sensitive the acoustic emissions of a lightly loaded
+rotor, operating in hover, are to slight variations in the
+inflow conditions.
+It was postulated that as the rotor wake propagates
+upstream it is ingested from the side of the rotor. This
+encouraged the development of the mesh configurations
+illustrated in Figs. 5(b) and 5(c), which consist of a ducted
+mesh enclosing the circumference of the rotor disk, as well
+as two meshes positioned normal to, and on either side of
+the rotor plane. The ducted and orthogonally positioned
+mesh configurations were fabricated from mesh #5 and #3,
+respectively. Similar to the single upstream mesh, these two
+mesh configurations considerably altered the inflow conditions. Figure 8 displays the periodic noise components of
+the first five BPF harmonics, prior to the onset of recirculation, for the baseline condition as well as the three additional
+mesh configurations.
+Figure 8 reveals that the inclusion of these three mesh
+configurations considerably alters the inflow conditions, and
+hence the acoustic emissions of the rotor. The two orthogonally positioned meshes cause the greatest amplification of
+the periodic noise components of the higher order BPF harmonics, while attenuating the BPF by approximately 3 dB.
+
+FIG. 7. (Color online) Spectrogram of microphone M1 data, thrust, and RPM showing recirculation effects with the installment of a single #3 mesh positioned one rotor diameter upstream of the rotor plane.
+J. Acoust. Soc. Am. 148 (3), September 2020
+
+Weitsman et al.
+
+1331
+
+05 August 2026 13:46:01
+
+The six meshes specified in Table II were separately positioned at 0.5, 1, 2, and 3.3 rotor diameters in front of the
+rotor plane. It was speculated that if the meshes were positioned too far upstream, the recirculated flow may bypass
+them entirely, whereas if positioned too close to the rotor
+plane, the meshes may significantly influence the inflow
+entering the rotor disk.
+Figure 7 displays the dynamic and acoustic measurements that were captured with microphone M1, which is
+located above the rotor plane, following the installation of a
+single #3 mesh positioned one rotor diameter upstream of
+the rotor plane. This mesh configuration yields a clean
+region of approximately 3 s. It is interesting to note that the
+BPF harmonics are amplified in the clean region for this
+configuration in comparison to the baseline condition, for
+which the spectrogram is presented in Fig. 3. This amplification indicates that the upstream mesh distorts the inflow to
+the rotor, although not to the same extent as the recirculated
+flow.
+The mean thrust and rotational rate of 0.76 lbf (3.38 N)
+and 5200 RPM are consistent with those observed for the
+baseline condition. This suggests that the mean dynamic
+quantities are minimally sensitive to variations in the inflow
+produced by the upstream mesh prior to the onset of recirculation. As recirculation manifests, 6.75 s after the beginning
+of the trial, the harmonics of the BPF are amplified sequentially, starting from the second harmonic. The SPL of the
+BPF is sporadically amplified by nearly 10 dB and is accompanied by increased modulations of the thrust envelope and
+fluctuations of the rotational rate.
+
+https://doi.org/10.1121/10.0001901
+
+FIG. 8. (Color online) Comparison of periodic noise components for different mesh configurations, extracted from microphone M1 data.
+
+FIG. 9. (Color online) Spectrogram of microphone M1 data, thrust, and RPM showing recirculation effects with the installment of mesh #3 positioned 6
+rotor diameters downstream of the rotor plane.
+1332
+
+J. Acoust. Soc. Am. 148 (3), September 2020
+
+Weitsman et al.
+
+05 August 2026 13:46:01
+
+The presence of the ducted mesh configuration also appears
+to amplify the higher order BPF harmonics. It is interesting
+to note that with the installment of the single upstream mesh
+the fourth BPF harmonic is attenuated in comparison to the
+baseline condition.
+The six meshes were also positioned parallel to, and aft,
+of the rotor plane, as pictured in Fig. 5(d), at 3.3, 4, 5, and 6
+rotor diameters downstream of the rotor plane. The proximity of the meshes to the rotor plane was limited by the test
+stand, however this ensured that the meshes were positioned
+sufficiently far downstream that their presence has a minimal effect on the contraction of the rotor wake. This mesh
+configuration impedes the rotor wake before it propagates
+
+throughout the chamber. Figure 9 displays the measurements corresponding to a single #3 mesh positioned 6 rotor
+diameters downstream of the rotor plane.
+Figure 9 reveals that with the installation of the single
+downstream mesh, the duration of the clean region was
+extended to 6.25 s, as compared to the 3.9 s shown in Fig. 3.
+The presence of the downstream mesh also has a minimal
+impact on the mean thrust and rotational rate. The effects of
+recirculation are still present, suggesting that this mesh configuration slows the propagation of the rotor wake but does
+not fully eliminate the coherent structures comprising the
+wake. As recirculation sets in, approximately 9.5 s after the
+beginning of the trial, the higher order BPF harmonics are
+amplified prior to the second or third harmonics. Similarly
+to what was observed in Fig. 7, this sequential amplification
+is likely attributed to the break up of coherent structures,
+which are of the length scales that influence the amplitudes
+of the first several BPF harmonics.
+To further prolong the duration of the clean region,
+mesh #4 and #3 were positioned 3.3 and 6 rotor diameters
+downstream of the rotor plane, respectively, as pictured in
+Fig. 5(e). The spectrogram and dynamic measurements corresponding to this treatment configuration are shown in
+Fig. 10. As indicated in Fig. 6, the dual downstream mesh
+configuration yields the best results for mitigating the effects
+of recirculation for this specific experimental setup, increasing the duration of the clean region to 10 s. However,
+approximately 13 s after beginning the trial, the effects of
+recirculation do become apparent. The onset of recirculation
+
+https://doi.org/10.1121/10.0001901
+
+differs from what was presented in Fig. 3 in that the BPF
+harmonics are gradually amplified as the width of the thrust
+envelope increases, and there are minimal fluctuations in the
+rotational rate. This is believed to be attributed to the ingestion of lingering coherent structures that remain in the recirculated flow. There is further evidence of sequential
+amplification, as illustrated in Fig. 9, where the higher order
+BPF harmonics are initially amplified. These variations in
+the onset of recirculation support the notion that the acoustic
+emissions of an open rotor alter in accordance with the composition of the inflow.
+Figure 11 presents the narrowband spectra computed
+using the measurements acquired prior to the onset of recirculation, with and without the inclusion of the dual downstream mesh treatment. The spectral average prior to the
+installation of the mesh treatment was computed over
+the same two second interval as the spectra in Fig. 4, while
+the spectral average following the installation of the treatment was computed over a duration of 7 s. This extended
+averaging interval yields an autospectral random uncertainty
+of er ¼ 11:85%, which translates to a random SPL uncertainty of ur;SPL 2 f0:55; þ0:49g dB. The effect of decreasing the random SPL uncertainty is evident by the reduction
+in variance of the SPL at frequencies exceeding 1 kHz. The
+close agreement between the spectra shown in Fig. 11
+reveals that the presence of the downstream meshes has a
+minimal impact on the acoustic measurements at low frequencies, however the tonal noise components at frequencies above 2 kHz are slightly amplified. This is thought to be
+J. Acoust. Soc. Am. 148 (3), September 2020
+
+attributed to acoustic reflections off the mesh holder apparatus, and thus if these mesh holders were upholstered in
+acoustically absorbent material this high frequency tonal
+amplification may be attenuated.
+To further exemplify the influence of the dual downstream mesh configuration on acoustic measurements, the
+steady tonal noise components of the first five BPF harmonics, prior to the onset of recirculation, are presented in
+Fig. 12 for the baseline and dual downstream mesh configurations. The steady amplitudes of the BPF harmonics were
+extracted between 4 and 6 s into the run for the baseline condition, and from 4 to 11 s for the dual downstream mesh
+configuration. Figure 12 generally shows a close agreement
+between the steady amplitudes of the BPF harmonics, however the third and fourth BPF harmonics are attenuated by
+approximately 5 dB with the inclusion of the mesh treatment. It is inferred that the dual downstream mesh configuration breaks up the turbulent eddies that contribute to the
+amplification of these harmonics when ingested by the rotor.
+However, the close agreement between the narrowband
+spectra of the two data sets, as shown in Fig. 11, affirms that
+the dual mesh treatment has a minimal influence on the
+overall SPL.
+In addition to evaluating the effect that the mesh treatments have on acoustic measurements, it is important to
+consider their impact on the dynamic measurements.
+Figure 13 presents the time-averaged thrust and power coefficients that were computed on a per-revolution basis with a
+95% level of confidence, using dynamic measurements
+Weitsman et al.
+
+1333
+
+05 August 2026 13:46:01
+
+FIG. 10. (Color online) Spectrogram of microphone M1 data, thrust, and RPM showing recirculation effects with the installment of two downstream
+meshes.
+
+https://doi.org/10.1121/10.0001901
+
+acquired prior to and following the onset of recirculation,
+for the six mesh treatment configurations illustrated in
+Figs. 5(a)–5(e). For the baseline condition, in the absence of
+the mesh treatment, there is minimal variation in the average
+thrust coefficient before and after recirculation manifests in
+the chamber, whereas the power coefficient does decrease
+following the onset of recirculation. This reduction in
+power, for a given thrust condition, resembles the performance of a rotor operating in ground effect.24 As Piziali
+
+FIG. 12. (Color online) Comparison of the periodic noise components,
+extracted from microphone M1 data, between the baseline and dual downstream mesh configurations prior to the onset of recirculation.
+1334
+
+J. Acoust. Soc. Am. 148 (3), September 2020
+
+et al.13 suggested, it is believed that the recirculated flow
+interacts and reduces the velocity of the slipstream after
+deflecting off the back wall of the test chamber. In accordance with momentum theory, as a result of this reduction
+in the slipstream velocity, the induced velocity at the plane
+of the rotor and thus the dynamic quantities also decrease.
+These effects are more pronounced for the single upstream
+mesh configurations, for which both the average thrust and
+power coefficients are reduced following the onset of recirculation. This supports the notion that the upstream mesh
+configuration considerably alters the nature of the inflow,
+which is particularly evident once recirculation fully develops in the test facility. The variation in the thrust and power
+coefficients following the onset of recirculation remain
+within the measurement uncertainties of the baseline condition for the rest of the treatment configurations.
+It is interesting to note the close agreement of the two
+dynamic quantities, prior to and following the onset of recirculation, with the implementation of the downstream mesh
+configurations. This suggests that both the single and dual
+downstream mesh configurations minimize the effect of
+recirculation on the time-averaged dynamic measurements.
+The downstream meshes are believed to sufficiently dissipate the energy of the rotor wake, and perhaps the recirculated flow as it propagates upstream towards the rotor plane.
+Thus, the recirculated flow has a minimal impact on the
+induced velocity, once it reaches the rotor plane. However,
+Weitsman et al.
+
+05 August 2026 13:46:01
+
+FIG. 11. (Color online) Comparison of microphone M1 (above), M4 (in-plane), and M6 (below) spectra prior to recirculation, before and after the installment of the dual downstream mesh treatment.
+
+https://doi.org/10.1121/10.0001901
+
+the recirculated flow likely still contains irregularities that
+are not present in the clean inflow, which account for the
+increased fluctuations in the thrust measurements. This is
+depicted in Figs. 9 and 10 by the gradual expansion in the
+envelope of the thrust time histories. The average thrust and
+power coefficients corresponding to the dual mesh treatment
+configuration lie within the uncertainty bounds of the baseline condition, prior to the onset of recirculation. Therefore,
+the dual downstream mesh configuration mitigates the
+effects of recirculation on the averaged dynamic measurements, effectively preserving the operating conditions of the
+baseline case, prior to the onset of recirculation.
+IV. CONCLUSION
+
+In this study, the effects posed by the ingestion of recirculated flow on the acoustic and dynamic measurements of
+an open rotor operating in hover were identified and a mitigation strategy was proposed to extend the duration to
+acquire clean measurements. Recirculation is an artifact of
+operating rotary-wing systems in an enclosed facility, and
+occurs when the rotor wake propagates throughout the test
+facility and is subsequently ingested by the rotor. This
+results in unsteady blade loading, which is evident in
+the amplification of the BPF harmonics, modulations of the
+thrust envelope, and fluctuations of the rotational rate. Once
+J. Acoust. Soc. Am. 148 (3), September 2020
+
+1
+
+J. S. Duncan, “AC 107-2—Small unmanned aircraft systems,” part 107,
+Federal Aviation Administration (2016).
+2
+J. E. Ffowcs Williams and D. L. Hawkings, “Sound generation by turbulence and surfaces in arbitrary motion,” Philos. Trans. R. Soc. London,
+Ser. A: Math. Phys. Sci. 264(1151), 321–342 (1969).
+Weitsman et al.
+
+1335
+
+05 August 2026 13:46:01
+
+FIG. 13. (Color online) Comparison of the thrust and power coefficient
+computed prior to and following the onset of recirculation for six treatment
+configurations.
+
+flow recirculation manifests within the test facility, the
+hover performance of the rotary-wing system is no longer
+indicative of that in quiescent free flight, outside of a confined environment. Therefore, if the intent of a researcher is
+to emulate hover conditions with clean inflow, care must be
+taken to eliminate coherent turbulent structures in the recirculated flow and delay the propagation of the rotor wake.
+Prior to the installation of the treatment, the observed
+duration to acquire uncorrupted measurements was 3.9 s, as
+shown in Fig. 3. This duration is highly dependent upon the
+room geometry, operational thrust condition, and size of the
+rotor. Woven screen meshes were employed in a variety of
+configurations in order to provide an impedance to the rotor
+wake. Two meshes positioned parallel to, and aft of the rotor
+plane, yielded the best results, extending the duration prior
+to the onset of recirculation to approximately 10 s. This
+increased averaging interval decreased the autospectral random uncertainty from 22.80% for the baseline condition to
+11.85%.
+The presence of this mesh treatment proved to have a
+minimal impact on acoustic measurements at low frequencies. However, a slight amplification of the tonal noise components was evident at frequencies above 2 kHz and is
+attributed to reflections off the mesh holder apparatus. The
+dynamic performance of the rotor was shown to not be sensitive to the presence of the dual downstream mesh configuration, which proved to alleviate the effects of recirculation
+on the dynamic measurements.
+The implementation of this mesh treatment enables
+researchers to acquire clean measurements for longer durations or to operate their rotary-wing systems at higher thrust
+conditions, while maintaining clean inflow conditions.
+Additionally, this mitigation strategy shows potential for
+expanding the capabilities of existing test facilities to
+accommodate larger isolated rotors or multi-rotor sUAS.
+This has been exemplified by Whiteside et al.25 who
+employed this recirculation mitigation strategy while testing
+a coaxial rotor configuration in the SHAC.
+In follow-up studies, flow visualization would aid in
+determining where the primary recirculation vortices form
+and how they propagate throughout the test facility. This
+would provide a more comprehensive method for determining the optimal placement of the mesh treatment.
+Furthermore, a larger data set that includes alternative rotor
+geometries, operating at various thrust conditions, and in
+different sized test facilities, would serve as a basis for
+developing a generalized method for predicting the duration
+prior to the onset of recirculation for arbitrary experimental
+setups. This would allow researchers to identify the limitations posed by their specific setups for a variety of rotarywing systems.
+
+https://doi.org/10.1121/10.0001901
+
+3
+
+1336
+
+J. Acoust. Soc. Am. 148 (3), September 2020
+
+15
+
+C. R. Russell, J. Jung, G. Willink, and B. Glasner, “Wind tunnel and
+hover performance test results for multicopter UAS vehicles,” in
+Proceedings of the 72nd Annual Forum of the American Helicopter
+Society, West Palm Beach, FL (2016).
+16
+D. Boxwell, Y. Yu, and F. Schmitz, “Hovering impulsive noise: Some
+measured and calculated results,” in Proceedings of the International
+Specialists Symposium on Helicopter Acoustics, NASA Langley Research
+Center, Hampton, VA (1978).
+17
+M. McCoy, A. J. Wadcock, and L. A. Young, “Documentation of the
+recirculation in a closed-chamber rotor hover test,” Technical Report No.
+NASA/TM-2016-219162, NASA (2016).
+18
+J. H. Stephenson, D. Weitsman, and N. S. Zawodny, “Effects of flow
+recirculation on unmanned aircraft system (UAS) acoustic measurements
+in closed anechoic chambers,” J. Acoust. Soc. Am. 145(3), 1153–1155
+(2019).
+19
+E. Laws and J. Livesey, “Flow through screens,” Ann. Rev. Fluid Mech.
+10(1), 247–266 (1978).
+20
+J. Groth and A. V. Johansson, “Turbulence reduction by screens,” J. Fluid
+Mech. 197, 139–155 (1988).
+21
+R. Pinker and M. Herbert, “Pressure loss associated with compressible
+flow through square-mesh wire gauzes,” J. Mech. Eng. Sci. 9(1), 11–23
+(1967).
+22
+B. S. Henderson and D. Huff, “Electric motor noise for small quadcopters: Part II-source characteristics and predictions,” in
+Proceedings of the 2018 AIAA/CEAS Aeroacoustics Conference,
+Atlanta, GA (2018).
+23
+J. Bendat and A. Piersol, Random Data: Analysis and Measurement
+Procedures, Wiley Series in Probability and Statistics (Wiley, New York,
+2011).
+24
+J. Leishman, Principles of Helicopter Aerodynamics, Cambridge
+Aerospace Series (Cambridge University Press, Cambridge, 2016).
+25
+S. Whiteside, N. Zawodny, X. Fei, N. A. Pettingill, M. D. Patterson, and
+P. Rothhaar, “An exploration of the performance and acoustic characteristics of UAV-scale stacked rotor configurations,” in Proceedings of the
+AIAA Scitech 2019 Forum, San Diego, CA (2019).
+
+Weitsman et al.
+
+05 August 2026 13:46:01
+
+F. Farassat, “Theory of noise generation from moving bodies with an
+application to helicopter rotors,” Contractor Report No. NASA-CR-451,
+NASA Langley Research Center, Hampton, VA (1975).
+4
+K. S. Brentner and F. Farassat, “Modeling aerodynamically generated
+sound of helicopter rotors,” Prog. Aerosp. Sci. 39(2-3), 83–120 (2003).
+5
+N. S. Zawodny, D. D. Boyd, Jr., and C. L. Burley, “Acoustic characterization and prediction of representative, small-scale rotary-wing unmanned
+aircraft system components,” in Proceedings of the 72nd Annual Forum
+of the American Helicopter Society, West Palm Beach, FL (2016).
+6
+N. S. Zawodny and D. D. Boyd, Jr., “Investigation of rotor-airframe interaction noise associated with small-scale rotary-wing unmanned aircraft
+systems,” in Proceedings of the 73rd Annual Forum of the American
+Helicopter Society, Fort Worth, TX (2017).
+7
+G. Sinibaldi and L. Marino, “Experimental analysis on the noise of propellers for small UAV,” Appl. Acoust. 74(1), 79–88 (2013).
+8
+K. Herreman, “Proposed measurement method for UAV sound levels,” in
+Proceedings of the New England Noise Con-16: Revolution in Noise
+Control, Providence, RI (2016), Vol. 8, pp. 615–622.
+9
+C. E. Tinney and J. Sirohi, “Multirotor drone noise at static thrust,” AIAA
+J. 56(7), 2816–2826 (2018).
+10
+D. B. Hanson, “Spectrum of rotor noise caused by atmospheric
+turbulence,” J. Acoust. Soc. Am. 56(1), 110–126 (1974).
+11
+R. W. Paterson and R. K. Amiet, “Noise of a model helicopter rotor due
+to ingestion of turbulence,” Contractor Report No. NASA-CR-3213,
+NASA (1979).
+12
+J. C. Simonich, R. H. Schlinker, and R. K. Amiet, “Experimental assessment of helicopter rotor turbulence ingestion noise in hover,” Contractor
+Report No. NASA-CR-181792, NASA (1989).
+13
+R. A. Piziali and F. F. Felker, “Reduction of unsteady recirculation in
+hovering model helicopter rotor testing,” J. Am. Helicopter Soc. 32(1),
+54–59 (1987).
+14
+C. Nardari, D. Casalino, F. Polidoro, V. Coralic, P.-T. Lew, and J. Brodie,
+“Numerical and experimental investigation of flow confinement effects
+on UAV rotor noise,” in Proceedings of the 25th AIAA/CEAS
+Aeroacoustics Conference, Delft, the Netherlands (2019).
+
+

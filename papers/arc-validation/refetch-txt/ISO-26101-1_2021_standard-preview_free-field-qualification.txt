@@ -1,0 +1,646 @@
+INTERNATIONAL
+STANDARD
+
+ISO
+26101-1
+First edition
+2021-05
+
+Acoustics — Test methods for
+the qualification of the acoustic
+environment —
+Part 1:
+Qualification of free-field
+environments
+
+iTeh STANDARD PREVIEW
+Acoustique — Méthodes d'essai pour la qualification de
+(standards.iteh.ai)
+l'environnement acoustique —
+Partie
+1: 26101-1:2021
+Qualification des environnements en champ libre
+ISO
+https://standards.iteh.ai/catalog/standards/sist/4f5d1cb8-0640-4ab0-bf97a09581c375ab/iso-26101-1-2021
+
+Reference number
+ISO 26101-1:2021(E)
+© ISO 2021
+
+ISO 26101-1:2021(E)
+﻿
+
+iTeh STANDARD PREVIEW
+(standards.iteh.ai)
+ISO 26101-1:2021
+https://standards.iteh.ai/catalog/standards/sist/4f5d1cb8-0640-4ab0-bf97a09581c375ab/iso-26101-1-2021
+
+COPYRIGHT PROTECTED DOCUMENT
+© ISO 2021
+All rights reserved. Unless otherwise specified, or required in the context of its implementation, no part of this publication may
+be reproduced or utilized otherwise in any form or by any means, electronic or mechanical, including photocopying, or posting
+on the internet or an intranet, without prior written permission. Permission can be requested from either ISO at the address
+below or ISO’s member body in the country of the requester.
+ISO copyright office
+CP 401 • Ch. de Blandonnet 8
+CH-1214 Vernier, Geneva
+Phone: +41 22 749 01 11
+Email: copyright@iso.org
+Website: www.iso.org
+Published in Switzerland
+
+ii
+
+﻿
+
+© ISO 2021 – All rights reserved
+
+ISO 26101-1:2021(E)
+﻿
+
+Contents
+
+Page
+
+Foreword......................................................................................................................................................................................................................................... iv
+
+Introduction...................................................................................................................................................................................................................................v
+1
+2
+3
+4
+5
+
+Scope.................................................................................................................................................................................................................................. 1
+
+Normative references....................................................................................................................................................................................... 1
+Terms and definitions...................................................................................................................................................................................... 1
+Allowable deviations from inverse square law...................................................................................................................... 2
+
+Measurement of free sound field performance..................................................................................................................... 3
+5.1
+Divergence loss method................................................................................................................................................................... 3
+5.1.1
+Principle................................................................................................................................................................................... 3
+5.1.2
+Instrumentation and measuring equipment............................................................................................ 3
+5.1.3
+Location of test sound sources and microphone traverses.......................................................... 4
+5.1.4
+Test procedure.................................................................................................................................................................... 5
+5.1.5
+Expression of results..................................................................................................................................................... 6
+5.1.6
+Measurement uncertainty........................................................................................................................................ 7
+5.2
+Information to be recorded........................................................................................................................................................... 7
+5.3
+Information to be reported........................................................................................................................................................... 8
+
+Annex A (normative) Qualification criteria and measurement requirements.......................................................... 9
+Annex B (normative) General procedure for evaluation of test sound source directionality................12
+
+iTeh STANDARD PREVIEW
+(standards.iteh.ai)
+Annex D (informative) Guidelines
+for referring to this test method.................................................................................18
+Annex C (informative) Measurement uncertainty................................................................................................................................15
+Bibliography..............................................................................................................................................................................................................................
+20
+ISO 26101-1:2021
+https://standards.iteh.ai/catalog/standards/sist/4f5d1cb8-0640-4ab0-bf97a09581c375ab/iso-26101-1-2021
+
+© ISO 2021 – All rights reserved
+
+﻿
+
+iii
+
+ISO 26101-1:2021(E)
+﻿
+
+Foreword
+ISO (the International Organization for Standardization) is a worldwide federation of national standards
+bodies (ISO member bodies). The work of preparing International Standards is normally carried out
+through ISO technical committees. Each member body interested in a subject for which a technical
+committee has been established has the right to be represented on that committee. International
+organizations, governmental and non-governmental, in liaison with ISO, also take part in the work.
+ISO collaborates closely with the International Electrotechnical Commission (IEC) on all matters of
+electrotechnical standardization.
+
+The procedures used to develop this document and those intended for its further maintenance are
+described in the ISO/IEC Directives, Part 1. In particular, the different approval criteria needed for the
+different types of ISO documents should be noted. This document was drafted in accordance with the
+editorial rules of the ISO/IEC Directives, Part 2 (see www​.iso​.org/​directives).
+Attention is drawn to the possibility that some of the elements of this document may be the subject of
+patent rights. ISO shall not be held responsible for identifying any or all such patent rights. Details of
+any patent rights identified during the development of the document will be in the Introduction and/or
+on the ISO list of patent declarations received (see www​.iso​.org/​patents).
+Any trade name used in this document is information given for the convenience of users and does not
+constitute an endorsement.
+
+For an explanation of the voluntary nature of standards, the meaning of ISO specific terms and
+expressions related to conformity assessment, as well as information about ISO's adherence to the
+World Trade Organization (WTO) principles in the Technical Barriers to Trade (TBT), see www​.iso​.org/​
+iso/​foreword​.html.
+
+iTeh STANDARD PREVIEW
+(standards.iteh.ai)
+
+This document was prepared by Technical Committee ISO/TC 43, Acoustics, Subcommittee SC 1, Noise.
+ISO 26101-1:2021
+https://standards.iteh.ai/catalog/standards/sist/4f5d1cb8-0640-4ab0-bf97This first edition of ISO 26101-1 cancels and replaces the second edition of ISO 26101:2017, of which it
+constitutes a minor revision. The changesa09581c375ab/iso-26101-1-2021
+compared to the previous edition are as follows:
+
+— The title of the document was changed from “Acoustics — Test methods for the qualification of freefield environments” to “Acoustics — Test methods for the qualification of the acoustic environment —
+Part 1: Qualification of free-field environments”, so that an additional part, "ISO 26101-2, Acoustics
+— Test methods for the qualification of the acoustic environment —Part 2: Determination of the
+environmental correction", can be introduced.
+A list of all parts in the ISO 26101 series can be found on the ISO website.
+
+Any feedback or questions on this document should be directed to the user’s national standards body. A
+complete listing of these bodies can be found at www​.iso​.org/​members​.html.
+
+iv
+
+﻿
+
+© ISO 2021 – All rights reserved
+
+ISO 26101-1:2021(E)
+﻿
+
+Introduction
+This document describes the divergence loss method of measurement of performance of an environment
+designed to provide a free sound field or free sound field over a reflecting plane. An acoustical
+environment is a free sound field if it has bounding surfaces that absorb all sound energies incident
+upon them. This is normally achieved using specialized test environments, such as anechoic or hemianechoic chambers. In practice, these provide a controlled free sound field for acoustical measurements
+in a confined space within the facility.
+The purpose of this document is to promote uniformity in the method and conditions of measurement
+when qualifying free sound field environments.
+
+It is expected that the qualification procedures outlined in this document will be referred to by other
+International Standards and industry test codes. In such cases, these documents making reference
+to this document may specify qualification criteria appropriate for the test method and may require
+specific traverse paths.
+
+iTeh STANDARD PREVIEW
+(standards.iteh.ai)
+ISO 26101-1:2021
+https://standards.iteh.ai/catalog/standards/sist/4f5d1cb8-0640-4ab0-bf97a09581c375ab/iso-26101-1-2021
+
+© ISO 2021 – All rights reserved
+
+﻿
+
+v
+
+iTeh STANDARD PREVIEW
+(standards.iteh.ai)
+ISO 26101-1:2021
+https://standards.iteh.ai/catalog/standards/sist/4f5d1cb8-0640-4ab0-bf97a09581c375ab/iso-26101-1-2021
+
+INTERNATIONAL STANDARD
+
+ISO 26101-1:2021(E)
+
+Acoustics — Test methods for the qualification of the
+acoustic environment —
+Part 1:
+Qualification of free-field environments
+1 Scope
+
+This document specifies methodology for qualifying acoustic spaces as anechoic and hemi-anechoic
+spaces meeting the requirements of a free sound field.
+This document specifies discrete-frequency and broad-band test methods for quantifying the
+performance of anechoic and hemi-anechoic spaces, defines the qualification procedure for an omnidirectional sound source suitable for free-field qualification, gives details of how to present the results
+and describes uncertainties of measurement.
+
+This document has been developed for qualifying anechoic and hemi-anechoic spaces for a variety of
+acoustical measurement purposes. It is expected that, over time, various standards and test codes
+will refer to this document in order to qualify an anechoic or hemi-anechoic space for a particular
+measurement. Annex D provides guidelines for the specification of test parameters and qualification
+criteria for referencing documents.
+
+iTeh STANDARD PREVIEW
+(standards.iteh.ai)
+
+In the absence of specific requirements or criteria, Annex A provides qualification criteria and
+26101-1:2021
+measurement requirements to qualifyISO
+anechoic
+and hemi-anechoic spaces for general purpose
+https://standards.iteh.ai/catalog/standards/sist/4f5d1cb8-0640-4ab0-bf97acoustical measurements.
+a09581c375ab/iso-26101-1-2021
+This document describes the divergence loss method for measuring the free sound field performance of
+an acoustic environment.
+
+2 Normative references
+
+The following documents are referred to in the text in such a way that some or all of their content
+constitutes requirements of this document. For dated references, only the edition cited applies. For
+undated references, the latest edition of the referenced document (including any amendments) applies.
+ISO/IEC Guide 98-3, Uncertainty of measurement — Part 3: Guide to the expression of uncertainty in
+measurement (GUM:​1995)
+IEC 61260-1, Electroacoustics — Octave-band and fractional-octave-band filters — Part 1: Specifications
+IEC 61672-1, Electroacoustics — Sound level meters — Part 1: Specifications
+
+3 Terms and definitions
+
+For the purposes of this document, the following terms and definitions apply.
+
+ISO and IEC maintain terminological databases for use in standardization at the following addresses:
+— ISO Online browsing platform: available at https://​w ww​.iso​.org/​obp
+— IEC Electropedia: available at http://​w ww​.electropedia​.org/​
+© ISO 2021 – All rights reserved
+
+﻿
+
+1
+
+ISO 26101-1:2021(E)
+﻿
+3.1
+free sound field
+sound field in a homogeneous, isotropic medium free of boundaries
+[SOURCE: ISO/TR 25417:2007, 2.17]
+
+3.2
+anechoic space
+volume which has been qualified as a sound field in a homogeneous, isotropic medium free of boundaries
+3.3
+hemi-anechoic space
+volume above a reflecting plane which has been qualified as a sound field in a homogeneous, isotropic
+medium free of boundaries
+
+3.4
+acoustic centre
+<for a test sound source and for a given test signal> position of the point from which approximately
+spherical wave fronts appear to diverge
+3.5
+background noise
+sum of all the signals except the one under investigation
+
+Note 1 to entry: Background noise can include contributions from airborne sound, structure-borne vibration and
+electrical noise in instrumentation.
+
+iTeh STANDARD PREVIEW
+(standards.iteh.ai)
+
+3.6
+divergence loss
+reduction in sound pressure along a straight path due to the spreading of sound when a sound wave
+ISO 26101-1:2021
+propagates away from a source
+https://standards.iteh.ai/catalog/standards/sist/4f5d1cb8-0640-4ab0-bf973.7
+a09581c375ab/iso-26101-1-2021
+frequency range of interest
+contiguous one-third-octave-band frequencies from the lowest to the highest frequencies to be
+qualified, inclusive
+3.8
+referencing document
+standard or test code that refers to this document for the purpose of specifying the qualification method
+of an anechoic space (3.2) or hemi-anechoic space (3.3)
+
+4 Allowable deviations from inverse square law
+
+The theoretical reduction in mean-square sound pressure along a straight path due to spherical
+propagation of a sound wave in a free sound field shall be hereafter referred to as the inverse square
+law.
+
+For a space to be deemed anechoic or hemi-anechoic, as defined by criteria in a referencing document,
+the deviations of the measured sound pressure levels from those estimated using the inverse square
+law, obtained according to this document, shall not exceed the values specified by the referencing
+document.
+In the absence of specific criteria for the allowable deviations in a referencing document, the criteria
+in Annex A shall be used to qualify anechoic and hemi-anechoic spaces for general purpose acoustical
+measurements.
+The allowable deviations specified by a referencing document may be more or less stringent than the
+criteria given in Annex A.
+2
+
+﻿
+
+© ISO 2021 – All rights reserved
+
+ISO 26101-1:2021(E)
+﻿
+
+5 Measurement of free sound field performance
+5.1 Divergence loss method
+5.1.1
+
+Principle
+
+The divergence loss method shall be used to quantify the performance of an anechoic or hemi-anechoic
+space within a test environment and to determine the spatial limits of this qualified anechoic or hemianechoic space.
+
+The free sound field performance is evaluated by quantifying the contributions of both the direct and
+the reflected components of acoustic energy.
+The spatial decrease of sound pressure emitted from a test sound source shall be compared with the
+decrease of sound pressure that would occur in an ideal free sound field.
+5.1.2
+
+5.1.2.1
+
+Instrumentation and measuring equipment
+General
+
+The instrumentation system for measuring sound pressure level, including the microphone and cable,
+shall be operated within the limit of the linearity errors specified for a Class 1 sound level meter
+according to IEC 61672-1.
+
+iTeh STANDARD PREVIEW
+(standards.iteh.ai)
+
+The microphone shall be nominally omni-directional (taking into account any supplementary equipment
+connected to it, such as the protective grid and mounting arrangement).
+For measurements in one-third-octave bands, the filters used shall meet the requirements for Class 1
+specified in IEC 61260-1.
+ISO 26101-1:2021
+https://standards.iteh.ai/catalog/standards/sist/4f5d1cb8-0640-4ab0-bf97For measurements above 5 kHz, this
+method will normally require a microphone of diameter equivalent
+a09581c375ab/iso-26101-1-2021
+to that of a WS2F microphone, as described in IEC 61094-4[2], or less.
+5.1.2.2
+
+Test sound source
+
+A sound source approximating a point source over the frequency range of interest shall be used for the
+qualification measurement. The test sound source shall be
+a)
+
+compact and of acoustical performance, such that the location of the acoustic centre of the source
+is known to be located close enough to the origin of the microphone traverses specified in 5.1.3.2
+to allow fitting of the sound pressure level versus distance data without an adjustment for the
+acoustic centre of the source,
+
+b) in conformity with the directionality criteria in Table B.1, when measured according to the
+procedure in Annex B, so as to ensure the source radiates energy in all directions,
+c)
+
+able to generate sufficient sound power over the frequency range of interest to yield sound pressure
+levels at least 6 dB above the background noise levels for all points on each microphone traverse, or
+while the microphone is moving for continuous traverse systems[3], and
+
+d) of high stability so that the radiated sound power (due to the source, associated signal generation
+and amplification electronics) as measured by a monitor microphone located at an arbitrary fixed
+position in the test environment does not vary significantly at the frequency of measurement
+during the time taken to complete the measurements for each microphone traverse. If the stability
+of the source varies by more than ±0,2 dB then the monitor microphone shall be used to apply a
+correction according to Formula (1):
+
+© ISO 2021 – All rights reserved
+
+﻿
+
+3
+
+ISO 26101-1:2021(E)
+﻿
+Lp ,i = Lp′ ,i − Lp ,ref,i + Lp ,ref,0
+where
+
+Lp,i
+
+(1)
+
+is the corrected sound pressure level at measurement point i, expressed in decibels (dB);
+
+L′p,i
+
+is the measured sound pressure level at measurement point i, expressed in decibels (dB);
+
+Lp,ref,i
+Lp,ref,0
+
+is the sound pressure level measured by the monitor microphone at the reference
+location for measurement point i, expressed in decibels (dB);
+is the sound pressure level measured by the monitor microphone at the reference
+location for the initial measurement point 0, expressed in decibels (dB).
+
+Since, in general, two or more sources can be required to cover the overall frequency range of interest,
+the requirements given above shall be met for each source over its applicable frequency range.
+
+NOTE
+It is possible to estimate the acoustic centre of a source by evaluating it in an anechoic space already
+known to meet the requirements given in Annex A.
+
+Care should be taken:
+
+— to ensure that the sound pressure levels are more than 6 dB, and preferably more than 15 dB, above
+the background noise levels;
+
+iTeh STANDARD PREVIEW
+(standards.iteh.ai)
+— to ensure that changes in atmospheric conditions over the duration of the traverse are not confused
+— in positioning the monitor microphone to avoid acoustic interference with the traversing mechanism
+affecting the results;
+with those related to the source stability. ISO 26101-1:2021
+https://standards.iteh.ai/catalog/standards/sist/4f5d1cb8-0640-4ab0-bf975.1.3 Location of test sound sources and
+microphone traverses
+a09581c375ab/iso-26101-1-2021
+5.1.3.1
+
+Test sound source location
+
+Referencing documents may specify the test sound source location(s) to be used in order to qualify the
+anechoic or hemi-anechoic space.
+
+In the absence of specific requirements for the sound source location in a referencing document, the
+requirements given in Annex A shall be used to qualify anechoic and hemi-anechoic spaces for general
+purpose acoustical measurements.
+The test sound source should be placed in a chosen orientation and held in that orientation for all
+microphone traverses.
+An environment may be qualified for more than one source location.
+5.1.3.2
+
+Microphone traverses
+
+Microphone traverses shall be made along paths that will characterize and qualify the anechoic or
+hemi-anechoic space for the types of acoustical measurements to be conducted in the test environment.
+The origin of the microphone traverse shall be within the physical volume occupied by the test sound
+source.
+Referencing documents may specify the traverse paths to be conducted in order to qualify the anechoic
+or hemi-anechoic space.
+
+In the absence of specific requirements for the traverse paths in a referencing document, the
+requirements given in Annex A shall be used to qualify anechoic and hemi-anechoic spaces for general
+purpose acoustical measurements.
+4
+
+﻿
+
+© ISO 2021 – All rights reserved
+
+ISO 26101-1:2021(E)
+﻿
+Sound reflection from the microphone support system should be carefully avoided.
+5.1.4
+
+5.1.4.1
+
+Test procedure
+
+Qualification bandwidth
+
+The qualification measurements of the anechoic or hemi-anechoic space shall be made using a
+bandwidth that is typical of the spectral characteristics of the type of devices that will be measured or
+evaluated.
+Discrete-frequency qualification may be accomplished by using a test source that generates discrete
+tone(s) or by using a test source that generates broad-band noise and a measurement system that
+provides discrete-frequency measurement capabilities, such as an FFT analyser[3].
+
+Broad-band qualification may be accomplished by using a test source that generates broad-band noise
+and a measurement system that provides one-third-octave-band filtering.
+Referencing documents may specify the bandwidth for the qualification measurement.
+
+In the absence of specific requirements for the bandwidth in a referencing document, the requirements
+given in Annex A shall be used for the selection of the appropriate qualification measurement bandwidth
+for their intended purpose.
+5.1.4.2
+
+Generation of sound
+
+iTeh STANDARD PREVIEW
+(standards.iteh.ai)
+
+The test sound source described in 5.1.2.2 may be operated with a test signal of pure tones, multiple
+pure tones, band-limited or broad-band noise.
+
+If pure tones or multiple pure tones are used for discrete-frequency qualification, the measured signal
+after any filtering shall not contain energy
+frequencies not being characterized that are within 15 dB
+ISOat26101-1:2021
+of the frequencies being
+characterized. If broad-band noise is used as a test signal for either broad-band
+https://standards.iteh.ai/catalog/standards/sist/4f5d1cb8-0640-4ab0-bf97or discrete-frequency qualification,
+then the test signal shall consist of either random noise or broada09581c375ab/iso-26101-1-2021
+band test signals derived from random noise.
+In the absence of specific requirements for the test signal in a referencing document, the requirements
+given in Annex A shall be used for the selection of the appropriate test signal for qualification of anechoic
+or hemi-anechoic spaces for their intended purpose.
+
+NOTE
+Use of a mix of pure tones spaced apart by more than a one-third-octave band can be much more rapid
+than sequential traverses, each at a single pure tone.
+
+When using tonal or mixed tone signals, care should be taken to avoid distortion due to excessive signal
+levels.
+5.1.4.3
+
+Measurement of sound pressure level
+
+The sound pressure levels shall be measured using fractional octave-band filters or FFT analysis.
+
+The microphone shall be moved along the paths described in 5.1.3.2 for each test signal. The
+measurement of sound pressure level shall be carried out starting, at most, a quarter of a wavelength
+(at the lowest frequency to be qualified) from the origin of the traverse, traversing at least a quarter of
+a wavelength (at the lowest frequency to be qualified) and to the hypothetical boundary of the anechoic
+or hemi-anechoic space to be qualified.
+
+Sound pressure levels shall be measured along each microphone traverse using equally spaced
+measurement points at each frequency. Referencing documents may specify the maximum spacing
+of the measurement points in order to qualify the anechoic or hemi-anechoic space for their intended
+purpose.
+© ISO 2021 – All rights reserved
+
+﻿
+
+5
+
+ISO 26101-1:2021(E)
+﻿
+In the absence of specific requirements for the spatial resolution of the measurement points, the
+requirements given in Annex A shall be used to qualify anechoic and hemi-anechoic spaces for general
+purpose acoustical measurements.
+
+Alternatively, for discrete-frequency measurements using pure tone signals, the microphone may be
+moved slowly and continuously along the traverse and the sound pressure levels recorded[3]. Sound
+pressure level versus distance data should then be determined using the spatial sampling guidelines for
+discrete measurements.
+
+If broad-band test signals are used, measurement times should be of sufficient duration to achieve
+stable levels.
+5.1.5
+
+Expression of results
+
+5.1.5.1
+
+Method of calculation
+
+5.1.5.1.1
+
+General
+
+Measured sound pressure levels are compared with the theoretical sound pressure level decay
+according to the inverse square law in a free sound field.
+5.1.5.1.2
+
+Formula for estimation of sound pressure levels based on the inverse square law
+
+From the sound pressure levels measured at positions specified in 5.1.4.3, the estimation of sound
+pressure levels based on the inverse square law shall be determined for each measurement traverse
+using Formula (2):
+
+iTeh STANDARD PREVIEW
+(standards.iteh.ai)
+
+r 
+Lp ( ri )= b − 20lg  i  dB
+ISO 26101-1:2021
+ r0  https://standards.iteh.ai/catalog/standards/sist/4f5d1cb8-0640-4ab0-bf97-
+
+where
+
+a09581c375ab/iso-26101-1-2021
+
+(2)
+
+Lp(ri) is the sound pressure level at distance, ri, estimated by the inverse square law, expressed in
+decibels (dB);
+ri
+
+is the distance of measurement point i from the mathematical origin of the traverse,
+expressed in metres (m);
+
+r0
+
+is the reference value, r0 = 1 m;
+
+b
+
+is the source strength parameter that is adjusted to optimize the fit of the measured sound
+pressure levels into the tolerance range, to maximize the qualified distance from the test
+sound source, expressed in decibels (dB).
+
+If a continuous traverse is used, an “analogue” recording of level versus distance is obtained. To use the
+formulae in this clause, sound pressure levels at a large number of points at regularly spaced intervals
+shall be derived from the records. The selection of point spacing shall be based on the criteria of 5.1.4.3.
+An iterative process may be used to determine b; a starting value is given by Formula (3):
+N
+
+N
+r 
+20lg  i  dB + Lp ,i
+ r0 
+i =1
+b = i =1
+N
+
+∑
+
+∑
+
+(3)
+
+where
+6
+
+﻿
+
+© ISO 2021 – All rights reserved
+
+

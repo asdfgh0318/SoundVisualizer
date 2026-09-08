@@ -1,0 +1,435 @@
+NOISE CHARACTERISTICS OF DRONES (UAV) ACCORDING
+TO TESTING ENVIRONMENTAL CONDITIONS
+Yong-Hee Kim, Gyu-In Oh, Bon-Soo Ku, Jang-Won Lee
+Y’sU Youngsan University, 288, Junam-ro, Yangsan, Kyungnam, Republic of Korea
+email: yhkim@ysu.ac.kr, gioh@gm.ysu.ac.kr, kbs@gm.ysu.ac.kr, jwlee@gm.ysu.ac.kr
+
+Seung-Soo Lee
+Korea Conformity Laboratories, 7, Nambusunhwan-ro, 319-gil, Seocho, Seoul, Republic of Korea
+e-mail: tmdtnwww@kcl.re.kr
+
+Sang-Ho Kim
+Konkuk University, 120, Neungdong-ro, Gwangjin, Seoul, Republic of Korea
+e-mail: kimsh85@konkuk.ac.kr
+This study investigated the effects of testing environmental conditions on noise characteristics of
+drones as an unmanned aerial vehicle to develop standardized test procedure. Since standardized
+test procedure for evaluating drone noises has not been fully established, basic noise levels of
+drones are measured in anechoic chamber based on EU Directive and ISO 3744. Several commercial drones with various weights were chosen for the noise tests. Sound power levels and directional
+noise characteristics of the hovering drones were derived. As a result, sound power levels, LwA, of
+the drones were ranged from 72.4 to 97.3 dBA. Noise reduction of almost 4.2 dB by low-noise propeller was observed when a propeller guide was not applied for safe purpose. However, safeguard
+did not show significant noise reduction. Then, in-situ outdoor test of drone noise was carried out to
+compare the effects of test environmental conditions. Drones for the field tests were operated in the
+similar manner with laboratory condition, hovering at 0.5 m to 5 m high from ground floor. As results, 5-m off sound pressure levels, LpA, of two drones were ranged by hovering heights from 76.0
+to 77.0 dBA, and 59.2 to 62.7 dBA, respectively. In addition, differences of drone noise characteristics by the test environmental conditions were discussed.
+
+Keywords: drone noise, UAV, sound power level, anechoic room, outdoor noise
+
+1.
+
+Introduction
+
+The unmanned aerial vehicle (UAV) industry, which has begun to be developed for military purposes, is currently the most promising technical field and is widely used to meet private demand for indus1
+
+trial and leisure purposes [1-2]. Unmanned aircraft used in the private sector are collectively referred to
+as drones. It can be easily found in famous electronic shopping malls and local markets. It is reported
+that buzzing sounds from drones make people more annoy than the ground vehicles [3]. Although several researchers tried to figure out noise characteristics of drones in various approaches [4-6], there is
+no relevant standardized procedure to quantify drone noise. Therefore, it is urgent to establish performance standards and management measures to safely manufacture and operate it because it is a small
+aircraft subject to aviation law and has hazards such as safety accidents, noise from operation, and privacy [1]. Some research showed drone noise properties from outdoor or laboratory conditions [7-8].
+However, there is no comparison on test environmental conditions with the same testing drone object.
+In this study, the effects of testing environmental conditions on noise characteristics of drones are
+investigated. Regarding a commercial drone, two test environments of an anechoic room as a laboratory condition and an outdoor ground with artificial grass as an in-situ field condition are compared.
+Then, the effects of drone weights on noise properties in a laboratory condition and the effects of drone
+hovering heights were discussed.
+
+2.
+
+Materials and method
+
+2.1 Environmental conditions
+Figure 1 shows the pictures of the test environments. As a laboratory condition, the box-type semianechoic room, which was in Daejeon, South Korea was employed as shown in Figure 1(a). The inner
+dimension was 8.2 m in length, 7.0 m in width and 4 m in height from the metallic ground surfaces.
+Cut-off frequency of the room was 63 Hz. As a in-situ field condition, the football field covered by
+artificial grass in Guri, South Korea was employed as shown in Figure 1(b). Size of the outdoor fields
+was 101 m in length and 62 m in width. Background noise level in the anechoic room was less than 15
+dB(A). However, the football fields showed slightly high background noise level of about 50 dB(A)
+due to nearby road traffic sources.
+
+(a)
+
+(b)
+
+Figure 1: Pictures of the test environments. (a) The anechoic room; (b) The outdoor ground with grass.
+
+2.2 Measurement method and equipment
+Commission Delegated Regulation (EU) 2019/945 specifies noise test code for the hovering drones
+at 0.5 m high on reflecting ground in a semi-anechoic room [9]. This procedure follows the requirements on ISO 3744 [10] with ten microphones as shown in Figure 2(a). However, there were some possibilities of physical interference between some unstably hovering drones and the tenth microphone on
+the top of the measuring hemisphere in a laboratory condition. Accordingly, this study followed the
+noise test code for measuring airborne noise emitted by equipment for use outdoors with six microphones based on the Directive 2000/14/EC as shown in Figure 2(b) [11]. In addition, simplified measThe 28th International Congress on Sound and Vibration (ICSV28), 24-28 July 2022
+
+2
+
+urements from four directions from the sound source was additionally applied to both laboratory and
+actual outdoor measurements as shown in Figure 2(c). Basically, hovering height was set to 0.5 m from
+a reflective ground for both laboratory and outdoor conditions. In case of outdoor, additional hovering
+heights of 1, 2, 3, and 5 m were considered. Measurement radius was set to 3 m and 5 m, respectively,
+for laboratory and outdoor conditions. All measurement results were expressed in terms of A-weighted
+sound power levels. As for measurement equipment, real-time FFT analyser with six condenser microphones (01dB NetdB) and four sound level meters which correspond to classes 1 and 2 (RION NL-52
+and NL-42) were employed.
+
+(a)
+
+(b)
+
+(c)
+
+Figure 2: Diagram of the measurement positions for measuring sound power level. (a) Ten microphone positions
+specified in ISO 3744; (b) Six microphone positions in specified in Directive 2000/14/EC; (c) Four microphone
+positions for simplified measurements.
+
+(a)
+
+(b)
+
+(c)
+
+(d)
+
+(e)
+
+(f)
+
+(g)
+
+(h)
+
+Figure 3: Pictures of the eight quadcopter drones tested in the anechoic condition with its weight including battery. (a) Custom-made quadcopter with axis distance of 730 mm; (b) Phantom 4 Pro V2.0;
+(c) Mavic 2 Enterprise; (d) Mavic 2 Pro; (e) Mavic Mini; (f) Mavic Air; (g) Skydio 2; (h) Tello.
+The 28th International Congress on Sound and Vibration (ICSV28), 24-28 July 2022
+
+3
+
+2.3 UAV specimens
+Figure 3 shows the eight quadcopter models tested in the laboratory condition. One of them is a custom-made model with axis distance of 730 mm and weight of 5.9 kg including battery. Others are the
+commercial quadcopter models with various weights of 0.08 to 1.4 kg including battery. In case of a
+Phantom 4 Pro V2.0 model as shown in Figure 3(b), low noise type propeller is compared to normal
+type propeller which are given by the manufacturer. In cases of a Phantom 4 Pro V2.0 and Mavic Mini
+models as shown in Figure 3(b) and (e), effect of additional safeguards on noise level is examined. In
+case of a Tello model as shown in Figure 3(h), undetachable safeguard is included. The proportion of
+each battery in the total drone weight was distributed from 29% to 45%. The more drones weighed, the
+greater the proportion of batteries tended to increase.
+Figure 4 shows two drone models tested in the outdoor condition. One is a custom-made octocopter
+drone model used for certificating Type I ultra-light vehicle pilot according to Korean Aviation Safety
+Act [12]. The other is the same quadcopter model, Phantom 4 Pro, tested in the laboratory condition as
+shown in Figure 3(b).
+
+(a)
+
+(b)
+
+Figure 4: Pictures of two drones tested in the outdoor condition. (a) Custom-made octocopter drone used for
+certificating Type I ultra-light vehicle pilot; (b) The quadcopter drone (Phantom 4 Pro), the same model shown
+in Figure 3(b).
+
+3.
+
+Results
+
+3.1 Anechoic room tests
+Table 1 shows the measurement results of the drones in the anechoic laboratory condition with the
+summarized test configurations. Sound power levels of the drones measured from the six microphones
+in accordance with the Directive 2000/14/EC [11] ranged from 72.4 to 97.3 dBA. However, two microphones of M5 and M6 at 2.4 m height among the six microphones shows higher sound levels by
+about 3 dB on average than other four microphones at 1.5 m height. This can be seen as the effect of
+the propeller wind acting in a downward direction. Accordingly, sound power levels of the drones
+measured from the four microphones at 1.5 m height are calculated as 71.2 to 95.6 dB, which is lower
+by 0.9 to 1.9 dB than those from the six microphones.
+As for the results of Phantom 4 Pro V2.0, low noise type propeller showed reduced sound power
+levels of 4.2 and 2.8 dB, respectively, without and with safeguard. On the other hands, safeguard
+showed not consistent results as 0.9 dB reduction for the low noise propeller but 0.5 dB amplification
+for normal propeller. In addition, Mavic Air showed 2.7 dB amplification by use of safeguard.
+Simultaneously, simplified measurements with four sound level meters as shown in Figure 2(c) were
+carried out to compare the results with field condition. As shown in Table 1, sound power levels at 0.5
+m height in four orthogonal directions ranged from 65.2 to 89.9 dB, which is smaller by 4.6 to 7.4 dB
+than those by the Directive 2000/14/EC method. When considering the results by the four points from
+M1 to M4 as mentioned above, this difference is reduced to 3.5 to 6.0 dB. This difference seems to be
+because of the measurement height rather than the effect of the number of measurement points.
+The 28th International Congress on Sound and Vibration (ICSV28), 24-28 July 2022
+
+4
+
+Table 1: Measurement results with the summarized test configurations in accordance with the tested drone models hovering at 0.5 m high in the anechoic condition
+
+Drone
+models
+
+LWA (dBA)
+Use Weight Weight LWA from LpA at 3 m (dBA)
+simplified
+H=1.5 m
+H=2.4 m
+Propel- of without with
+M1-M6
+M1-M4
+ler type safe- battery battery 4-pt test
+(6 pts, 1.5 to (4 pts, 1.5 m
+(dBA)
+M1 M2 M3 M4 M5 M6 2.4 m height)
+height)
+guard
+(g)
+(g)
+H=0.5 m
+
+Custommade quadcopter with Normal
+axis distance of
+730 mm
+
+No
+
+No
+Yes
+Phantom 4
+Pro V2.0
+No
+Normal
+Yes
+Mavic 2
+Enterprise Normal No
+Mavic 2 Normal No
+Pro
+No
+Mavic Mini Normal
+Yes
+Mavic Air Normal No
+Skydio 2 Normal No
+Tello
+Normal Yes
+
+3,270
+
+5,910
+
+89.9
+
+78.0 77.6 78.4 78.2 82.2 81.8
+
+97.3
+
+95.6
+
+67.2 66.1 66.2 66.2 69.2 68.5
+
+1,380
+
+79.9
+80.1
+83.0
+82.6
+
+69.9 69.5 70.0 69.9 72.9 72.6
+
+84.9
+85.8
+89.1
+88.6
+
+84.0
+84.6
+87.7
+87.3
+
+Low
+noise
+
+915
+
+67.2 66.5 67.4 67.3 69.8 69.9
+70.7 70.3 69.8 69.8 74.4 72.4
+
+595
+
+885
+
+71.7
+
+58.7 58.6 59.1 58.5 62.1 61.5
+
+77.5
+
+76.3
+
+600
+
+900
+
+71.8
+
+58.4 58.2 59.2 58.6 61.7 61.4
+
+77.4
+
+76.1
+
+200
+
+295
+
+57.3 57.7 57.3 56.9 62.4 60.1
+
+150
+380
+495
+
+245
+575
+775
+
+74.6
+70.4
+72.7
+79.7
+65.2
+
+76.7
+79.2
+77.5
+84.4
+72.4
+
+74.8
+78.1
+76.4
+83.3
+71.2
+
+60.4 60.4 60.7 60.8 63.5 63.1
+58.6 58.2 59.6 59.1 61.9 61.2
+65.2 65.6 65.3 66.9 68.6 68.4
+53.5 53.2 53.9 54.0 56.6 56.7
+
+3.2 Outdoor tests
+Figure 5 shows the results of sound pressure levels of two drones measured at the outdoor condition.
+During the measurements, two drones hovered at various heights of 0.5 to 5 m from the ground for at
+least 15 s. Then, it was marked as coloured parts in Figure 5. Noise levels of the custom-made octocopter drone model ranged from 76.0 to 77.0 dBA by hovering height, which is greater by 20 dB or more
+than the background noise level. However, noise levels of the quadcopter drone model ranged from
+59.2 to 62.7 dB by hovering height, which shows only 10 dB difference to the background noise level.
+
+(a)
+
+(b)
+
+Figure 5: Temporal characteristics of the measured sound pressure levels at 1.5 m high in four directions of front,
+left, right and rear. Coloured parts indicate hovering situation at a specific height from the ground. (a) Custommade octocopter drone; (b) The quadcopter drone (Phantom 4 Pro).
+The 28th International Congress on Sound and Vibration (ICSV28), 24-28 July 2022
+
+5
+
+4.
+
+Discussions
+
+4.1 Effects of drone weights on noise levels in anechoic condition
+Figure 6 shows relationship between the A-weighted sound power levels measured in the semianechoic room and the drone weight with and without battery in terms of the averaged microphone
+numbers. The noise level of the drones increased in proportion to the logarithmic value of its weight
+regardless of the presence or absence of a battery. The results of linear regression analysis between the
+logarithmic value of the drone weight and the noise showed that the weight when there was no battery
+showed a somewhat high explanatory power, and the effect of the average value according to the number of measurement points was not noticeable except for the difference in absolute values. However,
+noise levels of the Mavic 2 Enterprise and the Mavic 2 Pro models were significantly lower than those
+of similar linear regression analysis trends despite a weight equivalent to around 0.9 kg when included
+in the battery. Therefore, since low noise can be secured even if drone noise shows characteristics proportional to weight, continuous efforts are needed to develop low-noise drones through component design such as motors and propellers.
+
+(a)
+
+(b)
+
+Figure 6: Relationship between the A-weighted sound power levels measured in the semi-anechoic room and the
+drone weight with and without battery in terms of the averaged microphone numbers. (a) Effects of drone weight
+without battery; (b) Effects of drone weight with battery.
+
+(a)
+
+(b)
+
+Figure 7: Relationship between the A-weighted sound pressure levels measured in the outdoor condition and the
+hovering height from ground. (a) Custom-made octocopter drone; (b) The quadcopter drone (Phantom 4 Pro).
+The 28th International Congress on Sound and Vibration (ICSV28), 24-28 July 2022
+
+6
+
+4.2 Effects of drone hovering height on noise levels in outdoor condition
+Figure 7 shows the relationship between the A-weighted sound pressure levels measured in the outdoor condition and the hovering height from ground. Due to field conditions, sound level meters could
+not be installed at 0.5 m height as the same manner with semi-anechoic room. Thus, the measurement
+was carried out at 1.5 m with microphone wind shield by applying a common environmental noise
+measurement method. When measured at a height of 1.5 m, the noise of the drone tended to increase as
+the height increased. Noise level of the custom-made octocopter drone increased by about 1 dB when
+the hovering height of the drone increased from 0.5 m to 5 m. Meanwhile, noise level of the quadcopter
+drone increased by about 3.5 dB when the hovering height of the drone increased from 0.5 m to 5 m. A
+drone user reported that noise levels of the vertically flying drone decreased as the altitude above 7.62
+m (25 ft) [13]. In this study, noise increased as the altitude increased due to the influence of aerodynamic noise by propellers since only maximum 5 m of flight altitude was considered due to the limitation of the field measurement conditions. In future studies, experiments on the critical distance affected
+by aerodynamic noise are needed.
+4.3 Effects of test environmental conditions on noise levels for the same drone
+Figure 8 shows the calculated results of the A-weighted sound power levels for the same quadcopter
+drone model (Phantom 4 Pro) according to the test environmental conditions. Even the drone model
+and the hovering heights were the same, a direct comparison is still not easy because the measuring
+heights are different from 0.5 m and 1.5 m. However, A-weighted sound power level of the drone hovering at 0.5 m in the anechoic condition and that of the drone hovering at 1 m in the outdoor condition
+were 82.6 dB and 82.5 dB, respectively. Therefore, it may be possible to measure drone noise as much
+as a laboratory even outdoors if only the difference from the background noise can be sufficiently secured.
+
+Figure 8: Calculated results of the A-weighted sound power levels for the same quadcopter drone model (Phantom 4 Pro) according to the test environmental conditions.
+
+5.
+
+Conclusion
+
+In this study, the characteristics of drone noise were evaluated according to the measurement environmental conditions. The noise characteristics of various types of the drone models in the semianechoic room were measured during hovering actions at 0.5 m height according to the EU methods.
+As results, sound power levels of the tested drones ranged from 72.4 to 97.3 dBA. Additionally, noise
+reduction effects of low-noise propeller and safeguard were discussed based on the laboratory measurement results. In the outdoor condition, two drone models were tested, then effects of hovering height
+and testing environment conditions were discussed. Drone noise is basically proportional to the weight
+including the battery, but the possibility of reducing the noise level was confirmed through detailed
+designs such as low noise propellers.
+The 28th International Congress on Sound and Vibration (ICSV28), 24-28 July 2022
+
+7
+
+Accordingly, based on the results of this study, it is possible to contribute to the development of test
+standards that can quantitatively evaluate drone noise through continuous research in the future. In addition, it is necessary to develop a noise measurement method and an outdoor demonstration noise
+measurement method during actual operation in a laboratory such as an unscented room to evaluate the
+operating performance of devices excluding external environmental effects. Furthermore, it is necessary to develop a simple measurement and prediction technology for major noise generating parts, and
+to study a technology that can predict the overall noise level by combining low noise factors in product
+development.
+
+6.
+
+Acknowledgements
+
+This research was supported by a civil-military Standards Standardization Project with the support
+of the Defense Agency For Technology and Quality with the funds of the Defense Acquisition Program
+Administration (Grant number:21-DU-UNI-03).
+
+REFERENCES
+1 Kim, Y. H. Standardization of Noise Measurement Methods for Unmanned Aircraft, Magazine of Noise and
+Vibration (in Korean), 27 (4), 11–17, (2017).
+2 Torija, A. J., Li, Z., Self, R. H. Effects of a Hovering Unmanned Aerial Vehicle on Urban Soundscapes Perception, Transportation Research Part D, 78, 102195 (2020).
+
+3 Christian, A., Cabell, R. Initial Investigation into the Psychoacoustic Properties of Small Unmanned Aerial
+System Noise, Proceedings of AIAA Aviation Technology, Integration, and Operations Conference (AVIATION 2017), Denver, CO, (2017).
+4 Rydlewicz, W., Blaszczak, J. R. Experimental Investigations of Acoustic Characteristics of Two CounterRotating Rotors, Mechanics and Mechanical Engineering, 20 (4), 489–497, (2016).
+5 Kloet, N., Watkins, S., Clothier, R., Acoustic Signature Measurement of Small Multi-rotor Unmanned Aircraft systems, International Journal of Micro Air Vehicles, 9 (1), 3–14, (2017).
+6 Cerniglia, A., Feo, G. D., Marzi, A., Elia, L., Vece, M. Some Experiences of Autogenerated Noise aboard a
+Drone, Proceedings of Euronoise 2018, Crete, Greece, (2018).
+7 Zhang, Y., Lee, I. C., Lin, D. Measurement of Noise from a Moving Drone Using a Phased Array Microphone System, Proceedings of the 2017 Asia-Pacific International Symposium on Aerospace Technology,
+Seoul, Korea, (2017)
+8 Didkovskyi, V., Korzhyk, O. Kozeruk, S., Kozak, A., Kostiuk, R., Liakhevych, S. Noise Measurement of
+the Multicopter UAV, 2019 IEEE 5th International Conference Actual Problems of Unmanned Aerial Vehicles Developments (APUAVD), Kiev, Ukraine, 22–24 October, (2019).
+9 Commission Delegated Regulation (EU) 2019/945, Unmanned aircraft systems and on third-country operators of unmanned aircraft systems, Part 13 – Noise test code, (2019).
+10 ISO 3744, Acoustics — Determination of sound power levels and sound energy levels of noise sources using
+sound pressure — Engineering methods for essentially free field over a reflecting plane, International Organization for Standardization, (2010).
+11 Directive 2000/14/EC - Noise - Equipment for use outdoors, Annex III: Method of measurement of airborne
+noise emitted by equipment for use outdoors, European Union Law, (2022).
+12 Korean Act No. 14551, Aviation Safety Act, Ministry of Land, Infrastructure and Transport, (2017).
+13 http://mavicpilots.com/threads/sound-level-metering-drones-how-loud-are-they-testing-noise-levels-on-djismavic-pro-and-inspire.18974/
+
+The 28th International Congress on Sound and Vibration (ICSV28), 24-28 July 2022
+
+8
+
+

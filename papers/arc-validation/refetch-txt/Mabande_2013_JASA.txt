@@ -1,0 +1,2341 @@
+OCTOBER 01 2013
+
+Room geometry inference based on spherical microphone
+array eigenbeam processing
+Edwin Mabande; Konrad Kowalczyk; Haohai Sun; Walter Kellermann
+
+J. Acoust. Soc. Am. 134, 2773–2789 (2013)
+https://doi.org/10.1121/1.4820895
+
+ 
+View
+Online
+
+Export
+Citation
+
+Articles You May Be Interested In
+Localization of distinct reflections in rooms using spherical microphone array eigenbeam processing
+J. Acoust. Soc. Am. (April 2012)
+
+Time-frequency-dependent directional analysis of room reflections using eigenbeam processing and von
+Mises–Fisher clustering
+J. Acoust. Soc. Am. (April 2022)
+
+J. Acoust. Soc. Am. (November 2006)
+
+01 September 2026 16:58:16
+
+Eigenbeam beamforming for microphone arrays
+
+Room geometry inference based on spherical microphone array
+eigenbeam processing
+Edwin Mabandea),b) and Konrad Kowalczykb)
+Chair of Multimedia Communications and Signal Processing (LMS), University of Erlangen-Nuremberg,
+Cauerstrasse 7, 91058 Erlangen, Germany
+
+Haohai Sunc)
+Norwegian University of Science and Technology
+
+Walter Kellermann
+Chair of Multimedia Communications and Signal Processing, University of Erlangen-Nuremberg,
+Cauerstrasse 7, 91058 Erlangen, Germany
+
+(Received 2 April 2013; revised 16 August 2013; accepted 26 August 2013)
+
+PACS number(s): 43.55.Mc, 43.60.Fg, 43.55.Br [NX]
+
+I. INTRODUCTION
+
+The extraction of parameters characterizing an acoustic
+environment using acoustic signals is a topic of increasing
+interest in the field of acoustic signal processing as these parameters may then be used to enhance the performance of
+classical signal processing algorithms. A wide range of useful parameters characterizing an acoustic space may be estimated, including the directions of arrival (DOAs) and the
+strengths of early room reflections,1,2 the speed of sound,3
+and the room volume.4 However, the ultimate challenge in
+this context is to estimate the geometry of the entire acoustic
+enclosure. The knowledge of room geometry can be used to
+improve the performance of source localization algorithms5
+and signal enhancement methods,6–8 and to compensate for
+reverberation in sound field reproduction.9
+Recently the topic of inferring the room geometry has
+gained wider interest among many research groups.
+Typically, this involves the measurement and processing of
+
+a)
+
+Author to whom correspondence should be addressed. Electronic mail:
+etmabande@gmail.de
+Present address: International Audio Laboratories Erlangen, Fraunhofer
+IIS, Am Wolfsmantel 33, 91058 Erlangen, Germany.
+c)
+Present address: Cisco Systems Norway AS, Philip Pedersens vei 1, 1336
+Lysaker, Norway.
+b)
+
+J. Acoust. Soc. Am. 134 (4), October 2013
+
+Pages: 2773–2789
+
+many room impulse responses (RIRs).1,2,10,11 G€unel2 proposed a boundary plane parameter estimation method that
+uses the time of arrival (TOA) of the first reflection only,
+where hierarchical grouping, for many source positions, is
+applied to avoid estimates of the same plane. Antonacci
+et al.1 proposed a method where a common tangent algorithm is applied to the 2D reflector localization based on
+TOAs of reflections estimated from RIR measurements for a
+moving source. The method has been extended by Filos
+et al.12 and Antonacci et al.13 to 2D room inference, where
+space parameterization based on the Hough transform is
+applied to disambiguate between TOAs of reflections from
+different walls and reflection orders, and also to increase the
+robustness against noise in TOA estimation. Apart from
+measured RIRs, it was claimed that short impulsive signals13
+such as hand clapping and finger snapping could also be
+applied as sources. Given a set of RIRs measured simultaneously using a set of array microphones, one of the main challenges is to associate the peaks corresponding to the same
+reflector, which is typically required when estimating TOAs
+of reflections directly from measured RIRs. Contrary to the
+above approach, where the number of walls must be known
+a priori, a heuristic method for room geometry inference
+without any assumption on the number of reflectors was proposed by Tervo et al.,14 where a set of reflective planes is
+deduced iteratively. Dokmanic et al.15 proposed a method
+
+0001-4966/2013/134(4)/2773/17/$30.00
+
+C 2013 Acoustical Society of America
+V
+
+2773
+
+01 September 2026 16:58:16
+
+The knowledge of parameters characterizing an acoustic environment, such as the geometric
+information about a room, can be used to enhance the performance of several audio applications. In
+this paper, a novel method for three-dimensional room geometry inference based on robust and
+high-resolution beamforming techniques for spherical microphone arrays is presented. Unlike other
+approaches that are based on the measurement and processing of multiple room impulse responses,
+here, microphone array signal processing techniques for uncontrolled broadband acoustic signals
+are applied. First, the directions of arrival (DOAs) and time differences of arrival (TDOAs) of the
+direct signal and room reflections are estimated using high-resolution robust broadband beamforming techniques and cross-correlation analysis. In this context, the main challenges include the low
+reflected-signal to background-noise power ratio, the low energy of reflected signals relative to the
+direct signal, and their strong correlation with the direct signal and among each other. Second, the
+DOA and TDOA information is combined to infer the room geometry using geometric relations.
+The high accuracy of the proposed room geometry inference technique is confirmed by experimental evaluations based on both simulated and measured data for moderately reverberant rooms.
+C 2013 Acoustical Society of America. [http://dx.doi.org/10.1121/1.4820895]
+V
+
+2774
+
+J. Acoust. Soc. Am., Vol. 134, No. 4, October 2013
+
+In the sequel, the paper is structured as follows: An
+overview of the proposed room geometry inference method
+is presented in Sec. II, and the spherical microphone array
+eigenbeam processing and frequency smoothing techniques
+for processing coherent reflected signals are briefly reviewed
+in Sec. III. The proposed methods for beamformer-based
+DOA and TDOA estimation of room reflections are
+described in Secs. IV and V, respectively. The method to
+infer the boundary plane parameters is then presented in Sec.
+VI. The presented technique is experimentally verified using
+both measured and simulated data in Sec. VII, followed by
+concluding remarks in Sec. VIII.
+II. ROOM GEOMETRY INFERENCE METHOD
+
+In this section, an overview of the proposed method for
+room geometry inference is presented, which in general
+allows for full three-dimensional (3D) geometry inference of
+an acoustic enclosure with walls that are piecewise planar
+and whose overall geometry is convex. When a source signal
+is produced or played back via a loudspeaker, a compact
+microphone array located within the same room samples the
+produced wave field, which includes the direct signal, multiple boundary reflections, as well as background noise.
+Figure 1 depicts an exemplary scenario, where a source in a
+room results in a reflection from one of the planar room
+boundaries. It is assumed that the impinging wave is
+reflected from the boundary in a specular fashion.22 Such an
+assumption is justified for most planar room boundaries that
+are sufficiently reflective for a wide frequency range. The
+corresponding first-order image source, which is defined as a
+point that is mirrored with respect to the boundary, and a
+background noise source are also shown.
+The localization of major reflectors in a room and hence
+the inference of room geometry can be achieved based solely
+on the recorded microphone signals and the knowledge on
+the relative position of the source, i.e., the DOA and distance
+of the source to the microphone array. Thus, this approach
+does not involve measuring RIRs and can generally be
+applied for any source signals which provide sufficient excitation for room modes across frequencies of interest.
+
+FIG. 1. Reflection due to a planar boundary.
+Mabande et al.: Room geometry inference
+
+01 September 2026 16:58:16
+
+that infers the room geometry from only one RIR. However,
+the algorithm requires the knowledge of TOAs of all firstand second-order reflections, which may be very challenging
+to achieve in practice. Ba et al.11 and Ribeiro et al.16 proposed methods to estimate the room shape by fitting a shoebox room model to a set of measured RIRs.
+In earlier work, the authors of this paper presented a robust and accurate beamformer-based method for DOA estimation of room reflections.17 Furthermore, the localization
+of points of reflection was also demonstrated.18,19
+In this paper, a novel beamforming-based technique to
+localize the positions of reflecting surfaces in a room, thus
+inferring the room geometry, is proposed. The signals captured by relatively small spherical microphone arrays are
+used to estimate the DOAs and time differences of arrival
+(TDOAs) of reflected signals. Then, by applying several geometric relations, the positions and orientations of room
+boundary planes can be estimated. Note that in contrast to
+most approaches found in the literature, e.g., Refs. 1, 2, 10,
+14, and 15, the proposed technique does not involve measuring RIRs and can therefore be applied to any broadband
+source signal, e.g., speech or music.
+In the first step, the robust beamformer-based method17
+for DOA estimation is applied. In the second step, a method
+to accurately estimate TDOAs, which is based on (1) a novel
+robust data-dependent beamformer design for correlated signal extraction and (2) robust cross-correlation analysis, is
+applied. In contrast to the techniques used in earlier work,19
+where the TDOA of only the most dominant reflection was
+found, multiple TDOAs can now be estimated accurately
+from only one measurement even in more adverse acoustical
+conditions, e.g., low signal-to-interference-plus-noise ratios
+(SINRs). This becomes possible by using a more robust
+data-dependent beamformer with constrained white noise
+gain (WNG) and by eliminating erroneous dominant peaks,
+which result from the insufficiently suppressed direct-path
+components in the cross-correlation analysis (see Sec. V B).
+Therefore, these novel robustness features yield improved
+performance compared to the previously used techniques.18,19 Although the cost function of the beamformer
+design in the second step is similar to that in the first step,
+the beamformer coefficients are now computed for the entire
+frequency range of interest in order to facilitate robust correlated broadband signal extraction (see Sec. V A), as opposed
+to just a single frequency as in the first step. In contrast to
+Ref. 19, where only a single point of reflection was identified, the aim here is to find the positions of all room boundaries. Therefore, based on the obtained DOA and TDOA
+estimates, a novel room geometry inference technique is
+developed that includes categorizing the estimated boundary
+planes20 and assigning them to room boundaries when signals captured for multiple source positions are processed.
+A comprehensive experimental evaluation of the proposed
+inference technique using both simulated and real measurements, using a compact off-the-shelf spherical microphone
+array,21 is presented. The results confirm the applicability of
+the proposed technique for practical acoustic scenarios, even
+with adverse acoustic conditions. It is also shown that accurate
+room volume estimation is possible by using this method.
+
+the point of reflection, which lies on the boundary, can be
+calculated using simple geometric relations. Apart from the
+boundary point, a vector normal to the boundary plane is
+also computed from the positions of the original and the
+first-order image sources, which together form a pair that
+fully defines the geometric information about a plane.
+The method requires that each first-order image source
+is visible from the microphone array for at least one source
+position. Since all first-order reflections may not be visible
+from the microphone array for a given source position, several source positions should be used, such that all first-order
+reflections are captured, at least once. Therefore, the proposed two-step procedure can be repeated for several different sound source positions, thus obtaining multiple sets of
+boundary plane parameters. These sets of planes are then
+categorized, in order to cluster the planes corresponding to
+the same reflecting boundary, and the final boundary parameters can be estimated by calculating an optimum fit from
+the observations.
+
+III. EIGENBEAM PROCESSING FOR REFLECTION
+LOCALIZATION AND EXTRACTION
+A. Spherical Fourier transform
+
+For 3D room inference, a spherical microphone array
+can be applied. Optimum array signal processing can then be
+performed in the so-called eigenbeam (EB) domain,23,28
+which is also referred to as the spherical harmonics domain,29 after the transformation of the original microphone
+signals to the EB (spherical harmonics) domain. For completeness the spherical Fourier transform is briefly revisited
+as in Ref. 17.
+When a unit magnitude plane wave arrives at the sphere
+of radius a from direction Xo ¼ ðho ; /o Þ, where h and / are
+the elevation and azimuth angles in radians measured from
+the positive z-axis and x-axis in Cartesian coordinates,
+respectively, the sound pressure at any observation point
+Xs ¼ ðhs ; /s Þ lying on the sphere can be expressed in the
+temporal frequency domain as23
+Pðka; Xo ; Xs Þ ¼
+
+1
+X
+n¼0
+
+bn ðkaÞ
+
+n
+X
+
+½Ynm ðXo Þ Ynm ðXs Þ;
+
+m¼n
+
+(1)
+where Ynm is the spherical harmonic of order n and degree m,
+0  n  1, n  m  n, superscript  denotes complex
+conjugation, bn ðkaÞ is a function of the array configuration
+
+FIG. 2. Block diagram of the proposed
+room geometry inference method.
+
+J. Acoust. Soc. Am., Vol. 134, No. 4, October 2013
+
+Mabande et al.: Room geometry inference
+
+2775
+
+01 September 2026 16:58:16
+
+Such a room inference task can be accomplished by the
+proposed method which consists of two stages, as depicted
+in Fig. 2: In the first stage, DOAs and TDOAs are estimated
+in a two-step procedure. In the second stage, the desired geometric boundary parameters are inferred, i.e., the positions
+of the room boundaries. The task of simultaneously localizing multiple room reflections can be achieved using, e.g.,
+subspace-based23,24 and beamformer-based source localization techniques.25,26 The aim of such acoustic source localization algorithms is to extract the DOA information
+corresponding to the original source and room reflections
+from signals captured by an array of microphones. When
+applying beamformer-based localization methods, the room
+is scanned using a beamformer, and the output power for
+each look-direction is plotted to form an acoustic image of
+the environment.17,18 The locations of the peaks of the
+acoustic image determine the estimated DOAs. Next, the signals from the localized directions are extracted using robust
+broadband beamformers with high directivity. The TDOAs
+between the direct signal and each early room reflection are
+then estimated using cross-correlation analysis of the
+extracted signals. Such estimated TDOAs correspond to the
+difference in distance that a reflected signal travels in comparison to the direct signal.
+The localization and extraction of room reflections, for
+DOA and TDOA estimation, respectively, is difficult even
+for early and well pronounced room reflections, mainly due
+to their low SINRs and their strong coherence with the direct
+signal and among each other. Since each reflection is treated
+as a separate coherent source, the power of a reflected signal
+is lower than the power of the direct signal due to the attenuation during propagation and reflection coefficient values
+being smaller than unity. Note that the other reflected signals, irrespective of their order, and the direct signal act as
+interferers, and the microphone self-noise levels remain the
+same. Consequently, each reflected signal has a much lower
+SINR than the direct signal, and thus its extraction becomes
+increasingly challenging with the order of the reflection and
+the travel distance of the sound wave. In order to increase
+the robustness and accuracy of room geometry inference, robust beamforming methods with focusing matrices and frequency smoothing techniques19,24 are used here, as
+described in Secs. III B and IV A.
+In the second stage, the DOA and TDOA information is
+combined in order to estimate the locations of first-order
+image sources,27 as depicted in Fig. 1. Knowing the distance
+of the sound source relative to the center of the microphone
+array, which is assumed to be known a priori, the position of
+
+(with analytical expressions for rigid or open spheres given,
+e.g., in Ref. 30), and wave number k ¼ x=c, where x is the
+temporal angular frequency and c is the speed of sound. The
+spherical Fourier transform of Pðka; Xo ; XÞ can be written
+as
+Pnm ðka; Xo Þ ¼ bn ðkaÞ½Ynm ðXo Þ :
+
+(2)
+
+When D plane waves impinge on the M-element microphone array from directions X1 ; …; XD in the presence of
+uncorrelated noise, the sth microphone signal ðs ¼ 1; …; MÞ
+can be expressed in the temporal frequency domain as
+Xðka; Xs Þ ¼
+
+D
+X
+
+Pðka; Xd ; Xs ÞSd ðkÞ þ Vðk; Xs Þ;
+
+(3)
+
+d¼1
+
+D
+X
+
+Pnm ðka; Xd ÞSd ðkÞ þ Vnm ðkÞ;
+
+(4)
+
+d¼1
+
+where Vnm ðkÞ denotes the spherical Fourier transform of the
+noise. Finally, the ðN þ 1Þ2  1 signal vector X, for a given
+maximum order N, can be written as17
+
+(7)
+
+for each frequency bin kq , q ¼ 1; …; Q, and the focusing frequency k0 2 fk1 ; …; kQ g. The closed-form solution for the
+focusing matrices is given as19
+(8)
+
+where Bðkq aÞ ¼ diag½b0 ðkq aÞ; b1 ðkq aÞ; b1 ðkq aÞ; b1 ðkq aÞ;
+b2 ðkq aÞ; …; bN ðkq aÞ; is an ðN þ 1Þ2  ðN þ 1Þ2 diagonal
+matrix. It is the frequency-dependent mode amplitude
+obtained from decoupling the array manifold matrix in (5).
+^ 0 aÞ is
+The focused and frequency-smoothed PSD matrix Rðk
+obtained as19
+Q
+X
+^ 0 aÞ ¼ 1
+Rðk
+Tðkq ÞRðkq aÞTH ðkq Þ:
+Q q¼1
+
+(9)
+
+(5)
+IV. DOA ESTIMATION
+
+
+where Pðka;
+XÞ ¼ ½Pðka; X1 Þ; …; Pðka; XD Þ is the
+ðN þ 1Þ2  D associated manifold matrix, with each element
+defined as P ¼ vecf½PnðnÞ ; Pnðnþ1Þ ; …; Pnðn1Þ ; Pnn Nn¼0 g
+and vecfg represents stacking of all vectors in the parenthesis. The D  1 EB-domain source signal spectra vector
+and the ðN þ 1Þ2  1 EB-domain additive noise spectrum
+vector are given by SðkÞ ¼ ½S1 ðkÞ; …; SD ðkÞT and VðkÞ,
+respectively.
+Furthermore, the ðN þ 1Þ2  ðN þ 1Þ2 EB-domain
+power spectral density (PSD) matrix is
+RðkaÞ ¼ EfXðkaÞXH ðkaÞg;
+
+(6)
+
+where Efg denotes the statistical expectation and ðÞH is the
+Hermitian transpose. Note that in practical implementations,
+the number of microphones must satisfy M  ðN þ 1Þ2 to
+calculate up to N-th order spherical harmonics.26
+B. Frequency smoothing
+
+The performance of many acoustic source localization
+and signal extraction methods degrades when the given
+sound sources in an acoustic environment are highly correlated with each other.31,32 Note that, here, the direct signal
+and early room reflections are in fact strongly correlated, and
+hence difficulties must be expected in localizing and extracting the desired signals. Furthermore, for high SNR and long
+observation intervals, the source PSD matrix defined as
+RS ðkÞ ¼ EfSðkÞSH ðkÞg can even be nearly singular and will
+usually lead to an ill-conditioned PSD matrix RðkaÞ in (6)
+2776
+
+J. Acoust. Soc. Am., Vol. 134, No. 4, October 2013
+
+Localization of early room reflections, illustrated in the
+upper part of Fig. 3, is challenging due to the high coherence
+and low energy of the reflected signals relative to the direct
+signal. Therefore, a robust technique is required to accurately localize such coherent sources. For accurate boundary
+parameter estimation precise acoustic source localization is
+important. A comparison of several steered beamformerbased and subspace-based reflection localization techniques
+has been presented in Refs. 17 and 33. The steered
+beamformer-based methods have similar or higher computational cost compared to the subspace-based EB-MUSIC and
+EB-ESPRIT techniques,23 respectively. However, a major limitation of the subspace methods is that the subspace dimension (i.e., the number of sources to be localized) must be
+known a priori.17 Since the authors concluded that the
+steered EB-domain MVDR (denoted here as EB-MVDR)
+beamformer with focusing and frequency smoothing (see
+Sec. III B) is the best choice for estimating the DOAs of the
+direct and reflected signals,33 this beamformer is selected for
+the localization purposes in this paper and is briefly reviewed
+in the following.
+A. Steered EB-RMVDR
+
+The EB-MVDR beamformer is an example of a statistically optimum beamformer.7 The idea behind this beamforming technique is to minimize the output variance (or power)
+subject to the constraint of a distortionless response of the
+beamformer in the direction of interest. In order to increase
+the robustness of EB-MVDR beamformers against
+Mabande et al.: Room geometry inference
+
+01 September 2026 16:58:16
+
+
+XðkaÞ ¼ Pðka;
+XÞSðkÞ þ VðkÞ;
+
+ q a; XÞ
+ 0 a; XÞ ¼ Tðkq ÞPðk
+Pðk
+
+Tðkq Þ ¼ B1 ðkq aÞBðk0 aÞ;
+
+where Sd ðkÞ and Vðk; Xs Þ denote D source signal spectra
+and the additive noise spectrum, respectively. The nth order
+and mth degree spherical Fourier transform of (3) reads30
+Xnm ðkaÞ ¼
+
+(see Refs. 17 and 31 for more details), which adversely
+affects the performance of many localization and extraction
+techniques. Therefore, for robust boundary parameter estimation using broadband signals, focusing matrices and frequency smoothing techniques19,24 have been proposed to
+address the ill-conditioning of the PSD matrix issue. The
+concept of frequency smoothing relies here on applying
+ðN þ 1Þ2  ðN þ 1Þ2 focusing matrices Tðkq Þ such that
+
+FIG. 3. Block diagram of the proposed
+DOA and TDOA estimation procedure.
+
+microphone self-noise, microphone mismatch, and positioning
+errors in real microphone arrays, a robust EB-MVDR (EBRMVDR) beamformer has been proposed in Ref. 17 by incorporating a WNG constraint into the design, in addition to the
+distortionless constraint in the look direction and frequency
+smoothing. The cost function of the focused and frequency
+smoothed EB-RMVDR beamformer can be written as17
+W
+
+subject to
+WH ðk0 ÞPðk0 a; Xl Þ ¼
+
+4p
+; AWNG ðk0 Þ  f;
+M
+
+(10)
+
+where Wðk0 Þ are the beamformer coefficients at frequency
+k0 and f denotes the array gain against spatially white noise
+given as
+AWNG ðk0 Þ ¼
+
+4p
+1
+:
+M WH ðk0 ÞWðk0 Þ
+
+(11)
+
+V. TDOA ESTIMATION
+B. Estimating DOAs of reflections
+
+The EB-RMVDR beamformer with frequency smoothing is then used to scan the room and an acoustic image (AI)
+of the environment is produced by plotting the beamformers
+output power for each look direction. The locations of the
+peaks of the acoustic image determine the estimated DOAs
+^ Þ, i ¼ 0; …; I, where I þ 1 is the total num^ j; i ¼ ð^
+h j; i ; /
+X
+j; i
+ber of estimated DOAs, and thus I is the number of localized
+reflections and i ¼ 0 denotes the DOA of the direct signal’s
+path. The index j ¼ 1; …; J denotes different sound source
+positions, which are used as references for subsequent proc^ Þ correspond^ j; i ¼ ð^h j; i ; /
+essing. Among all the DOAs X
+j; i
+ing to peaks, only those DOA estimates are selected whose
+power in the acoustic image exceeds the noise floor by .dB.
+The exclusion of DOA estimates with low power levels is
+necessary since these DOA estimates, and hence the corresponding TDOA and boundary parameter estimates, become
+J. Acoust. Soc. Am., Vol. 134, No. 4, October 2013
+
+Having estimated the DOAs of room reflections, the signals from the localized directions are extracted using robust
+broadband beamforming techniques. As illustrated in Fig. 3,
+statistical analysis of cross-correlations between the
+extracted signals is then performed to estimate the TDOAs
+of the reflected signals with reference to the direct signal.
+A. Signal extraction
+
+In order to extract the broadband direct and reflected
+signals, robust broadband beamformers are employed. The
+beamformer output signal UðkaÞ, at a given frequency kq ,
+can generally be written as
+Uðkq aÞ ¼ WH ðkq ÞXðkq aÞ:
+
+(12)
+
+Beamformers are steered toward Xj; 0 to extract the
+^ Þ, for i ¼ 1; …; I, to
+^ j; i ¼ ð^h j; i ; /
+direct signal and toward X
+j; i
+Mabande et al.: Room geometry inference
+
+2777
+
+01 September 2026 16:58:16
+
+^ 0 aÞWðk0 Þ;
+min WH ðk0 ÞRðk
+
+less reliable as the power level in the acoustic image
+decreases.33 Although not done here, the relative powers
+could be used as reliability information for each plane estimate. An obvious method to exploit this soft information is
+to use the relative signal power for determining a weighting
+factor for the observation in the estimation process.
+The DOA estimates that are finally obtained are
+assumed to correspond to the directions of first-order reflections. This appears to be a reasonable assumption, as long as
+the microphone array is positioned centrally in a room,
+because the reflection coefficients of most surfaces are not
+close to unity and the propagation paths of higher-order
+reflections will generally be significantly longer than for the
+more pronounced first-order reflections with higher amplitude. Then, higher-order reflections will exhibit significantly
+lower peaks in the acoustic images than the direct signal and
+dominant first-order reflections, and these peaks are then discarded as they fall below the threshold of .dB. Additional
+robustness against higher-order reflections is achieved by
+post-processing, as described in Sec. VI D.
+
+extract the reflected signals, which were earlier localized as
+described in Sec. IV B.
+As mentioned before, there are three main challenges
+for successful signal extraction: The reflected signals have
+low SNR, low energy relative to the direct signal, and they
+are correlated with the direct signal and each other.
+Furthermore, the beamformer should also be robust to the
+microphone self-noise and array errors so as to be applicable
+in practice.
+Data-dependent beamformers, such as EB-MVDR, can
+provide high spatial selectivity and automatic null placement, which is important for extraction of the low-energy
+reflected signals. However, in our scenario, the high correlation between the direct and reflected signals would cause
+desired signal cancellation,32,34 i.e., the extracted signal
+would suffer from significant distortion, thus making their
+direct application impractical. In order to overcome this
+problem, instead of applying the ill-conditioned PSD matrix
+^ q aÞ in (6) at each frequency kq , q ¼ 1; …; Q, the same
+Rðk
+^ 0 aÞ is applied for all frequencies
+smoothed PSD matrix Rðk
+in the broadband EB-MVDR design. This ensures that a
+well-conditioned PSD matrix is applied at all frequencies. A
+robust design [similar to (10)], which is denoted as the
+frequency-dependent EB-RMVDR design, is obtained by
+solving
+^ 0 aÞWðkq Þ
+min WH ðkq ÞRðk
+
+subject, to
+WH ðkq ÞPðkq a; Xl Þ ¼
+
+4p
+; AWNG ðkq Þ  f;
+M
+
+(13)
+
+where the beamformer coefficients Wðkq Þ are calculated for
+each frequency kq , q ¼ 1; …; Q, while the same frequency
+^ 0 aÞ is used across all frequencies. Please
+smoothed PSD Rðk
+note that for the beamformer used for DOA estimation
+according to (10), the WNG constraint is applied at frequency k0 only and the beamformer coefficients are only
+computed at this frequency.
+^ 0 aÞ, the proBy using the smoothed PSD matrix Rðk
+posed beamforming method is more robust to coherent signal processing,31,34 at the cost of signal extraction
+performance, since the array weights are not optimum for all
+frequencies but only for the reference frequency k0 .
+B. Cross-correlation analysis
+
+Having extracted all signals of interest, the TDOAs of
+the reflected signals relative to the direct signal can be estimated using cross-correlation analysis, as indicated in
+Fig. 3. In this step, for each source position j ¼ 1; …; J, the
+cross-correlations (CCs) between the time-domain reference beamformer output signal uXj; 0 and all other beamformer outputs uX^ j; i are estimated. The reference signal uXj; 0
+is extracted by steering the beamformer to the DOA of the
+direct signal, Xj; 0 , which is assumed to be known a priori,
+or alternatively the highest peak in the acoustic image is
+selected as such. For all source positions j ¼ 1; …; J and
+2778
+
+J. Acoust. Soc. Am., Vol. 134, No. 4, October 2013
+
+CuXj; 0 ; uX^ ½kj; i  ¼
+j; i
+
+Kkj; i 1
+1 X
+uXj; 0 ½j þ kj; i uX^ j; i ½j;
+K j¼0
+
+(14)
+
+where K is the length of extracted signals, kj; i is the lag
+index, and j is the sample index. By searching for maxima
+in cross-correlation functions (CCFs) CuXj; 0 ; uX^ , the TDOAs
+j; i
+of first-order reflections can be estimated according to
+^s j; i ¼ kj; i; peak =fs , where fs is the sampling frequency and
+kj; i; peak is the time lag of the highest positive peak in the
+cross-correlation function excluding kj; i ¼ 0 and neighboring lags which correspond to the direct signal, i.e.,
+kj; i; peak 62 ½bj; i ; bj; i ], where bj; i > 0 is a time lag threshold.
+Setting bj; i is necessary because the direct signal, which typically has significantly more energy than the reflected signal,
+may still be present in the output of the beamformer that is
+steered toward the reflection, i.e., the beamformer may not
+be able to suppress the direct signal completely and a significant peak may appear in the cross-correlation around the zeroth lag.
+The value of bj; i can be determined adaptively by using
+directly the corresponding cross-correlation function
+CuXj; 0 ; uX^ . First, an envelope of the cross-correlation funcj; i
+tion is computed by linearly interpolating the positive maxima of the CCF. Finally, the first minimum of the envelope
+after the zeroth lag is chosen as bj; i . Note that the peak corresponding to the reflected signal in the cross-correlation function always has a positive lag value since the reflection has a
+longer propagation path than the direct signal.
+VI. BOUNDARY PARAMETER ESTIMATION
+
+In order to infer the geometry of a room, the parameters
+defining the room boundary planes need to be estimated.
+Assuming the distance to the source dj; 0 and DOA of the
+source Xj; 0 relative to the center of the microphone array are
+known, the DOA and TDOA estimates of room reflections
+can jointly be used to calculate the positions of image sources, and hence also the boundary plane parameters, by using
+simple trigonometric relations. As mentioned earlier, specular wave reflection is assumed, where the angle of incidence
+is equal to the angle of wave reflection. In addition, in order
+to increase the robustness of the proposed technique, the use
+of multiple spatially distributed source positions, with large
+displacements, is recommended. For a room with a large
+number of boundaries this becomes a necessity, i.e., the
+number of source positions must increase with the number of
+actual boundaries. A method for plane categorization is also
+presented below.
+A. Plane parameter estimation
+
+For room geometry inference, the boundary plane parameters are sought for. In general, any plane Pðb; nÞ is
+fully defined by a point that is lying on the plane b 2 R3 and
+a vector normal to that plane n 2 R3 . Therefore, the aim
+here is to find b and n. For this purpose, first the position of
+Mabande et al.: Room geometry inference
+
+01 September 2026 16:58:16
+
+Wðkq Þ
+
+all localized reflections i ¼ 1; …; I, the crosscorrelations
+are estimated by
+
+the image source, the position of the boundary point, and
+finally the vector normal to the plane are estimated.
+The location of the center of the microphone array is
+defined as ð0; 0; 0Þ in a Cartesian coordinate system and
+transforming the known source position ðdj; 0 ; hj; 0 ; /j; 0 Þ
+from the spherical coordinate system to the Cartesian coordinate system yields another point aj; 0 2 R3 in the Cartesian
+coordinate system. For a given sound source position aj; 0 ,
+and each localized reflection i ¼ 1; …; I, the estimated DOA
+^ Þ and TDOA ^s j; i information is first used to estið^
+h j; i ; /
+j; i
+mate the position of the corresponding image source
+a^j; i 2 R3 . The image source is located at a distance dj; i; is
+with a DOA Xj; i (see Fig. 4), where dj; i; is is estimated by
+d^j; i; is ¼ c^s j; i þ dj; 0 ;
+
+(15)
+
+where dj; 0 is the direct-path distance from the source to the
+array center. Combining this distance d^j; i; is with the DOA
+^ Þ, an image source location in the spheriestimate ð^
+h j; i ; /
+j; i
+^ Þ, which
+cal coordinate system is obtained ðd^j; i; is ; ^h j; i ; /
+j; i
+after transformation to the Cartesian coordinate system is
+denoted as a^j; i .
+^ j; i is then comA vector normal to the boundary plane n
+puted as
+^ j; i ¼
+n
+
+aj; 0  a^j; i
+:
+kaj; 0  a^j; i k
+
+(16)
+
+d^j; i; rp ¼
+
+2
+dj;2 0  d^j; i; is
+
+2½dj; 0 cosðHr Þ  d^j; i; is 
+
+;
+
+(17)
+
+where Hr is the angular distance between two unit vectors
+pointing to the DOA of the direct signal impinging from
+
+B. Plane categorization
+
+When a measurement is taken for one source position
+only, a maximum of one plane estimate per boundary can be
+found if it is assumed that only first-order reflections are
+observable. However, in practice, several measurements for
+different source positions j ¼ 1; …; J are required to reliably
+infer all boundaries of an enclosure, which in turn results in
+several plane estimates that correspond to the same boundary. Therefore, it is necessary to cluster the plane parameters
+that approximate the same boundary, which is achieved here
+using a plane categorization procedure.
+This plane categorization procedure is based on comparing the unit normals of all estimated planes [i.e., for all ðj; iÞ
+pairs] using the dot product metric G defined as
+^ Tj; i  n
+^ j0 ; i0 ;
+Gðj; iÞ;ðj0 ; i0 Þ ¼ n
+
+so that G 2 ½1; 1 is the cosine of the angle between the
+^ j; i is the normal of the plane estinormals of the planes, and n
+^ j0 ; i0 is
+mated using source position j and reflection i, while n
+the normal of the plane for source position j0 and reflection
+i0 . If G is close to one, the angle between the normals of
+these two planes is very small, i.e., the normal vectors point
+nearly to the same direction. Lower values represent a larger
+angular deviation between the plane normals.
+As a first step in plane categorization, the dot product is
+calculated between all pairs of estimated plane normal vectors, which results in a square and symmetric L  L correlation matrix G
+G ¼ ðg1 ; g2 ; …; gL Þ ¼ ðgl Þl2f1…Lg ;
+
+FIG. 4. Plane parameter estimation.
+J. Acoust. Soc. Am., Vol. 134, No. 4, October 2013
+
+(18)
+
+(19)
+
+where gl denotes the lth column vector with elements given
+as Gl; l0 from (18), l0 ¼ 1; …; L, l ¼ 1; …; L, and L is the
+total number of ðj; iÞ pairs. In the special case when the
+number of localized reflections I is the same for all J source
+positions, then L ¼ IJ.
+Second, the estimated planes corresponding to the same
+boundary are sought. For that purpose, a binary masking of
+all dot products Gl; l0 is performed such that the new L  L
+~ is obtained, with its elements given by
+matrix G
+Mabande et al.: Room geometry inference
+
+2779
+
+01 September 2026 16:58:16
+
+^ j; i , i.e.,
+Finally, the position of the observed boundary point b
+the point of reflection (see Fig. 4), is found by transforming
+^ Þ to Cartesian coordinates, where
+h j; i ; /
+the point ðd^j; i; rp ; ^
+j; i
+^
+d j; i; rp is the distance from the microphone array to the reflection point. d^j; i; rp can be estimated by solving the following
+trigonometric equation19
+
+ðhj; 0 ; /j; 0 Þ and the DOA of the reflection impinging from
+^ Þ, respectively.
+ð^h j; i ; /
+j; i
+For a given source position, this procedure is repeated
+for each reflection i ¼ 1; …; I, thus allowing to find a set of
+I boundary plane estimates, which correspond to the number
+of first-order reflections. Theoretically, all the enclosure
+boundaries can be obtained from one measurement if accurate reflection DOA and TDOA information is obtained for
+all boundaries. However, in practice, this is typically not the
+case due to the influence of the directivity of the source and
+the array, low values of the reflection coefficients, and the
+presence of background noise. Therefore, when only one
+array is available for measurements, several source positions
+should typically be used, J > 1, to allow for a robust 3D geometry inference (see results with respect to different number of source positions presented in Sec. VII C).
+
+G~ l; l0 ¼
+
+
+
+1
+0
+
+if
+if
+
+Gl; l0 > c
+Gl; l0  c;
+
+(20)
+
+where c is a threshold that is chosen close to unity. This
+means the masked dot product is set to unity if given two
+planes are considered estimates of the same boundary, while
+dot products for all other planes (that belong to different
+boundaries) are set to zero.
+Finally, in order to group the estimated planes into sets,
+where each plane in the set is an estimate of the same room
+~ that fulfill
+boundary, all columns gl0 from G
+9l 2 f1; :::; l0  1g : gl0 Ɐ gl
+
+(21)
+
+are removed, where Ɐ is a component-wise inequality (i.e.,
+in the sense of a partially ordered set, Ref. 35). As a result of
+~
+such grouping, each column of the resulting matrix G
+defines a set of planes that estimate the same boundary (for
+examples, see Sec. VII).
+C. Room geometry inference
+
+^ i  bÞ
+ ¼ 0g
+^ i 2 R3 j n
+ T ðb
+P ¼ fb
+
+(22)
+
+is the least-squares best-fit plane with respect to the vectors
+^1; b
+^ 2 ; …; b
+^ K , where b
+ is the approximated boundary point,
+b
+the position of which can be calculated from an arithmetic
+mean as
+R
+X
+¼1
+^i:
+b
+b
+(23)
+R i¼1
+It can be shown20 that the solution to the above problem
+can be found as a normalized eigenvector of the smallest
+eigenvalue of the covariance matrix H 2 R33 with its elements given by
+HðtÞ ¼
+
+R 
+ ðÞ
+
+1X
+ ðtÞ b
+ ðÞ ;
+^ ðtÞ  b
+^ b
+b
+i
+i
+R i¼1
+
+J. Acoust. Soc. Am., Vol. 134, No. 4, October 2013
+
+VII. EXPERIMENTAL RESULTS
+A. Evaluation measures
+
+For comparison of estimated and “ground truth”
+boundary parameters, where the “ground truth” plane
+^ ðb;
+^ n
+^ Þ are both defined
+Pðb; nÞ and the estimated plane P
+by the normal vector and the boundary point, the following
+measures are applied: Since any plane is fully defined by
+the perpendicular distance from the plane to the origin of
+the coordinate system and a normal vector, a combination
+of measures for these two plane parameters can be used to
+unambiguously compare the positions of planes. The first
+metric is defined as the difference DP; P^ ¼ DP  DP^
+between the distance DP of the “ground truth” plane P to
+^ to
+the origin and the distance DP^ of the estimated plane P
+the origin in centimeters, while the second metric measures
+the angle between both planes and is defined as the dot
+product of their normals, i.e.,
+^ Þ:
+Hn; n^ ¼ arccosðnT  n
+
+(25)
+
+Assuming a room with B boundaries, the average distance and orientation deviations for all estimated boundaries
+are given by
+
+(24)
+
+where the row and column indices are t ¼ 1; 2; 3 and
+ n
+ Þ is
+ ¼ 1; 2; 3. Thus finally the boundary plane Pðb;
+obtained as a least-squares approximation to R boundary
+points.
+2780
+
+For rooms that have boundaries with typical values for
+the reflection coefficients, the number of planes estimated
+according to Secs. VI A–C does not exceed the number of
+actual boundaries. However, if many room boundaries have
+very high reflection coefficient values, such as is the case for
+walls made of glass, there might be many high peaks in the
+acoustic image, some of which corresponding to higherorder reflections. This in turn can lead to the number of estimated planes being greater than the number of actual boundaries (whose number is assumed to be known).
+This problem may be remedied by an additional, final
+postprocessing step. If the number of estimated boundary
+planes is greater than the number of actual boundaries, the
+normals of all the estimated planes are compared and planes
+with similar orientation are grouped together. From each
+group, a plane which was estimated using the largest number
+of boundary points R is selected as a boundary estimate, i.e.,
+all other planes are discarded. Here it is assumed that the
+probability that plane estimates due to higher-order reflections (the few which have sufficient energy to be accurately
+localized and extracted) for different source positions coincide in orientation is low, whereas plane estimates for firstorder reflections from the same wall do coincide. As an outlook, the classification of the reflection order, e.g., as
+described in Ref. 36, could also be incorporated to discard
+planes due to higher-order reflections.
+
+B
+1X
+jDP v  DP^ v j;
+D P; P^ ¼
+B v¼1
+
+(26)
+
+B
+X
+ n; n^ ¼ 1
+Hn ; n^ ;
+H
+B v¼1 v v
+
+(27)
+
+Mabande et al.: Room geometry inference
+
+01 September 2026 16:58:16
+
+Having identified the number of boundaries and having
+assigned each estimated plane to the corresponding boundary, the inference of boundary parameters can be performed.
+In this last step, geometrical inference is performed either by
+taking the plane parameters directly if only a single plane is
+assigned to the given boundary or by calculating the boundary plane as a least-squares approximation for the estimated
+positions of the boundary points that correspond to the same
+boundary (if the group consists of several plane estimates).
+The resulting least-squares problem can be formulated
+as follows. Let us first define an estimated boundary point
+^ 2 R3 as a column vector ½b^ð1Þ ; b^ð2Þ ; b^ð3Þ T , and consider
+b
+R > 1 boundary points that belong to the same boundary,
+^ 2 ; …; b
+^ R 2 R3 . The goal is to determine the
+^1; b
+given as b
+ 2 R3 such that
+normal vector n
+
+D. Post-processing for highly reflective boundaries
+
+respectively. Another informative measure about the similarity of both room geometries is the relative volume error that is
+given by CV^ ; V ¼ 100ð1  V^ =VÞ½%, where V^ and V are the
+estimated and “ground truth” room volumes, respectively.
+B. Experimental setup
+
+R
+
+R
+
+C. Results for simulated room
+
+To evaluate the performance of the inference method for
+different parameter settings, a simulation software based on
+the image-source method27 was applied to generate the microphone signals. First the microphone signals for four source
+
+FIG. 5. Experimental setup.
+J. Acoust. Soc. Am., Vol. 134, No. 4, October 2013
+
+Mabande et al.: Room geometry inference
+
+2781
+
+01 September 2026 16:58:16
+
+To verify the effectiveness and quantify the accuracy of
+the proposed room inference method, its performance with
+both simulations and real measurements is evaluated. Both
+stationary white Gaussian noise and speech were used as
+source signals in the experiments. In order to objectively
+compare the accuracy of the inference method in different
+scenarios, the results for the stationary white Gaussian noise
+(WGN) are shown for most cases. The use of a WGN as a
+source signal ensured that room modes across all frequencies
+were sufficiently excited. Note that in experiments with
+speech signals, the DOAs are only estimated during periods
+of speech activity, as estimation during speech-absence periods would degrade the estimation performance. For voice activity detection, a simple wideband energy-based voice
+activity detector (VAD) is used, which operates as an energy
+detector applied to a reference microphone signal, see
+Ref. 37 for an overview of various VAD methods.
+The microphone signals, with a duration of 5 s, were
+simulated or recorded, depending on the experiment, at a
+sampling rate of 44.1 kHz and then processed offline. Q ¼
+1024 equally spaced frequency bins, each with a width of
+approximately 43 Hz, were used. Note that there are no
+restrictions on the order of reflections in simulated RIRs, and
+the RIR filter length was set such that it corresponded to the
+reverberation time T60 .22 Unless stated otherwise, a frequency smoothing range of 1.3–4.5 kHz (i.e., ka 2 ½1; 3:5)
+was used and the focusing (reference) frequency was set to
+4.5 kHz. This relatively narrow frequency smoothing range
+was chosen for good performance in terms of spatial selectivity of the beamformers on the one hand and to avoid poor
+
+SNR and spatial aliasing issues on the other hand,17 thus
+allowing for accurate DOA and TDOA estimation. The
+WNG was set to f ¼ 1:148, corresponding to 0.6 dB, in order
+to ensure the robustness of the EB-RMVDR beamformer.
+The angular difference between the look directions of two
+neighboring beams for DOA estimation was set to 18 both
+along azimuth and elevation, corresponding to an angular resolution of 18 for DOA estimation.
+The experimental setup is depicted in Fig. 5. The room
+represents a real shoe box-like lecture room, with a reverberation time T60 of about 900 ms, which has been used for real
+measurements, but its dimensions were also taken for simulations where the pillars have been neglected. The “ground
+truth” planes P 5 and P 6 correspond to the floor and ceiling,
+respectively, and the height of the room is 3.03 m. Note that
+the inference results for the real room were compared to the
+“ground truth” obtained through manual measurements of
+the respective distances, and thus can be considered accurate
+up to manual measurement errors.
+Unless stated otherwise, the spherical array used for the
+measurements is the EigenmikeV,21 which has a radius of
+0.042 m and consists of 32 well-calibrated high-quality
+microphones placed on a rigid sphere. It can decompose the
+sound field for up to fourth-order spherical harmonics
+ðN ¼ 4Þ. The source signal was reproduced via a loudspeaker with a diaphragm diameter of 0.08 m. On the other
+hand, in room-acoustic simulations, an omnidirectional
+source was simulated, and microphone arrays of exactly the
+same geometry as the EigenmikeV was used. Both open and
+rigid sphere arrays were simulated.
+
+positions were generated, according to the room setup depicted
+in Fig. 5. Unless stated otherwise, white Gaussian noise was
+used as a source signal in the presented experiments.
+1. DOA and TDOA estimation
+
+FIG. 6. (Color online) Simulations using a noise source with a loudspeaker
+at position ð3:44; 4:33; 1:44Þ; (a) Acoustic image with circles indicating the
+“ground truth” DOAs of five reflections; (b) Cross-correlation between the
+extracted direct signal and a reflection from the ceiling; (c) Zoomed-in
+cross-correlation.
+2782
+
+J. Acoust. Soc. Am., Vol. 134, No. 4, October 2013
+
+FIG. 7. (Color online) Simulations using a speech source with a loudspeaker
+at position ð3:44; 4:33; 1:44Þ; (a) Acoustic image with circles indicating the
+“ground truth” DOAs of five reflections; (b) Cross-correlation between the
+extracted direct signal and a reflection from the ceiling; (c) Zoomed-in
+cross-correlation.
+
+particular, the former typically cannot be completely suppressed, and it is pronounced around the zeroth lag. In order
+to find the parameter b (see Sec. V for explanation), the envelope of the cross-correlation is computed and the lag corresponding to the first minimum is chosen as b value. Figures
+6(c) and 7(c) show the zoomed-in cross-correlations around
+the zeroth time lag, the corresponding cross-correlation envelopes, and the location of the time lag thresholds for noise and
+speech sources are b1;2 ¼ 69 and b1;2 ¼ 68, respectively.
+Note that the peaks corresponding to the reflected signal,
+which are highlighted by the arrow in Figs. 6(b) and 7(b), are
+the highest in these examples and hence the parameter b has
+no effect on the results. However, this is not always the case,
+especially in real acoustic scenarios (see Sec. VII D) where
+the highest peak may be found around time lag zero due to
+imperfect original source suppression.
+An objective measure of the DOA accuracy, the angular
+deviation from the “ground truth,” Hdev , was computed as
+^
+Hdev ¼ arccos½cos hcos ^h þ sin hsin ^hcosð/  /Þ.
+Table I
+presents the “ground truth” and estimated DOAs and
+TDOAs for a noise and speech source positioned at
+ð3:44; 4:33; 1:44Þ. Note that the DOA estimates are
+arranged in order of decreasing estimated power from the
+acoustic maps. In general, good DOA estimates are obtained.
+However, the DOA deviation measure, Hdev , clearly shows
+that with decreasing peak power, the accuracy of the DOA
+estimates also degrades (see Ref. 17 for a comprehensive
+discussion on reflection DOA estimation). Although the
+evaluation in Ref. 17 was restricted to white Gaussian noise
+source signals, the majority of the results here show that
+there is no significant degradation in accuracy when using a
+speech source. The TDOA estimates for both noise and
+speech sources are very accurate, which confirms that the
+beamformer design presented in Sec. V A is well suited for
+correlated signal extraction.
+Mabande et al.: Room geometry inference
+
+01 September 2026 16:58:16
+
+For insight into the DOA estimation, exemplary acoustic
+images of a room for a noise source and a speech source
+positioned at ð3:44; 4:33; 1:44Þ are depicted in Figs. 6(a)
+and 7(a), respectively. For TDOA estimation, exemplary
+cross-correlations of extracted noise and speech source signals are shown in Figs. 6(b) and 7(b), respectively. An SNR
+of 30 dB (for a speech source, this is the SNR only during
+speech activity) and a reflection coefficient value of a ¼ 0:7
+(for all boundaries) were chosen.
+Out of all peaks found in the acoustic images, only those
+peaks were selected for further processing which exceeded
+the noise floor by . ¼ jminf10log10 ½Zðk0 ; XÞg=3 j dB (see
+Sec. IV B), i.e., only those peaks lying in the upper twothirds of the acoustic image power range. This value of .
+was found heuristically to be a good compromise as to allow
+accurate DOA estimates (and thus accurate room inference)
+and provide a sufficiently large number of estimated boundaries per measurement. For both noise and speech sources,
+five peaks were selected corresponding to five estimated
+reflection DOAs. The diamond and circles in Figs. 6(a) and
+7(a) highlight the locations of the “ground truth” direct-path
+and reflection DOAs, respectively. The estimated DOAs are
+used for steering the beamformers for signal extraction and
+subsequently for the image point estimation.
+Figures 6(b) and 7(b) depict the cross-correlations
+between the extracted direct signal and a reflected signal originating from the ceiling. It can be seen that the crosscorrelations have several distinct peaks that correspond to the
+TDOAs of the direct signal and early room reflections. In
+
+TABLE I. “Ground truth” and estimated DOAs, in degrees, TDOAs, in
+milliseconds, arranged in decreasing order of the output power in the acoustic image, for simulated room.
+DOAs
+X
+ð92; 0Þ
+ð135; 0Þ
+ð44; 0Þ
+ð91; 298Þ
+ð91; 71Þ
+ð90; 180Þ
+a
+
+TABLE II. Orientation deviations Hn; n^ , in degrees, and distance deviations
+DP; P^ , in centimeters, for different number of source positions in simulated
+room (SNR ¼ 30dB). Averages and relative volume errors are also
+provided.
+
+TDOAs
+J¼1
+
+^ na
+X
+
+^ sb
+X
+
+Hdevn
+
+Hdevs
+
+s
+
+^s n
+
+^s s
+
+ð91; 359Þ
+ð137; 0Þ
+ð41; 0Þ
+ð93; 295Þ
+ð95; 75Þ
+ð90; 186Þ
+
+ð91; 359Þ
+ð139; 0Þ
+ð39; 1Þ
+ð94; 297Þ
+ð105; 66Þ
+ð91; 184Þ
+
+1.4
+2.0
+3.0
+3.6
+5.7
+6.0
+
+1.4
+4.0
+5.0
+3.2
+14.8
+4.1
+
+3.6
+3.9
+9.8
+18.0
+24.4
+
+3.6
+3.9
+9.9
+18.0
+24.4
+
+3.6
+3.9
+9.9
+18.0
+24.4
+
+Subscript “n” denotes noise.
+Subscript “s” denotes speech.
+
+Next, the results for a varied number of source positions
+are presented in Fig. 8 and Table II. An SNR of 30 dB and a
+reflection coefficient a ¼ 0:7 (for all boundaries) were chosen. For illustration of the plane categorization presented in
+Sec. VI B, Fig. 8 depicts the results for J ¼ 4, where the 21
+
+J¼3
+
+J¼4
+
+Plane
+
+Hn; n^
+
+DP; P^
+
+Hn; n^
+
+DP; P^
+
+Hn; n^
+
+DP; P^
+
+Hn; n^
+
+DP; P^
+
+P1
+P2
+P3
+P4
+P5
+P6
+Ave.
+
+–
+4.6
+6.1
+3.9
+2.0
+2.5
+3.8
+
+–
+1.01
+11.33
+3.41
+4.81
+3.17
+4.75
+
+4.8
+2.9
+6.1
+2.7
+2.0
+2.6
+3.5
+
+8.18
+3.83
+11.33
+0.92
+4.81
+3.87
+5.49
+
+2.6
+2.9
+3.8
+1.6
+0.2
+0.1
+1.8
+
+0.87
+3.83
+7.79
+0.56
+0.20
+1.97
+2.54
+
+1.9
+2.7
+3.3
+1.6
+0.2
+0.2
+1.6
+
+0.93
+4.33
+1.33
+0.56
+0.16
+1.82
+1.52
+
+b
+
+2. Number of source positions
+
+J¼2
+
+CV^ ; V
+
+
+
+1:51%
+
+1:52%
+
+0:35%
+
+3. Signal-to-noise ratio
+
+FIG. 8. (Color online) Plane categorization results for J ¼ 4 and
+SNR ¼ 30 dB in simulated room; (a) Dot products between vectors normal
+to planes according to Gl; l0 (18); (b) Binary masking according to G~ l; l0 (20);
+(c) Assignment of planes to room boundaries according to (21).
+J. Acoust. Soc. Am., Vol. 134, No. 4, October 2013
+
+Room inference performance is also evaluated as a function of the signal-to-noise ratio (SNR). A fixed number of
+sources J ¼ 4 and the same reflection coefficient value of a ¼
+0:7 are used. Table III presents the inference results for different SNRs. For an SNR of 10 dB, five of the possible six room
+boundaries are estimated. Furthermore, one of the estimated
+boundaries deviates strongly from “ground truth.” Increasing
+the SNR to 20 dB and 30 dB, results in all boundaries being
+estimated successfully. The average distance and orientation
+deviations decrease with increasing SNR thus increasing the
+accuracy of volume estimates. The estimated volume for
+SNRs of 20 dB and 30 dB are 231:39 m3 and 228.53 m3,
+respectively. Figure 9 illustrates the reference and estimated
+room boundaries, with thick solid lines and thin dashed lines,
+respectively, for an SNR of 30 dB. As can be seen, the proposed method infers the geometry rather correctly, the largest
+Mabande et al.: Room geometry inference
+
+2783
+
+01 September 2026 16:58:16
+
+estimated planes are assigned to 6 boundaries, e.g., the four
+reflections assigned to boundary 5 in Fig. 8(c) are obtained
+from column 5 in Fig. 8(b), and columns 9, 10, and 19 are
+discarded [see (21)].
+When only one source position is used, at
+ð3:44; 4:33; 1:44Þ, five of the six possible room boundaries
+are estimated, i.e., it is not possible to estimate all walls, as
+shown in Table II. In this case, estimating the position of the
+boundary P 1 is extremely difficult as the angular distance
+between the reflection on the boundary and the direct path
+seen by the array is too small so that the spatial resolution of
+the beamformer does not suffice to discriminate them sufficiently well. The average distance and orientation deviations,
+according to Eqs. (26) and (27), respectively, are also shown
+in Table II. Except for J ¼ 1, where one boundary is not
+found, the averaged deviations become smaller with an
+increasing number of source positions. Additionally, the
+inferred geometry can be used to calculate the room volume
+and compare it with the “ground truth” volume of 229:32 m3
+of the simulated room (disregarding the pillars). The estimated
+volumes for J ¼ 2, J ¼ 3, and J ¼ 4 are 225:85 m3 ,
+225:83 m3 , and 228:53 m3 , respectively. The accuracy in volume estimation increases with the number of sources. The corresponding relative volume errors are presented in Table II.
+
+TABLE IV. Orientation and distance deviations, Hn; n^ and Dp;^p , for different reflection coefficients in simulated room (J ¼ 4 and SNR ¼ 30 dB).
+a ¼ 0:5
+
+a ¼ 0:9
+
+Hn; n^
+
+Dp;^p
+
+Hn; n^
+
+Dp;^p
+
+Hn; n^
+
+DP; P^
+
+Hn; n^
+
+Dp;^p
+
+P1
+P2
+P3
+P4
+P5
+P6
+Ave.
+
+1.0
+1.3
+3.2
+8.9
+0.6
+0.6
+2.6
+
+0.06
+0.20
+0.09
+1.33
+0.90
+1.07
+0.61
+
+1.2
+0.6
+2.9
+4.3
+0.5
+0.7
+1.7
+
+0.11
+0.69
+0.44
+0.75
+0.73
+1.02
+0.62
+
+3.0
+3.2
+4.9
+1.6
+0.4
+0.1
+2.2
+
+0.88
+4.56
+2.61
+0.30
+0.45
+1.71
+1.75
+
+4.4
+6.7
+11.0
+11.9
+0.2
+1.0
+5.8
+
+0.88
+1.13
+2.15
+8.46
+0.09
+0.12
+2.14
+
+1:20%
+
+0:81%
+
+0:38%
+
+2:94%
+
+0:7 are shown in Table III), indicating that all room boundaries are estimated successfully, as confirmed by the average
+orientation and distance deviations. For a very high reflection
+coefficient value of a ¼ 0:9, which corresponds to highly reflective surfaces such as wood paneling, the average deviations start to increase. This is because very high reflection
+coefficients result in many spurious planes resulting from
+higher-order reflections. Although postprocessing (see Sec.
+VI D) does eliminate the majority of the planes resulting from
+higher-order reflections, one could discard the remaining
+planes by using the method proposed in Ref. 36.
+5. Large array
+
+The performance of the proposed technique was also
+evaluated for different reflection coefficient values. In all simulations, the reflection coefficient value was kept constant for
+all boundaries and an SNR of 30 dB was used for four source
+positions. The results for the reflection coefficient values of
+a ¼ 0:5; 0:6; 0:8; 0:9 are shown in Table IV (results for a ¼
+
+The results shown so far indicate that the proposed
+method leads to a successful inference of the room geometry
+with relatively high accuracy. It should also be noted that the
+errors in boundary plane estimation are mainly due to the
+errors in the DOA estimation, which substantially influence
+the orientation of the boundaries and may cause a disproportionate error in DP; P^ . Since the presented DOA estimation is
+based on optimum array processing, a significant improvement can be expected when increasing the size of the array.
+To this end, the proposed method was evaluated with a simulated spherical array consisting of 240 microphones with a
+radius of 0.111 m.38 A frequency smoothing range of 1:5 
+4:9 kHz (i.e., ka 2 ½3; 10) was used and the focusing frequency was set to 4:9 kHz (i.e., k0 a ¼ 10). The order was set
+to N ¼ 10. Table V depicts the results obtained using the
+
+TABLE III. Orientation and distance deviations, Hn; n^ and DP; P^ , for different SNRs in simulated room (J ¼ 4 and a ¼ 0:7).
+
+TABLE V. Orientation and distance deviations, Hn; n^ and DP; P^ , for different arrays in simulated room.
+
+4. Reflection coefficients
+
+SNR ¼ 10 dB
+
+SNR ¼ 20 dB
+
+SNR ¼ 30 dB
+
+Small array
+
+Large array
+
+Plane
+
+Hn; n^
+
+Dp;^p
+
+Hn; n^
+
+Dp;^p
+
+Hn; n^
+
+Dp;^p
+
+Plane
+
+Hn; n^
+
+DP; P^
+
+Hn; n^
+
+DP; P^
+
+P1
+P2
+P3
+P4
+P5
+P6
+Ave.
+
+–
+11.1
+3.7
+14.1
+0.7
+0.8
+6.1
+
+–
+15.33
+5.36
+3.48
+1.27
+0.10
+5.11
+
+2.5
+2.7
+0.4
+5.7
+0.3
+0.2
+1.9
+
+0.87
+6.73
+2.84
+0.79
+0.43
+1.80
+2.24
+
+1.9
+2.7
+3.3
+1.6
+0.2
+0.2
+1.6
+
+0.93
+4.33
+1.33
+0.56
+0.16
+1.82
+1.52
+
+P1
+P2
+P3
+P4
+P5
+P6
+Ave.
+
+1.9
+2.7
+3.3
+1.6
+0.2
+0.32
+1.6
+
+0.93
+4.33
+1.33
+0.56
+0.16
+1.82
+1.52
+
+0.5
+0.6
+0.4
+0.4
+0.9
+0.7
+0.6
+
+0.37
+1.62
+2.84
+1.68
+0
+1.77
+1.38
+
+CV^ ; V
+
+2784
+
+–
+
+0:90%
+
+0:35%
+
+J. Acoust. Soc. Am., Vol. 134, No. 4, October 2013
+
+CV^ ; V
+
+0:35%
+
+1:43%
+
+Mabande et al.: Room geometry inference
+
+01 September 2026 16:58:16
+
+deviations appearing at the room corners, which is caused by
+tilting of the estimated planes relative to the reflection points
+that are located close to the boundary centers. This could be
+further reduced by taking more measurements.
+Although the detailed results are not shown here, the average deviations for the case without any noise, i.e.,
+ n; n^ Þ ¼ ð2:20; 3:678Þ. In general, an
+SNR ¼ 1, are ðD P; P^ ; H
+increase in the SNR leads to a larger number of estimated
+boundaries per source position thus leading to good estimates. It should be noted that an increase in SNR can also
+lead to the estimation of spurious planes resulting from
+higher-order reflections, which in turn can result in the number of estimated boundary planes being greater than the
+number of actual boundaries. However, by applying the
+post-processing presented in Sec. VI, the estimation of all
+six room boundaries was successfully performed.
+
+a ¼ 0:8
+
+Plane
+
+CV^ ; V
+
+FIG. 9. (Color online) Reference (solid lines) and estimated (dashed lines)
+room boundaries for simulated room with J ¼ 4 and an SNR of 30 dB using
+noise.
+
+a ¼ 0:6
+
+TABLE VI. Orientation and distance deviations, Hn; n^ and DP; P^ , for noise
+and speech sources in simulated room (J ¼ 4 and SNR ¼ 30 dB).
+Noise
+Plane
+
+Hn; n^
+
+DP; P^
+
+Hn; n^
+
+DP; P^
+
+P1
+P2
+P3
+P4
+P5
+P6
+Ave.
+
+1.9
+2.7
+3.3
+1.6
+0.2
+0.2
+1.6
+
+0.93
+4.33
+1.33
+0.56
+0.16
+1.82
+1.52
+
+3.2
+2.0
+3.0
+4.5
+1.0
+0.6
+2.4
+
+1.11
+0.79
+2.16
+0.97
+1.03
+0.41
+1.08
+
+CV^ ; V
+
+FIG. 10. (Color online) Reference (solid lines) and estimated (dashed lines) room
+boundaries for simulated room with J ¼ 4 and an SNR of 30 dB using a large array.
+
+6. Speech sources
+
+Table VI presents the results obtained using a male
+speech signal as a source with SNR ¼ 30 dB and a ¼ 0:7; the
+results for the noise are repeated here for the convenience of
+
+FIG. 11. (Color online) Reference (solid lines) and estimated (dashed lines)
+room boundaries for simulated room with J ¼ 4 and an SNR of 30 dB using
+speech.
+J. Acoust. Soc. Am., Vol. 134, No. 4, October 2013
+
+0:35%
+
+1:36%
+
+comparison. As can be observed, the inference method works
+successfully with speech. There is a slight degradation in the
+ n; n^ Þ ¼ ð1:08; 2:48Þ, in
+DOA estimation accuracy, ðD P; P^ ; H
+comparison to the results for the white Gaussian noise.
+However, an accurate inference of the boundary planes is still
+obtained, as depicted in Fig. 11. The estimated volume is
+232:43 m3 (the reference volume is 229:32 m3 ), which yields
+a relative volume error of only 1:36%.
+7. Rigid sphere
+
+Table VII presents the results obtained when using a
+rigid sphere in the simulation.39 The source is a noise signal
+with SNR ¼ 30 dB and a ¼ 0:7; the results for the open
+sphere are repeated here for the convenience of comparison.
+As expected, the inference method works successfully with
+rigid spheres as well. An accurate inference of the boundary
+planes is still obtained, as depicted in Fig. 12. The estimated
+volume is 231:08 m3 (the reference volume is 229:32 m3 ),
+which yields a relative volume error of only 0:77%.
+D. Experiments in a real room
+
+In this section, the proposed method is evaluated via
+measurements in a real mid-sized lecture room as depicted
+in Fig. 5. An SNR of 12 dB was measured at the
+
+FIG. 12. (Color online) Reference (solid lines) and estimated (dashed lines)
+room boundaries for simulated room with J ¼ 4 and an SNR of 30dB using
+a rigid sphere.
+Mabande et al.: Room geometry inference
+
+2785
+
+01 September 2026 16:58:16
+
+same room setup as before, with SNR ¼ 30 dB and a ¼ 0:7;
+the results for the 32-element array are repeated here for the
+convenience of comparison. As expected, there is a significant improvement in the DOA estimation accuracy,
+ n; n^ Þ ¼ ð1:5; 0:58Þ, which in turn leads to a very
+ðD P; P^ ; H
+accurate inference of the boundary planes, as depicted in
+Fig. 10. In this case the estimated volume is 232:25 m3 (the
+reference volume is 229:32 m3 ), which yields a relative volume error of only 1:43% but is larger than 0:35% obtained
+using the small array where the larger individual errors of
+the boundary estimates average out. In Fig. 10, the reference
+and estimated room boundaries, with thick solid lines and
+thin dashed lines, respectively, are depicted. The room geometry is estimated very accurately in this case.
+
+Speech
+
+TABLE VII. Orientation and distance deviations, Hn; n^ and DP; P^ , for open
+and rigid sphere for noise sources in simulated room (J ¼ 4 and SNR ¼
+30 dB).
+Open
+
+Rigid
+
+Plane
+
+Hn; n^
+
+DP; P^
+
+Hn; n^
+
+DP; P^
+
+P1
+P2
+P3
+P4
+P5
+P6
+Ave.
+
+1.9
+2.7
+3.3
+1.6
+0.2
+0.2
+1.6
+
+0.93
+4.33
+1.33
+0.56
+0.16
+1.82
+1.52
+
+2.7
+2.9
+2.6
+2.8
+1.0
+0.6
+2.1
+
+1.16
+1.70
+0.34
+0.92
+1.01
+1.31
+1.07
+
+CV^ ; V
+
+0:35%
+
+0:77%
+
+FIG. 14. (Color online) Measurements of speech in real room with a loudspeaker at position ð3:44; 4:33; 1:44Þ; (a) Acoustic image with circles indicating the “ground truth” DOAs of three reflections; (b) Cross-correlation
+between the extracted direct signal and a reflection from the opposite wall.
+(c) Zoomed-in cross-correlation.
+
+the direct and reflected signals. In order to set the parameter
+b, the envelope of the cross-correlation is computed and the
+lag corresponding to the first minimum is used, which yields
+b1;2 ¼ 29, as depicted in Fig. 13(c), where the zoomed-in
+cross-correlation, corresponding envelope, and location of
+time lag threshold are shown. In this case the application of
+the threshold is crucial as the highest peak in the crosscorrelation occurs around the zeroth time lag, which is due
+to the relatively high residual of the direct signal in the
+extracted reflection. The peak corresponding to the reflection
+is highlighted by the arrow in Fig. 13(b). Figure 14(b) clearly
+shows the challenge encountered when computing the crosscorrelations for a speech signal, especially at such low
+SNRs. Although the highest peak does correspond to the correct TDOA and the direct signal is attenuated significantly,
+as confirmed by the absence of a significant peak at the zeroth lag, another strong peak is also present which corresponds to the ceiling reflection. This problem may be
+alleviated by using a larger array.
+Table VIII presents the “ground truth” and estimated
+DOAs and TDOAs for a noise and speech source positioned
+at ð3:44; 4:33; 1:44Þ. In this case, four DOAs and three
+
+TABLE VIII. “Ground truth” and estimated DOAs, in degrees, and TDOAs,
+in milliseconds, for measurements in a real room.
+DOAs
+X
+
+FIG. 13. (Color online) Measurements of noise in real room with a loudspeaker at position ð3:44; 4:33; 1:44Þ; (a) Acoustic image with circles indicating the “ground truth” DOAs of three reflections; (b) Cross-correlation
+between the extracted direct signal and a reflection from the ceiling. (c)
+Zoomed-in cross-correlation.
+2786
+
+J. Acoust. Soc. Am., Vol. 134, No. 4, October 2013
+
+^n
+X
+
+TDOAs
+
+^s
+X
+
+ð92; 0Þ
+ð92; 359Þ ð92; 359Þ
+ð90; 180Þ ð93; 184Þ ð90; 183Þ
+ð135; 0Þ
+ð136; 0Þ ð137; 359Þ
+ð44; 0Þ
+ð41; 0Þ
+ð46; 1Þ
+a
+
+^s n
+
+a
+^s das
+s
+
+Hdevn
+
+Hdevs
+
+s
+
+1.0
+5.0
+1.0
+3.0
+
+1.0
+3.0
+2.1
+2.1
+
+
+
+
+
+24.4 24.4 24.4 24.4
+3.6 3.6 3.6 3.6
+3.9 3.8 3.8 0.9
+
+^s s
+
+Superscript “das” denotes the EB-DAS Beamformer
+Mabande et al.: Room geometry inference
+
+01 September 2026 16:58:16
+
+microphones and the atmospheric temperature was 22.8 C
+during the measurements. The same algorithmic parameters
+as presented in Sec. VII B were used here. Similar to the simulation results, exemplary acoustic images and crosscorrelations for a noise and speech source signal played back
+via a loudspeaker positioned at ð3:44; 4:33; 1:44Þ are
+depicted in Figs. 13 and 14, respectively, to be compared
+with Figs. 6 and 7, respectively. Several distinct peaks in the
+acoustic images were found, from which four peaks (denoted
+with a diamond and three circles) were selected as
+reliable DOA estimates, representing peaks that are at least
+. ¼ jminf10log10 ½Zðk0 ; XÞg=3jdB (same as for the simulations) above the noise floor.
+Figures 13(b) and 14(b) depict the cross-correlation
+between the extracted direct noise and speech signal, respectively, and a reflected signal originating from the opposite
+wall ð938; 1848Þ. As before, for a noise source the crosscorrelation exhibits several distinct peaks corresponding to
+
+TABLE IX. Orientation and distance deviations, Hn; n^ and DP; P^ , for measurements using noise and speech sources in real room (J ¼ 4 and SNR ¼
+15 dB).
+Noise
+
+Speech
+
+Plane
+
+Hn; n^
+
+DP; P^
+
+Hn; n^
+
+DP; P^
+
+P1
+P2
+P3
+P4
+P5
+P6
+Ave.
+
+2.6
+3.6
+2.2
+3.5
+1.3
+1.4
+2.4
+
+0.79
+0.56
+2.09
+0.33
+0.28
+2.20
+1.04
+
+2.5
+2.2
+2.9
+5.1
+3.2
+2.8
+3.2
+
+0.06
+0.48
+2.52
+0.10
+3.71
+1.80
+1.44
+
+CV^ ; V
+
+0:23%
+
+0:21%
+
+FIG. 15. (Color online) Reference (solid lines) and estimated (dashed lines)
+room boundaries for real room with J ¼ 4 and an SNR of 12 dB using noise.
+J. Acoust. Soc. Am., Vol. 134, No. 4, October 2013
+
+FIG. 16. (Color online) Reference (solid lines) and estimated (dashed lines)
+room boundaries for real room with J ¼ 4 and an SNR of 12 dB using speech.
+
+estimate for measured signals is in general comparable to
+that obtained using simulated signals. Similarly to the simulation results, the largest deviations are mainly pronounced
+at the boundary corners and edges. The reference volume
+amounts to 229:32 m3 , and the estimated volume is
+229:85 m3 and 229:80 m3 for noise and speech, respectively.
+Thus the corresponding relative volume errors for noise and
+speech are only 0:23% and 0:21%, respectively.
+VIII. CONCLUSIONS
+
+A novel beamformer-based technique for room geometry inference has been proposed, which is based on the playback and capture of acoustic signals in an acoustic enclosure
+using a compact off-the-shelf microphone array. The proposed technique has a decisive advantage over conventional
+inference methods found in the literature in that it does not
+involve measuring RIRs, and the only a priori information
+required being the relative position of the sources to the
+array and the array geometry.
+For 3D room inference, beamformer-based processing
+using a spherical microphone array in the EB domain is
+applied. Acoustic images of rooms obtained from steered
+EB-RMVDR beamformers with frequency smoothing are
+successfully applied to accurately estimate the DOAs of
+reflected signals. Cross-correlation analysis of reflection signals extracted by frequency-dependent EB-RMVDR beamformers with frequency smoothing and steered to the
+estimated DOAs facilitate the estimation of TDOAs. Finally,
+the obtained DOA and TDOA information is combined to
+estimate boundary plane parameters using geometric relations. For robust performance in real acoustic scenarios, the
+use of multiple source positions is proposed and evaluated,
+and a suitable technique for combining and postprocessing
+the results of such measurements (referred to as plane categorization) has been verified.
+Experimental results of both simulations and real measurements, using both noise and speech source signals, reflection coefficient values, and input SNRs, confirm the high
+accuracy of the presented method. The positions of the walls,
+Mabande et al.: Room geometry inference
+
+2787
+
+01 September 2026 16:58:16
+
+TDOAs are compared, i.e., three reflections can be localized.
+Similarly to the analogous simulation results, the DOA deviation increases with decreasing peak power while the TDOA
+estimates remain very accurate. Additionally, the TDOAs
+obtained when using an eigenbeam delay-and-sum17 (EBDAS) beamformer for signal extraction are shown. Although
+the first two TDOAs are accurately estimated, the last
+TDOA, which is estimated from the reflection with the lowest power, is wrong. Such TDOA errors lead to erroneous
+room inference results. This confirms the superiority of the
+EB-RMVDR over the EB-DAS, for TDOA estimation, in
+adverse acoustic conditions. Table IX presents the overall
+results of the real room inference using J ¼ 4 noise and
+speech sources, which indicate that all room boundaries are
+inferred successfully. Small average deviations of ðD P; P^ ;
+ n; n^ Þ ¼ ð1:04; 2:48 Þ and ðD ^ ; H
+ n; n^ Þ¼ð1:44; 3:28 Þ, respecH
+P; P
+tively, clearly confirm the applicability of the proposed
+method to 3D geometry inference in real rooms.
+Figures 15 and 16, respectively, depict the reference and
+estimated room boundaries (denoted with thick solid lines
+and thin dashed lines, respectively) using noise and speech
+source signals. Note that there is only a marginal degradation
+in performance for speech, and that the room geometry
+
+even in large acoustic enclosures, are estimated precisely up
+to a few centimeters only. Furthermore, several methods for
+improving robustness of the estimation have been presented,
+which allow for fully automatic inference even in highly
+challenging acoustic scenarios. Finally, the method is also
+directly applicable to room volume estimation, with an estimation accuracy error of 2% or less.
+The room inference method presented here is restricted
+to rooms with walls that are piecewise planar and whose
+overall geometry is convex due to the boundary parameter
+estimation procedure that is used, i.e., it is restricted to finding planes. Extension to other types of boundaries, e.g.,
+curved boundaries, might be accomplished by using sufficiently many source positions and alternative boundary estimation procedures, e.g., point clustering.
+ACKNOWLEDGMENTS
+
+This work was partially supported by the Future and
+Emerging Technologies (FET) program within the Seventh
+Framework Programme for Research of the European
+Commission, under FET-Open Grant No. 226007 SCENIC
+and by the QUEVIRCO project, financed by the Research
+Council of Norway, Cisco Systems, and Statoil AS.
+
+1
+
+2788
+
+J. Acoust. Soc. Am., Vol. 134, No. 4, October 2013
+
+Mabande et al.: Room geometry inference
+
+01 September 2026 16:58:16
+
+F. Antonacci, A. Sarti, and S. Tubaro, “Geometric reconstruction of the
+environment from its response to multiple acoustic emissions,” in
+Proceedings of the IEEE International Conference on Acoustics, Speech,
+and Signal Processing (ICASSP) (IEEE, New York, 2010), pp.
+2822–2825.
+2
+B. G€unel, “Room shape and size estimation using directional impulse
+response measurements,” in Proceedings of the Forum Acusticum Sevilla
+(Sevilla, Spain, 2002), pp. 1–7.
+3
+P. Annibale and R. Rabenstein, “Acoustic source localization and speed
+estimation based on time-differences-of-arrival under temperature variations,” in Proceedings of the European Signal Processing Conference
+(EUSIPCO) (Aalborg, Denmark, 2010), pp. 721–725.
+4
+M. Kuster, “Reliability of estimating the room volume from a single room
+impulse response,” J. Acoust. Soc. Am. 124, 982–993 (2008).
+5
+F. Ribeiro, C. Zhang, D. Florencio, and D. Ba, “Using reverberation to
+improve range and elevation discrimination for small array sound source
+localization,” IEEE Trans. Acoust. Speech Signal Processing 18,
+1781–1792 (2010).
+6
+Y. Peled and B. Rafaely, “Method for dereverberation and noise reduction
+using spherical microphone arrays,” in Proceedings of the IEEE
+International Conference on Acoustics, Speech, and Signal Processing
+(ICASSP) (IEEE, New York, 2010), pp. 113–116.
+7
+H. Sun, S. Yan, and U. P. Svensson, “Space domain optimal beamforming
+for spherical microphone arrays,” in Proceedings of the IEEE
+International Conference on Acoustics, Speech, and Signal Processing
+(ICASSP) (IEEE, New York, 2010), pp. 117–120.
+8
+A. O’Donovan, R. Duraiswami, and D. Zotkin, “Automatic matched filter
+recovery via the audio camera,” in Proceedings of the IEEE International
+Conference on Acoustics, Speech, and Signal Processing (ICASSP) (IEEE,
+New York, 2010), pp. 2826–2829.
+9
+T. Betlehem and T. Abhayapala, “Theory and design of sound field reproduction in reverberant rooms,” J. Acoust. Soc. Am. 117, 2100–2111
+(2005).
+10
+M. Kuster, D. de Vries, E. Hulsebos, and A. Gisolf, “Acoustic imaging in
+enclosed spaces: Analysis of room geometry modifications on the impulse
+response,” J. Acoust. Soc. Am. 116, 2126–2137 (2004).
+11
+D. Ba, F. Ribeiro, C. Zhang, and D. Florencio, “L1 regularized room modeling with compact microphone arrays,” in Proceedings of the IEEE
+International Conference on Acoustics, Speech, and Signal Processing
+(ICASSP) (IEEE, New York, 2010), pp. 157–160.
+12
+J. Filos, A. Canclini, M. Thomas, F. Antonacci, A. Sarti, and P. Naylor,
+“Robust inference of room geometry from acoustic measurements using
+
+the Hough transform,” in Proceedings of the European Signal Processing
+Conference (EUSIPCO) (Barcelona, Spain, 2011), pp. 161–165.
+13
+F. Antonacci, J. Filos, M. Thomas, E. Habets, A. Sarti, P. Naylor, and S.
+Tubaro, “Inference of room geometry from acoustic impulse responses,”
+IEEE Trans. Acoust. Speech Signal Processing 20, 2683–2695 (2012).
+14
+S. Tervo and T. Tossavainen, “3d room geometry estimation from measured impulse responses,” in Proceedings of the IEEE International
+Conference on Acoustics, Speech, and Signal Processing (ICASSP) (IEEE,
+New York, 2012), pp. 513–516.
+15
+I. Dokmanic, Y. Lu, and M. Vetterli, “Can one hear the shape of a room:
+The 2-D polygonal case,” in Proceedings of the IEEE International
+Conference on Acoustics, Speech, and Signal Processing (ICASSP) (IEEE,
+New York, 2011), pp. 321–324.
+16
+F. Ribeiro, D. Florencio, D. Ba, and C. Zhang, “Geometrically constrained
+room modeling with compact microphone arrays,” IEEE Trans. Acoust.
+Speech Signal Processing 20, 1449–1460 (2012).
+17
+H. Sun, E. Mabande, K. Kowalczyk, and W. Kellermann, “Localization of
+distinct reflections in rooms using spherical microphone array eigenbeam
+processing,” J. Acoust. Soc. Am. 131, 2828–2840 (2012).
+18
+E. Mabande, H. Sun, K. Kowalczyk, and W. Kellermann, “On 2D localization of reflectors using robust beamforming techniques,” in
+Proceedings of the IEEE International Conference on Acoustics, Speech,
+and Signal Processing (ICASSP) (IEEE, New York, 2011), pp. 153–156.
+19
+H. Sun, E. Mabande, K. Kowalczyk, W. Kellermann, “Joint DOA and
+TDOA estimation for 3D localization of reflective surfaces using eigenbeam MVDR and spherical microphone arrays,” in Proceedings of the
+IEEE International Conference on Acoustics, Speech, and Signal
+Processing (ICASSP) (IEEE, New York, 2011), pp. 113–116.
+20
+R. Hartley and A. Zisserman, Multiple View Geometry in Computer Vision
+(Cambridge University Press, Cambridge, UK, 2003), 655 pp.
+21
+J. Meyer and G. Elko, “A highly scalable spherical microphone array
+based on an orthonormal decomposition of the soundfield,” in
+Proceedings of the IEEE International Conference on Acoustics, Speech,
+and Signal Processing (ICASSP) (IEEE, New York, 2002), pp.
+1781–1784.
+22
+H. Kuttruff, Room Acoustics, 4th ed. (Spon Press, London, 2000), pp.
+35–159.
+23
+H. Teutsch, Modal Array Signal Processing: Principles and Applications
+of Acoustic Wavefield Decomposition (Springer-Verlag, Berlin, 2007), pp.
+5–221.
+24
+D. Khaykin and B. Rafaely, “Coherent signals direction-of-arrival estimation using a spherical microphone array: Frequency smoothing approach,”
+in Proceedings of the IEEE Workshop on Applications of Signal
+Processing to Audio and Acoustics (WASPAA) (IEEE, New York, 2009),
+pp. 221–224.
+25
+H. L. V. Trees, Optimum Array Processing: Detection, Estimation, and
+Modulation Theory (Wiley, New York, 2002), Chap. 9, pp. 1139–1317.
+26
+B. Rafaely, Y. Peled, M. Agmon, D. Khaykin, and E. Fisher, “Spherical
+microphone array beamforming,” in Speech Processing in Modern
+Communication: Challenges and Perspectives, edited by I. Cohen, J.
+Benesty, and S. Gannot (Springer, Berlin, 2010), pp. 281–306.
+27
+J. Allen and D. Berkley, “Image method for efficiently simulating smallroom acoustics,” J. Acoust. Soc. Am. 65, 943–950 (1979).
+28
+J. R. Driscoll and J. D. M. Healy, “Computing Fourier transforms and convolutions on the 2-Sphere,” Adv. Appl. Math. 15, 202–250 (1994).
+29
+E. Williams, Fourier Acoustics: Sound Radiation and Nearfield Acoustical
+Holography (Academic Press, London, 1999), Chap. 6, pp. 183–231.
+30
+H. Teutsch and W. Kellermann, “Detection and localization of multiple
+wideband acoustic sources based on wavefield decomposition using spherical apertures,” in Proceedings of the IEEE International Conference on
+Acoustics, Speech, and Signal Processing (ICASSP) (IEEE, New York,
+2008), pp. 5276–5279.
+31
+H. Wang and M. Kaveh, “Coherent signal-subspace processing for the
+detection and estimation of angles of arrival of multiple wide-band
+sources,” IEEE Trans. Acoust. Speech Signal Processing 33, 823–831
+(1985).
+32
+V. Reddy, A. Paulraj, and T. Kailath, “Performance analysis of the optimum beamformer in the presence of correlated sources and its behavior
+under spatial smoothing,” IEEE Trans. Acoust. Speech Signal Processing
+35, 927–936 (1987).
+33
+E. Mabande, H. Sun, K. Kowalczyk, and W. Kellermann, “Comparison of
+subspace-based and steered beamformer-based reflection localization
+methods,” in Proceedings of the European Signal Processing Conference
+(EUSIPCO) (Barcelona, Spain, 2011), pp. 146–150.
+
+34
+
+T. Shan and T. Kailath, “Adaptive beamforming for coherent signals and interference,” IEEE Trans. Acoust. Speech Signal Processing 33, 527–536 (1985).
+35
+B. Schr€oder, Ordered Sets: An Introduction (Birk€auser, Boston, 2003),
+391 pp.
+36
+M. Kreissig and B. Yang, “A graph theoretical framework for consistent time
+differences of arrival,” ITG-Fachtagung Sprachkommunikation 1–4 (2010).
+37
+J. Ramirez, J. M. Gorriz, and J. Segura, “Voice activity detection. fundamentals and speech recognition system robustness,” in Robust Speech
+
+Recognition and Understanding, edited by M. Grimm and K. Kroschel
+(I-TECH Education and Publishing, 2007), pp. 1–22.
+38
+R. H. Hardin and N. J. A. Sloane, “McLaren’s improved snub cube and
+other new spherical designs in three dimensions,” Discrete Comput.
+Geom. 15, 429–441 (1996).
+39
+D. P. Jarrett, E. A. P. Habets, M. R. P. Thomas and P. A. Naylor “Rigid
+sphere room impulse response simulation: Algorithm and applications,”
+J. Acoust. Soc. Am. 132, 1462–1472 (2012).
+
+01 September 2026 16:58:16
+
+J. Acoust. Soc. Am., Vol. 134, No. 4, October 2013
+
+Mabande et al.: Room geometry inference
+
+2789
+
+

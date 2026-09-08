@@ -1,0 +1,1405 @@
+Applied Acoustics 185 (2022) 108424
+
+Contents lists available at ScienceDirect
+
+Applied Acoustics
+journal homepage: www.elsevier.com/locate/apacoust
+
+Active control of low frequency sound absorption of large sized
+micro-perforated panel absorber by using point source
+Xiyue Ma a,⇑, Kean Chen a, Lei Wang b, Yang Liu a, Shaohu Ding c
+a
+
+School of Marine Science and Technology, Northwestern Polytechnical University, Xi’an 710072, PR China
+School of Science, Xi’an University of Architecture and Technology, Xi’an 710055, PR China
+c
+College of Mechatronic Engineering, North MinZu University, Yinchuan 750021, PR China
+b
+
+a r t i c l e
+
+i n f o
+
+Article history:
+Received 30 April 2021
+Received in revised form 11 August 2021
+Accepted 11 September 2021
+Available online 1 October 2021
+Keywords:
+Large sized micro-perforated panel absorber
+Low frequency sound absorption
+Active control
+Control mechanism
+Error sensing strategy
+
+a b s t r a c t
+This paper presents a theoretical investigation on actively controlling the low frequency sound absorption of large-sized micro-perforated panel absorber (MPPA) by using point source placed in the cavity.
+The large sized active MPPA is an easily implemented and cost-effective scheme for achieving superior
+low frequency sound absorption in large area. The modal analysis approach is used to establish the theoretical model of such active MPPA. The physical mechanism of active control is analyzed and some physical insights are summarized. Based on these conclusions, the error sensing strategy of the large sized
+active MPPA is also constructed. Finally, experimental tests are carried out to validate the theoretical
+modeling and findings. Results show that the sound absorption performance can be significantly
+improved after control in a wide low frequency range below the cutoff frequency. The optimal position
+of the point source is at the central of the cavity section, in which case the cutoff frequency is the largest
+and depends on the length of the short side of the active MPPA. The control mechanism of sound absorption improvement is to enhance the Helmholtz type resonant absorption by suppressing the cavity sound
+field. The high order cavity mode (except for (0,0,0) mode) has no contribution to sound absorption
+improvement due to the symmetrical property of their mode shape. The pressure release (PR) and impedance matching (IM) strategies are still applicable for the large sized active MPPA. Relative small sized
+cavity or low frequency excitation can guarantee the uniformity of the cavity sound field after control,
+which is conducive to achieve remarkable improvement of sound absorption.
+Ó 2021 Elsevier Ltd. All rights reserved.
+
+1. Introduction
+Due to enough acoustic resistance and low acoustic mass reactance, micro-perforated panel (MPP) has highly efficient sound
+absorption performance and has been widely used as a classical
+type of sound absorption materials. The excellent properties of
+light, fiberless, and cleanliness also allow MPP to be used in especial environments where severe hygienic conditions are imposed,
+like in hospital or food industries. In practice, the most commonly
+used form is the micro-perforated panel absorber (MPPA) in which
+the MPP is located in front of a rigid backing wall [1]. The shallow
+air cavity in the MPPA can generate resonance, which increases the
+particle velocity through the holes and enhances the dissipation of
+sound energy.
+For the MPPA with specific structural parameters, the effective
+absorption frequency band (sound absorption coefficient greater
+⇑ Corresponding author.
+E-mail address: xiyuema@nwpu.edu.cn (X. Ma).
+https://doi.org/10.1016/j.apacoust.2021.108424
+0003-682X/Ó 2021 Elsevier Ltd. All rights reserved.
+
+than 0.5) is only limited to a certain band around its resonant frequency. In order to broaden the effective absorption bandwidth,
+many design approaches are proposed. One of the methods is adding additional MPP into the cavity to constitute multiple layers
+absorber [2–7], which is viewed as a series type of sound absorber.
+The parallel arrangement of multiple MPPAs with different cavity
+depths is the parallel type [8,9]. This method broadens the absorption bandwidth by combining different effective absorption bandwidth together. Another type of method is to improve the design of
+the MPPA. For instance, the rectangular shaped cavity is replaced
+by the irregular-shaped cavity to enhance the coupling effect
+between the air motion inside micro-pore and the cavity modes
+[10,11]. Filling the cavity with anisotropic fibrous material [12],
+decreasing the MPP holes diameter [13], composing the MPPA with
+meta-materials [14,15] or Helmholtz resonance structure [16–19]
+are all effective methods.
+The above works mainly improve the sound absorption performance of the MPPA in mid and high frequency range. There are also
+many requirements in practice for the MPPA with preferable
+
+X. Ma, K. Chen, L. Wang et al.
+
+Applied Acoustics 185 (2022) 108424
+
+since the control performance in the low frequency range lower
+than the resonant frequency of the MPPA is mainly considered
+[27]. The point source is placed close to the backing wall. The rectangular active MPPA is placed in the end of a duct to simplify the
+model. The cavity sound field can be controlled by the point source,
+which indirectly adjusts the surface impedance of the active MPPA
+to match the characteristic impedance of air for improving the low
+frequency sound absorption.
+Assumed that the sound pressure in the cavity is Pc ðx; y; z; tÞ,
+which satisfies the inhomogeneous wave equation under the excitation of point source,
+
+low-frequency sound absorption, such as designing acoustic liners
+to reduce fan noise. Hence, some passive and active methods are
+also developed for broadening low frequency absorption bandwidth. The passive methods mainly include MPPA backed by Helmholtz resonators [20], or MPPA backed with mechanical impedance
+plates [21]. These methods introduce resonant structure to obtain
+the improvement of sound absorption in a very narrow bandwidth.
+Tao et.al [22] proposed the MPPA with a circuit shunted loudspeaker as the backing wall, which adjusts the acoustic impedance
+of the loudspeaker diaphragm to improve the low frequency sound
+absorption in a relative wide range. On the contrary, active control
+technic can achieve sound absorption improvement in a wide low
+frequency range. For one-dimensional duct with plane-wave incident excitation, an active control system which used a piston
+source in place of the backing wall is proposed to actively control
+the sound absorption of the MPPA [23–25]. The impedance matching (IM) and pressure release (PR) strategies are also developed.
+The IM strategy adjusts the velocity of the piston to maximally
+absorb the reflected plane wave in the cavity. The PR strategy
+adjusts the velocity of the piston so that the incident plane wave
+can be cancelled by the reflected wave in the cavity. These two
+strategies essentially weaken the acoustic reactance of the cavity,
+which indirectly adjusts the surface impedance of the MPPA to
+match that of air.
+The lumped parameter loudspeaker is used as the piston source
+for the above research [25,26], in which case the active MPPA is
+merely a small sized sound absorber element. There needs a lot
+of elements to construct the large area sound absorption layer
+(seen as in Ref. [24]), which will become difficult to realize in engineering. On the contrary, when the control element is constructed
+by a relative large sized MPPA with a loudspeaker placed in the
+cavity close to the backing wall, there will need small number of
+the elements to construct the large area sound absorption layer.
+The system will become easier to implement. The surface impedance of the large sized active MPPA can also be adjusted to match
+the characteristic impedance of air by actively controlling the cavity sound field. However, the loudspeaker is more similar to the
+point source than the piston source in the large sized case. The control performance and mechanism will be different from that of the
+small sized case. The effectiveness of the IM and PR strategies also
+remains to be verified. Hence, the purpose of this research is to fill
+in the above gaps, which are of great significance for engineering
+application of such technic.
+Since the modal analysis approach can clearly reflect the vibroacoustic coupling characteristics of the MPPA and the physical nature of sound absorption [27,28], it is also applied to establish the
+theoretical model of the proposed large sized active MPPA. Then,
+the control mechanism is analyzed by comparing the cavity sound
+field in controlled and uncontrolled conditions. According to these
+findings, the error sensing strategy is also constructed based on the
+PR and IM strategies.
+The remainder of this paper is organized as follows. The theoretical model is established in Section 2. A detailed investigation
+on control mechanism is presented in Section 3. Error sensing
+strategy is constructed in Section 4. Experiment is carried out in
+Section 5. Concluding remarks are summarized in Section 6.
+
+1 @ 2 Pc ðx; y; z; tÞ
+@Q ðxs ; ys ; zs ; tÞ
+¼ q0
+;
+@t
+c0
+@t 2
+
+r2 Pc ðx; y; z; tÞ  2
+
+ð1Þ
+
+where q0 and c0 is the density and sound speed in air, Q ðxs ; ys ; zs ; tÞ
+is the intensity of the point source and can be expressed as
+Q ðxs ; ys ; zs ; tÞ ¼ qðxÞejxt dðx  xs ; y  ys ; z  zs Þ, in which qðxÞ is the
+amplitude and ðxs ; ys ; zs Þ is the coordinate position of the point
+source. The normal particle velocity close to the MPP in the cavity
+side
+satisfies
+the
+continuity
+boundary
+condition
+@P c =@n ¼ jxq0 v ðx; yÞ. v ðx; yÞ is the surface normal velocity on the
+MPP. Pc ðx; y; z; tÞ can be expressed as superposition of a series of
+modes,
+
+Pc ðx; y; z; tÞ ¼
+
+U X
+W X
+M
+X
+
+Puwm ðtÞwuwm ðx; y; zÞ;
+
+ð2Þ
+
+u¼0 w¼0 m¼0
+
+where P uwm ðtÞ is the modal amplitude of the ðu; w; mÞth mode,
+wuwm ðx; y; zÞ is the mode shape function of the cavity with rigid
+ 
+ 
+ 
+wall,wuwm ðx; y; zÞ ¼ cos upa x cos wbpy cos mDpz . Applying Green’s second formula and the orthogonality of modal functions yields the
+equation that the modal amplitude Puwm ðxÞ satisfies,
+
+Muwm ðx2 þ 2jnuwm xuwm x  x2uwm ÞPuwm ðxÞ
+¼ jxq0 c20 qðxÞwuwm ðxs ; ys ; zs Þ
+Z aZ b
+ jxq0 c20
+v ðx; yÞwuwm ðx; y; DÞdxdy;
+0
+
+ð3Þ
+
+0
+
+where xuwm and nuwm are the resonant frequency and modal dampRRR
+ing ratio of the ðu; w; mÞth mode, Muwm ¼ V wuwm ðx; y; zÞ2 dV is the
+generalized modal mass, a and b are the length and width of the
+active MPPA, and D is the cavity depth. Then, the modal amplitude
+Puwm ðxÞ can be expressed as,
+
+Puwm ðxÞ ¼ 
+
+
+Ra Rb
+jxq0 c20 0 0 v ðx; yÞwuwm ðx; y; DÞdxdy
+Muwm ðx2 þ 2jnuwm xuwm x  x2uwm Þ
+jxq0 c20 qðxÞwuwm ðxs ; ys ; zs Þ
+Muwm ðx2 þ 2jnuwm xuwm x  x2uwm Þ
+
+ð4Þ
+
+The sound energy absorbed by the active MPPA is a function of
+the control source. The reflected wave and the total sound pressure
+P on the incident side will change with the change of the point
+source. Assumed that the acoustic velocity potential of the
+reflected wave at the incident side is Ur ðx; y; z; xÞ, which can be
+expressed as [8],
+
+Ur ðx; y; z; xÞ ¼
+
+2. Theoretical modeling
+
+U X
+W
+X
+
+uw z
+
+Ruw el
+
+uuw ðx; yÞ:
+
+ð5Þ
+
+u¼0 w¼0
+
+ﬃ
+rﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃ
+up2 wp2  x 2
+ 
+ 
+þ b  c0 , uuw ðx; yÞ ¼ cos upa x cos wbpy is
+a
+
+2.1. Vibro-acoustic response of the large sized active MPPA
+
+where luw ¼
+
+The side view of the large sized active MPPA is shown in Fig. 1,
+which is composed of the finite micro-perforated panel (MPP), cavity, and point source. The MPP is assured as rigid for simplicity
+
+the mode shape function of the cross-section in the duct. The coefficient Ruw depends on the continuity boundary condition at the
+incident side (z ¼ D),
+
+2
+
+Applied Acoustics 185 (2022) 108424
+
+X. Ma, K. Chen, L. Wang et al.
+
+Fig. 1. Sketch of the large sized active MPPA: (a) side view, (b) forward view.
+
+
+
+@ Ui @ Ur
+¼ v ðx; yÞ;
+þ
+@z
+@z z¼D
+
+pﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃ
+is the perforate constant, and rv isc ðxÞ ¼ g=q0 x is the viscous
+boundary layer thickness.
+Substituting Eq. (2) and Eq. (8) into Eq. (9), and applying the
+orthogonality of modal functions yield the expression that the
+velocity v ðx; yÞ satisfies,
+Z aZ b
+Z aZ b
+v ðx; yÞuuw ðx; yÞdxdy ¼ Auw
+uuw ðx; yÞdxdy þ qðxÞBuw ;
+
+ð6Þ
+
+p0
+where Ui ¼  jxq
+ejk0 z is acoustic velocity potential of the incident
+0
+
+plane wave, p0 is the amplitude of the incident wave, k0 ¼ x=c0 is
+the wave number. Substituting Eq. (5) into Eq. (6) and applying
+the orthogonality of modal functions yield the expression of the
+coefficient Ruw ,
+
+0
+
+0
+
+0
+
+0
+
+ð11Þ
+
+Ra Rb
+Ruw ¼
+
+0
+
+R R
+v ðx; yÞuuw ðx; yÞdxdy p0 k0 ejk0 D 0a 0b uuw ðx; yÞdxdy
+0
+
+;
+luw eluw D buw
+xq0 luw eluw D buw
+
+where Auw and Buw can be expressed as,
+
+"
+
+ð7Þ
+
+M
+rX
+
+jxq0 c20 buw
+Auw ¼ 1  Z uw 
+z0
+z0 m¼0 Muwm ðx2 þ 2jnuwm xuwm x  x2uwm Þ
+!
+rp0 ejk0 D jrp0 k0 abejk0 D
+
+þ
+;
+z0
+z0 l00 b00
+
+Ra Rb
+where buw ¼ 0 0 uuw ðx; yÞ2 dxdy. The reflected sound pressure Pr at
+the surface of the active MPPA (z ¼ D) can be expressed as,
+U X
+W
+X
+@ Ur
+jz¼D ¼
+@t
+u¼0 w¼0
+"Z Z
+#
+r
+a
+b
+Z
+ uw
+v ðx; yÞuuw ðx; yÞdxdy uuw ðx; yÞ
+buw 0 0
+
+r r
+
+Pr ðx; yÞ ¼ q0
+
+þ
+
+jp0 k0 abejk0 D
+
+l00 b00
+
+;
+
+ð12Þ
+"
+
+#1
+jxq0 c20 buw
+
+z0
+z0 m¼0 M uwm x2 þ 2jnuwm xuwm x  x2uwm
+"
+#
+M
+rX
+jxq0 c20 buw ð1Þm wuwm ðxs ; ys ; zs Þ
+
+ :
+
+z0 m¼0 M uwm x2 þ 2jnuwm xuwm x  x2uwm
+
+Buw ¼ 1 
+ð8Þ
+
+r r
+
+Z uw 
+
+M
+rX
+
+
+
+0
+where Z ruw ¼ jlxq
+uw .
+
+ð13Þ
+
+The surface velocity of the MPP v ðx; yÞ can be considered as a
+distributed particle velocity, spatially averaged over each aperture
+cell adjacent to the holes [28],
+
+P  Pc;D
+v ðx; yÞ ¼ r
+;
+z0
+
+Then, further substituting Eq. (11) into Eq. (7) yields the surface
+velocity of the MPP v ðx; yÞ as follows,
+
+v ðx; yÞ ¼
+
+ð9Þ
+
+U X
+W
+X
+@ðUi þ Ur Þ
+qðxÞC uw uuw ðx; yÞ þ E1 ;
+jz¼D ¼
+@z
+u¼0 w¼0
+
+ð14Þ
+
+where C uw ¼ Buw =buw , E1 ¼ abA00 =b00 . Substituting Eq. (11) into Eq.
+(8) yields the total sound pressure on the incident side (z ¼ D) as,
+
+where P is the total sound pressure on the incident side (z ¼ D)
+and expressed as P ¼ P i þ P r , Pi ¼ p0 ejk0 D is the incident sound pressure. P c;D ðx; yÞ is the sound pressure at z ¼ D in the cavity, r is the
+porosity of the MPP, z0 is the acoustic impedance of each hole for
+the MPP and can be expressed as [28],
+
+2sﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃ pﬃﬃﬃ
+3
+2
+2 dh 5
+32gt h 4
+kh
+þ
+1þ
+z0 ¼
+kh
+2
+32 32 th
+dh
+2
+3
+!
+2 1=2
+k
+8
+d
+h
+h
+5;
+þ
+þ jq0 xt h 41 þ 9 þ
+3p t h
+2
+
+#1
+
+Pðx; yÞ ¼ Pi þ Pr ¼
+
+U X
+W
+X
+
+qðxÞDuw uuw ðx; yÞ þ E2 ;
+
+ð15Þ
+
+u¼0 w¼0
+
+where Duw ¼ Z ruw Buw =buw , E2 ¼
+
+abA00 Z r00
+b00
+
+jk0 D
+
+þ jp0 lk000abe
+b00
+
+þ p0 ejk0 D . Then, the
+
+absorbed sound power of the large sized active MPPA is defined by,
+
+"Z Z
+#
+a
+b
+1
+H
+Pabs ¼ Re
+Pðx; yÞv ðx; yÞ dxdy ;
+2
+0
+0
+
+ð10Þ
+
+ð16Þ
+
+where the superscript H denotes complex conjugate. The incident
+power Pinc for a normal incident plane wave can be expressed as
+
+where dh and t h are the diameter of the holes and thickness of the
+MPP, g is the coefficient of viscosity of the air, kh ¼ ðdh =2Þ=r v isc ðxÞ
+
+Pinc ¼ jp0 j2 S=2q0 c0 , where S is the area of the active MPPA. Finally,
+3
+
+X. Ma, K. Chen, L. Wang et al.
+
+Applied Acoustics 185 (2022) 108424
+
+the sound absorption coefficient of the large sized active MPPA can
+be obtained by,
+
+a¼
+
+Pabs
+:
+Pinc
+
+ent cases. After a careful convergence study, the upper limit number of the section mode in x-y plane is chosen as U ¼ W ¼ 9, and
+the number of cavity mode is chosen as U ¼ W ¼ M ¼ 9. The increment of the system response without control (such as the sound
+pressure at any position of the cavity) at the upper limit frequency
+1000 Hz is less than 1 dB when these modal numbers further
+increase, which guarantees the accuracy of the results.
+For validating the theoretical model, the sound absorption coefficient of the large sized active MPPA is calculated before control
+for the dimension being 0.6 m  0.8 m (length  width), as shown
+in Fig. 2. It is also calculated by using Maa’s theory [1]. General
+good agreement is found between these two results, which validates the accuracy of the theoretical model.
+
+ð17Þ
+
+2.2. Optimization of the point source
+The Eqs. (14) and (15) still contain the unknown variable of the
+amplitude of the point source qðxÞ. When the absorbed sound
+power reaches the maximum, the sound absorption coefficient also
+reaches the maximum. Hence, Pabs is chosen as the theoretically
+optimal objective function for the large sized active MPPA. The
+optimal amplitude of the point source can be obtained by maximizing the objective function. Substituting Eqs. (14) and (15) into
+Eq. (16), Pabs can be expressed as,
+
+i
+1 h
+Pabs ¼ Re cqðxÞqðxÞH þ dqðxÞ þ eqðxÞH þ f ;
+2
+
+3.2. Active control results
+
+ð18Þ
+
+The length and width of the large sized active MPPA is set as 0.
+6 m  0.8 m (Case 1) and 1.0 m  1.2 m (Case 2). Different size of
+the active MPPA is considered for aiding the analysis of its influence on active control performance. The size of the paper basin is
+generally about 0.1 m for small lumped parameter loudspeaker,
+which can be approximately viewed as a point source when it is
+used in the large sized active MPPA. The larger the size of active
+MPPA is, the closer it can be regarded as point source. The point
+source is also located at different positions to explore its influence
+on the control results. Four coordinate positions of the point source
+are considered for Case 1 and Case 2, which are listed in Table 2.
+The control results are shown in Figs. 3 and 4 for these two
+cases. The sound absorption coefficient of the active MPPA is highly
+improved and nearly close to 1 in the low frequency range after
+control, which demonstrates the effectiveness of the large sized
+active MPPA. The location of the point source determines the controllable bandwidth. The results show that the controllable bandwidth for the point source locating at the center of the backing
+wall (Location S4) is wider than that at the corner (Location S1).
+It is shortest for the location S1, and is longest for the location
+S4. In other words, there is a cutoff frequency for each location
+of the point source, after which the control effect hardly works
+immediately and the improvement of the sound absorption is very
+small. It can be also found that the controllable bandwidth is much
+longer for the small sized active MPPA (Case 1), in which case the
+upper limit controllable frequency can reach up to 400 Hz and be
+close to the resonance frequency of the MPPA. Hence, the relative
+small sized active MPPA can obtain better control performance.
+
+where c ¼ DX1 CH , d ¼ EH1 DX2 , e ¼ E2 X3 CH and f ¼ abE2 EH1 . The row
+vector C and D are expressed as C ¼ ½C 00 ; :::; C uw ; :::; C UW  and
+D ¼ ½D00 ; :::; Duw ; :::; DUW . The matrix X1 is expressed as
+R aR b
+X1 ¼ 0 0 uuH dxdy, the column vector X2 and row vector X3 are
+R aR b
+R aR b
+expressed as X2 ¼ 0 0 udxdy and X3 ¼ 0 0 uH dxdy. The column
+vector u is expressed as u ¼ ½u00 ðx; yÞ; :::; uuw ðx; yÞ; :::; uUW ðx; yÞT .
+The absorbed sound power Pabs is a quadratic function of the
+amplitude qðxÞ of the point source. Defining the complex value
+of qðxÞ as qðxÞ ¼ qR ðxÞ þ jqI ðxÞ, Eq. (18) can be re-expressed as
+the bivariate quadratic function of the variables qR ðxÞ and qI ðxÞ,
+
+1
+2
+
+1
+2
+
+1
+2
+
+Pabs ¼ ReðcÞqR ðxÞ2 þ ReðcÞqI ðxÞ2 þ Reðd þ eÞqR ðxÞ
+1
+1
+þ Re½jðd  eÞqI ðxÞ þ Reðf Þ:
+2
+2
+
+ð19Þ
+
+Calculating the partial derivatives of the two real variables
+qR ðxÞ and qI ðxÞ, and letting the partial derivatives be equal to zero
+yields the optimal amplitude qðxÞ,
+
+q R ð xÞ ¼ 
+
+Reðd þ eÞ
+;
+2ReðcÞ
+
+qI ðxÞ ¼ 
+
+Re½jðd  eÞ
+:
+2ReðcÞ
+
+ð20Þ
+
+Then, Pabs takes the maximum value and the sound absorption
+coefficient a of the large sized active MPPA also takes the
+maximum.
+3. Active control results and physical mechanism analysis
+3.1. Parameter assignment and model validation
+The geometric parameters of the model used in the simulation
+are listed in Table 1. The amplitude of the incident plane wave p0 is
+1 Pa. The modal damping ratio of the cavity is 0.001. The dimension
+of the active MPPA and the location of the point source are
+assigned with different values to verify the control effect in differ-
+
+Table 1
+The geometric parameters of the model.
+Parameter
+
+Value
+
+Pore diameter of the MPP
+
+0:4  103 m
+
+Thickness of the MPP
+
+0:5  103 m
+1%
+0.08 m
+
+Porosity of the MPP
+Cavity depth of the MPPA
+Viscosity coefficient of air
+Density and sound speed of air
+
+1:882  105 Pa  s
+
+q0 ¼ 1:21Kg/m3
+
+Fig. 2. The sound absorption coefficients obtained by the theoretical model and
+Maa’s theory.
+
+c0 ¼ 344m/s
+
+4
+
+Applied Acoustics 185 (2022) 108424
+
+X. Ma, K. Chen, L. Wang et al.
+
+sure along the x-y plane (when z ¼ 0:06m) after control are also
+plotted in Fig. 6. Only the (0,0,0) cavity mode can be excited before
+control under plane wave excitation. Hence, the distribution of the
+amplitude of the sound pressure along the x-y (not plotted for cutting down the length of the paper) and y-z planes is almost uniform before control. For the driving frequency f ¼ 100Hz, the
+amplitude of the sound pressure is substantially reduced in most
+areas of the cavity after control, except for the central area along
+the z axis where the amplitude of the sound pressure is increased
+due to the influence of point source. The distribution of the sound
+pressure after control is also uniform as shown in Figs. 5(b) and 6
+(a), which indicates that there is still only the (0,0,0) cavity mode
+being excited after control. For the high frequency f ¼ 400Hz
+which is close to the cutoff frequency, the cavity sound field is also
+reduced in most areas of the cavity after control, as shown in Fig. 5
+(d). However, the distribution of the sound pressure is not uniform
+in this case. The sound wavelength becomes shorter for the high
+frequency, which is about 0.86 m for 400 Hz and close to the size
+of the cavity. Hence, the sound filed radiated by the point source
+will not be uniform in the cavity and changes periodically along
+the radial direction, which results that the cavity sound field will
+also be non-uniform for high frequency excitation in controlled
+condition. Besides, the first few high order cavity modes are still
+not excited in this case since the point source is placed at the center of the cross section.
+The change of the cavity sound field adjusts the surface impedance of the active MPPA close to the characteristic impedance
+of air in the controllable frequency range, as shown in Fig. 7 where
+
+Table 2
+The coordinate positions of the point source.
+Location
+
+Coordinate (m)
+Case 1
+
+Case 2
+
+S1
+S2
+S3
+S4
+
+(0.01,0.01,0.001)
+(0.01,0.4,0.001)
+(0.3,0.01,0.001)
+(0.3,0.4,0.001)
+
+(0.01,0.01,0.001)
+(0.01,0.6,0.001)
+(0.5,0.01,0.001)
+(0.5,0.6,0.001)
+
+Fig. 3. Control results for different location of the point source (Case 1).
+
+
+
+
+
+
+
+the surface average impedance ratio [Z ¼ P =ðv q0 c0 Þ] before and
+after control is plotted. Then, the surface sound intensity is greatly
+increased after control, as shown in Fig. 8.
+In order to further analyze the causes of the cutoff frequency for
+each location of the point source, the resonant frequencies of the
+cavity modes below 500 Hz for these two cases are listed in Table 3.
+It can be found that, whether it is large (Case 2) or small (Case 1)
+sized active MPPA, the cutoff frequency for the location S1 and
+S3 is the resonant frequency of the (0,1,0) cavity mode. For the
+location S2, the cutoff frequency is the resonant frequency of the
+(1,0,0) cavity mode, and it is the resonant frequency of the (0,2,0)
+cavity mode for the location S4. For aiding the analysis, the mode
+shapes of the (0,1) and (0,2) section modes along the x-y plane
+are also plotted in Fig. 9.
+For the location S1, the (0,1,0) cavity mode will be excited resonantly by the point source when the driving frequency reaches its
+resonant frequency. The distribution of the cavity sound pressure
+will be antisymmetric along the y axis when the (0,1,0) mode is
+highly excited. This will result that the average surface impedance
+of the active MPPA can not be appropriately adjusted to close to the
+characteristic impedance of air. In other words, the surface sound
+resistance or reactance will also be antisymmetric along the y axis,
+which leads to that the forward sound intensity will be cancelled
+by the negative sound intensity and the surface net sound intensity
+will be very small. Hence, the optimal amplitude of the point
+source should be close to zero at this frequency so as to avoid
+exciting the (0,1,0) cavity mode. The sound absorption coefficient
+can not be improved, and the resonant frequency of the (0,1,0)
+mode becomes the cutoff frequency of the location S1. When the
+point source is placed at the midline of the x-y plane along the y
+axis (the node line of the (0,1,0) mode, the value of x coordinate
+can be arbitrary expect for the central point), i.e., the location S2,
+the (0,1,0) cavity mode will not be excited at its resonant frequency
+and the cutoff frequency can reach up to the resonant frequency of
+the (1,0,0) mode. Similar to that of the (0,1,0) mode, the (1,0,0)
+mode will be excited resonantly by the point source at its resonant
+frequency, which results that the improvement of sound
+
+Fig. 4. Control results for different location of the point source (Case 2).
+
+All these phenomenon are correlated with the physical mechanism
+of active control.
+3.3. Physical mechanism of active control
+The cavity sound field of the active MPPA is controlled by the
+point source, which adjusts the air particle velocity in the holes
+of the MPP. It further adjusts the surface average impedance of
+the active MPPA close to the characteristic impedance of air. This
+is the main control mechanism of sound absorption improvement.
+For further analyzing the deep-seated reasons, the change of the
+cavity sound field is analyzed in detail. The small sized active
+MPPA (Case 1) with the point source locating at the position S4
+is considered in this case. The distributions of the amplitude of
+the cavity sound pressure in y-z plane (when x ¼ a=2) before and
+after control are plotted in Fig. 5 when f ¼ 100Hz and f ¼ 400Hz,
+respectively. The distributions of the amplitude of the sound pres5
+
+X. Ma, K. Chen, L. Wang et al.
+
+Applied Acoustics 185 (2022) 108424
+
+Fig. 5. The distribution of cavity sound pressure (y-z plane): (a) before control (f ¼ 100Hz), (b) after control (f ¼ 100Hz), (c) before control (f ¼ 400Hz), (d) after control
+(f ¼ 400Hz).
+
+Fig. 6. The distribution of cavity sound pressure after control in x-y plane: (a)f ¼ 100Hz, (b) f ¼ 400Hz.
+
+the reason that the small sized active MPPA has larger controllable
+frequency range. The larger the size of active MPPA is, the narrower
+the controllable frequency band is. The optimal amplitude of the
+point source for different locations in Case 1 is also shown in
+Fig. 10 to further validate the above conclusions. Besides, although
+the location S3 is on the node line of the (1,0,0) mode, but it is not
+on the node line of the (0,1,0) mode. The cutoff frequency of this
+location is still the resonant frequency of the (0,1,0) mode.
+Besides, the improvement of the sound absorption coefficient
+also greatly decreases above the cutoff frequency for different location of the point source. The reason is similar with that on the cutoff frequency. Take the point source locating at S1 as an example,
+
+absorption can also not be achieved in this case. Further when the
+point source is placed at the center of the x-y plane, i.e., the location S4 (on both node line of the (0,1,0) and (1,0,0) mode), the
+(0,1,0), (1,0,0) and (1,1,0) modes cannot be excited by the point
+source. Then, the cutoff frequency can further reach up to the resonant frequency of the (0,2,0) mode. This mode is also antisymmetric along the y axis, as shown in Fig. 9 (b). If we want to
+further increase the cutoff frequency, the point source should be
+placed at the node line of the (0,2,0) mode. However, this will again
+excites the (0,1,0) and (1,0,0) cavity modes. This contradiction
+leads to that the highest cutoff frequency of the active MPPA is
+the resonant frequency of the (0,2,0) cavity mode. Hence, this is
+6
+
+Applied Acoustics 185 (2022) 108424
+
+X. Ma, K. Chen, L. Wang et al.
+
+Fig. 7. The surface sound resistance and reactance ratio of the active MPPA before and after control: (a) sound resistance ratio, (b) sound reactance ratio.
+
+Fig. 8. The surface sound intensity of the active MPPA before and after control: (a)f ¼ 100Hz, (b)f ¼ 400Hz.
+
+the distribution of the cavity sound pressure in y-z plane (when
+x ¼ a=2) and the surface sound intensity after control are shown
+in Fig. 11 for f ¼ 245Hz (between the resonant frequencies of the
+(0,1,0) and (1,0,0) mode). It can be found that the (0,1,0) cavity
+mode can still be excited by the point source in non-resonant pattern. Hence, the optimal amplitude of the point source is also very
+small to avoid greatly exciting this mode, as shown in Fig. 10. The
+superposition of the sound fields of the (0,0,0) and (0,1,0) cavity
+modes results that the sound pressure in the upper area of the cavity is slightly enhanced and the value in the below area is slightly
+weakened. In general, the change of the cavity sound field is small
+after control, which results that the surface sound intensity is not
+
+Table 3
+Resonant frequencies of the cavity.
+Mode
+
+(0,0,0)
+(0,1,0)
+(1,0,0)
+(1,1,0)
+(0,2,0)
+
+Resonant frequencies (Hz)
+Case 1
+
+Case 2
+
+0
+215
+287
+358
+430
+
+0
+143
+172
+224
+287
+
+Fig. 9. Mode shape of the (0,1) and (0,2) modes along the x-y plane: (a) (0,1) mode, (b) (0,2) mode.
+7
+
+X. Ma, K. Chen, L. Wang et al.
+
+Applied Acoustics 185 (2022) 108424
+
+For the IM strategy, the reflected plane wave should be cancelled by the point source, which drives the specific acoustic impedance on the cavity side of the MPP close to that of air medium.
+This can also indirectly adjust the surface impedance of the active
+MPPA to match that of air medium. One acoustic vector sensor
+(AVS, simultaneously measuring the sound pressure and particle
+velocity) is needed to be placed at the sensing point ðxe ; ye ; ze Þ in
+the cavity to extract the reflected plane wave (or two microphones
+for measuring the sound pressure and particle velocity at the sensing point ðxe ; ye ; ze Þ). For the plane wave sound field, when the
+sound pressure Pc;e2 and particle velocity v c;e at the sensing point
+is measured, the incident wave pc;i and reflected wave pc;r at the
+sensing point can be expressed as,
+
+pc;i ¼
+
+1
+½Pc;e2 þ q0 c0 v c;e ;
+2
+
+pc;r ¼
+
+1
+½Pc;e2  q0 c0 v c;e :
+2
+
+ð22Þ
+
+The particle velocity v c;e can be obtained by using the relation
+v c;e ¼ ð1=jxq0 Þ@Pc =@zjðx ;y ;z Þ . Letting pc;r ¼ 0 yields the optimal
+
+Fig. 10. The amplitude of the point source at different locations.
+
+e
+
+e
+
+e
+
+amplitude of the point source qe;2 ðxÞ as,
+
+significantly increased and the sound absorption improvement is
+not obvious. When the frequency is further increased, other high
+order cavity modes will be excited and the above phenomenon
+occurs repeatedly, which results in the poor control effect above
+the cutoff frequency.
+
+(
+
+U X
+W X
+M
+X
+
+ð1Þm c20 Buw þ c20 wuwm ðxs ; ys ;zs Þ
+
+
+Muwm x2 þ 2jnuwm xuwm x  x2uwm
+u¼0 w¼0 m¼0
+1
+wpy  mpz  jxq
+q0 c0 mp upxe 
+e
+e
+0
+cos
+ cos
+sin
+
+wuwm ðxe ; ye ;ze Þ
+2D
+a
+b
+D
+2
+M
+mpz  q c mp mpz 
+X
+ð1Þm c20 A00 ab
+jxq0
+e
+0
+e
+
+
+cos
+ 0
+sin
+
+2
+2 þ 2jn
+2
+D
+2D
+D
+x
+x
+x
+
+x
+M
+00m
+00m
+00m
+00m
+m¼0
+
+qe;2 ðxÞ ¼
+
+4. Error sensing strategy
+
+ð23Þ
+
+The above analysis has been confirmed that the high order cavity modes (except for (0,0,0) mode) are not excited by the point
+source in the controllable frequency band. Hence, the cavity sound
+field can be viewed as the superposition of incident and reflected
+plane waves. The sound pressure release (PR) and impedance
+matching (IM) strategies proposed by Cobo [23] can still be used
+for the large sized active MPPA.
+For the PR strategy, the cavity sound filed should be cancelled
+by the point source, which drives the specific acoustic impedance
+of the cavity close to zero to adjust the surface impedance of the
+active MPPA. Only one microphone is needed to measure the cavity
+sound pressure Pc;e ðxe ; ye ; ze Þ at the sensing point ðxe ; ye ; ze Þ. Letting
+P c;e ðxe ; ye ; ze Þ ¼ 0 yields the optimal amplitude of the point source
+qe;1 ðxÞ as,
+
+Both for the large and small sized active MPPAs, the active control results of the PR and IM strategies are shown in Fig. 12. The
+point source is placed at the optimal location S4 for these two
+cases, and the sensing point is placed at the corner of the cavity
+close to the MPP, i.e., (0.02,0.78,0.078) for Case 1 and
+(0.02,1.18,0.078) for Case 2. The PR and IM strategies use the
+same sensing point. The sound absorption coefficient after control
+is only plotted in the frequency range below the cutoff frequency. If
+the cavity sound field is compulsively adjusted by using the PR and
+IM strategies in the high frequency, there will be no control effect
+or even the sound absorption coefficient will be reduced. It can be
+found that the sound absorption coefficient is highly improved and
+nearly close to 1 in the controllable frequency range for these two
+strategies. The control result obtained by maximizing the absorbed
+sound power in Section 3 is called optimal control state. The cavity
+sound field is not cancelled by the point source but reduced to the
+optimal value (as shown in Fig. 5 (b)) for the optimal control state.
+Hence, compared with the PR strategy, the cavity sound field after
+control with IM strategy is more close to the optimal state. Its con-
+
+mpz 
+ð1Þm jxq0 c20 A00 ab
+e
+
+ cos
+D
+M00m x2 þ 2jn00m x00m x  x200m
+:
+qe;1 ðxÞ ¼ 
+m
+PU PW PM ð1Þ jxq0 c20 Buw þ jxq0 c20 wuwm ðxs ; ys ; zs Þ
+
+ wuwm ðxe ; ye ; ze Þ
+u¼0
+w¼0
+m¼0
+2
+2
+Muwm x þ 2jnuwm xuwm x  xuwm
+PM
+
+m¼0
+
+ð21Þ
+
+Fig. 11. The distribution of cavity sound pressure (y-z plane) and surface sound intensity of the active MPPA after control when f ¼ 245Hz: (a) cavity sound distribution, (b)
+surface sound intensity.
+8
+
+Applied Acoustics 185 (2022) 108424
+
+X. Ma, K. Chen, L. Wang et al.
+
+Fig. 12. Control results for the PR and IM strategies: (a) Case 1, (b) Case 2.
+
+control, the control results for these strategies will be sensitive
+to the position of the sensing point. For instance, the control results
+will be better when the sensing point is located at these areas with
+lower sound pressure after control, as shown in Fig. 13(b) in which
+the sensing point locates at (0.02,0.95,0.078) for Case 2. In a
+word, for small sized cavity or low frequency excitation, the sound
+field in the cavity can be uniformly suppressed by the point source,
+which can achieve good control effect.
+Affected by the sound radiation of the point source, the sound
+field in the center area of the cavity is enhanced. Hence, in order
+to ensure the control effect of the PR and IM strategies, the sensing
+point should be placed away from the point source and central
+area, i.e., at the corner of the cavity. Three locations of the sensing
+point are considered for validating the conclusions for Case 1, i.e.,
+E1 (0.02,0.78,0.078), E2 (0.02,0.78,0.018), E3 (0.3,0.3,0.078).
+The control results are shown in Fig. 15. The change of the location
+in the direction of the cavity depth has little influence on the control effect as long as the sensing point is placed at the corner. However, the control effect is significantly weakened when the sensing
+point is close to the central area.
+
+trol effect is slightly better than that of the PR strategy. The control
+effect is not obvious in the small frequency range close to the cutoff
+frequency, which is due to the fact that the cavity sound field is not
+very uniform in controlled condition for the high frequency excitation (as shown in Fig. 5 (d)). Suppressing the sound pressure or
+reflected wave at the sensing point can not properly adjust the
+impedance of the whole surface of the active MPPA to the optimal
+value.
+Both for the PR and IM strategies, the control results for the
+small sized active MPPA (Case 1) are slightly better than that of
+the large sized case (Case 2). For further aiding the analysis, the
+distribution of the amplitude of the cavity sound pressure for the
+optimal control state is also plotted in Fig. 13 (a) for the large sized
+active MPPA (Case 2) when f ¼ 100Hz. The distribution of the
+sound pressure before control is nearly the same as that of the
+small sized active MPPA (Case 1), as shown in Fig. 5 (a). The uniformity of the cavity sound field after control is getting worse for Case
+2. This is also due to the fact that the fluctuation of the sound field
+radiated by the point source becomes obvious when the size of the
+large cavity matches the wavelength of the sound wave at this
+driving frequency. Fig. 14 shows the distribution of the cavity
+sound pressure in the x-y plane (when z ¼ 0:06m) after control
+for Case 2 and another case with larger sized cavity (1.6 m  1.8
+m). Compared with Figs. 5(b) and 6(a), it is obvious that the uniformity of the cavity sound field for the large sized cavity is worse
+than that of the small sized case. Hence, the control results for
+the PR and IM strategies are also getting worse for Case 2. Besides,
+due to the relative large fluctuation of the cavity sound field after
+
+5. Experimental validation
+5.1. Experimental setup
+Experimental test is carried out to validate the theoretical modeling and feasibility of the large sized active MPPA. The experimental setup is shown in Fig. 16. The active MPPA is installed at the left
+
+Fig. 13. The cavity sound field distribution and control results for the PR and IM strategies: (a) cavity sound distribution after control for the Case 2, (b) control results for the
+sensing point being located at (0.02,0.95,0.078).
+9
+
+X. Ma, K. Chen, L. Wang et al.
+
+Applied Acoustics 185 (2022) 108424
+
+Fig. 14. The distribution of the cavity sound pressure (x-y plane): (a) Case 2, (b) another larger sized case.
+
+Fig. 15. Control results of the PR and IM strategies for different locations of the sensing point: (a) PR strategy, (b) IM strategy.
+
+expand to 430 Hz (the resonant frequency of the (0,2) mode),
+below which the sound field in the duct can be approximately considered as the plane wave sound field. This is also the controllable
+cutoff frequency of the large sized active MPPA for the optimal
+location S4, which guarantees the effectiveness of the experiment.
+The sound absorption coefficient is measured by transfer function
+method with two microphones (P1 and P2) and B&K 3050 acquisition front end. The distance between the two microphones is 0.2 m,
+and the distance between the microphone P2 and the MPP is
+0.24 m, which guarantees the accuracy of the absorption coefficient measurement in frequency range of 50～430 Hz.
+
+end of the rectangular duct, and the primary sound source (loudspeaker) is placed at the right end. The geometric parameters of
+the active MPPA in the experiment are that of the Case 1, in which
+the MPP is made of 0.5 mm thick aluminum plate with porosity
+and perforation diameter being 1.0% and 0.4  10-3m. The cutoff
+frequency of the rectangular duct with section size being 0.6 m
+ 0.8 m is only 215 Hz (the resonant frequency of the (0,1,0)
+mode), below which the plane wave sound filed is guaranteed.
+Placing the primary loudspeaker at the center of the end section
+can ensure that the high-order section modes (0,1), (1,0), and
+(1,1) are not excited. Then, the cutoff frequency of the duct can
+
+(a)
+
+Active MPPA
+Ee2
+
+Ee1
+
+P2
+
+P1
+
+Primary
+loudspeaker
+
+MPP
+
+Control
+loudspeaker
+
+B&K 3050 acquisition
+front end
+(b)
+
+ANC controller
+
+Signal
+amplifier
+Fig. 16. Experimental setup: (a) active MPPA in the duct, (b) measuring and control equipment.
+10
+
+Applied Acoustics 185 (2022) 108424
+
+X. Ma, K. Chen, L. Wang et al.
+
+Fig. 17. Similar as that of the theoretical results, the sound absorption coefficient of the large sized active MPPA is highly improved
+after control in the controllable frequency bands for these cases
+S1-S4. The trends of the sound absorption coefficient both in controlled and uncontrolled conditions in the experiment are in good
+agreement with these of the theoretical results, which qualitatively
+verifies the theoretical model and findings. The performance of the
+IM strategy is roughly better than that of the PR strategy in all
+these cases, which validates the feasibility of these strategies and
+also the findings obtained in Sec.4. It can be found that the control
+performance for these cases of S2 and S4 is better than those of S1
+and S3 in their respective controllable frequency range, which indicates that the performance of the PR and IM strategies is also correlated with the location of the control source. This is not discussed
+in Sec.4 where the point source is placed at the optimal location of
+S4 to focus on exploring the performance of the PR and IM strategies. The cavity sound filed after control for the locations S2 and S4
+(near or on the middle of the section) is more uniform than that of
+the locations S1 and S3 (near the edge of the section), which can
+guarantee better control effects. The theoretical results for the
+point source location S1 and sensing point Ee1 is also shown in
+Fig. 18 to further validate the above conclusions.
+Besides, the sound absorption coefficient is a little undulant
+after control for the locations S1 and S3. This may be induced by
+the fact that the radiated sound field of the control loudspeaker
+is not completely consistent with that of the point source in the
+theory. Despite this difference, the uniformity of the cavity sound
+field after control in the experiment can still be guaranteed for
+the locations S2 and S4, which ensures the stable control effect.
+On the contrary, the sound field difference has a greater impact
+on the control effect for the location S1 and S3, which results in
+
+The location of the control loudspeaker in the experiment
+approximates the theoretical positions of S1-S4 listed in Table 2.
+The effectiveness of the PR and IM strategies is verified. One microphone is placed at Ee1(0.3,0.75,0.065) to measure the sound pressure Pc;e ðxe ; ye ; ze Þ in the cavity for the PR strategy. Two closely
+arranged microphones are used to measure the sound pressure
+P c;e2 and particle velocity v c;e on the midpoint between
+Rt
+them,Pc;e2 ¼ ðpe;1 þ pe;2 Þ=2,v c;e ¼ ð1=q0 dÞ 0 ðpe;1  pe;2 Þds where d
+is the distance between these two microphones. These two microphones are located at Ee1(0.3,0.75,0.065) and Ee2
+(0.3,0.75,0.015). Then, the reflected plane wave pc;r at this midpoint (0.3,0.75,0.04) can be obtained by Eq. (22). The error signal
+of the sound pressure Pc;e ðxe ; ye ; ze Þ (PR) or the reflected wave pc;r
+(IM) is input to the ANC controller (developed by our research
+group) to iteratively calculate the control signal by using the
+feed-forward Fx-LMS algorithm. The primary excitation signal is
+directly used as the reference signal. The amplified control signal
+is input to the control loudspeaker, which adjusts the cavity sound
+filed to improve the sound absorption performance of the active
+MPPA. The sound pressure on the point P1 and P2 is recorded for
+5 s to calculate the sound absorption coefficient before and after
+control.
+
+5.2. Results analysis
+The sound absorption coefficient before control is measured
+from 50 Hz to 430 Hz with an interval of 10 Hz and the result after
+control is measured up to the cutoff frequency corresponding to
+each control loudspeaker position. The experimental results for different cases of control loudspeaker position (S1-S4) are shown in
+
+Fig. 17. Experimental results for different cases of control source location: (a) S1, (b) S2, (c) S3, (d) S4.
+11
+
+X. Ma, K. Chen, L. Wang et al.
+
+Applied Acoustics 185 (2022) 108424
+
+Visualization, Resources, Data curation. Yang Liu: Investigation.
+Shaohu Ding: Writing – review & editing.
+Declaration of Competing Interest
+The authors declare that they have no known competing financial interests or personal relationships that could have appeared
+to influence the work reported in this paper.
+Acknowledgments
+This work was financially supported by the China Postdoctoral
+Science Foundation (Grant No. 2019M663821), the Fundamental
+Research Funds for the Central Universities (Grant No.
+3102019HHZY030025), the Natural Science Basic Research Plan
+in Shaanxi Province of China (Grant No. 2018JQ1025), the National
+Natural Science Foundation of China (NSFC, Grant No. 51705421,
+11764002).
+
+Fig. 18. Theoretical results for point source locating at S1 and sensing point Ee1.
+
+References
+
+the undulant control results. The sound absorption improvement is
+even greater than the theoretical value at some frequency points.
+The sound absorption coefficient after control is relatively small
+below 80 Hz for these cases of S2 and S4, which is induced by
+the small frequency response of the control loudspeaker in this frequency range. The limited radiated sound pressure leads to the relative poor control effect.
+
+[1] Maa D-Y. Potential of microperforated panel absorber. J Acoust Soc Am
+1998;104(5):2861–6. https://doi.org/10.1121/1.423870.
+[2] Zhang ZM, Gu XT. The theoretical and application study on a double layer
+microperforated sound absorption structure. J Sound Vib 1998;215
+(3):399–405. https://doi.org/10.1006/jsvi.1997.1693.
+[3] Sakagami K, Nakamori T, Morimoto M, Yairi M. Double-leaf microperforated
+panel space absorbers: a revised theory and detailed analysis. Appl Acoust
+2009;70:703–9. https://doi.org/10.1016/j.apacoust.2008. 09.004.
+[4] Sakagami K, Matsutani K, Morimoto M. Sound absorption of a double-leaf
+micro-perforated panel with an air-back cavity and a rigid-back wall: detailed
+analysis with a Helmholtz-Kirchhoff integral formulation. Appl Acoust
+2010;71(5):411–7. https://doi.org/10.1016/j.apacoust.2009.11.014.
+[5] Lee DH, Kwon YP. Estimation of the absorption performance of multiple layer
+perforated panel systems by transfer matrix method. J Sound Vib 2004;278(45):847–60. https://doi.org/10.1016/j.jsv.2003.10.017.
+[6] Ruiz H, Cobo P, Jacobsen F. Optimization of multiple-layer microperforated
+panels by simulated annealing. Appl Acoust 2011;72(10):772–6. https://doi.
+org/10.1016/j.apacoust.2011.04.010.
+[7] Tayong RB, Manyo Manyo JA, Siryabe E, Ntamack GE. On the simultaneous
+inversion of micro-perforated panels’ parameters: application to single and
+double air-cavity backed systems. J Acoust Soc Am 2018;143(4):2279–88.
+https://doi.org/10.1121/1.5032312.
+[8] Wang C, Huang L. On the acoustic properties of parallel arrangement of
+multiple micro-perforated panel absorbers with different cavity depths. J
+Acoust Soc Am 2011;130(1):208–18. https://doi.org/10.1121/1.3596459.
+[9] Wang C, Huang L, Zhang Y. Oblique incidence sound absorption of parallel
+arrangement of multiple micro-perforated panel absorbers in a periodic
+pattern. J Sound Vib 2014;333:6828–42. https://doi.org/10.1016/j.jsv.
+2014.08.009.
+[10] Wang C, Cheng Li, Pan J, Yu G. Sound absorption of a micro-perforated panel
+backed by an irregular-shaped cavity. J Acoust Soc Am 2010;127(1):238–46.
+https://doi.org/10.1121/1.3257590.
+[11] Yang C, Cheng Li, Pan J. Absorption of oblique incidence sound by a finite
+micro-perforated panel absorber. J Acoust Soc Am 2013;133(1):201–9. https://
+doi.org/10.1121/1.4768869.
+[12] Bravo T, Maury C. Sound attenuation and absorption by micro-perforated
+panels backed by anisotropic fibrous materials: theoretical and experimental
+study. J Sound Vib 2018;425:189–207. https://doi.org/10.1016/j.jsv.2018.04.
+006.
+[13] Qian YJ, Kong DY, Liu SM, Sun SM, Zhao Z. Investigation on micro-perforated
+panel absorber with ultra-microperforations. Appl Acoust 2013;74(7):931–5.
+https://doi.org/10.1016/j.apacoust.2013.01.009.
+[14] Gai X, Li X, Zhang B, Xing T, Zhao J, Ma Z. Experimental study on sound
+absorption performance of microperforated panel with membrane cell. Appl
+Acoust 2016;110:241–7. https://doi.org/10.1016/j.apacoust.2016.03.034.
+[15] Gai X-L, Xing T, Li X-H, Zhang B, Cai Z-N, Wang F. Sound absorption properties
+of microperforated panel with membrane cell and mass blocks composite
+structure.
+Appl
+Acoust
+2018;137:98–107.
+https://doi.org/10.1016/j.
+apacoust.2018.03.013.
+[16] Gai X, Xing T, Li X, Zhang B, Wang W. Sound absorption of microperforated
+panel mounted with Helmholtz resonators. Appl Acoust 2016;114:260–5.
+https://doi.org/10.1016/j.apacoust.2016.08.001.
+[17] Toyoda M, Takahashi D. Sound transmission through a microperforated-panel
+structure with subdivided air cavities. J Acoust Soc Am 2008;124
+(6):3594–603. https://doi.org/10.1121/1.3001711.
+[18] Liu J, Herrin DW. Enhancing micro-perforated panel attenuation by
+partitioning the adjoining cavity. Appl Acoust 2010;71(2):120–7. https://doi.
+org/10.1016/j.apacoust.2009.07.016.
+
+6. Conclusions
+A more practical large sized active MPPA using point source as
+the control source is proposed in this research. The control performance and mechanism of sound absorption improvement are analyzed in detail. Based on these results, the error sensing strategy is
+established. Experimental validation is also carried out. The main
+conclusions are summarized as follows.
+(1) The sound absorption coefficient is highly improved and
+close to 1 after control, which validates the feasibility of
+the large sized active MPPA. There is a cutoff frequency for
+each location of the point source above which the control
+effect greatly decreases.
+(2) The optimal location of the point source is at the center of
+the x-y plane, in which case the maximal cutoff frequency
+can be achieved and is the resonant frequency of the
+(0,2,0) cavity mode. The (0,1,0), (1,0,0) or (1,1,0) mode will
+be excited when the point source is placed at other locations.
+Due to the antisymmetric property of these modes, the
+sound absorption coefficient can not be improved at or over
+the resonant frequencies of these modes, which will be the
+cutoff frequency of these locations.
+(3) The cavity sound field can be roughly considered as the
+plane wave sound filed after control, which indicates that
+the PR and IM strategies are also applicative for the large
+sized active MPPA. The IM strategy can gain better control
+effect since the cavity sound distribution after control for
+this strategy is more close to that of the optimal control
+state. The cavity sound distribution is more uniform for
+the small sized cavity or low frequency excitation, which
+can guarantee better control effect in these cases.
+CRediT authorship contribution statement
+Xiyue Ma: Conceptualization, Methodology, Software, Validation, Writing – original draft. Kean Chen: Supervision. Lei Wang:
+12
+
+Applied Acoustics 185 (2022) 108424
+
+X. Ma, K. Chen, L. Wang et al.
+
+[24] Cobo P, Cuesta M. Hybrid passive-active absorption of a microperforated panel
+in free filed conditions. J Acoust Soc Am 2007;121:EL251–5. https://doi.org/
+10.1121/1.2739112.
+[25] Cobo P, Cuesta M. Measuring hybrid passive-active sound absorption of a
+microperforated liner at oblique incidence. J Acoust Soc Am 2009;125
+(1):185–90. https://doi.org/10.1121/1.3026328.
+[26] Cobo P, Fernández A, Doutres O. Low-frequency absorption using a two-layer
+system with active control of input impedance. J Acoust Soc Am 2003;114
+(6):3211–6. https://doi.org/10.1121/1.1629306.
+[27] Lee YY, Lee EWM, Ng CF. Sound absorption of a finite flexible micro-perforated
+panel backed by an air cavity. J Sound Vib 2005;287(1-2):227–43. https://doi.
+org/10.1016/j.jsv.2004.11.024.
+[28] Bravo T, Maury C, Pinhède C. Vibroacoustic properties of thin micro-perforated
+panel absorbers. J Acoust Soc Am 2012;132(2):789–98. https://doi.org/
+10.1121/1.4733555.
+
+[19] Xie S, Wang D, Feng Z, Yang S. Sound absorption of microperforated
+honeycomb metasurface panels with a combination of multiple orifice
+diameters.
+Appl
+Acoust
+2020;158:1–8.
+https://doi.org/10.1016/j.
+apacoust.2019.107046.
+[20] Park S-H. Acoustic properties of micro-perforated panel absorbers backed by
+Helmholtz resonators for the improvement of low-frequency sound
+absorption. J Sound Vib 2013;332(20):4895–911. https://doi.org/10.1016/j.
+jsv.2013.04.029.
+[21] Zhao X, Fan X. Enhancing low frequency sound absorption of micro-perforated
+panel absorbers by using mechanical impedance plates. Appl Acoust
+2015;88:123–8. https://doi.org/10.1016/j.apacoust.2014.08.015.
+[22] Tao J, Jing R, Qiu X. Sound absorption of a finite micro-perforated panel backed
+by a shunted loudspeaker. J Acoust Soc Am 2014;135(1):231–8. https://doi.
+org/10.1121/1.4836215.
+[23] Cobo P, Pfretzschner J, Cuesta Marı́a, Anthony DK. Hybrid passive-active
+absorption using microperforated panels. J Acoust Soc Am 2004;116
+(4):2118–25. https://doi.org/10.1121/1.1786831.
+
+13
+
+

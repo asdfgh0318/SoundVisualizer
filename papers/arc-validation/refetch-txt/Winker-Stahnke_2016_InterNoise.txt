@@ -1,0 +1,652 @@
+INTER-NOISE 2016
+
+The influences of changes in international standards on
+performance qualification and design of anechoic and
+hemi-anechoic chambers
+Douglas WINKER1; Brian STAHNKE2
+1
+
+ETS-Lindgren Inc, United States
+
+2
+
+ETS-Lindgren Inc, United States
+
+ABSTRACT
+Historically, anechoic and hemi-anechoic chamber qualification has been defined in ISO 3745 Annex A.
+In 2012 an independent standard for anechoic and hemi-anechoic chamber qualification, ISO 26101, was
+initially released. The latest revision of ISO 3745 was also released in 2012. ISO 3745 is currently under
+revision to adopt the procedures outlined in ISO 26101 for chamber qualification. ISO 26101 is also under
+revision to improve the method of the standard.
+The presentation will compare and contrast the two standards and their current states. The impact of the
+changes on existing chambers and future chamber design will be presented. Actual chamber data will be
+analyzed using both methods to show how these different fitting methods impact chamber performance.
+Keywords: Anechoic, Qualification, Standards
+
+I-INCE Classification of Subjects Number(s): 73.1
+
+1. INTRODUCTION
+Historically, anechoic and hemi-anechoic chamber qualification has been defined in ISO 3745
+Annex A. The first version ISO 3745 was published in 1977. It was the first of the ISO 3740 sound
+power standard series and the precision-level sound power standard. As the precision-level standard,
+the measurements for ISO 3745 occurred in anechoic and hemi-anechoic chambers and the need for
+qualification of these chambers was defined in Annex A of the standard.
+The fact that anechoic and hemi-anechoic chamber qualification requirements existed only in the
+annex of a standard led to the formation of ISO TC 43 WG 8 to provide a stand-alone document for
+anechoic and hemi-anechoic chamber qualification. ISO TC 43 WG 8 published ISO 26101 in 2012.
+ISO 26101 makes qualification of anechoic chambers more readily available for audio, automotive,
+military, and other users that are not interested in sound power measurements.
+ISO 26101 improved many areas of chamber qualification including removing the acoustic center
+collinear offset, changing the number of required traverse directions, and removing octave band
+measurements in favor of one-third octave band measurements at certain frequencies of interest.
+However, 26101 created an unnecessary requirement in that traverses must extend to one-half
+wavelength and did not address the impact on the qualification tolerances created with measuring high
+frequencies inside the free-field.
+This paper highlights the issues with ISO 3745 and ISO 26101. It presents test data from anecho ic
+chambers showing how some requirements in ISO 26101 are too stringent and offers suggestions on
+how to alleviate these issues.
+
+2. ISO 3745 Annex A
+2.1 Measurement Overview
+The qualification procedure defined in ISO 3745 Annex A uses five microphone traverses that
+1
+2
+
+Douglas.Winker@ETS-Lindgren.com
+Brian.Stahnke@ETS-Lindgren.com
+
+1
+
+INTER-NOISE 2016
+
+move a microphone away from a sound source located in the center of the measurement area. Data is
+acquired at discrete points or continuously along the traversed path. For a discrete traverse, at least 10
+measurement points with spacing of 0,1m must be evaluated.
+The sound source must be a device qualified under section A2.2.2 for source directivity. A source
+that is compliant with A2.2.2 will radiate spherically for full anechoic chambers or hemispherically for
+hemi-anechoic chambers. The 2012 revision to ISO 3745 mandated the use of pure tone signals as the
+primary signal method instead of broadband signals during qualification.
+After a traverse is completed, the measurement levels at each point are compared to the inverse
+square law levels for a free-field. Table 1 lists the allowable deviations between the measured data
+points and inverse square law. The allowances differ based on frequency band. After all traverse paths
+have been measured, the chamber’s qualified performance is determined by the maximum distance that
+falls within the allowable deviations along all the paths and at all frequencies of interest.
+Table 1 — Maximum allowable deviation of measured sound pressure
+levels from theoretical levels using the inverse square law (1)
+Type of test room
+
+One-third-octave band frequency Allowable deviation
+Hz
+
+dB
+
+Anechoic
+
+≤630
+
+±1,5
+
+(free-field)
+
+800 to 5 000
+
+±1,0
+
+≥6 300
+
+±1,5
+
+Hemi-anechoic
+
+≤630
+
+±2,5
+
+(hemi-free-field)
+
+800 to 5 000
+
+±2,0
+
+≥6 300
+
+±3,0
+
+2.2 Annex A Curve Fit
+ISO 3745 estimates the sound pressure levels of each traverse based on inverse square la w with the
+following equations. “The sound pressure level at the ith position with the region to be qualified, Lp (ri ),
+is given by…
+𝐿𝑝 = (𝑟𝑖 ) = 20𝐿𝑜𝑔 (
+
+𝑎
+𝑟𝑖 −𝑟0
+
+) 𝑑𝐵
+
+(1)
+
+where
+𝑎=
+
+2
+𝑀
+𝑀𝑟02 + ∑𝑀
+𝑖=1 𝑟𝑖 − 2𝑟0 ∑𝑖=1 𝑟𝑖
+𝑀
+∑𝑀
+𝑖=1 𝑟𝑖 𝑞𝑖 − 𝑟0 ∑𝑖=1 𝑞𝑖
+
+(2)
+
+ri is the distance of the ith measurement position from the center of the measurement sphere or
+hemisphere;
+r0 is the collinear offset of the acoustic center along the axis of the microphone traverse — it is
+a measurement of the separation between the acoustic center of the source and the origin of the
+microphone traverse, whose apparent position is given by:
+
+𝑀
+𝑀
+2 𝑀
+∑𝑀
+𝑖=1 𝑟𝑖 ∑𝑖=1 𝑟𝑖 𝑞𝑖 − ∑𝑖=1 𝑟𝑖 ∑𝑖=1 𝑞𝑖
+𝑟0 = (
+)
+𝑀
+𝑀
+∑𝑀
+𝑖=1 𝑟𝑖 ∑𝑖=1 𝑞𝑖 − 𝑀 ∑𝑖=1 𝑟𝑖 𝑞𝑖
+
+2
+
+(3)
+
+INTER-NOISE 2016
+
+in which
+𝑞𝑖 = 10−0.05𝐿𝑝𝑖
+
+(4)
+
+where Lpi is the sound pressure level of the ith position in decibels;
+M is the number of measurement positons along each microphone traverse within the region where the
+inverse square law is followed (assumes the data points neat the end of the traverse may be
+discarded).”(1)
+The curve fitting equation in ISO 3745 Annex A allows the measured collinear acoustic offset
+location to be adjusted to create the best fit for the data. In practice, this allows the fitted measurement
+line to be adjusted away from the inverse square law line so that the data is only compared to
+deviations from itself instead of the inverse square law response. By using this fitting method, a
+chamber can fully comply with ISO 3745 at certain frequencies while not exhibiting free-field
+performance at those frequencies. This typically serves to extend the qualified chamber performance
+down to a lower frequency where a larger chamber size would be needed to demonstrate true inverse
+square law performance.
+Besides the problem that a movable acoustic offset creates, there is no limit to the distance of the
+acoustic offset in the fitting equation. The standard says that the offset “should” fall within 200 mm of
+the actual center of the sound source. 200 mm places the acoustic center outside the volume of many
+sound sources used for room qualification and the “should” instead of “sh all” language creates an
+ambiguity that can be used to drastically remove the fitted data from the actual inverse square law
+performance.
+
+3. ISO 26101
+3.1 Key Changes from ISO 3745
+The qualification procedure of ISO 26101 generally follows the procedure of ISO 374 5. Several
+key changes were implemented to improve and update the procedure. The changes create more
+stringent requirements for chambers and erase the ambiguities present in ISO 3745. The main body of
+ISO 26101 lists requirements of all chamber qualifications and Annex A lists the requirements for a
+general purpose anechoic chamber without an overriding noise code or specific repeated item of
+testing.
+3.1.1 Traverse Paths
+The number of traverse paths necessary to qualify a chamber differs between the ISO 3745 and ISO
+26101. In ISO 3745, only five traverse paths are required for all chambers. In ISO 26101, a minimum
+of five paths must be run with additional paths necessary for unique geometries or chamber additions
+that break the uniform acoustic treatment. For standard chambers, this does not create any differences
+in testing but it necessitates additional traverse paths for chambers with abnormalities incorporated
+into the design.
+3.1.2 Curve Fit
+The curve fit of ISO 26101 follows inverse square law and shows the chamber performance versus
+true free-field performance.
+“From the sound pressure levels measured at positions specified in 5.1.4.3, the estimatio n of sound
+pressure levels based on the inverse square law shall be determined for each measurement traverse
+from the following equation:
+𝑟
+
+𝐿𝑝 (𝑟𝑖 ) = 𝑏 − 20 lg ( 𝑖 ) 𝑑𝐵
+𝑟0
+
+where
+Lp(ri) is the sound pressure level at distance ri estimated by the inverse square law, expressed in
+decibels (dB);
+
+3
+
+(5)
+
+INTER-NOISE 2016
+
+ri
+
+is the distance of measurement point i from the acoustic centre of the sound source, expressed
+in metres (m);
+
+r0
+
+is the reference value, r0 = 1 m;
+
+b
+
+is a parameter that is adjusted to optimise the fit of the measured sound pressure levels into the
+tolerance range, to maximise the qualified distance from the test sound source.
+𝑟𝑖
+𝑁
+∑𝑁
+𝑖=1 20𝑙𝑔 (𝑟 ) 𝑑𝐵 + ∑𝑖=1 𝐿𝑝𝑖
+0
+𝑏=
+𝑁
+
+(6)
+
+where
+Lpi
+
+is the measured sound pressure level (corrected for source stability) at measurement point i,
+expressed in decibels (dB);
+
+N
+
+is the number of measurement points along the measurement traverse.” (2)
+
+The fitting equation is modified by a parameter included to determine the number of analysis points
+necessary to maximize the fitting distance given the measured data points. The allowable deviations
+from this curve fit are the same as those from ISO 3745 as shown in Table 1. The curve fit procedure in
+ISO 26101 does not allow for acoustic center adjustment of the source as allowed in ISO 3745.
+3.1.3 Qualification Bandwidth
+ISO 26101 requires the measured data to be analyzed at all contiguous one -third octave band
+frequencies that compose the frequency range of interest. ISO 3745 allows octave band analysis of
+frequencies between 125 Hz and 400 Hz and requires one-third octave band analysis at all other points.
+ISO 3745 also requires the chamber to be qualified from 100 Hz to 10 kHz to be in full conformity
+with the standard. ISO 26101 allows chambers of a reduced frequency range to be qualified in full
+conformity with the standard.
+3.1.4 Spatial Resolution and Starting Point
+ISO 26101 requires at least one-tenth wavelength measurement spacing at frequencies below 1 kHz
+and 25 mm at frequencies above 1 kHz. ISO 3745 allows measurement spacing up to 100 mm. Both
+standards require at least 10 measurement points per traverse path.
+ISO 26101 traverses can be started up to one-quarter wavelength of the lowest frequency of interest
+away from the acoustic center of thee sound source. ISO 3745 traverses all start at 0,5 m away from the
+acoustic center of the sound source.
+When testing according to both standards, a reference microphone is used to monitor the output of
+the sound source. This microphone is stationary throughout the test. In ISO 26101, the levels measured
+by the reference microphone are required to be used to correct the measured traverse data for source
+stability. In ISO 3745, the use of these reference levels for correction is optional.
+3.1.5 Traverse Length
+ISO 26101 requires the traverse path distance to extend out to one-half wavelength of the lowest
+frequency of interest in order to qualify the chamber. ISO 3745 requires only the minimum number of
+measurement points as discussed above. The one-half wavelength requirement of ISO 26101 impacts
+the design of anechoic and hemi-anechoic chambers because the ability to traverse to this distance
+must now be considered when designing a chamber. In practice, this requirement is not necessary to
+determine inverse square law performance and, if left in the standard, will require future chambers to
+unnecessarily grow larger while reducing the frequency range of existing chambers based on geometry
+and not acoustical performance.
+In the following section, it will be shown that measured data from existing chambers exhibit
+compliance or noncompliance with inverse square law well before the required one-half wavelength
+distance. The increased chamber sizes needed to comply with the one-half wavelength traverse
+requirement impacts the design and implementation of future chambers from both logistical and
+budgetary perspectives.
+
+4
+
+INTER-NOISE 2016
+
+4. Case Studies
+4.1 Low frequency data
+Chamber size and wedge depth is driven by the wavelength of the lowest frequency of interest. In
+large chambers, the difference in qualification between ISO 3745 and ISO 26101 will not have a major
+effect on chamber size. However, the required qualification distances of ISO 26101 will require
+chambers that once qualified to ISO 3745 to now qualify to a reduced frequency range simply because
+the required ISO 26101 traverse distances could not be met. This reduced frequency range is not a
+function of the chamber’s ability to provide inverse square law performance but a function of geometry.
+It will be shown that the revised curve fit method of ISO 26101 corrected the errors of ISO 3745 and
+the minimum traverse length of one-half wavelength is not necessary.
+
+60
+59
+58
+57
+56
+55
+54
+53
+52
+51
+50
+49
+48
+47
+46
+45
+44
+43
+42
+41
+40
+39
+38
+37
+36
+
+Traverse Data
+26101 Estimated Inverse Square Law
+26101 Upper Limit
+26101 Lower Limit
+Inverse Square Law
+
+500
+600
+700
+800
+900
+1000
+1100
+1200
+1300
+1400
+1500
+1600
+1700
+1800
+1900
+2000
+2100
+2200
+2300
+2400
+2500
+2600
+2700
+2800
+2900
+3000
+3100
+3200
+3300
+
+Sound Pressure Level (dB re 2E-5 Pa)
+
+4.1.1 Large Hemi-anechoic Chamber
+Figure 1 represents an operational hemi-anechoic chamber originally designed and qualified from
+100 – 20 kHz to a distance of 2,0m by ISO 3745:2012 with internal dimensions of (L x W x H) 7,8 x 6,3
+x 5,2m. The measured data was reanalyzed using the qualification procedures of ISO 26101 from
+section 3.1.2. Both figures show the measured data for the nearest wall traverse which is the traverse
+path expected to perform the worst in a rectangular chamber. Figure 1 shows the chamber following
+inverse square law to further than the half-wavelength distance of 1,7m at 100Hz. This chamber
+performs as designed using both qualification methods.
+
+Distance from source (mm)
+
+Figure 1: Large Hemi-Anechoic Chamber – ISO 26101 Curve Fit to 100 Hz
+4.1.2 Small Anechoic Chamber
+Figures 2, 3, and 4 represent an operational anechoic chamber constructed for audio and telephone
+testing with internal dimensions (L x W x H) – 3,35 x 3,05 x 2,74m and specified ISO 3745
+qualification range from 160 Hz to 20 kHz to a distance of 1m. The ISO 26101 qualification range of
+this chamber is 214 Hz – 20 kHz where the low frequency performance is limited due traverse distance
+requirements not actual chamber performance. Figure 2 shows the chamber analyzed to ISO 3745 at
+160 Hz using the ability to calculate an abnormal acoustic offset. Figure 3 shows the chamber analyzed
+to ISO 26101 at 160 Hz with the deviation from inverse square law performance clearly seen before the
+half-wavelength distance of 1.1m. Figure 4 shows this chamber very closely following inverse square
+law performance at 200 Hz to 1.0 m where the ISO 26101 half-wavelength traversing distance limits
+the chamber to 214 Hz due to geometry constraints.
+The range under which the chamber follows inverse square law and where it begins to deviate from
+inverse square law is obvious without employing either curve fit methodology. This performance is
+evident well before the one-half wavelength traverse distance required by ISO 26101. At 160 Hz, the
+chamber does not perform to inverse square law when analyzed according to ISO 26101. This
+corrects the problem associated with ISO 3745 as intended. The chamber follows inverse square law
+
+5
+
+INTER-NOISE 2016
+
+to a distance of 1 m at 200 Hz as designed, but the current requirements of ISO 26101 invalidate this
+claim because the required traverse distance could not be performed. The required one-half
+wavelength traverse distance is not needed because the curve fit methodology of ISO 26101 corrects
+the error of ISO 3745 on its own.
+
+Figure 2: Small Anechoic Chamber – ISO 3745 Curve Fit at 160 Hz
+
+Figure 3: Small Anechoic Chamber – ISO 26101 Curve Fit at 160 Hz
+
+6
+
+INTER-NOISE 2016
+
+Traverse Data
+26101 Estimated Inverse Square Law
+26101 Upper Limit
+
+Sound Pressure Level (dB re 2E-5 Pa)
+
+26101 Lower Limit
+
+1300
+
+1250
+
+1200
+
+1150
+
+1100
+
+Distance from source (mm)
+
+1050
+
+950
+
+900
+
+850
+
+800
+
+750
+
+700
+
+650
+
+600
+
+550
+
+500
+
+Inverse Square Law
+
+1000
+
+45
+44
+43
+42
+41
+40
+39
+38
+37
+36
+35
+34
+33
+
+Figure 4: Small Anechoic Chamber – ISO 26101 Curve Fit at 200 Hz
+
+Traverse Data
+26101 Estimated Inverse Square Law
+26101 Upper Limit
+26101 Lower Limit
+
+2500
+
+2400
+
+2300
+
+2200
+
+2100
+
+2000
+
+1900
+
+1800
+
+1700
+
+1600
+
+1500
+
+1400
+
+1300
+
+1200
+
+1100
+
+1000
+
+900
+
+800
+
+700
+
+Inverse Square Law
+
+600
+
+48
+47
+46
+45
+44
+43
+42
+41
+40
+39
+38
+37
+36
+35
+34
+33
+32
+31
+30
+29
+28
+27
+
+500
+
+Sound Pressure Level (dB re 2E-5 Pa)
+
+4.2 High Frequency Chamber Performance
+Using ISO 26101 qualification methods and sound sources fully compliant with the directivity of
+both standards, the high frequency traverses end up as the determining factor for chamber qualification
+distance instead of low frequency traverses in large chambers. This is counter-intuitive for uniform
+chambers constructed without reflecting areas or measurement apparatuses. This situation occurs
+during pure tone qualifications and is not present in broadband qualifications due to signal averaging
+and is especially pronounced in frequencies above 10 kHz as seen in Figure 6.
+
+Distance from source (mm)
+
+Figure 6: Large Hemi-Anechoic Chamber – ISO 26101 Curve Fit to 16 kHz
+The most likely factor is the influence of the measurement system inside the free-field creating
+reflections that do not appear at lower frequencies. A testing stand or rig is required to qualify most
+anechoic chambers without built in anchoring points or a center floor cavity. The introduction of these
+
+7
+
+INTER-NOISE 2016
+
+apparatuses in the free field causes small deviations to appear in the measurements. The ISO 3745
+curve fit method allowed more flexibility in fitting this data even though it was often times difficult.
+When using the ISO 26101 curve fit method, it is often impossible to fit the high frequency data.
+More research is needed to fully explore situation. To account for this effect while research is ongoing,
+the deviation window in frequencies above 10 kHz may need to be expanded to fall more in line with
+the expanded allowable deviations in source directivity above 10 kHz as seen in Table 2 .
+Table 2 — Allowable deviation in directivity of the test source (1,2)
+Type of test room
+
+One-third-octave-band frequency
+
+Allowable deviation in directivity
+
+Hz
+
+dB
+
+630
+
+1.5
+
+800 to 5,000
+
+2.0
+
+6,300 to 10,000
+
+2.5
+
+10,000
+
+5.0
+
+630
+
+2.0
+
+Hemi-anechoic
+
+800 to 5,000
+
+2.5
+
+(hemi-free-field)
+
+6,300 to 10,000
+
+3.0
+
+10,000
+
+5.0
+
+Anechoic
+(free-field)
+
+5. CONCLUSIONS
+ISO 26101 is an improvement of the anechoic and hemi-anechoic chamber qualification methods of
+ISO 3745 Annex A and assures that chambers are designed and built in ways that will more closely
+follow inverse square law performance. The qualification distances and frequency ranges of many
+previously built small anechoic and hemi-anechoic chambers will be reduced by this standard. While
+this ultimately will provide more accurate free-field results it will also cause chamber sizes to increase
+unnecessarily. The ISO 26101 half-wavelength traversing requirement is not necessary and should be
+reduced or eliminated. Additionally, the allowable deviations for high frequencies need to be
+adjusted to reflect the parameters allowed for the sources. Unless this change to the high -frequency
+requirements is implemented, chambers will be unnecessarily limited in performance by the method
+and apparatuses used instead of by the actual acoustic performance of the cham ber.
+
+REFERENCES
+1. ISO 3745:2012, Acoustics — Determination of sound power levels and sound energy levels of noise
+sources using sound pressure — Precision methods for anechoic rooms and hemi-anechoic rooms. ISO;
+Geneva, Switzerland, 2012.
+2. ISO 26101:2102, Acoustics — Test methods for the qualification of free-field environments. ISO;
+Geneva, Switzerland, 2012.
+
+8
+
+

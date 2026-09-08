@@ -1,0 +1,320 @@
+QUIET DRONES
+Second International e-Symposium
+on
+UAV/UAS Noise
+27th to 30th June 2022
+Accurate measurement of Drone Noise on the ground
+
+Per Rasmussen – Acoustic consultant: pr@grasacoustics.com
+Lars Winberg – Business Development Manager: lw@grasacoustics.com
+
+Summary
+
+Accurate measurement of noise from smaller unmanned aerial vehicles/systems (UAVs/UASs)
+can be performed in anechoic chambers, but larger types need to be tested in outdoor
+environments. This will introduce ground reflections that may disturb the measurements if
+microphones are mounted above the ground. By placing the measurement microphone on a fully
+reflecting ground board, the influence of the reflection becomes well defined and will result in a
+simple pressure doubling. By using flush-mounted microphones in the ground board, the
+frequency range of the system may be extended to cover the full audible range up to 20 kHz.
+
+1. Introduction
+With an increasing number of lightweight and small multirotor unmanned aerial systems (UASs),
+the need for assessing the methods used for accurate UAS noise measurements is increasing.
+The characteristics of noise from lightweight and small multirotor UASs differ from jet and
+propeller-driven airplanes in frequency and tonality. Also, large jet airplanes typically fly in
+predefined air corridors, different from smaller propeller-driven airplanes flying at lower altitudes,
+while lightweight and small multirotor UASs normally operate even closer to habitable areas,
+sometimes hovering and thereby constituting a stationary noise source.
+Traditionally, two methods have been used for measuring noise from airplanes on the ground: 1)
+Pole-mounted microphones and 2) inverted microphones over a reflecting pane. This paper
+evaluates these methods and investigates new standards for measuring noise from UASs.
+The noise from smaller hovering UASs can be measured and studied in anechoic chambers,
+which will provide a well-defined free field acoustic environment. For larger UASs, the size of
+Page | 1
+
+most anechoic chambers may be too small and may incur problems with recirculation and safety.
+It may therefore be necessary to perform the measurements at an outdoor test site where it will
+not be possible to obtain a free field as in the anechoic chamber because the ground will act as
+a reflecting plane.
+Traditional aircraft noise measurements as, for example, described in ICAO Annex 16 [1] or ISO
+20906 [2], are performed with a microphone mounted at some distance above the ground, and
+the results from such measurements will be influenced by the reflections from the ground
+impedance. This may provide a good estimate of the overall A-weighted sound pressure level for
+an aircraft flying over the measurement position. However, for detailed studies of the frequency
+content and for hover conditions, this method may lead to considerable errors.
+This issue has been recognized in ICAO Annex 16 [1], as the method for helicopter test is
+performed with a microphone mounted on a plate with a well-defined impedance. The inverted
+microphone technique described in ICAO Annex 16 [1] is, however, limited to frequencies below
+10 kHz. This may be relevant for traditional aircraft, which are typically operated at relatively large
+distances from observers, and the attenuation of high frequencies by the air will eliminate the
+problem with high frequencies. However, many UASs are intended for operation closer to
+observers and high frequencies may not be attenuated before reaching an observer and
+therefore need to be considered.
+
+2. Aircraft noise measurements
+2.1 Microphone over a reflecting plane
+Traditional aircraft noise measurements are performed with a microphone positioned at a height
+of 1.2 m, as described in for example ICAO Annex 16 Volume 1 Appendix 1, 3.5.1 [1], illustrated
+in
+Figure
+1.
+Sound source
+
+Hover condition
+
+Direct wave
+Microphone
+
+Reflected
+wave
+
+h
+
+Ground Z
+Figure 1. Microphone at height h with sound source above
+
+Page | 2
+
+This introduces interference between the direct wave and the reflected wave at the microphone
+position [3]. If the sound source emits pink noise and is directly above the microphone, the
+resulting spectra at the microphone position will be as shown as the orange curve in Figure 2,
+where the blue curve indicates the corresponding free-field level at the microphone position with
+no ground reflection. (It should be noted that the following calculations are idealized simulations
+and that actual measurements would give less well-defined effects at high frequencies due to
+scattering, impedance changes and other factors resulting in lower spatial correlation).
+
+Figure 2. FFT spectra for pink noise source directly above microphone (hover conditions)
+
+The interference of the direct wave and the reflected wave at the microphone position is like a
+comb filter, with the first minimum at the frequency where the microphone height 1.2 m equals
+¼ of the wavelength:
+𝑓𝑓0 =
+
+𝑐𝑐
+≈ 71.4 𝐻𝐻𝐻𝐻
+4 ∗ 𝑙𝑙
+
+𝑓𝑓1 =
+
+𝑐𝑐
+≈ 143 𝐻𝐻𝐻𝐻
+2 ∗ 𝑙𝑙
+
+And the first maximum at
+
+This can be seen more clearly using 1/24-octave filtering as in Figure 3:
+
+Page | 3
+
+λ/4 -72 Hz
+
+λ/2 - 143 Hz
+
+Full ground reflection
+
+No reflection
+Free-field condition
+
+Figure 3. 1/24-octave spectra for pink noise source directly above microphone (hover conditions)
+
+Using 1/3-octave filtering, the effect of the comb-filtering will be further smoothed at higher
+frequencies, as shown in Figure 4. This shows a 1/3-octave spectra for pink-noise source directly
+above the microphone (hover conditions), where the frequencies coincident with the comb-filter
+minima are reduced by more than 20 dB, and the frequencies coincident with the comb-filter
+maxima are amplified by 6 dB. It may be possible to correct the frequencies amplified by the
+maxima, but it is more difficult to correct the frequency components reduced by the comb filter,
+as they often may be reduced below the general broadband noise level.
+It should be noted that the overall sound pressure level measured at 1.2 m height will be 3 dB
+higher than the corresponding level measured in a full free field as for example inside an anechoic
+chamber; therefore, it is important to consider the specific circumstances of the actual
+measurement before comparing levels.
+
+λ/4
+
+Full ground
+reflection
+
+λ/2
+
+Comb-filter effect smoothed
+by 1/3-octave filter
+
+No reflection
+free-field condition
+
+Figure 4. 1/3-octave spectra for pink-noise source directly above microphone (hover conditions)
+
+Page | 4
+
+In practice it may be possible to correct the data for the comb-filtering effect as long as the source
+signal is broadband noise. However, if the source signal contains pure tone components, it will
+not be possible to do this correction. Figure 5 shows an example where the source signal contains
+pure tone frequencies at 72 Hz and higher harmonics.
+λ/4
+
+λ/2
+
+Figure 5. 1/24-octave spectra of 72 Hz, 143 Hz, 215 Hz, 286 Hz and 357 Hz in free field
+
+When this signal is filtered by the comb filter created by the 1.2 m height interference, the
+resulting spectra will be as seen in Figure 6.
+
++6dB by comb filter
+
+Removed by comb filter
+
+Figure 6. 1/24-octave spectra for pure tone source directly above microphone (hover conditions), blue curve: free field, orange
+curve: ground reflection 1.2 m
+
+Page | 5
+
+The examples above have assumed a perfectly reflecting ground surface, and this condition may
+be fulfilled inside a semi-anechoic room with hard concrete floor or in an outside site with similar
+hard reflecting ground surface. Many outdoor measurement sites may have ground surfaces like
+gravel, grass or hard soil—not perfectly reflecting. The ground impedance can be modelled as a
+porous layer (Delany-Bazley-Miki) [4] with flow resistivity between 30 kPa*s/m2 and 30 MPa*s/m2.
+Figure 7 shows the simulation (COMSOL BEM) of the sound field above reflecting ground
+surfaces with different flow resistivity.
+
+Figure 7. Sound pressure level above ground for different flow resistivities at 1 kHz
+
+At 1.2 m height the influence of the ground reflection is considerable even with a ground flow
+resistivity of 30 kPa*s/m2 corresponding to something like very soft forest ground covered with
+moss. It can also be seen that moving the microphone closer to the ground surface will further
+increase the influence of the ground reflection, and even very soft ground surfaces will not
+prevent the interference.
+The hover situation, with the sound source directly above the microphone position, is the worst
+as far as interference between the direct and reflected wave. For a fly-by measurement, the
+elevation angle as defined in Figure 8 will vary continuously from 0° to 180°, with 90°
+corresponding to the source being right above the microphone, as in the hover example above.
+
+Page | 6
+
+Figure 8. Elevation angle for source over microphone
+
+As the angle varies, the distance travelled by the direct and the reflected wave will change, and
+this will change the comb-filter effect as illustrated in Figure 9.
+
+Figure 9. Comb-filtering effect for different elevation angles for microphone height 1.2m and source height 10 m.
+
+2.2 Ground board measurements with inverted microphone
+ICAO Annex 16 Volume I, Appendix 6 [1] for propeller-driven airplanes not exceeding 8,618 kg,
+uses a ground board microphone configuration as shown in Figure 10. This is explained further
+in ICAO Environmental Technical Manual, Volume I, Procedures for the Noise Certification of
+Aircraft: “The specified ground plane microphone configuration greatly minimizes the interference
+effects of reflected sound waves inherent in pole-mounted microphone installations. For a 1.2 m
+Page | 7
+
+(4 ft) microphone, such effects typically occur in the frequency region that is most significant for
+propeller-driven aircraft noise”. [5]
+
+Figure 10. ICAO ground plane microphone configuration
+
+The resulting sound field on the surface of the ground plate depends on the impedance of the
+surrounding ground and the angle of incidence for the incoming sound waves [6]. For a 90°
+elevation, where the sound source is directly above the plate, the pressure distribution on the
+plate is as shown in Figure 11.
+
+Figure 11. SPL on plate and surrounding ground for 90° incidence with 250 kPa's/m2 (a) 500 Hz, (b) 1 kHz, (c) 2 kHz) and (d) 8
+kHz
+
+The SPL pressure distributions on the ground board was calculated for a free-field sound
+pressure level of 94 dB, and it can be seen that while the SPL on the ground surface decreases
+at higher frequencies due the absorption, the pressure on the plate is almost constant at 100 dB,
+corresponding to a pressure doubling from the free-field condition. It can also be seen that the
+center point of the plate is not the optimum position. Figure 12 shows the spectra calculated in
+Page | 8
+
+the center position (blue curve) compared to the spectra in the microphone position at r=0.15 m,
+as specified in Figure 10.
+
+Figure 12. Frequency response for 90° incidence at center point and at a point at r=0.15 m
+
+The ICAO microphone configuration used for propeller-driven aeroplanes not exceeding 8,618kg
+in Figure 10 has the draw-backs in that it is very sensitive to changes in the distance between
+the ground plate and the microphone diaphragm as shown in Figure 13. This might be
+problematic in the field when a last-minute calibration is required to validate the measurement
+chains.
+
+Figure 13. ½″ Inverted microphone over ground plate with 7 mm distance (green curve), 4 mm distance (blue curve) and 9.6 mm distance
+(red curve)
+
+Secondly, the inverted microphone mounted on top of the reflecting plate disturbs the
+measurements above 10 kHz. The influence of different-sized microphones can be seen from
+Figure 14. The graph shows the influence of different-sized microphones mounted upside-down
+above the ground plate compared to a reference microphone mounted flush on the plate.
+Page | 9
+
+⅛″
+¼″
+½″
+
+Figure 14. Influence of ⅛″, ¼″ and ½″ microphones mounted upside-down above the ground plate compared to a reference microphone
+mounted flush on the plate
+
+2.3 Ground board measurements with flush-mounted microphones
+For traditional aircraft, the high-frequency content above 10 kHz may not be of particular interest,
+as the aircraft are normally far away, where the atmospheric absorption will reduce the high
+frequencies before they reach an observer. Typical drones may however be operated closer to
+observers, and it may not be justified to ignore the high-frequency content. To configure a setup
+where the ground reflections are avoided and where no inverted microphone disturbs the
+measurements above 10 kHz, the microphone must be flush mounted with the plate surface, as
+shown in Figure 15. This will increase the frequency range up to 20 kHz and thus allow
+measurement of the high-frequency content.
+
+-
+
+Figure 15. Ground board plate with flush-mounted microphone
+
+Conclusions
+
+Page | 10
+
+A free-field measurement in a fully anechoic chamber enables accurate measurements of the full
+spectral content of the device under test for both broadband noise sources and for noise sources
+containing pure tone sources. For outdoor measurements, which include ground reflections, and
+for semi-anechoic chamber measurements, the overall level of a broadband noise source can be
+obtained, with microphones at a certain height, but in general the level obtained with this method
+will be 3 dB higher than the free-field condition.
+If the microphone, instead of mounted at a certain height, is flush mounted with a fully reflecting
+ground, both broadband noise sources and pure tone sources can be measured, but with a 6 dB
+higher level than for the free-field situation.
+As larger jet airplanes move along a flight track at almost constant speed at a considerable
+distance from the measurement point, the tonal content of the noise is reduced due to the
+distance, and the constant movement of the source minimizes the comb effect. The interference
+from the reflecting wave is therefore neglectable, and the measurements are repeatable for this
+kind of noise source.
+As lighter aircraft do not follow the same predefined flight tracks and as they fly at lower altitudes,
+the interference from the ground is no longer neglectable, and a ground plate with an inverted
+microphone should be used. This ensures a repeatable measurement for frequencies below 10
+kHz. As the inverted microphone is mounted in the sound field, the sensor influences
+measurements above 10 kHz, and it is therefore not suitable for lightweight and small multirotor
+unmanned aerial systems.
+As some of the characteristics of the noise from UAVs/UASs are different from noise from larger
+airplanes in relation to tonal content and higher frequency as well as lower altitude and stationary
+source, the current standards for accurate measurement of noise on the ground are not optimal,
+and a flush-mounted microphone on a ground plate is preferable. This configuration is useful for
+stationary and non-stationary noise sources with frequencies up to 20 kHz, where the noise
+contains tones.
+
+References
+1. ICAO Annex 16 to the Convention on International Civil Aviation: Environmental
+Protection: Volume 1—Aircraft Noise, International Civil Aviation Organization, July
+2017.
+2. ISO 20906: Acoustics—Unattended monitoring of aircraft sound in the vicinity of airports,
+ISO, 2009.
+3. T.D. Norum and C.H. Liu, “Point source moving above a finite impedance reflecting
+plane—experiment and theory,” The Journal of the Acoustical Society of America, vol.
+63, 1069, 1978, doi: 10.1121/1.381839
+4. K. Attenborough, I. Bashir and S.Taherzadeh, “Outdoor ground impedance models,” The
+Journal of the Acoustical Society of America, vol. 129, 2806, 2011, doi:
+10.1121/1.3569740
+5. ICAO Environmental Technical Manual, Volume I, Procedures for the Noise Certification
+of Aircraft, International Civil Aviation Organization, 2015.
+6. W.L. Willshire, Jr. and P. Nystrom, “Investigation of Effects of Microphone Position and
+Orientation on Near-ground Noise Measurements,” NASA Technical Paper, NASA, April
+1982.
+Page | 11
+
+

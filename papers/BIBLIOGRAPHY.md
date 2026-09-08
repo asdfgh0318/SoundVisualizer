@@ -91,3 +91,57 @@ Corrections made during this pass relative to earlier working names: the Singh f
 
 ## Audit note (2026-09-07, later)
 All 69 documents were audited claim by claim against their own text (`AUDIT-1.md` … `AUDIT-5.md`); the corrections that changed a citation are folded into the table above and the ones that changed a claim are listed in `ERRATA.md`.
+
+## arc-validation/ (47)
+
+Fetched 2026-09-08 by the nine retrieval threads of the arc-validation remedies campaign (`arc-validation/PROTOCOL.md`); short citations here, the citation as printed and the page-referenced quotes are in `arc-validation/EXTRACTS-<thread>.md`. Tier: ● full text read at source · ◐ standards preview or PDF read from its rendered pages · [vendor] manufacturer document.
+
+| File | Tier | Short citation | Threads |
+|---|---|---|---|
+| AES56_2008_standard-preview_loudspeaker-polar-radiation.pdf | ◐ | AES56-2008 (R2014) (preview) | G |
+| Alba-delRey-Rodriguez_2025_MDPIAcoustics_fitting-methods-open-pore-foams.pdf | ● | Alba, del Rey & Rodríguez 2025, Acoustics (MDPI) | F |
+| ANSI-S1.11_2004_standard_octave-fractional-octave-filters.pdf | ● | ANSI S1.11-2004 | C |
+| Antonacci-etal_2012_IEEE-TASLP_room-geometry-inference.pdf | ● | Antonacci et al. 2012, IEEE Trans. Audio Speech Lang. Process. | E |
+| Antoni_2009_MSSP_cyclostationarity-by-examples.pdf | ● | Antoni 2009, Mechanical Systems and Signal Processing | C |
+| Attenborough_2015_EuroNoise_outdoor-ground-impedance-level-difference-fitting.pdf | ● | Attenborough 2015, EuroNoise | E |
+| Bellmann-Klippel_nd_vendor-paper_non-anechoic-loudspeaker-measurement.pdf | [vendor] | Bellmann & Klippel n.d., Klippel technical paper | G |
+| BruelKjaer_2019_vendor_microphone-handbook-vol1-theory.pdf | [vendor] | Brüel & Kjær 2019, Microphone Handbook Vol. 1: Theory | H |
+| Cameron_1977_NBS-TN952_mass-calibration-designs.pdf | ● | Cameron, Croarkin & Raybold 1977, NBS Technical Note 952 | D |
+| Dokmanic-etal_2013_PNAS_acoustic-echoes-reveal-room-shape.pdf | ● | Dokmanić et al. 2013, PNAS | E |
+| Farina_2000_AES108_swept-sine-impulse-response-distortion.pdf | ● | Farina 2000, AES 108th Convention | E |
+| Farina_2007_AES122_advancements-impulse-response-sine-sweeps.pdf | ● | Farina 2007, AES 122nd Convention | E |
+| Hanson_1977_NASA-CR-2899_QF-1B-inflow-distortion-rig-interference.pdf | ● | Hanson 1977, NASA CR-2899 | B |
+| Heutschi-Ott-Nussbaumer-Wellig_2020_ActaAcustica_synthesis-drone-signals.pdf | ● | Heutschi et al. 2020, Acta Acustica | C |
+| Hodder_1977_NASA-TMX-73183_static-to-flight-fan-tone-noise.pdf | ● | Hodder 1977, NASA TM X-73183 | B |
+| Homyak-etal_1983_NASA-TM-83349_compact-inflow-control-device.pdf | ● | Homyak, McArdle & Heidelberg 1983, NASA TM-83349 | B |
+| IEC-60268-21_2018_standard-preview_acoustical-output-measurements.pdf | ◐ | IEC 60268-21:2018 (preview) | G |
+| IEC-60942_2017_standard_sound-calibrators-preview.pdf | ◐ | IEC 60942:2017 (preview) | D |
+| IEC-61094-6_2004_standard_electrostatic-actuator-grids-preview.pdf | ◐ | IEC 61094-6:2004 (preview) | D |
+| IEC-61094-8_2012_standard_freefield-comparison-calibration-preview.pdf | ◐ | IEC 61094-8:2012 (preview) | D |
+| IEC-61260-1_2014_standard-preview_octave-fractional-octave-band-filters.pdf | ◐ | IEC 61260-1:2014 (preview) | C |
+| ISO-1996-2_2017_standard-preview_environmental-noise-measurement.pdf | ◐ | ISO 1996-2:2017 (preview) | C |
+| ISO-3382-1_2009_standard-preview_room-acoustic-parameters.pdf | ◐ | ISO 3382-1:2009 (preview) | G |
+| ISO-3744_2010_standard-preview_two-surface-absolute-comparison.pdf | ◐ | ISO 3744:2010 (preview) | G |
+| ISO-3745_2012_standard-preview_precision-methods-anechoic-rooms.pdf | ◐ | ISO 3745:2012 (preview) | A |
+| ISO-6926_2016_standard-preview_reference-sound-sources.pdf | ◐ | ISO 6926:2016 (preview) | G |
+| Jimenez-etal_2017_SciRep_metadiffusers-deep-subwavelength.pdf | ● | Jiménez et al. 2017, Scientific Reports | F |
+| Lamancusa_2009_PennState-CourseNotes_outdoor-sound-propagation.pdf | ● | Lamancusa 2009, Penn State course notes | A |
+| Liu-Zhang-Zheng_2025_MDPIMaterials_review-sound-absorbing-methods.pdf | ● | Liu, Zhang & Zheng 2025, Materials (MDPI, review) | F |
+| Long-etal_2020_SciRep_subwavelength-composite-metasurface-absorber.pdf | ● | Long et al. 2020, Scientific Reports | F |
+| miniDSP_nd_vendor_UMIK-1-product-brief.pdf | [vendor] | miniDSP, UMIK-1 Product Brief | D |
+| miniDSP_nd_vendor_UMIK-2-product-brief.pdf | [vendor] | miniDSP, UMIK-2 Product Brief | D |
+| miniDSP_nd_vendor_UMIK-2-user-manual.pdf | [vendor] | miniDSP, UMIK-2 User Manual | D, H |
+| Mydlarz-Salamon-Bello_2016_arXiv_low-cost-urban-acoustic-monitoring.pdf | ● | Mydlarz, Salamon & Bello 2016, arXiv | D |
+| Oppenheim-Schafer_2004_IEEE-SPM_from-frequency-to-quefrency.pdf | ● | Oppenheim & Schafer 2004, IEEE Signal Processing Magazine | E |
+| Pao-Wenzel-Oncley_1978_NASA-TP1104_ground-effects-aircraft-noise.pdf | ● | Pao, Wenzel & Oncley 1978, NASA TP-1104 | A |
+| Pettingill-Zawodny_2026_NASA-TM-20250003316_tip-speed-tripping-SHAC.pdf | ● | Pettingill & Zawodny 2026, NASA/TM-20250003316 | I |
+| Picaut_2020_Sensors_low-cost-noise-sensors-review.pdf | ● | Picaut et al. 2020, Sensors (review) | D |
+| Randall_2013_Surveillance7_history-of-cepstrum-analysis.pdf | ● | Randall 2013, Surveillance 7 conference | A, E |
+| Risojevic_2018_Sensors_low-cost-wireless-node-sound-level.pdf | ● | Risojević et al. 2018, Sensors | D |
+| Schatzman-Malpica_2019_VFS-Forum_tiltrotor-test-rig-shaft-angle-sweep.pdf | ● | Schatzman & Malpica 2019, Vertical Flight Society 75th Forum | G |
+| Wagner_2015_NIST-JRes_condenser-mic-long-term-stability.pdf | ● | Wagner & Guthrie 2015, J. Res. NIST | D |
+| Woodward-etal_1978_NASA-TM-73855_inlet-turbulence-control-device-anechoic-chamber.pdf | ● | Woodward, Wazyniak, Shaw & MacKinnon 1978, NASA TM-73855 | B |
+| Woodward-Glaser_1980_NASA-TM-81487_inflow-control-cuton-fan.pdf | ● | Woodward & Glaser 1980, NASA TM-81487 | B |
+| Zawodny-Boyd-Burley_2016_AHSForum72_SALT-facility-small-rotor-characterization.pdf | ◐ | Zawodny, Boyd & Burley 2016, AHS 72nd Annual Forum (read visually — broken text layer) | C, F, H, I |
+| Zawodny-Boyd_2017_AHSForum73_rotor-airframe-interaction-SALT.pdf | ● | Zawodny & Boyd 2017, AHS 73rd Annual Forum | B, I |
+| Zawodny-Schiller-Pettingill-Medina_2025_NASA-TM-20250009190_ducted-propeller-SHAC.pdf | ● | Zawodny, Schiller, Pettingill & Medina 2025, NASA/TM-20250009190 | I |

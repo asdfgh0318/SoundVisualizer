@@ -1,0 +1,668 @@
+Aeroacoustics Conferences
+20-23 May 2019, Delft, The Netherlands
+25th AIAA/CEAS Aeroacoustics Conference
+
+10.2514/6.2019-2497
+
+Numerical and Experimental Investigation of Flow
+Confinement Effects on UAV Rotor Noise
+Clément Nardari∗ , Damiano Casalino† and Francesco Polidoro‡
+Dassault Systèmes Simulia Corp., 175 Wyman St., Waltham, MA, 02451
+
+Downloaded by Clement Nardari on June 10, 2019 | http://arc.aiaa.org | DOI: 10.2514/6.2019-2497
+
+Vedran Coralic§ , John Brodie¶ and Phoi-Tack Lew‖
+Amazon.com Inc., 410 Terry Ave. N, Seattle, WA, 98109
+The primary objective of the present study is to investigate the impact of the recirculating
+flow that develops inside a closed, hemi-anechoic test chamber on the noise generation mechanisms of a drone rotor operated under static thrust conditions. To that end, Lattice-Boltzmann
+simulations are conducted for both an idealized, semi-infinite free-field and a confined, hemianechoic domain that models the test chamber, with the latter validated against experimental
+measurements. Comparison between simulations reveals a significant increase in rotor noise
+due to confinement, up to 5 dBA in overall sound pressure level depending on microphone
+location, with negligible impact on aerodynamic performance. Blade-strip and beam-forming
+source identification techniques are utilized to determine those sound-generation mechanisms
+responsible for the increase in rotor noise. Leading-edge interactions between the vortical
+structures convected by the recirculating flow and the rotor’s blades are demonstrated to be
+directly responsible for the generation of unsteady loads that lead to significantly higher blade
+passing frequency harmonic peaks. A small enhancement of the high-frequency self-noise
+contribution is also observed, whereas blade-tip vortex dynamics are largely unaffected by
+confinement so that the contribution of blade-vortex interaction noise is negligible.
+
+I. Nomenclature
+BPF
+= blade passing frequency
+c
+= blade section chord
+CQ
+= torque coefficient, CQ = ρnQ
+2 D5
+CT
+= thrust coefficient, CT = ρnT2 D 4
+D
+= rotor diameter
+f
+= frequency
+k
+= turbulent kinetic energy
+Lx
+= hemi-anechoic chamber length
+Ly
+= hemi-anechoic chamber width
+Lz
+= hemi-anechoic chamber height
+Mc
+= chord-based Mach number
+N
+= 1/3-Octave band number
+n
+= rotor angular speed
+OASPL = overall sound pressure level, relative to reference level of 2 × 10−5 Pa
+PWL
+= power Watt level, relative to reference level of 10−12 W
+Q
+= rotor torque
+Rec
+= chord-based Reynolds number
+SPL
+= sound pressure level, relative to reference level of 2 × 10−5 Pa
+∗ Senior Aerospace Engineer, SIMULIA, clement.nardari@3ds.com
+† Senior Technical Director, SIMULIA, damiano.casalino@3ds.com
+‡ Senior Technical Director, SIMULIA, francesco.polidoro@3ds.com
+§ Senior Research Scientist, Prime Air, vcoralic@amazon.com
+¶ Senior Mechanical Engineer, Prime Air, brodiej@amazon.com
+‖ Research Scientist, Prime Air, phoitack@amazon.com
+
+1
+Copyright © 2019 by Amazon.com Inc. and Dassault Systeme Simulia Corp.. Published by the American Institute of Aeronautics and Astronautics, Inc., with permission.
+
+T
+y+
+ε
+λ2
+ρ
+
+=
+=
+=
+=
+=
+
+rotor thrust
+dimensionless wall distance
+turbulent dissipation rate
+lambda-2 vortex criterion
+fluid density
+
+II. Introduction
+he future of urban air mobility is evolving toward electric vertical take-off and landing (eVTOL) vehicles, which
+most prominently have promising applications in transportation and delivery. eVTOL vehicle concepts typically rely
+on rotors for propulsion, naturally raising concerns over the noise they might generate as they fly over populated areas.
+Then, for such vehicles to be both accepted by the public and still satisfy their concept of operations, it is imperative that
+their rotors be both low-noise and efficient, two objectives that are frequently at odds with one another.
+An effort to optimize rotor aeroacoustics and aerodynamics typically begins with low-fidelity models of both. The
+low-fidelity models are utilized to reduce the design space to a manageable number of candidate rotors, which can
+then be evaluated with a high-fidelity model and, eventually, manufactured and tested in an anechoic facility. The
+validation of rotor performance predictions using anechoic facility measurements can be a challenge, however, since the
+typically closed environment of the facility differs significantly from the free-field conditions usually assumed by lowand high-fidelity models. Indeed, in a recent experimental investigation, Stephenson et al. [1] showed that the flow
+recirculation that occurs inside a closed anechoic chamber results in significantly higher rotor noise than is otherwise
+measured in the absence of recirculation. A potential pitfall in the rotor design process, then, is that the low- and
+high-fidelity models will produce candidate designs whose performance cannot be validated in the anechoic facility
+and/or that, when tested therein, do not outperform previous design iterations.
+In their study, Stephenson et al. [1] argued that the test conditions inside a closed anechoic facility are not
+representative of the environment in which a rotor will operate, suggesting, as remedy, that mesh treatments be utilized
+to disrupt recirculation. While Stephenson et al.’s argument is sensible, it is also important to acknowledge that a rotor
+will generally not operate under ideal conditions either, but will routinely be subject to wind turbulence, ground effects,
+etc. in day-to-day operations. In this context, a closed anechoic facility, absent of mesh treatments, provides relevant
+test conditions for assessing rotor performance. It also makes for a more challenging environment to optimize rotor
+aerodynamics and aeroacoustics in, which may lead to more robust designs. The motivation for the present study, then,
+is to understand how the effects of the anechoic chamber on the rotor’s performance can be accounted for in low- and
+high-fidelity models, so that these yield candidate designs that not only can be validated with in-chamber measurements,
+but can also be expected to perform well both at on- and off-design operating conditions.
+To that end, and as a first step, we perform both experiments and simulations of a rotor operating under static thrust
+conditions inside a closed, hemi-anechoic test chamber and investigate the impact of the recirculating flow on the rotor’s
+noise generation mechanisms. High-fidelity, Lattice-Boltzmann method (LBM) simulations are carried out for both an
+idealized, semi-infinite free-field and a confined, hemi-anechoic domain that models the test chamber. The simulation
+results from the confined domain are validated using experimental measurements and are compared to the simulation
+results from the unconfined domain in order to clearly identify and characterize the effects of flow recirculation.
+
+Downloaded by Clement Nardari on June 10, 2019 | http://arc.aiaa.org | DOI: 10.2514/6.2019-2497
+
+T
+
+III. Experimental Methodology and Procedures
+A. Hemi-anechoic Chamber
+Amazon Prime Air’s hemi-anechoic chamber was utilized to measure the noise produced by the propeller. A
+schematic of the facility is sketched out in Fig. 1. The chamber is Lx = 8.76D long, Ly = 8.86D wide and Lz = 7.79D
+tall, where D is the rotor diameter. Its walls and ceiling are treated with anechoic foam paneling, while the floor – a thick
+concrete slab – is left untreated and reflective. Our calibration experiments indicate that the chamber is hemi-anechoic
+within ±1 dB above a blade passing frequency (BPF) harmonic of 2.2, but only within ±4 dB below that, primarily due
+to the onset of standing waves, which are a consequence of the nearly cuboidal shape of the chamber.
+The propeller and motor are mounted on a cylindrical pole, a distance of 3.34D away from the floor, and are centered
+with respect to each of the chamber’s walls. They are oriented such that the thrust is directed downwards, toward
+the floor of the chamber. The propeller is surrounded by an array of 10 GRAS 40AE 1/2" pre-polarized free-field
+microphones. NI-9234 C-series sound and vibration modules are utilized to record signals from the microphone array.
+2
+
+Downloaded by Clement Nardari on June 10, 2019 | http://arc.aiaa.org | DOI: 10.2514/6.2019-2497
+
+Fig. 1 Schematic of Amazon Prime Air’s hemi-anechoic chamber, including the rotor test-stand and the
+microphone array configuration. The anechoic layer consists of sound-absorbing paneling and wedges.
+
+The microphones in the array are positioned in such a way as to minimize noise from flow over them (wind-screens
+are also used) and any effects from standing waves in the chamber. They are individually calibrated using a B&K Type
+4231 sound calibrator, with an accuracy of ±0.2 dB. The measurement errors are obtained from a comparison between a
+loudspeaker sound sample, as recorded at each microphone location, and its expected attenuation, which is inversely
+proportional to the stand-off distance from the source. We estimate that our measurement error at each microphone is
+approximately ±2 dB above a BPF harmonic of 2.2 and ±4 dB below that for any one 1/3-Octave band.
+Lastly, propeller thrust and torque are measured utilizing an ATI Industrial Automation Gamma transducer, mounted
+between the motor and cylindrical pole. Same as for the signals from the microphone array, that from the load cell is
+recorded via an NI-9234 C-series sound and vibration module. Our calibration of the load cell with a known weight
+suggests that our measurements of thrust are accurate within 8.6 × 10−4 of the CT , while those of torque are accurate
+within 3.6 × 10−5 of CQ .
+B. Measurement Protocol
+The measurement protocol consists of steadily ramping up the angular speed of the rotor, until the target operating
+condition is achieved, and then holding the target operating condition until the aerodynamic loads on the rotor, as
+measured by the load cell, have reached a statistically steady state. Rotor angular speed is held within ±5 RPM for the
+duration of the test by a closed-loop motor controller. A five-second sound sample is then recorded at each microphone
+location, along with the thrust and torque at the load cell.
+
+IV. Numerical Approach
+A hybrid acoustic approach is used in this study to compute the noise radiated by a rotor under static condition. The
+unsteady flow field is computed using an LBM solver, whereas the acoustic far-field is computed using a surface integral
+approach based on the Ffowcs-Williams and Hawkings (FWH) acoustic analogy [2]. An acoustic porous medium (APM)
+model [3], which is based on the Darcy-law model for the bulk of the medium and a specific treatment of the solid
+interface between the fluid and the porous medium, has been used to simulate the presence of acoustic treatments in the
+anechoic test chamber. The APM layer absorbs the impinging acoustic waves but preserves the confinement effect of the
+
+3
+
+Downloaded by Clement Nardari on June 10, 2019 | http://arc.aiaa.org | DOI: 10.2514/6.2019-2497
+
+room responsible for the flow recirculation. A description of the methodology is provided in the following subsections.
+A. Lattice-Boltzmann Method
+The high-fidelity computational fluid dynamics (CFD) and computational aeroacoustics (CAA) software SIMULIA
+PowerFLOW 5.5b is used to compute the unsteady fluid flow and corresponding flow-induced noise mechanisms in the
+present study. The solver is based on LBM, which is intrinsically transient and compressible. The basic idea behind
+LBM is to statistically track the advection and collisions of fluid particles by an integer number of distribution functions
+aligned with predefined discrete directions. As in statistical physics, the flow variables such as density and velocity
+are determined by taking the appropriate moments, i.e., summations over the set of discrete directions of the particle
+distribution function [4–6]. The relaxation time and other parameters of the equilibrium distribution function are
+computed by considering scales related to the turbulent motion of the resolved flow field. Such a procedure is usually
+referred to as very large-eddy simulation (VLES) and is based on the paradigm of a kinetic theory applied to a “gas of
+eddies”. As discussed by Chen et al. [7], such an expansion of the kinetic theory leads to the fundamental observation
+that the Reynolds stresses, which are a consequence of the chaotic turbulent motion, have a non-linear structure and
+are better suited to represent turbulence in a state far from equilibrium, such as in the presence of distortion, shear,
+and rotation. In other words, although the relaxation time is computed using a two-equation transport model, the
+k-ε re-normalization group model in SIMULIA PowerFLOW 5.5b [7–10], it is not used to compute an equivalent
+eddy viscosity, like in Reynolds-averaged Navier-Stokes models, but is used to recalibrate the Boltzmann model to
+the characteristic time scales of turbulent flow motion. The fundamental turbulence modeling idea of viewing eddies
+as a gas system is much better justified at the Boltzmann level, involving an appropriate relaxation time, rather than
+the macroscopic level. SIMULIA PowerFLOW 5.5b has been previously validated for a variety of aerodynamic and
+aeroacoustic applications relevant to the present study, such as benchmark studies conducted for rotating devices [11–13],
+involving trailing-edge noise generation as a source of rotor/propeller broadband noise [14]. These studies also provide
+confidence in the prediction of propulsion-related quantities.
+Following Zhang et al. [15], rotation can be incorporated by resolving the Lattice-Boltzmann equation in the rotating
+reference system and treating the non-inertial forces as external body forces. A local reference frame (LRF) volume
+region can be defined by creating a surface of revolution around the rotating solid part. The boundary of the volume
+of revolution is treated as a double-layer surface and the same boundary condition facetization algorithm is used to
+treat the two layers. Each surface layer communicates only with the inner (rotating) or outer (inertial) volume mesh.
+Conservation of normal and tangential momentum fluxes are imposed as a boundary condition on the two layers. During
+rotation, each layer collects mass and momentum and computes the distribution function based on the relative velocity.
+In the rotating volume, the local velocity is corrected by the acceleration terms.
+B. Acoustic Porous Medium
+For problems involving flow-induced noise, suitable CFD and/or CAA numerical methods are often non-linear and
+time-explicit. For a time-explicit solver, time-domain surface impedance boundary conditions could be used to model
+acoustic absorption due to porous materials. However, even when a time-domain surface impedance formulation can be
+derived, stability and robustness are challenging to achieve. Another possible approach and the one used in this project
+is to model absorbing materials as equivalent fluid regions such that sound waves travel through them. Analytical
+derivations show that the acoustic absorption is governed, or at least dominated, by the same physical mechanisms
+as flow resistivity. As a consequence, the same equations used to achieve the correct flow resistivity for a particular
+porous material also achieve the correct acoustic impedance. This approach is valid for any passive and homogeneous
+porous material [16]. As shown by Hersch and Walker [17], it is possible to analytically derive the expression for the
+impedance introduced by the presence of the porous medium. It is also possible to express the effects of a porous
+medium on the flow field due to an equivalent volume force acting on the fluid, which is related to the flow resistivity
+and the local flow velocity.
+C. Ffowcs-Williams and Hawkings Method
+LBM is inherently compressible and can be used to directly compute noise radiated from an unsteady flow past
+a rotating body. However, when the radiated noise has to be computed very far from the source region, as is usually
+the case for community noise applications, a hybrid approach must be used. In this approach, the computed near-field
+fluctuations are extrapolated to the far-field through an integral method. Two standard formulations are used in this
+
+4
+
+Downloaded by Clement Nardari on June 10, 2019 | http://arc.aiaa.org | DOI: 10.2514/6.2019-2497
+
+work, a time-domain formulation put forward by Farassat [18], based on the retarded-time solution of the FWH
+equation, and a forward-time, time-integration formulation [19]. The latter is a frequency-domain approach applied to
+the rotor surface [20, 21] which is assumed to be static. The frequency-domain formulation is used to highlight the
+broadband noise sources through a beam-forming (B-F) source identification, while its time-domain analog is used
+to predict both tonal and broadband noise components, which are then compared to measurements. The interest of
+using a frequency-domain formulation for the B-F analysis is related to its significantly lower computational cost, when
+compared to the time-domain formulation, when a large number of microphones is involved.
+D. Computational Setup
+The simulation for this study focuses on a fixed-pitch, two-bladed rotor. A single operating point is simulated
+with chamber temperature and pressure replicating the test conditions. The blade-tip Mach and chord-based Reynolds
+numbers are Mc = 0.301 and Rec = 2.6 × 105 , respectively. The exact rotor and test rig geometry is considered in order
+to ensure accuracy of the predictions. The rotor is considered rigid and the nominal shape of the blades is used. The
+numerical model includes the test rig and the walls, celling and floor of the hemi-anechoic chamber, all located at the
+same position as in the experimental facilities.
+To investigate the effect of flow confinement, two different models, one without and one with the walls and ceiling
+of the hemi-anechoic chamber, have been prepared. The first setup, referred to as “unconfined” herefrom, assumes
+negligible blockage: The computational volume spans 100D in all directions, with boundaries modeled as free-field
+using a pressure-outlet condition set to the chamber pressure, see Fig. 2 for a schematic. Two sponge layers are used
+to prevent acoustic waves from re-entering the computational domain. The layers are depicted in the schematic with
+green and red spheres, with the red layer having a higher absorption coefficient than the green one. The second setup,
+referred to as “confined” herefrom, adds a layer of APM around the rotor and test rig, and is shown in cyan in Fig. 2.
+The APM models the room walls and ceiling as solid for the flow and porous for the acoustics. The inner wall of the
+APM is positioned in agreement with the tip of the sound-absorbing wedges of Amazon Prime Air’s hemi-anechoic
+chamber. For both setups, the sampling surface for the permeable FWH analysis is a sphere, with a diameter of 1.25D
+and centered on the rotor, shown in blue in Fig. 2.
+
+Fig. 2 Schematic of the simulation setup sliced along the rotor shaft’s centerline. Full simulation volume (left)
+and close-up of the hemi-anechoic chamber (right).
+The simulation volume is discretized with a Cartesian isotropic mesh using a cut-cell approach at the wall. The cell
+size on the blade is chosen so to obtain a minimum of 325 cells across the maximum chord of the blade, resulting in
+y + ∈ (5, 70). The cell size between the rotor and the FWH permeable surface is chosen so to obtain a minimum of 15
+points per wavelength, leading to a maximum resolvable frequency about 65 times larger than the BPF. The resulting
+mesh size is composed of 138 million volume elements. Each aeroacoustics simulation is run for an equivalent of 18
+revolutions and the results are sampled for the last 10 revolutions. In order to speed up the statistical convergence of the
+aerodynamic field, the aeroacoustics simulation is initialized with the instantaneous velocity and pressure field resulting
+from a coarse simulation. The coarse simulation requires 18 and 990 rotor revolutions to achieve statistical convergence
+
+5
+
+for the unconfined and confined setups, respectively.
+In order to ensure a fully turbulent boundary layer on the blade, a zig-zag trip, located at 20% of the local chord,
+is placed on the suction side of the blade, from the root up to 90% of the rotor’s blade span. The local trip height
+is everywhere smaller than the local boundary layer thickness and is resolved with four cells across. As shown in
+previous studies [11–14], the presence of the trip triggers boundary layer transition without significantly altering the
+flow statistics far downstream, i.e., 10 times the trip height an farther. The trip is expected to have a negligible influence
+on the rotor’s thrust and a non-negligible influence on its torque.
+The unconfined and confined simulations were completed in 47 and 74 hours, respectively, using 479 cores clocked
+at 2.9 GHz.
+
+Downloaded by Clement Nardari on June 10, 2019 | http://arc.aiaa.org | DOI: 10.2514/6.2019-2497
+
+V. Comparisons between Simulations and Measurements
+A. Aerodynamics
+Table 1 reports the aerodynamic coefficients. The agreement in the coefficient of thrust between experiment
+and simulation is excellent, with simulation under-predicting the thrust by only 1.3%. Torque, on the other hand, is
+over-predicted by 8.6%. The latter can largely be attributed to the fact that boundary layer transition is not modeled in
+simulation, with a turbulent boundary layer assumed across the entire span of the blade. The zig-zag trip has a slight
+impact on CT and a stronger impact on CQ . It has been shown is previous studies [11–14] that although the trip geometry
+can affect the aerodynamics, it does not have a dominant effect on the aeroacoustics. Note that flow confinement has no
+impact on the averaged aerodynamic values, which is consistent with the observations of Stephenson et al. [1].
+Table 1
+
+Comparison of the coefficients of thrust, CT , and torque, CQ , between simulations and experiment.
+
+Unconfined Simulation
+Unconfined Simulation
+Confined Simulation
+Experiment
+
+Trip
+
+CT
+
+CQ
+
+Relative Error in CT
+
+Relative Error in CQ
+
+No
+Yes
+Yes
+No
+
+1.25 × 10−1
+1.23 × 10−1
+1.22 × 10−1
+1.27 × 10−1
+
+8.99 × 10−3
+9.21 × 10−3
+9.25 × 10−3
+8.28 × 10−3
+
+−1.3%
+−3.3%
+−3.4%
+−
+
++8.6%
++11.3%
++11.7%
+−
+
+B. Aeroacoustics
+Figure 3 shows an instantaneous view of the time derivative of pressure, which is proportional to the dilatation field,
+in the acoustic propagation region. The dominant tonal content and a rich broadband content can be observed. The
+traces of the tip vortices in the meridian plane clearly show the slipstream contraction effect. Finally, acoustic waves
+generated by the rotor and reflected by the floor can be seen traveling from the floor to the ceiling of the chamber.
+The comparison of the predicted acoustic performance between experiment and simulation is presented by comparing
+the overall sound pressure level (OASPL) at the 10 microphone locations sketched in Fig. 1. The spectral content is
+compared by computing an approximation of the sound power Watt level (PWL) through integration of the acoustic
+intensity across circular strips between adjacent microphones. The same procedure is used to analyze the predicted and
+the measured noise spectra. Results for both the unconfined and confined simulations are reported. The A-weighted
+OASPL results are shown in Fig. 4. Interestingly, the effect of the flow confinement results in an almost constant offset
+of about 5 dBA, with the largest differences occurring at microphones close to the rotor axis. The discrepancy between
+measurements and simulation for the confined case is within 1.5 dBA for all microphones, which is smaller than the
+estimated experimental uncertainty of ±2 dBA. In what follows, we focus on the differences between the confined and
+unconfined simulations.
+The narrow-band PWL spectral density is plotted in Fig. 5. The magnitude of the first BPF tone is perfectly captured
+by both simulations. This is to be expected, since this tone is related to the steady component of lift which has the same
+value for the two simulated cases, consistent with observations of Stephenson et al. [1].
+The high-frequency part of the spectrum, starting from a BPF harmonic count of 30, is also insensitive to flow
+confinement. This part of the spectrum is blade self-noise due to the turbulent trailing-edge noise radiation phenomenon
+and/or blade-vortex interaction (BVI). Indeed, in hover conditions, the tip vortices remain quite close to the rotor plane
+6
+
+Downloaded by Clement Nardari on June 10, 2019 | http://arc.aiaa.org | DOI: 10.2514/6.2019-2497
+
+Fig. 3 Instantaneous snapshot of the time derivative of the pressure field sliced along the rotor shaft’s centerline
+on a meridian plane.
+
+Fig. 4 OASPL for the unconfined simulation, confined simulation and experiment, computed at the 10 microphone locations around the rotor. The y-axis tics are 2 dBA apart.
+
+and can induce a small unsteadiness on the blades that is similar in order of magnitude as the unsteadiness induced
+by the vortical structures generated in the boundary layer and convected past the trailing edge. Since BVI noise is
+very sensitive to the vortex/blade miss distance, a small increase of the axial velocity due to the recirculation in the
+room would be expected to significantly reduce BVI noise. However, a small noise increase is observed instead, which
+suggests that BVI plays a negligible role in high-frequency noise generation.
+In the mid-frequency range, starting from a BPF harmonic count of 2 and ending at a count of 30, a very strong
+influence of flow confinement can be observed. Taking into account flow recirculation allows us to recover most of the
+tonal energy related to unsteady loading seen in the experiment. Hence, the main source of discrepancy between the
+two simulated cases should be the presence of additional unsteady blade loading in the confined case. A significant
+under-prediction of the first three BPF harmonics is also visible in the confined results. These spectral components
+could be related to large-scale eddies carrying enough energy to survive across several blade passages. Capturing these
+7
+
+Downloaded by Clement Nardari on June 10, 2019 | http://arc.aiaa.org | DOI: 10.2514/6.2019-2497
+
+Fig. 5 PWL spectrum for the unconfined simulation, confined simulation and experiment, computed at the 10
+microphone locations around the rotor. The y-axis tics are 5 dBA/Hz apart.
+
+phenomena would require longer physical sampling times, long enough to converge low-frequency statistics and, in all
+likelihood, more realistic modeling of the test chamber, including details of the acoustic treatments applied to the walls.
+Some discrepancies between simulations and measurements can also be due to vibrations of the rig. A quantification of
+these effects will be the subject of future investigations.
+Instantaneous flow field visualizations can support the hypothesis of additional unsteady loading in the confined
+case. Starting from Fig. 6, images of the tip vortex system are shown for the confined and the unconfined cases. As
+previously argued, the tip vortices remain very close to the rotor disk. They undergo a certain instability that induces the
+formation of small-scale vortices. Some of these vortices are located in the outer part of the slipstream and are washed
+down at a reduced speed compared to the mean stream. Therefore, they can induce unsteady loads in the tip region. The
+differences in the tip vortex between the two simulated cases are too small to explain the large difference in the radiated
+noise levels.
+
+Fig. 6 Instantaneous λ2 criterion iso-surfaces colored by vorticity magnitude and instantaneous snapshot of
+the vorticity magnitude field sliced along the rotor shaft centerline for the unconfined (left) and confined (right)
+simulations.
+To explain the different noise levels, Fig. 7 shows contour levels of the vorticity field for the two cases. Besides
+the expected presence of vortical structures around the rotor for the confined case, it is interesting to observe that the
+8
+
+Downloaded by Clement Nardari on June 10, 2019 | http://arc.aiaa.org | DOI: 10.2514/6.2019-2497
+
+slipstream is also affected by the presence of these structures. Indeed, the annular region of the slipstream between the
+root and the tip vortices, which is a region of weak vorticity shed from blade locations characterized by small spanwise
+load variation, is significantly different in the two cases. Apparently, ingested vortical structures for the confined case
+are tilted, stretched and elongated in the axial direction. This phenomenon can lead to additional unsteady blade loading
+and generation of higher tonal noise levels.
+
+Fig. 7 Instantaneous snapshot of the vorticity magnitude field for the unconfined (left) and confined (right)
+simulations, sliced along the rotor shaft’s centerline.
+
+VI. Source Analysis and Physical Insight
+Comparisons between measured and predicted noise spectra in the previous section pointed out the effects of
+flow confinement on the rotor noise. The main effect of blades interacting with turbulent structures convected by the
+recirculating flow is the significant enhancement of BPF harmonic peaks generated by unsteady loading. In this section
+the rotor noise source mechanisms are analyzed in more detail with the goal of highlighting the main differences between
+the rotor simulated in unconfined and confined conditions, and better discriminate between trailing-edge noise and BVI
+noise, if present. All plots shown in this section have tics on the y-axis every 5 dB, and show levels without A-weighting.
+A. Analysis Process
+Two analysis techniques are used. The first one consists of splitting one rotor blade in ten radial strips of equal
+spanwise extension, starting at 10% of the rotor’s blade span, up to the tip, and performing a FWH integration of the
+different strips. The signals are computed along four semi-circles (meridians) of 21.2D in radius, equally spaced in the
+azimuthal direction. The duration of each signal corresponds to 10 rotor revolutions. Series of four signals at the same
+angular position with respect to the rotor axis and different azimuthal positions are appended and used to compute the
+source PWL, assuming an axisymmetric acoustic field [12]. A frequency bandwidth of BPF/10 (10 time-steps per blade
+passing period) and 13 Welch spectral averages (41.7% overlap) are used.
+The second technique consists of performing a B-F CLEAN-SC deconvolution analysis in a rotor co-rotating
+reference system [22, 23], thus removing the effect of the periodic variation of the source-to-observer radiation vector,
+which is responsible for the Doppler projection of blade loading harmonics into acoustic BPF tones. A spiral antenna of
+outer diameter equal to about 30D, coplanar with the rotor disk, and located at a distance of 3.3D from the rotor center
+is used. The microphones are distributed along 25 spires, with each spire consisting of 25 microphones for a total of
+626, including the one located in the center of the array, as sketched in Fig. 8. The cross-spectral matrix is computed
+by using a frequency-domain FWH formulation applied to the rotor surface [20, 21]. The integrand is computed by
+using a bandwidth of BPF/2 and 16 Welch spectral averages (45.3% overlap). The B-F computation is performed in
+the BPF harmonic range 5 to 45. As already pointed out, the interest in using a frequency-domain FWH is its higher
+computational efficiency compared to the time-domain formulation when a large number of microphones is considered.
+For the sake of consistency, the agreement between the two FWH formulations is verified by comparing the spectra
+computed at the central microphone for both simulated cases, as shown in Fig. 9. Only negligible differences can be
+observed, which are due to the substantial differences between the two algorithms.
+For both simulated cases, the quality of the B-F source identification is verified by comparing the spectra of the
+9
+
+Downloaded by Clement Nardari on June 10, 2019 | http://arc.aiaa.org | DOI: 10.2514/6.2019-2497
+
+Fig. 8
+
+Numerical B-F antenna, with grey dots denoting the rotor.
+
+Fig. 9 Noise spectrum at the array’s central microphone for the unconfined (left) and confined (right) simulations. Comparison between the time- and frequency-domain FWH calculations.
+
+input signals at the center of the array with noise spectra reconstructed via uncorrelated summation of the noise radiated
+from the B-F sources, as shown in Fig. 10. The agreement is very good in the explored frequency range, thus allowing
+us to rely on the identified sources. As discussed hereafter, the large difference between the two simulated cases is due
+to the higher radiation efficiency in proximity of the rotor axis in the presence of unsteady blade loading.
+
+Fig. 10 Noise spectrum at the array’s central microphone for the unconfined (left) and confined (right) simulations. Comparison between the direct FWH prediction and the B-F reconstruction.
+
+B. Annular Strip Analysis Results
+Before analyzing the differences between the two simulated cases in terms of spanwise source distribution, it is
+useful to highlight the difference in the overall noise radiation discussed in the previous section. Fig. 11 shows, for the
+10
+
+Downloaded by Clement Nardari on June 10, 2019 | http://arc.aiaa.org | DOI: 10.2514/6.2019-2497
+
+two cases, the PWL spectrum and the OASPL directivity. As expected, the interaction between the rotor blades and the
+turbulent flow structures convected by the recirculating flow in the confined simulation generates unsteady loads on the
+blades that, because of Doppler effects, are projected to higher BPF harmonics. The first two BPF tones are almost
+unaffected, whereas, starting from the third BPF harmonic, the tones for the confined results are about 5 to 10 dB higher
+than for the unconfined case. Such a different spectral behavior translates into about a 2 dB variation of OASPL at the
+maximum radiation angle of about 120 deg (ground side), where sky and ground refer to the real operating scenario and
+not the rig setup. Along the rotor axis, where the rotor-locked noise contribution tends to vanish, the confined case is up
+to 9 dB louder than the unconfined case, both towards the sky (0 deg) and the ground (180 deg).
+
+Fig. 11 PWL spectrum (left) and OASPL (right) for the unconfined and confined simulations. The zeroradiation angle corresponds to the suction side of the rotor’s blades (sky).
+The PWL spectra per blade strip are plotted in Fig. 12. Since one blade only is used for the FWH calculation, tones
+arise every half of a harmonic. The first interesting observation is that the effect of the unsteady loading due to the
+non-uniform rotor inflow is more prominent in the outer part of the rotor, with a clear emergence of tones in the last 20%
+of the span. The companion OASPL directivity plots are shown in Fig. 13. Interestingly, for both cases, the maximum
+noise radiation on the ground-side sector tends to move towards the axial direction. Moreover, the radiation pattern
+changes from a mono-lobe to a bi-lobe pattern moving from inboard to outboard strips. From a theoretical point of view,
+this behavior is related to the change of sign of the source-to-observer radial vector projected along the direction of the
+rotor lift.
+
+Fig. 12
+
+PWL spectrum by radial strip for the unconfined (left) and confined (right) simulations.
+
+11
+
+Downloaded by Clement Nardari on June 10, 2019 | http://arc.aiaa.org | DOI: 10.2514/6.2019-2497
+
+Fig. 13
+
+OASPL directivity by radial strip for the unconfined (left) and confined (right) simulations.
+
+A better quantification of the source power along the blade span is achieved by plotting the frequency-integrated
+PWL as a function of the strip radial location, as shown in Fig. 14. The two simulated cases have a very similar radial
+trend, corresponding to a cubic law (r 3 ), with slightly higher values for the confined case. Starting from about 50%
+of the explored span, the confined case exhibits a faster radially growing trend. The largest contribution to the blade
+interaction noise is therefore due to the unsteady flow in proximity of the blade tip. It is important to mention that
+the cubic radial dependence is a consequence of the variation of different Fourier components of the forces along
+the span and Doppler effects. An a priori prediction of this trend using theoretical arguments is not straightforward
+without knowing the spanwise variation of the unsteady blade loadings, which can be accurately predicted only via
+turbulence-resolved numerical flow simulations.
+
+Fig. 14
+
+Frequency-integrated PWL along the rotor’s blade span for the unconfined and confined simulations.
+
+Comparisons between the two cases for strips at 20%, 80% and 100% of the explored spanwise range, are shown in
+pairs of PWL and OASPL plots in Fig. 15. The OASPL directivity for the 80% strip confirms the highest contribution
+to the overall difference at the maximum radiation location. As already pointed out, the effect of the unsteady blade
+loading is to generate higher BPF tones that have a higher radiation efficiency along the rotor axis. Interestingly, the
+OASPL discrepancy at the maximum noise radiation angle seems to be generated in proximity of the 80% span.
+C. Beam-forming Results
+In this subsection, B-F maps are presented and discussed. Sources detected in narrow constant-frequency bands
+have been integrated in 1/3-Octave bands from band N, corresponding approximately to a BPF harmonic of 7, to band
+12
+
+Downloaded by Clement Nardari on June 10, 2019 | http://arc.aiaa.org | DOI: 10.2514/6.2019-2497
+
+Fig. 15 PWL and OASPL from 20% (top), 80% (middle) and 100% (bottom) strips for the unconfined and
+confined simulations.
+N+8, corresponding approximately to a BPF harmonic of 45. Contour levels of the source power level are plotted in
+Figs. 16, 17 and 18. In the low-frequency range (band N), the broadband noise sources for the unconfined case are more
+than 20 dB lower than for the confined case. Moreover, the confined results reveal that the noise sources are mostly
+aligned along the blade leading edge. A very similar trend can be observed for bands N+1 and N+2, besides a clustering
+of leading-edge sources in the 80% span region, thus confirming the findings of the blade strip analysis.
+
+13
+
+Downloaded by Clement Nardari on June 10, 2019 | http://arc.aiaa.org | DOI: 10.2514/6.2019-2497
+
+Fig. 16 B-F source maps for the unconfined (left) and confined (right) simulations, with 1/3-Octave bands N
+(top), N +1 (middle) and N +2 (bottom). Contour range: 20 dB.
+
+Fig. 17 B-F source maps for the unconfined (left) and confined (right) simulations, with 1/3-Octave bands N +3
+(top), N +4 (middle) and N +5 (bottom). Contour range: 20 dB.
+At higher frequencies, from band N+3 to band N+5, a dominance of the source strength for the confined case can
+be observed, but for these frequencies the sources for the unconfined case are clearly located along the trailing edge,
+whereas for the confined case, they are still located in proximity of the leading edge, slightly closer to the tip.
+Finally, at the highest explored frequencies, for both cases, the noise sources are located in proximity of the trailing
+edge, and the levels between the two cases have similar order of magnitude. No differences can be observed in the
+tip region, thus excluding the possibility of a different BVI interaction mechanism between the two cases. Therefore,
+it can be argued that, for the confined case, the effect of the interaction between the blades and the convected flow
+perturbations is to slightly enhance the boundary layer turbulent fluctuations, but not to change the blade tip vortex
+dynamics, as already pointed out in the previous section.
+The B-F maps constitute a reduced-order representation of the noise generation mechanisms. Similar insight can be
+achieved by inspection of the wall-pressure fluctuations on the pressure side of the blades. Here, the boundary-layer
+hydrodynamic fluctuations have a lower magnitude than on the suction side, thus allowing a clearer visualization of
+the acoustic pressure contribution scattered by the edges of the blade. Figs. 19, 20 and 21 show wall-pressure SPL in
+the same 1/3-Octave bands as for the B-F maps. The same a posteriori conclusions can be drawn: (i) leading-edge
+fluctuations dominate the lower frequency range of the confined case; (ii) trailing-edge contributions can be observed
+for both cases at all frequencies and tend to achieve similar levels for the two cases in the higher frequency range.
+
+14
+
+Downloaded by Clement Nardari on June 10, 2019 | http://arc.aiaa.org | DOI: 10.2514/6.2019-2497
+
+Fig. 18 B-F source maps for the unconfined (left) and confined (right) simulations, with 1/3-Octave bands N +6
+(top), N +7 (middle) and N +8 (bottom). Contour range: 20 dB.
+
+Interestingly, the tip region exhibits slightly higher levels for the confined case, a result that is not consistent with the
+B-F source localization. Additional analyses will be carried out in the future to better highlight the effect of the unsteady
+flow close to the tip on the radiated noise.
+
+Fig. 19 Wall-pressure SPL on blade pressure side for the unconfined (left) and confined (right) simulations,
+with 1/3-Octave bands N (top), N +1 (middle) and N +2 (bottom). Contour range: 60 dB.
+
+Fig. 20 Wall-pressure SPL on blade pressure side for the unconfined (left) and confined (right) simulations,
+with 1/3-Octave bands N +3 (top), N +4 (middle) and N +5 (bottom). Contour range: 60 dB.
+
+15
+
+Downloaded by Clement Nardari on June 10, 2019 | http://arc.aiaa.org | DOI: 10.2514/6.2019-2497
+
+Fig. 21 Wall-pressure SPL on blade pressure side for the unconfined (left) and confined (right) simulations,
+with 1/3-Octave bands N +6 (top), N +7 (middle) and N +8 (bottom). Contour range: 60 dB.
+
+VII. Conclusions
+An experimental and numerical investigation was conducted to identify and characterize the effects of flow
+recirculation in a hemi-anechoic facility on the noise-generation mechanisms of a two-bladed, fixed-pitch drone
+rotor operating under static thrust conditions. Lattice-Boltzmann simulations were performed for both an idealized,
+semi-infinite free-field and a confined, hemi-anechoic domain that models the experimental setup. The latter was first
+validated against the experiment, with predictions of the rotor thrust and torque falling within −1.3% and +8.6% of the
+measurements, respectively, and the predicted and recorded OASPL agreeing to within 1.5 dBA of each other across
+all microphone locations. The relatively larger discrepancy in torque can at least partly be attributed to the absence
+of a laminar run across the rotor’s blades in simulation. Next, results from the confined and unconfined simulations
+were compared to isolate the effects of flow recirculation. It was found that flow recirculation leads to a nearly 5 dBA
+increase in OASPL across most microphone locations, but has negligible impact on the thrust and torque of the rotor.
+Inspection of the narrow-band noise spectra revealed that the OASPL noise difference is related to the occurrence
+of higher BPF tones for the confined case due to the unsteady loading induced by the ingested turbulent structures
+recirculating in the test chamber. A deeper analysis of the sound-generation mechanisms through blade-strip and B-F
+source identification techniques revealed that the additional noise-generation mechanism is a leading-edge interaction,
+which is very effective in the low-to-middle frequency range and mostly localized around 80% of the rotor’s blade span,
+and a slight enhancement of the trailing-edge noise mechanism in the high-frequency range. No effects due to BVI noise
+in the tip region were found.
+Future investigations will focus on developing low-fidelity rotor noise models that account for some of the
+recirculation effects that have been identified in the present study. We expect these effects are important because drone
+rotors will routinely operate in non-ideal conditions, exposed to wind turbulence, ground effects, as well as other
+phenomena. In an optimization framework, a realistic low-fidelity noise model would be able to quickly reduce the
+design space to a handful of candidate rotors whose performance would be robust to off-design operating conditions. As
+importantly, the model’s predictions could then be evaluated with the here-described Lattice-Boltzmann approach and,
+ultimately, validated in the hemi-anechoic facility.
+
+References
+[1] Stephenson, J. H., Weitsman, D., and Zawodny, N. S., “Effects of flow recirculation on unmanned aircraft system (UAS)
+acoustic measurements in closed anechoic chambers,” The Journal of the Acoustical Society of America, Vol. 145, No. 3, 2019,
+pp. 1153–1155.
+[2] Najafi-Yazdi, A., Brès, G. A., and Mongeau, L., “An acoustic analogy formulation for moving sources in uniformly moving
+media,” Proceedings of the Royal Society A: Mathematical, Physical and Engineering Sciences, Vol. 467, No. 2125, 2010, pp.
+144–165.
+
+16
+
+[3] Sun, C., Pérot, F., Zhang, R., Lew, P.-T., Mann, A., Gupta, V., Freed, D. M., Staroselsky, I., and Chen, H., “Lattice Boltzmann
+formulation for flows with acoustic porous media,” Comptes Rendus Mécanique, Vol. 343, No. 10-11, 2015, pp. 533–544.
+[4] Shan, X., Yuan, X.-F., and Chen, H., “Kinetic theory representation of hydrodynamics: A way beyond the Navier–Stokes
+equation,” Journal of Fluid Mechanics, Vol. 550, 2006, pp. 413–441.
+[5] Chen, H., Gopalakrishnan, P., and Zhang, R., “Recovery of Galilean invariance in thermal lattice Boltzmann models for arbitrary
+Prandtl number,” International Journal of Modern Physics C, Vol. 25, No. 10, 2014, p. 1450046.
+[6] Zhang, R., Shan, X., and Chen, H., “Efficient kinetic method for fluid simulation beyond the Navier-Stokes equation,” Physical
+Review E, Vol. 74, No. 4, 2006, p. 046703.
+[7] Chen, H., Orszag, S. A., Staroselsky, I., and Succi, S., “Expanded analogy between Boltzmann kinetic theory of fluids and
+turbulence,” Journal of Fluid Mechanics, Vol. 519, 2004, pp. 301–314.
+
+Downloaded by Clement Nardari on June 10, 2019 | http://arc.aiaa.org | DOI: 10.2514/6.2019-2497
+
+[8] Yakhot, V., Orszag, S., Thangam, S., Gatski, T., and Speziale, C., “Development of turbulence models for shear flows by a
+double expansion technique,” Physics of Fluids A: Fluid Dynamics, Vol. 4, No. 7, 1992, pp. 1510–1520.
+[9] Teixeira, C. M., “Incorporating turbulence models into the lattice-Boltzmann method,” International Journal of Modern Physics
+C, Vol. 9, No. 08, 1998, pp. 1159–1175.
+[10] Pervaiz, M. M., and Teixeira, C. M., “Two equation turbulence modeling with the lattice-Boltzmann method,” ASMEPUBLICATIONS-PVP, Vol. 397, No. 1, 1999, pp. 15–24.
+[11] Avallone, F., Casalino, D., and Ragni, D., “Impingement of a propeller-slipstream on a leading edge with a flow-permeable
+insert: A computational aeroacoustic study,” International Journal of Aeroacoustics, Vol. 17, No. 6-8, 2018, pp. 687–711.
+[12] Casalino, D., Hazir, A., and Mann, A., “Turbofan broadband noise prediction using the Lattice Boltzmann Method,” 22nd
+AIAA/CEAS Aeroacoustics Conference, 2016, p. 2945.
+[13] Gonzalez-Martino, I., and Casalino, D., “Fan tonal and broadband noise simulations at transonic operating conditions using
+lattice-Boltzmann methods,” 2018 AIAA/CEAS Aeroacoustics Conference, 2018, p. 3919.
+[14] Avallone, F., van der Velden, W., Ragni, D., and Casalino, D., “Noise reduction mechanisms of sawtooth and combed-sawtooth
+trailing-edge serrations,” Journal of Fluid Mechanics, Vol. 848, 2018, pp. 560–591.
+[15] Zhang, R., Sun, C., Li, Y., Satti, R., Shock, R., Hoch, J., and Chen, H., “Lattice Boltzmann approach for local reference frames,”
+Communications in Computational Physics, Vol. 9, No. 5, 2011, pp. 1193–1205.
+[16] Pérot, F., Freed, D., and Mann, A., “Acoustic absorption of porous materials using LBM,” 19th AIAA/CEAS Aeroacoustics
+Conference, Berlin, 2013.
+[17] Hersch, A., and Walker, B., “Effect of grazing flow on the acoustic impedance of Helmholtz resonators consisting of single and
+clustered orifices,” The Journal of the Acoustical Society of America, Vol. 72, No. 2, 1982, pp. 642–642.
+[18] Farassat, F., and Succi, G. P., “The prediction of helicopter rotor discrete frequency noise,” 38th American Helicopter Society
+Annual Forum, Anaheim, CA, 1982.
+[19] Casalino, D., “An advanced time approach for acoustic analogy predictions,” Journal of Sound and Vibration, Vol. 261, No. 4,
+2003, pp. 583–612.
+[20] Lockard, D. P., “An efficient, two-dimensional implementation of the Ffowcs Williams and Hawkings equation,” Journal of
+Sound and Vibration, Vol. 229, No. 4, 2000, pp. 897–911.
+[21] Casalino, D., Santini, S., Genito, M., and Ferrara, V., “Rocket noise sources localization through a tailored beam-forming
+technique,” AIAA journal, Vol. 50, No. 10, 2012, pp. 2146–2158.
+[22] Sijtsma, P., “CLEAN based on spatial source coherence,” International journal of aeroacoustics, Vol. 6, No. 4, 2007, pp.
+357–374.
+[23] Lockard, D. P., Humphreys, W. M., Khorrami, M. R., Fares, E., Casalino, D., and Ravetta, P. A., “Comparison of computational
+and experimental microphone array results for an 18% scale aircraft model,” International Journal of Aeroacoustics, Vol. 16,
+No. 4-5, 2017, pp. 358–381.
+
+17
+
+

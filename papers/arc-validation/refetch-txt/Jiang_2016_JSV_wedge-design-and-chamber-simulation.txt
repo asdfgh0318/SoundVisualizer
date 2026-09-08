@@ -1,0 +1,1498 @@
+Journal of Sound and Vibration 381 (2016) 139–155
+
+Contents lists available at ScienceDirect
+
+Journal of Sound and Vibration
+journal homepage: www.elsevier.com/locate/jsvi
+
+On the acoustic wedge design and simulation of
+anechoic chamber
+Changyong Jiang n, Shangyu Zhang, Lixi Huang
+Lab for Aerodynamics and Acoustics, Zhejiang Institute of Research and Innovation, Shenzhen Institute of Research and Innovation, and
+Department of Mechanical Engineering, The University of Hong Kong, Pokfulam Road, Hong Kong
+
+a r t i c l e i n f o
+
+abstract
+
+Article history:
+Received 27 March 2016
+Received in revised form
+6 June 2016
+Accepted 16 June 2016
+Handling Editor: I. Lopez Arteaga
+Available online 7 July 2016
+
+This study proposes an alternative to the classic wedge design for anechoic chambers,
+which is the uniform-then-gradient, ﬂat-wall (UGFW) structure. The working mechanisms
+of the proposed structure and the traditional wedge are analyzed. It is found that their
+absorption patterns are different. The parameters of both structures are optimized for
+achieving minimum absorber depth, under the condition of absorbing 99% of normal
+incident sound energy. It is found that, the UGFW structure achieves a smaller total depth
+for the cut-off frequencies ranging from 100 Hz to 250 Hz. This paper also proposes a
+modiﬁcation for the complex source image (CSI) model for the empirical simulation of
+anechoic chambers, originally proposed by Bonﬁglio et al. [J. Acoust. Soc. Am. 134 (1), 285–
+291 (2013)]. The modiﬁed CSI model considers the non-locally reactive effect of absorbers
+at oblique incidence, and the improvement is veriﬁed by a full, ﬁnite-element simulation
+of a small chamber. With the modiﬁed CSI model, the performance of both decorations
+with the optimized parameters in a large chamber is simulated. The simulation results are
+analyzed and checked against the tolerance of 1.5 dB deviation from the inverse square
+law, stipulated in the ISO standard 3745(2003). In terms of the total decoration depth and
+anechoic chamber performance, the UGFW structure is better than the classic wedge
+design.
+& 2016 Elsevier Ltd. All rights reserved.
+
+Keywords:
+Anechoic chamber simulation
+Acoustic wedge
+Flat-wall absorber
+Optimization
+
+1. Introduction
+In 1946, Beranek and Sleeper [1] published their seminal paper on the design and construction of anechoic chambers. In
+that paper, they investigated ﬁve categories of structures, or six kinds, as decorated structures inside the anechoic chamber
+to absorb at least 99% of normal incident sound energy. They showed that the most effective decoration was the wedge
+structure, which achieved the minimum total absorber depth required. Since then, the wedge structure has become the
+classic and most widely used conﬁguration. Beranek and Sleeper's [1] wedges were made by ﬁberglass, and the geometric
+optimization was conducted through the testing of numerous combinations. Koidan et al. [2] reported a “hybrid” wedge
+design, consisting of two kinds of glass wools with different densities, but the geometric parameters were also determined
+by experimentation.
+It was only after the development of numerical methods that accurate wedge property calculation and its geometric
+design became possible. There is still no analytical solution for the room acoustic problem with wedges. Easwaran and
+n
+
+Corresponding author.
+E-mail address: jiangchangyong1991@connect.hku.hk (C. Jiang).
+
+http://dx.doi.org/10.1016/j.jsv.2016.06.020
+0022-460X/& 2016 Elsevier Ltd. All rights reserved.
+
+140
+
+C. Jiang et al. / Journal of Sound and Vibration 381 (2016) 139–155
+
+Munjal [3] proposed a ﬁnite-element method (FEM) model of the wedge, and the result matched well with data obtained
+from impedance-tube testing. Wang et al. [4] investigated the wedge properties with a boundary element method (BEM). In
+2006, Kar et al. [5] proposed a new numerical scheme called boundary condition transfer (BCT) algorithm to simulate the
+wedge numerically. In 2013, Bonﬁglio et al. [6] modeled the wedge in a virtual impedance tube with a FEM model, and
+s
+optimized its parameters with a minimization procedure in MATLAB . Lee et al. [7] obtained an unusual shape through
+topology optimization for normal incidence, and its acoustic property was better than ordinary shaped wedges, theoretically. However, no experiment was conducted to verify the ﬁndings.
+In addition to the wedge structure, some alternatives of the decoration in anechoic chambers have also been investigated, experimented and manufactured, one of which is the multi-layer, ﬂat-wall (MLFW) design. Actually, the idea dates
+back to 1936 when Bedell [8] proposed a design of 16 cloth layers to achieve 98% or 99% normal incidence absorption. With
+today's advanced manufacturing capability and the need to save space, the interest in the MLFW design has been rekindled,
+e.g. Davern [9] in 1980. Subsequently, Dunn and Davern [10] developed a transfer matrix method to calculate the performance of such a multi-layered system, and the result matched well with the experiment. Around 2005, Xu et al. optimized
+the multi-layered absorber with evolutionary algorithm [11,12] and constructed an anechoic chamber with polyurethane
+foams using 16 kinds of available materials [13]. Besides the usual single porosity porous material, a double porosity porous
+material has also been proposed. In 2001, Atalla et al. pointed out that the macro-perforated porous material could enhance
+the low frequency absorption [14]. Then Sgard et al. did a synthetic review of the existing models for the double porosity
+material and gave some practical suggestions for choosing parameters [15]. Moreover, Becot et al. applied the double
+porosity theory to predict the performance of irregular-shaped absorbers, including the wedge structure [16].
+In addition to porous material (e.g. ﬁberglass, foam), micro-perforated panel (MPP) can also be used. Chang et al. (2005)
+optimized a single-layer sound absorption material accompanied by one layer of MPP by genetic algorithm and mathematical gradient methods [17] under the restriction of limited thickness. Apart from the combination of common absorption
+materials (e.g. ﬁberglass, foam, MPP), the sintered ﬁbrous metals are fabricated and tested. Meng et al. investigated the
+sound absorption performance of multi-layered sintered ﬁbrous metal with gradient parameters [18].
+The MLFW design has the advantage of less complexity and being easier for installation. Therefore, this study investigates
+a limit case of the MLFW structure, which consists of a material with a continuous distribution of ﬂow resistivity, called
+gradient ﬂat-wall structure. When the gradient structure has a section of constant ﬂow resistivity at the front, it is called a
+uniform-then-gradient ﬂat-wall (UGFW) structure. The purpose of proposing the UGFW structure is to quickly optimize the
+distribution of material parameters. For real manufacturing, it is not necessary to manufacture the exact gradient structure.
+A few layers of constant-property material also work. In the following section, a 10-layers result is demonstrated to be good
+enough to realize the gradient effect. It is found that an optimized UGFW design performs slightly better than the optimized
+classic wedge. Details of the sound absorption and reﬂection characteristics are investigated to reveal the precise
+mechanism of such performance gain.
+It would be ideal if sound propagation in an anechoic chamber can be simulated by a full ﬁnite-element scheme without
+any simpliﬁcation. However, such simulation demands excessive computational resource for the time being. As an alternative, the boundary element method (BEM) can be used by replacing the wedge structure with a local boundary admittance condition. However, as Schneider [19] pointed out, this scheme may be inaccurate without considering the non-locally
+reactive effect. Actually, before the advent of the modern computer, Bedell [8] proposed an acoustic-ray model in 1936. In
+this model, the sound inside the chamber is decomposed into direct sound and multiple reﬂected sounds. This idea was
+applied and modiﬁed by Zha et al. [20] and Bonﬁglio et al. [6] to predict the anechoic chamber's property. In Bonﬁglio et al.'s
+[6] model, the method is called complex source image (CSI) model. However, both Zha et al. [20] and Bonﬁglio et al. [6] only
+considered the wedge to be a locally reactive boundary at oblique incidence, which may be inappropriate when the decoration is the wedge structure, as its absorption property is obviously dependent on the incident angle. Therefore, a
+modiﬁed CSI model is presented in the current study to account for the non-locally reactive effect of the classic wedge
+structure and the proposed UGFW structure.
+As to the design standard of the anechoic chamber, the most widely used is the minimum of 99% sound energy
+absorption in the ISO standard 3745(2003) [21]. The 99% standard requires that the normal-incidence sound energy
+absorption coefﬁcient of the wall and the ceiling should be larger than 99% in the speciﬁed frequency range, in which the
+lowest value is called the cut-off frequency. This sound absorption coefﬁcient is measured in an impedance tube. In real
+situation of calibrating an anechoic chamber, as mentioned by Beranek and Sleeper [1], there are at least three kinds of
+methods. However, the simplest and the most widely used is the inverse square law method [22,23], which is also adopted
+by the ISO standard 3745(2003) [21]. In the ISO standard, different limitations on the deviation from the strict inverse square
+law are proposed for different chamber types and different working frequency ranges. In this paper, the 1.5 dB deviation
+from the inverse square law is adopted. However, the design standard and the calibration standard are deﬁned in different
+situations. One is for the absorption of normal incident plane wave inside a tube, and the other is for the absorption of
+spherical waves inside a chamber. In this paper, the wedge and UGFW structures are both optimized under the 99%
+absorption standard in an impedance tube, and their performance inside a chamber is simulated with the modiﬁed CSI
+model and compared with the 1.5 dB deviation standard.
+The rest of the paper is structured as follows. Section 2 introduces the simulation and optimization methods of the
+wedge and UGFW structures in normal incidence with ﬁnite-element model, and the modiﬁcation of the CSI model.
+
+C. Jiang et al. / Journal of Sound and Vibration 381 (2016) 139–155
+
+141
+
+Fig. 1. Geometries for the ﬁnite-element simulation. (a) The wedge structure with an air cavity before the rigid wall; (b) The uniform-then-gradient, ﬂatwall (UGFW) structure with ﬂow resistivity Rf varying with x, in which the depth of the uniform layer is lg0 while the gradient layer has a depth of lg1.
+
+Section 3 presents the optimization results and the working mechanisms of the two structures, as well as their performance
+in anechoic chambers. Conclusions are drawn in Section 4.
+
+2. Methodology
+2.1. Finite-element model
+s
+
+For the simulation of the wedge structure in normal incidence, a commercial FEM software COMSOL Multiphysics
+(https://www.comsol.com/comsol-multiphysics) is used. The wedge is simulated in a virtual impedance tube, and the
+computational domain is shown in Fig. 1(a), in which the shaded area is the wedge-shaped porous material with constant
+ﬂow resistivity Rf0, and the rest is normal air. It is assumed that a plane wave traveling from the left hits the wedge, while
+some part of sound is absorbed and the rest is reﬂected. The simulation is conducted in the frequency domain for which the
+time dependence factor of eiωt is assumed.
+For the simulation of porous material, the empirical formulas proposed by Delany and Bazley [24] are used for simplicity.
+Although this model does not describe accurately for all porous materials, it is well-known and widely used, and the
+qualitative conclusions thus reached is expected to hold for similar materials. In this model, the porous material is modeled
+as an equivalent ﬂuid with complex, frequency-dependent impedance zc and wave number kc , with the following formulas:
+
+   0:754  
+   0:732 
+i 0:087 ρR0ff
+zc ¼ z0 1 þ0:057 ρR0ff
+
+;
+(1)
+   0:7  
+   0:595 
+kc ¼ k0 1 þ 0:098 ρR0ff
+ i 0:189 ρR0ff
+
+
+
+pﬃﬃﬃﬃﬃﬃﬃﬃ
+where i ¼  1, and z0 ¼ ρ0 c0 , k0 ¼ ω=c0 ¼ 2π f =c0 are the characteristic acoustic impedance and wave number in air,
+respectively; ρ0 is the density of air; c0 is the speed of sound in air; ω is the angular frequency; f is the real frequency and
+Rf is the ﬂow resistivity of the porous material. As suggested by Delany and Bazley [24], these empirical formulas are valid
+in the parameter range of 0:01o ρ0 f =Rf o1. Therefore, the simulation and optimization for parameters are also subject to
+the above restriction. The equivalent speed of sound cc and density ρc can then be derived by cc ¼ ω=kc and ρc ¼ zc =cc ,
+respectively. In addition, the mounting conditions of the wedge may affect its performance, as underlined by Schneider [19].
+However, these are not considered in the current preliminary study.
+The velocity potential ϕ is chosen as the computational variable when the porous material is homogeneous. The acoustic
+pressure p and acoustic particle velocity v can be derived from the time and space derivatives of ϕ, respectively, such that
+
+p ¼  ρ∂∂tϕ ¼  iωρϕ
+;
+(2)
+v ¼ ∇ϕ
+where ρ is the ﬂuid density of the computational domain, being ρ0 for the air domain and ρc for the porous material
+domain. The governing equation for sound propagation is the Helmholtz Equation
+∇2 ϕ þk ϕ ¼ 0;
+2
+
+(3)
+
+142
+
+C. Jiang et al. / Journal of Sound and Vibration 381 (2016) 139–155
+
+where k is the wave number, which is different in different domains, being k0 in the air domain and kc in the porous
+material domain.
+In Fig. 1(a), boundaries AF, BE, FE are all hard wall boundaries, on which the normal particle velocity vanishes, that
+∂ϕ
+¼ 0:
+∂n
+
+(4)
+
+The three interface boundaries, IC, IH and GD have the following pressure and normal velocity continuity conditions, that
+)
+ρϕ ¼ ρϕ
+air
+
+porous
+
+∂ϕ
+∂ϕ
+∂nair ¼ ∂nporous
+
+:
+
+(5)
+
+At the inlet boundary AB, a plane wave
+pi ¼ exp ½iðωt  k0 xÞ;
+
+(6)
+
+travels along the þx direction, so an out-going boundary condition should be applied to AB to allow the reﬂected wave
+pr ¼ p  pi to go out freely, where p is the total sound pressure.
+In the plane-wave frequency range, the reﬂected wave is a plane wave of the form pr ¼ pr exp ½iðωt þ k0 xÞ. The outgoing boundary condition for this wave satisﬁes ∂pr =∂x ¼ ik0 pr , which, when written in terms of total pressure by substituting p ¼ pi þpr , becomes ik0 p  ∂p=∂x ¼ 2ik0 pi . For velocity potential, the condition becomes
+ik0 ϕ 
+
+
+∂ϕ
+2
+¼
+exp iðωt  k0 xÞ :
+∂x
+ρ0 c0
+
+The sound energy absorption coefﬁcient α, is deﬁned as follows:
+R
+1
+0:5  Reðpv Þdy
+E
+;
+α ¼ abs ¼ h AB
+0:5  Reðpi vi Þ
+Ei
+
+(7)
+
+(8)
+
+where Eabs is the absorbed sound energy, Ei is the incident sound energy, h is the height of the calculation domain in y
+direction, vi ¼ pi =ρ0 c0 is the incident acoustic particle velocity, Re(  ) means the real part of a complex number, and the
+superscript asterisk means conjugate.
+The simulation of the UGFW structure is a little bit different from that of the wedge structure, and the computational
+domain is shown in Fig. 1(b). The segment HCJI is the porous material with constant ﬂow resistivity Rf0, while the segment
+IJDG is the porous material with increasing ﬂow resistivity Rf from left to right, and the rest is normal air.
+For the air part, the governing equation is the Helmholtz equation, Eq. (3). For the uniform porous material, the empirical
+formula proposed by Delany and Bazley [24] is applied, and for the gradient part, the varying ﬂow resistivity is expressed as:
+Rf ðxÞ ¼ Rf 0 þ a1 x lg0 ;
+
+(9)
+
+where Rf 0 and a1 are parameters to be determined through optimization. Here, the ﬁrst order of the power series is chosen
+for simplicity. Therefore, the equivalent density, wavenumber and speed of sound in porous material are also a function of x,
+so the governing equation for the gradient porous material is the acoustic equation for inhomogeneous medium [25]:
+
+
+2
+1
+k
+∇U
+∇p þ c p ¼ 0:
+(10)
+
+ρc
+
+ρc
+
+The inlet boundary condition is the out-going boundary condition, Eq. (7), and the continuity of acoustic pressure and
+normal particle velocity, Eq. (5), is applied on the interface between different domains.
+s
+A transmission theory is introduced to double check the FEM model of the UGFW structure in COMSOL Multiphysics , as
+it is an exact solution for one-dimensional problem without any assumption. The UGFW structure is considered as a onedimensional structure for the normal incidence, for which the well-known transmission line theory [26] is applicable.
+Although this theory is for electromagnetic waves, it can be applied exactly in linear acoustic problems, as they share the
+same mathematics, which is also called the electromagnetic-acoustic analogy.
+In this theory, the pressure reﬂection rate r ðxÞ is deﬁned as
+z
+ zlocal
+r ðxÞ ¼ surface
+;
+zsurface þ zlocal
+
+(11)
+
+where, zsurface is the surface impedance facing the incidence wave at position x; zlocal is the local characteristic impedance at
+position x. The differential equation for this pressure reﬂection rate r ðxÞ is obtained through the following equation:
+
+dr ðxÞ
+1 d ln zðxÞ
+ 2ikðxÞr ðxÞ þ
+1  r 2 ðxÞ ¼ 0;
+(12)
+dx
+2
+dx
+where kðxÞ and zðxÞ are the wave number and characteristic impedance at x position, respectively, which is k0 for the air
+domain, and kc for the porous material domain determined by Eqs. (1) and (9). Eq. (12) is a ﬁrst-order differential equation,
+s
+which can be directly integrated using the standard 4th order Runge–Kutta code in MATLAB and the constant is determined by the boundary condition on the hard wall, rjx ¼ lg ¼ 1.
+
+C. Jiang et al. / Journal of Sound and Vibration 381 (2016) 139–155
+
+143
+
+1.002
+UGFW by COMSOL
+UGFW by direct integration
+Discretized 10 layers by COMSOL
+
+Sound absorption coefficient α
+
+1
+
+0.998
+
+0.996
+
+0.994
+
+0.992
+
+0.99
+
+0.988
+100
+
+150
+
+200
+
+250
+
+300
+
+350
+
+400
+
+450
+
+500
+
+Frequency /Hz
+
+Fig. 2. Veriﬁcation of the ﬁnite-element model of the UGFW structure of Fig. 1(b) by the numerical integration of Eq. (12) and discretized multi-layers
+calculation.
+
+Table 1
+Optimization settings of the two structures.
+
+Parameters to be optimized
+Objective function
+Constraint
+
+Wedge
+
+UGFW
+
+lw1 ; lw2 ; lw3 ; h; Rf
+minðlw ¼ lw1 þ lw2 þ lw3 Þ
+
+min αðf Þ Z αc ; αc ¼ 99%
+
+lg0 ; lg1 ; lg2 ; Rf 0 ; a1
+minðlg ¼ lg0 þ lg1 þ lg2 Þ
+
+At the interface of the air domain and porous material domain, the wave number and characteristic impedance are
+discontinuous, so Eq. (12) is transformed into the integral equation, and integrated in the neighborhood of the interface. The
+connective condition can be derived, by taking the limit of the size of the neighborhood tending to 0, hence:
+
+
+
+zðx0  Þ 1  r ðx0 þ Þ
+zðx0  Þ 1 r ðx0 þ Þ  1
+1þ
+;
+(13)
+r ðx0  Þ ¼ 1 
+zðx0 þ Þ 1 þ r ðx0 þ Þ
+zðx0 þ Þ 1 þr ðx0 þ Þ
+where, x0  and x0 þ represent the two sides of the interface.
+2
+Then, the sound energy absorption coefﬁcient α is calculated by α ¼ 1  r ð0  Þ , where 0  represents the left side the
+porous material domain facing the incident sound.
+This result is used to verify the FEM simulation of the model in Fig. 1(b) and the comparison is shown in Fig. 2. The
+parameters used are those of the optimized UGFW structure to be described later in Table 2, under the design cut-off
+frequency of 100 Hz. The sound absorption coefﬁcient calculated by the two methods match very well with each other,
+s
+which implies that the FEM simulation by COMSOL Multiphysics is reliable.
+For the real manufacturing of the UGFW structure, the discretized multi-layer structure can be used. The optimized
+UGFW structure with parameters in Table 2, serves as an example. The gradient part with gradient ﬂow resistivity is divided
+into 10 pieces. Each piece is set to have a constant ﬂow resistivity value, which is the average ﬂow resistivity of each
+segment. The calculated sound absorption coefﬁcient is also shown in Fig. 2 (open triangles), and the performance achieved
+is the same as that of the UGFW structure.
+2.2. Optimization of parameters
+In the design of an anechoic chamber, the free space for acoustic measurement in a given allocated lab space is
+important. It is desirable for decorations to occupy as little space (depth) as possible, while satisfying the 99% absorption
+standard in ISO standard 3745(2003) [21]. Therefore, a constraint condition of α Z 99% is imposed on the optimization
+s
+procedure. In this paper, sequential quadratic programming (SQP) algorithm in MATLAB is applied. The detailed optimization settings are shown in Table 1. The calculation frequency range is chosen to be [fc, 5fc], where fc is the design cut-off
+frequency. The performance at frequencies higher than 5fc is considered to be adequate.
+s
+The SQP algorithm based on MATLAB does not guarantee the global minimum, and it may converge to a local minimum
+value, which is sensitive to the starting point. Therefore, a random multi-start algorithm is introduced, which repeats the
+SQP algorithm for a sufﬁcient number of times. Hence, the optimization result converges to the global minimum value.
+
+144
+
+C. Jiang et al. / Journal of Sound and Vibration 381 (2016) 139–155
+
+Wedge
+UGFW
+
+Optimized minimum depth /m
+
+1.6
+
+1.4
+
+1.2
+
+1
+
+0.8
+
+0.6
+0
+
+5
+
+10
+
+15
+
+20
+
+25
+
+30
+
+35
+
+40
+
+45
+
+50
+
+Optimization times
+
+Fig. 3. Convergence of the multi-start process for the wedge and UGFW structures.
+
+One example of the converged result is shown in Fig. 3. In this example, the two structures are optimized with the cut-off
+frequency of 100 Hz, and each structure is optimized for 50 times with 50 random starts. The obtained minimum-depth
+solution is used for evaluation of the performance in the anechoic chamber.
+
+2.3. Simulation of 3D acoustic ﬁeld over a periodic array of wedges
+To simulate the acoustic ﬁeld inside an anechoic chamber, a realistic three-dimensional (3D) wedge is used. To begin
+with, these wedges are assumed to line up in a periodic array; and one such module is shown in Fig. 4. The calculation
+domain contains four staggered 3D wedges, and the parameters are the same as that of 2D model. The incident wave
+approaches the module at an oblique angle, and the method proposed by Wang et al. [27] to handle such conﬁguration is
+adopted. The governing equation is the Helmholtz Equation, and the boundary condition for the bottom is the hard wall
+condition. The boundary condition for the four sides are periodic boundary conditions, which requires the pressure and
+particle velocity on the two opposite sides to be periodic, with a constant phase angle difference dictated by the incident
+wave. The boundary condition for the incident (top) plane is the Dirichlet-to-Neumann (DtN) boundary condition [28] to
+ensure that all modes of the reﬂected wave leave freely. The implementation of DtN boundary condition is listed in the
+Appendix A (more detailed implementation information can be found in Wang et al. [27]).
+The method of simulation for the oblique incidence for the UGFW structure is the same as that of the 3D wedge
+structure. However, the result of UGFW structure is independent of the azimuth angle β and only needs to be run once for all
+elevation angles.
+In Zha et al.'s paper [20], the method of virtual source image was introduced to simulate anechoic chamber. A lot of
+simpliﬁcations and assumptions were made. For example, only the primary reﬂection was considered, and locally reactive
+property was assumed for the wedge. In Bonﬁglio et al.'s paper [6], the method is called complex source image (CSI) method,
+and multiple reﬂections were considered, with the highest order of reﬂection determined by the convergence criterion. The
+wedge was also assumed to be a locally reactive impedance surface. The assumption is removed in the present study as the
+acoustic property of a wedge is obviously non-locally reactive, considering its irregular shape.
+The general idea of the CSI model is that, the sound in the chamber is regarded as the sum of direct sound and reﬂected
+sounds, with the formula:
+pðr 0 Þ ¼
+
+
+ X 
+
+ ik0 r m;n
+Ae  ik0 r0 X
+Ae  ik0 rm
+n Ae
+þ
+Rm
+Rm
+þ
+þ ⋯;
+sw
+sw Rsw
+m
+m;n
+r0
+rm
+r m;n
+
+(14)
+
+where, A is the amplitude of sound source; r 0 is the distance between the sound source and the measuring point; r m and
+r m;n are the distances between the virtual sound source and the measuring point; Rm
+sw is the spherical wave pressure
+reﬂection coefﬁcient at surface m. In Eq. (14), the ﬁrst term on the right-hand side is the direct sound; the second group of
+terms is the ﬁrst-order reﬂection sound; the third group of terms is the second-order reﬂection, and so on. The truncation of
+the order of reﬂections is made when the sound pressure level difference between two successive total sound pressures is
+less than 0.05 dB, and the phase angle difference between two successive total sound pressures is less than 0.5 degree.
+
+C. Jiang et al. / Journal of Sound and Vibration 381 (2016) 139–155
+
+145
+
+Fig. 4. Simulation geometry of the 3D wedge with consideration of oblique incidence.
+
+
+
+To calculate the spherical wave reﬂection coefﬁcient, Chien's model [29] is introduced, which is expressed as
+
+Rsw θ ¼ Rpw θ þ 1 Rpw θ F pe
+pﬃﬃﬃﬃ
+2
+F pe ¼ 1 þ i π pe e  pe erf c  ipe
+1
+qﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃ2 h
+i
+z0
+pe ¼
+ 12ik0 r 2
+zs þ cos ðθ Þ
+
+;
+
+(15)
+
+
+
+where θ is the incident angle; Rpw θ ¼ zs z0 = cos θ = zs þ z0 = cos θ is the oblique-incidence, plane-wave pressure
+reﬂection coefﬁcient, under the assumption of locally reactive surface impedance zs ; z0 is the air impedance; erfc(  ) is the
+complementary error function; r 2 is the distance between the virtual source and the measuring point.
+In this paper, two modiﬁcations are made to improve Chien's model [29] in terms of how Rpw and zs are obtained. The
+result is here called the modiﬁed CSI model.
+1. The locally reactive impedance assumption is removed and the pressure reﬂection coefﬁcient Rpw θ is calculated directly
+by the method proposed by Wang et al. [27].
+2. Normally, the locally reactive surface impedance zs appearing in the function of pe in Eq. (15) is replaced by normal
+surface impedance zns at oblique incidence (Li et al. [30]), with the deﬁnition:
+
+zns ¼
+
+ps
+;
+vns
+
+(16)
+
+where ps is the acoustic pressure at the surface, and vns is the normal component of the acoustic particle velocity at the cross
+sectional plane of the wedge tip (the shadowed plane in Fig. 4). In the current study, zns is also calculated directly by the
+method of Wang et al. [27], from the FEM model.
+
+146
+
+C. Jiang et al. / Journal of Sound and Vibration 381 (2016) 139–155
+
+500
+
+Normal surface impedance kg/(m s)
+
+400
+
+300
+real Wedge
+imag Wedge
+real UGFW
+imag UGFW
+
+200
+
+100
+
+0
+
+−100
+
+0
+
+15
+
+30
+
+45
+
+60
+
+75
+
+90
+
+75
+
+90
+
+Incident angle θ (degree measureo)
+
+500
+
+Normal surface impedance kg/(m s)
+
+400
+
+300
+real Wedge
+imag Wedge
+real UGFW
+imag UGFW
+
+200
+
+100
+
+0
+
+−100
+0
+
+15
+
+30
+
+45
+
+60
+
+Incident angle θ (degree measureo)
+
+Fig. 5. Normal surface impedance zns for the wedge and UGFW structures, (a) 100 Hz; (b) 130 Hz.
+
+Table 2
+Optimized parameters for the two structures, with the cut-off frequency of 100 Hz.
+Wedge
+
+UGFW
+
+lw ¼ lw1 þ lw2 þ lw3 ½m
+
+lw1 ½m
+
+lw2 ½m
+
+lw3 ½m
+
+h ½m
+
+0.800
+
+0.572
+
+0.114
+
+0.114
+
+0.131
+h
+
+lg ¼ lg0 þ lg1 þ lg2 ½m
+
+lg0 ½m
+
+lg1 ½m
+
+lg2 ½m
+
+Us
+Rf 0 Pa
+m2
+
+0.762
+
+0.283
+
+0.365
+
+0.114
+
+600
+
+h
+i
+Us
+Rf Pa
+m2
+5960
+i
+
+h
+i
+Us
+a1 Pa
+m2
+9888
+
+One example of the normal surface impedance of the two structures are shown in Fig. 5. The parameters of the two
+structures are given in Table 2.
+At 100 Hz (the design cut-off frequency), with the increase of incident angle, the change of normal surface impedance
+(both real part and imaginary part) for UGFW structure is small. This can be explained by its ﬂat surface, which is close to
+locally reactive. However, normal surface impedance of the wedge varies a lot with the incident angle.
+At 130 Hz, for the UGFW structure, the real part of its normal surface impedance keeps nearly unchanged with the
+increase of incident angle, but its imaginary part varies a lot, from negative to positive. For the wedge, both real and
+imaginary part varies a lot with the incident angle.
+
+C. Jiang et al. / Journal of Sound and Vibration 381 (2016) 139–155
+
+147
+
+20
+Inverse square law
+Deviation +1.5dB
+Deviation −1.5dB
+CSI model
+Modified CSI model
+Full finite element simulation
+
+Relative sound pressure level /dB
+
+15
+
+10
+
+5
+Improvement of
+modified
+CSI model
+
+0
+
+−5
+
+−10
+
+−15
+
+−20
+
+0
+
+0.5
+
+1
+
+1.5
+
+2
+
+2.5
+
+3
+
+3.5
+
+Distance from sound source /m
+
+Fig. 6. Comparison of the CSI and modiﬁed CSI models with the wedge structure at 140 Hz.
+
+Therefore, the normal surface impedance instead of the locally reactive surface impedance is applied in the following
+simulation, to take non-locally reactive effect into consideration.
+The impact of the above modiﬁcations is studied by checking the results for the CSI model and the modiﬁed CSI model
+against the full ﬁnite-element simulation for an anechoic chamber small enough that the computational resources of a
+workstation (128 GB RAM) can cope. The parameters of the wedge are optimized for the design cut-off frequency of 100 Hz,
+which are given in Table 2. The geometry of the simulated anechoic chamber is 4.5 m  4 m  3.5 m (from wedge tip to
+wedge tip) and the frequency calculated is 140 Hz. A point sound source is located at the center of the chamber, and the
+testing points are along the line connecting the source and one of the eight vertices of the chamber.
+The calculation result is shown in Fig. 6. It is demonstrated that the modiﬁed CSI model (open circles) matches better
+with the full ﬁnite-element simulation (solid line) than that of the original CSI model (open triangles), especially in the
+range of distance highlighted in Fig. 6. The improvement is not drastic which partly implies the soundness of the original
+model. However, the improvement is in the critical region, where the 1.5 dB deviation is violated, which determines the
+total anechoic space. Therefore, for better simulation of the anechoic chamber, the modiﬁed CSI model is used in the
+current study.
+
+3. Results and analysis
+3.1. Optimization results and analysis
+The two structures are optimized to ﬁnd the minimized total depth with the method described in the previous section.
+The result is displayed in Fig. 7. It is clearly shown that, the minimum depths of the UGFW structure are smaller than those
+of the classic wedge for a wide range of cut-off frequency from 100 Hz to 250 Hz.
+At this stage, the primary concern is the total depth. However, the reduction of the total depth does not necessarily
+translate into a reduction of the total volume of materials used. Actually, the volume of material required is increased. The
+cost of the increased use of material may be partly compensated for by the ease of installation compared with the
+classical wedge.
+The proposed UGFW structure has smaller total depth than the wedge structure. Further analysis shows that their
+absorption mechanisms of the two structures are different.
+To appreciate the absorption mechanisms of the two structures, one set of optimization results, with the cut-off frequency of 100 Hz, is used for further analysis. The optimized parameters are shown in Table 2. Two major coefﬁcients are
+used to analyze the two structures: the pressure reﬂection rate r ðxÞ and energy absorption rate αI ðxÞ, where x is the
+direction of normal incident wave.
+The pressure reﬂection rate r ðxÞ is deﬁned by Eq. (11), whose equivalent form, using standing-wave decomposition
+scheme, is provided in the following. Consider an element from x1 to x1 þdx, and let pL and pR denote the averaged pressure
+at the left and right boundaries, respectively. It is assumed that the wave propagating inside such piece is plane wave, which
+contains an incident wave I ¼ pi e  ikx and reﬂected wave R ¼ pr e þ ikx , where k is the local wave number at x1 (k0 for air
+domain and kc ðxÞ for porous material domain). Therefore, the incident and reﬂected wave amplitude pi and pr can be
+
+148
+
+C. Jiang et al. / Journal of Sound and Vibration 381 (2016) 139–155
+
+Wedge
+UGFW
+
+Optimized minimum depth /m
+
+0.8
+
+0.7
+
+0.6
+
+0.5
+
+0.4
+
+0.3
+
+0.2
+100
+
+150
+
+200
+
+250
+
+Cut−off frequency /Hz
+
+Fig. 7. Optimized minimum depth of the wedge and UGFW structures at different cut-off frequencies.
+
+derived with the following equation systems:
+pi e  ikx1 þ pr e þ ikx1 ¼ pL
+p e  ikðx1 þ ΔxÞ þ p e þ ikðx1 þ ΔxÞ ¼ p
+i
+
+r
+
+
+;
+
+(17)
+
+R
+
+Therefore, the pressure reﬂection rate r ðxÞ can be obtained as r ðxÞ ¼ pr =pi . The above decomposition scheme works
+perfectly for the structure of UGFW. For the wedge, each cross section contains air and porous material. In this case, pL and
+pR are obtained using a cross-section-area-weighted average. Despite the ad hoc nature of the scheme of traveling wave
+decomposition, it does show clearly the bulk reﬂection pattern. The amplitudes of the pressure reﬂection rates for the two
+structures are shown in Fig. 8. It is found that the patterns for the two structures are nearly the same. Both have a small
+initial reﬂection at the interface, which increase gradually inside the absorption part and ﬁnally reach unity at the rigid end.
+The average sound intensity in x direction can be calculated as
+Z
+1 h
+I x ðxÞ ¼
+0:5  Reðpvx Þdy;
+(18)
+h 0
+where h is the height of the calculation domain. The energy absorption rate αI ðxÞ is deﬁned as
+
+αI ðxÞ ¼ 
+
+dI x
+;
+dx
+
+(19)
+
+where the negative sign ensures the absorption rate to be positive.
+The sound energy absorption rate for the two structures is shown in Fig. 9.
+For the wedge structure at 100 Hz, there is a sharp absorption peak around the base of the wedge in the energy
+absorption rate curve, and the absorption rate elsewhere is relatively small. The phenomenon is caused by the unique
+geometry of the wedge. When sound hits the two edges of the wedge, most of the sound is bounced back to the air space
+between the wedges. In such low frequency range, the normal impedance of the porous material is much larger than air; the
+impedance mismatch is large even when the factor of incident angle is considered. Therefore, little sound goes into the
+wedge along the interface between the air and the wedge. This phenomenon is also shown in Fig. 10(a) by the sound
+intensity distribution at 100 Hz. The sound intensity vector at the air-wedge interface is almost parallel to the interface, and
+the sound intensity inside the wedge is almost zero. Therefore, the absorption rate of sound energy by the wedge front is
+very small. Meanwhile, the sound intensity in the air domain increases greatly due to the trapping of sound towards the
+corner at the base of the wedge.
+For the wedge structure at 300 Hz, the sharp absorption peak disappears, while the width of efﬁcient absorption part is
+broadened to the front. At this relatively high frequency, the impedance of porous material decreases, leading to better
+match with that of air. Therefore, more sound energy goes into the wedge along the interface, as shown in Fig. 10(b), which
+broadens the absorption band.
+As shown by the open circles in Fig. 9(a) and (b), the UGFW structure has a broad absorption pattern in the depth
+direction and a peak at the front. This broad pattern is also shown in Fig. 11(a) and (b) for intensity. Most sound energy goes
+into the porous material through the air-absorber interface, and gets dissipated by the porous material gradually. The peak
+absorption rate occurs inside the uniform part of the UGFW structure, which indicates that the front uniform part with small
+ﬂow resistivity acts not only as an impedance transition, but also as an efﬁcient absorber.
+
+C. Jiang et al. / Journal of Sound and Vibration 381 (2016) 139–155
+
+Wedge
+UGFW
+
+149
+
+Wedge base
+
+Amplitude of pressure reflection rate |r(x)|
+
+1
+
+0.8
+
+0.6
+
+0.4
+
+0.2
+
+0
+
+0
+
+Interface
+X coordinate /m
+
+Wedge
+UGFW
+
+1.072 1.186
+
+Wedge base
+
+Amplitude of pressure reflection rate |r(x)|
+
+1
+
+0.8
+
+0.6
+
+0.4
+
+0.2
+
+0
+
+0
+
+Interface
+
+1.072 1.186
+
+X coordinate /m
+
+Fig. 8. Comparison of the amplitude of pressure reﬂection rate of the optimized wedge and UGFW structures. The optimization is conducted with cut-off
+frequency of 100 Hz, (a) pressure reﬂection rate at 100 Hz; (b) pressure reﬂection rate at 300 Hz.
+
+3.2. Simulation results for the anechoic chamber
+The modiﬁed CSI model is used to simulate the performance of the anechoic chamber with the two decoration structures
+designed for the cut-off frequency of 100 Hz. The optimized parameters are given in Table 2. The simulated chamber is
+9 m  8 m  7 m (wedge tip to wedge tip). The point source with unit amplitude is put at the center of the chamber, and the
+ﬁrst testing line ranges from the center to one of the eight vertices. The second testing line is from the center of the chamber
+to the center of the closest wall. According to the ISO standard 3745(2003) [21], the curve of sound pressure level (SPL)
+attenuation in the anechoic chamber should satisfy the inverse square law within a tolerance of 71.5 dB. The chamber
+performance is not considered to be anechoic when the tolerance is breached. As shown below, this anechoic condition is
+usually not satisﬁed for the entire testing line for the design cut-off frequency as deviation grows in the region close to the
+wedges. Xu et al. [13] considers the chamber performance to be acceptable if at least 75% of the length of the testing line
+conforms to the tolerance limit of 71.5 dB around the strict inverse square law. This 75%-length criterion is also adopted in
+the current study to determine the cut-off frequency of the whole chamber. The frequency above which at least 75% of the
+testing line length satisﬁes the inverse square law to within 1.5 dB deviation is therefore deﬁned as the effective cut-off
+frequency. As shown below, this effective cut-off frequency is usually higher (worse) than the design cut-off frequency for
+which the normal incidence sound energy absorption rate is equal or above 99%.
+
+150
+
+C. Jiang et al. / Journal of Sound and Vibration 381 (2016) 139–155
+
+7
+
+x 10
+Wedge
+UGFW
+
+Wedge base
+
+I
+
+Energy absorption rate α (x) /Pa*s−1
+
+6
+
+5
+
+4
+
+3
+
+2
+
+1
+
+0
+0
+
+Interface
+
+1.072 1.186
+
+X coordinate /m
+
+7
+
+x 10
+Wedge
+UGFW
+
+Wedge base
+
+I
+
+Energy absorption rate α (x) /Pa*s−1
+
+6
+
+5
+
+4
+
+3
+
+2
+
+1
+
+0
+0
+
+Interface
+
+1.072 1.186
+
+X coordinate /m
+
+Fig. 9. Comparison of energy absorption rate of the optimized wedge and UGFW structures. The optimization is conducted with cut-off frequency of
+100 Hz; (a) the energy absorption rate at 100 Hz; (b) the energy absorption rate at 300 Hz.
+
+The simulation result of the two structures at the design cut-off frequency of 100 Hz is displayed in Fig. 12. For the second
+test line, all the test pinots of the two structures satisfy the 1.5 dB deviation standard. For the ﬁrst test line, the anechoic
+areas of the chambers at this frequency are 56.7% and 66.2% for the wedge and UGFW structures, respectively. Between the
+two structures, the UGFW structure performs better than the wedge with more anechoic space.
+More importantly, the result shows that none of the designs satisﬁes the 1.5 dB deviation strictly even within the 75%
+anechoic length criterion. This means that the 99% sound energy absorption standard for individual wedges under normal
+incidence condition does not ensure the chamber to be anechoic. Therefore, a design margin should be provided, and the
+simulation of the real performance of the decoration inside the chamber needs to be conducted before real construction.
+The decaying curves of the two structures at higher frequencies are shown in Fig. 13. Again, the test pinots along the
+second test line satisfy the 1.5 dB deviation standard. In the ﬁrst test line, at higher frequencies, the chamber made of the
+two decorations can achieve the deﬁned anechoic condition over 75% of the testing line length. The effective cut-off frequencies for the wedge and UGFW decorations are 128 Hz and 120 Hz, respectively. In fact, the attenuation curves in Fig. 13
+hit the 1.5 dB upper deviation limit at around 75% of the testing length and both curves fall back to the acceptable deviation
+zone before the lower deviation limit is breached at 84.4% and 87.8% for the wedge and UGFW structures, respectively.
+Therefore, with the 75% anechoic area criterion, the UGFW structure has a lower effective cut-off frequency, a larger
+anechoic space, and a smaller total absorber depth. Besides, it is easier to install than the wedge structure, although the total
+
+C. Jiang et al. / Journal of Sound and Vibration 381 (2016) 139–155
+
+151
+
+Y coordinate /m
+
+100Hz
+
+0.1
+
+0.05
+
+0
+0
+
+0.5
+
+1
+
+Y coordinate /m
+
+300Hz
+
+0.1
+
+0.05
+
+0
+0
+
+0.5
+
+1
+
+X coordinate /m
+
+Fig. 10. The distribution of sound intensity of the optimized wedge structures with the design cut-off frequency of 100 Hz; (a) the distribution of sound
+intensity at 100 Hz; (b) the distribution of sound intensity at 300 Hz.
+
+100Hz
+
+Y coordinate /m
+
+0.1
+
+0.05
+
+0
+0
+
+interface air_porous
+
+1
+
+300Hz
+
+Y coordinate /m
+
+0.1
+
+0.05
+
+0
+0
+
+interface air_porous
+
+1
+
+X coordinate /m
+
+Fig. 11. The distribution of sound intensity of the optimized GFW structure with the design cut-off frequency of 100 Hz. (a) the distribution of sound
+intensity at 100 Hz; (b) the distribution of sound intensity at 300 Hz.
+
+amount of lining materials used for the optimized UGFW structure is larger than the optimized wedge. In addition, for real
+manufacturing, the effect of UGFW design can be recovered by the discretized multi-layer materials, whose cost will be
+lower than that of manufacturing the UGFW structure directly.
+The results of the anechoic chamber simulation for two designs are summarized in Table 3.
+
+4. Conclusions
+To investigate the design of anechoic chambers, two types of interior chamber decorations are modeled and analyzed.
+They are the most common wedge structure, and its alternative, the uniform-gradient ﬂat-wall (UGFW) structures. In
+addition, a modiﬁcation of the complex source image (CSI) method is proposed to simulate sound propagation in anechoic
+chambers, by considering the non-locally reactive effect of the absorbers. The following conclusions are drawn.
+
+152
+
+C. Jiang et al. / Journal of Sound and Vibration 381 (2016) 139–155
+
+10
+Inverse square law
+Deviation +1.5dB
+Deviation −1.5dB
+Wedge at 100Hz
+UGFW at 100Hz
+
+5
+
+Relative sound pressure level /dB
+
+0
+−5
+−10
+−15
+−20
+−25
+75% of the test line
+−30
+−35
+
+0
+
+1
+
+2
+
+3
+
+4
+
+5
+
+6
+
+7
+
+Distance from the sound source /m
+
+10
+Inverse square law
+Deviation +1.5dB
+Deviation −1.5dB
+Wedge at 100Hz
+UGFW at 100Hz
+
+Relative sound pressure level /dB
+
+5
+
+0
+
+−5
+
+−10
+
+−15
+
+0
+
+0.5
+
+1
+
+1.5
+
+2
+
+2.5
+
+3
+
+3.5
+
+Distance from the sound source /m
+
+Fig. 12. Simulation of anechoic chamber of two decorations at 100 Hz with the design cut-off frequency of 100 Hz. Solid line: the wedge structure; open
+circle: the UGFW structure; (a) from chamber center to one of the vertex; (b) from chamber center to the center of the closest wall.
+
+Both decoration conﬁgurations are optimized for the minimum total depth, with the 99% absorption restriction required
+by the ISO standard 3735(2003) [21]. The optimization result shows that the UGFW structure achieves a smaller total depth
+for the same design cut-off frequency ranging from 100 Hz to 250 Hz. In addition, through the simulation of anechoic
+chambers with the two decorations, it is found that the UGFW structure has better performance.
+For the UGFW structures, it is given the impedance gradient by design, while for the wedge structure, it is a parallel
+connection between air and porous material, with a gradual increase of porous material. Such structure performs as a
+gradient impedance material on average. From the absorption point of view, the two structures perform differently. The
+absorption pattern of the wedge has an obvious peak at its base, while for the UGFW structure, it has a broad absorption
+region inside the absorption material, with a more localized absorption peak at its front inside the uniform part of the
+porous material, which indicates that such layer of porous material with relatively small ﬂow resistivity has another effect of
+efﬁcient absorption, apart from the serving as the impedance transition.
+As to the simulation of anechoic chambers, the proposed modiﬁed CSI model improves the prediction by considering the
+non-locally reactive effect at oblique incidence. Through the modiﬁed CSI model, it is found that the 99% absorption
+standard in ISO standard 3745(2003) [21] for each absorber module does not ensure the chamber to be anechoic based on
+the 1.5 dB deviation from the strict inverse square law. It is because the 99% energy absorption means 10% pressure
+reﬂection, which is still very large. In some area inside the anechoic chamber, the multi-reﬂected sound accumulates and
+violates the 1.5 dB deviation easily. In the current simulation, both structures are designed under the 99% standard with the
+
+C. Jiang et al. / Journal of Sound and Vibration 381 (2016) 139–155
+
+153
+
+5
+Inverse square law
+Deviation +1.5dB
+Deviation −1.5dB
+wedge at 128Hz
+UGFW at 120Hz
+
+Relative sound pressure level /dB
+
+0
+
+−5
+
+−10
+
+−15
+
+−20
+75% of the test line
+−25
+
+−30
+0
+
+1
+
+2
+
+3
+
+4
+
+5
+
+6
+
+7
+
+Distance from the sound source /m
+
+10
+Inverse square law
+Deviation +1.5dB
+Deviation −1.5dB
+Wedge at 128Hz
+UGFW at 120Hz
+
+Relative sound pressure level /dB
+
+5
+
+0
+
+−5
+
+−10
+
+−15
+
+0
+
+0.5
+
+1
+
+1.5
+
+2
+
+2.5
+
+3
+
+3.5
+
+Distance from the sound source /m
+
+Fig. 13. Simulation of anechoic chamber of two decorations at effective cut-off frequency with the design cut-off frequency of 100 Hz. Solid line: the wedge
+structure at 128 Hz; open circle: the UGFW structure at 120 Hz; (a) from chamber center to one of the vertex; (b) from chamber center to the center of the
+closest wall.
+Table 3
+Summary of the performance of the two structures in anechoic chambers.
+Total depth Design cut-off fre[m]
+quency [Hz]
+
+Wedge 0.800
+UGFW 0.762
+
+100
+100
+
+Anechoic area (percentage of the
+test line) at design cut-off frequency (%)
+
+Effective cut-off
+frequency [Hz]
+
+Anechoic area (percentage of the test
+line) at effective cut-off frequency (%)
+
+56.7
+66.2
+
+128
+120
+
+84.4
+87.8
+
+cut-off frequency of 100 Hz, but neither strictly satisﬁes the inverse square law at 100 Hz, and different decoration structures have different effective cut-off frequencies. Therefore, a thorough simulation before real construction is necessary.
+
+Acknowledgments
+The project is supported by a China National Key Basic Research Scheme, or “973” scheme (2012CB7202). The ﬁrst author
+also acknowledges the support of the PhD studentship from the University of Hong Kong.
+
+154
+
+C. Jiang et al. / Journal of Sound and Vibration 381 (2016) 139–155
+
+Appendix A. Implementation of the DtN boundary condition
+The implementation of the Dirichlet-to-Neumann (DtN) boundary condition for the 3D wedge is described as follows.
+The velocity potential ϕ is expressed as the sum of the incident sound wave ϕin , and the scattered sound wave ϕsc ,
+
+ϕ ¼ ϕin þ ϕsc :
+According to the coordinates shown in Fig. 4, the incident sound wave ϕin is expressed as
+
+ϕin ¼ exp þ ikx x þiky y þ ikz z ;
+where, kx ¼ k0 sin θ cos β, ky ¼ k0 sin θ sin β, kz ¼ k0 cos θ, are the wavenumbers of the x, y and z directions respectively.
+As shown in Fig. 4, θ and β are the elevation angle and azimuth angle, respectively. The scattered sound wave ϕsc is
+expressed in terms of modal expansion,
+X
+ϕsc ¼ ϕ  ϕin ¼ m;n Amn exp þiκ x;m x þ iκ y;n y  iκ z;mn z ; m; n A Z
+where, Z is the set of integers (from  1 to þ1).
+As the structure is periodic in the x and y directions, the wavenumbers of the (m,n)th scattered mode are
+
+κ x;m ¼ k0 sin θ cos β þ 2π m=Lx
+κ y;n ¼ k0 sin θ sin β þ 2π n=Ly
+
+
+
+qﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃ
+
+κ z;mn ¼  i κ 2x;m þ κ 2y;n  k20
+
+;
+
+where Lx and Ly are the side lengths of the unit cell, respectively.
+The modal amplitude Amn is obtained through the integration on the inlet boundary,
+Amn ¼
+
+1
+∬S
+Lx Ly inlet
+
+
+
+ϕ  ϕin exp iκ x;m x iκ y;n y dxdy;
+
+In Comsol implementation, these amplitudes are entered as boundary integration coupling variables, which can then be
+directly used in the expression for the inlet (Neumann-type) boundary conditions described below. The non-reﬂection
+boundary condition requires that the space derivative in z direction for the scattered sound wave should satisfy
+∂ϕsc X
+¼
+A
+ iκ z;mn exp þ iκ x;m x þ iκ y;n y iκ z;mn z
+m;n mn
+∂z
+Therefore, the DtN boundary condition for the total sound wave is expressed as
+
+þ
+
+X
+
+∂ϕ ∂ϕin ∂ϕsc
+¼
+þ
+∂z
+∂z
+∂z
+¼ ð þ ikz Þexp þikx x þ iky y þ ikz z
+
+A
+m;n mn
+
+ iκ z;mn exp þ iκ x;m x þ iκ y;n y  iκ z;mn z :
+
+In this paper, the scattered sound wave is truncated to the 5th order, that m,n are integers from  5 to þ5. In the Comsol
+implementation, the above expression is entered directly into the Neumann-type boundary condition for the inlet boundary.
+
+References
+[1] L.L. Beranek, H.P. Sleeper Jr, The design and construction of anechoic sound chambers, Journal of the Acoustical Society of America 18 (1946) 140–150.
+[2] W. Koidan, G.R. Hruska, M.A. Pickett, Wedge design for National Bureau of Standards Anechoic Chamber, Journal of the Acoustical Society of America 52
+(1972) 1071–1076.
+[3] V. Easwaran, M.L. Munjal, Finite-element analysis of wedges used in anechoic chambers, Journal of Sound and Vibration 160 (1993) 333–350.
+[4] C.N. Wang, M.K. Tang, Boundary element evaluation on the performance of sound absorbing wedges for anechoic chambers, Engineering Analysis with
+Boundary Elements 18 (1996) 103–110.
+[5] T. Kar, M.L. Munjal, Plane wave analysis of acoustic wedges using the boundary-condition-transfer algorithm, Applied Acoustics 67 (2006) 901–917.
+[6] P. Bonﬁglio, F. Pompoli, Numerical methodologies for optimizing and predicting the low frequency behavior of anechoic chambers, Journal of the
+Acoustical Society of America 134 (2013) 285–291.
+[7] J.S. Lee, Y.Y. Kim, J.S. Kim, Y.J. Kang, Two-dimensional poroelastic acoustical foam shape design for absorption coefﬁcient maximization by topology
+optimization method, Journal of the Acoustical Society of America 123 (2008) 2094–2106.
+[8] E. Bedell, Some data on a room designed for free ﬁeld measurements, Journal of the Acoustical Society of America 8 (1936) 118–125.
+[9] W. Davern, Flat-walled graded density anechoic lining, Proceedings of the Tenth International Congress on Acoustics, Sydney, 1980.
+[10] I. Dunn, W. Davern, Calculation of acoustic impedance of multi-layer absorbers, Applied Acoustics 19 (1986) 321–334.
+[11] J.F. Xu, J. Nannariello, F.R. Fricke, Optimising ﬂat-walled multi-layered anechoic linings using evolutionary algorithms, Applied Acoustics 65 (2004)
+1009–1026.
+[12] J.F. Xu, J.M. Buchholz, F.R. Fricke, Application of multi-layered polyurethane foams for ﬂat-walled anechoic linings, Applied Acoustics 67 (2006) 476–485
+.
+[13] J.F. Xu, J.M. Buchholz, F.R. Fricke, Flat-walled multilayered anechoic linings: optimization and application, Journal of the Acoustical Society of America
+118 (2005) 3104–3109.
+
+C. Jiang et al. / Journal of Sound and Vibration 381 (2016) 139–155
+
+155
+
+[14] N. Atalla, R. Panneton, F.C. Sgard, X. Olny, Acoustic absorption of macro-perforated porous materials, Journal of Sound and Vibration 243 (2001)
+659–678.
+[15] F.C. Sgard, X. Olny, N. Atalla, F. Castel, On the use of perforations to improve the sound absorption of porous materials, Applied Acoustics 66 (2005)
+625–651.
+[16] F.X. Becot, L. Jaouen, E. Gourdon, Applications of the dual porosity theory to irregularly shaped porous materials, Acta Acustica United with Acustica 94
+(2008) 715–724.
+[17] Y.C. Chang, L.J. Yeh, M.C. Chiu, G.J. Lai, Shape optimization on constrained single-layer sound absorber by using GA method and mathematical gradient
+methods, Journal of Sound and Vibration 286 (2005) 941–961.
+[18] H. Meng, Q. Ao, H. Tang, F. Xin, T. Lu, Dynamic ﬂow resistivity based model for sound absorption of multi-layer sintered ﬁbrous metals, Science China‐
+Technological Sciences 57 (2014) 2096–2105.
+[19] S. Schneider, Numerical prediction of the quality of an anechoic chamber in the low frequency range, Journal of Sound and Vibration 320 (2009)
+990–1003.
+[20] X. Zha, X. Zhou, H. Fuchs, Computer simulation and measurement of free-ﬁeld characteristics, Audio Engineering 33 (2009) 6–13.
+[21] ISO 3745 Acoustics, Determination of Sound Power Levels of Noise Sources Using Sound Pressure—Precision Methods for Anechoic and Hemi-anechoic
+Rooms, International Organization for Standardization, Geneva, Switzerland, 2003.
+[22] W. Koidan, G.R. Hruska, Acoustical properties of National-Bureau-of-Standards Anechoic Chamber, Journal of the Acoustical Society of America 64
+(1978) 508–516.
+[23] P.K. Moller, Measurement of deviations from inverse pressure–distance law at high-frequencies, Acustica 29 (1973) 358–360.
+[24] M. Delany, E. Bazley, Acoustical properties of ﬁbrous absorbent materials, Applied Acoustics 3 (1970) 105–116.
+[25] W.C. Chew, Waves and Fields in Inhomogeneous Media, IEEE press, New York, 1995.
+[26] L. Walker, N. Wax, Non‐uniform transmission lines and reﬂection coefﬁcients, Journal of Applied Physics 17 (1946) 1043–1045.
+[27] C.Q. Wang, L.X. Huang, Y.M. Zhang, Oblique incidence sound absorption of parallel arrangement of multiple micro-perforated panel absorbers in a
+periodic pattern, Journal of Sound and Vibration 333 (2014) 6828–6842.
+[28] J.B. Keller, D. Givoli, Exact non-reﬂecting boundary-conditions, Journal of Computational Physics 82 (1989) 172–192.
+[29] C.F. Chien, W.W. Soroka, Sound-propagation along an impedance plane, Journal of Sound and Vibration 43 (1975) 9–20.
+[30] K.M. Li, T. Waters-Fuller, K. Attenborough, Sound propagation from a point source over extended-reaction ground, Journal of the Acoustical Society of
+America 104 (1998) 679–685.
+
+
