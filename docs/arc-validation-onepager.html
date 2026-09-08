@@ -28,7 +28,7 @@ code{font-family:var(--mono);font-size:.92em}</style></head><body>
 <p class="sub">For these runs the arc was laid flat (horizontal), with the propeller axis vertical. All microphones then sit at the same height, in the propeller plane, around the propeller. A perfect setup reads the same level at every position: a circle. We did this twelve times (keys prop7–18, 1–2 Sept 2026, PWM 1900). What is left after we remove each microphone's own offset is the effect of the room.</p></div>
 <div class="meta">2026-09-08<br>data: laptop backup of 2 Sept<br>script: scripts/arc_error_map.py<br>full guide: docs/arc-validation-guide.html</div></header>
 
-<img src="analysis/brief-fig1-polars.png" alt="" style="width:70%;margin:0 auto">
+<img src="analysis/brief-fig1-polars.png" alt="" style="width:66%;margin:0 auto">
 <div class="two">
 <div>
 <h2>What the room does (right panel of Fig. 2)</h2>
@@ -36,7 +36,7 @@ code{font-family:var(--mono);font-size:.92em}</style></head><body>
 <div class="card bad"><b>Deep blue at −72° and red at +36°/+54°, 500–1000 Hz.</b> A sound wave that bounces off a nearby surface arrives a little later than the direct wave. If the extra path is half a wavelength the two cancel and the spot goes blue; if it is a whole wavelength they add and the spot goes red. The extra path depends on the spot, so neighbours can be opposite colours and one spot can flip colour from band to band. Wavelength here is 35–70 cm, so the surface is within about a metre.</div>
 <div class="card warn"><b>The 200–250 Hz column: the blade tone.</b> −36° is deep blue, +36° red. Wavelength about 1.4 m: only a large surface (wall, floor, table) reflects a wave that long. The blue cell moves with motor speed because the tone slides through the cancelling frequency, the textbook sign of a reflection.</div>
 <div class="card warn"><b>Blue on one side, red on the other: the surface is off-centre.</b> A surface symmetric around the propeller (the floor under a flat arc, say) gives every microphone the same extra path, so a whole row would be one colour. Here the colour changes around the arc, so the microphones are at different distances from the surface: it sits to one side. The colours do not say which side; blue is not "near" and red is not "far". The corner is the candidate because −72° is the spot closest to it.</div>
-<div class="card ok"><b>White above 4 kHz.</b> Short waves are absorbed by the foam and scattered by small objects, so only direct sound reaches the microphones. The arc itself is fine.</div>
+<div class="card ok"><b>White above 4 kHz: every spot reads the same.</b> Two reasons. The foam absorbs short waves well (under 9 cm above 4 kHz), so little is reflected. And a band at 4 kHz is 900 Hz wide, so a reflection cancels and adds many times inside it and averages out; at 250 Hz the band is 58 Hz wide and holds one cancellation, so it shows. White means the arc and the microphones work; the problem is limited to the low bands.</div>
 </div>
 <div>
 <h2>What we ruled out</h2>
