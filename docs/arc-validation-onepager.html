@@ -5,7 +5,7 @@
 :root{--ink:#10171b;--ink-2:#46545c;--ink-3:#74828a;--rule:#c6d0d5;--panel:#f1f4f6;--accent:#17566e;--bad:#96382a;--warn:#8f5c0d;--ok:#2f6b3a;
  --sans:"IBM Plex Sans","DejaVu Sans","Helvetica Neue",Arial,sans-serif;--serif:"Source Serif 4",Charter,"DejaVu Serif",Georgia,serif;--mono:"IBM Plex Mono","DejaVu Sans Mono",monospace}
 *{box-sizing:border-box} html,body{margin:0;padding:0}
-body{font-family:var(--serif);font-size:6.3pt;line-height:1.17;color:var(--ink);background:#fff;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+body{font-family:var(--serif);font-size:6.0pt;line-height:1.14;color:var(--ink);background:#fff;-webkit-print-color-adjust:exact;print-color-adjust:exact}
 header{display:grid;grid-template-columns:1fr auto;align-items:end;border-bottom:1.5pt solid var(--ink);padding-bottom:3pt;margin-bottom:5pt}
 .eyebrow{font-family:var(--mono);font-size:5.6pt;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-3);margin:0 0 1pt}
 h1{font-family:var(--sans);font-weight:700;font-size:13pt;letter-spacing:-.025em;line-height:1;margin:0}
@@ -28,14 +28,15 @@ code{font-family:var(--mono);font-size:.92em}</style></head><body>
 <p class="sub">For these runs the arc was laid flat (horizontal), with the propeller axis vertical. All microphones then sit at the same height, in the propeller plane, around the propeller. A perfect setup reads the same level at every position: a circle. We did this twelve times (keys prop7–18, 1–2 Sept 2026, PWM 1900). What is left after we remove each microphone's own offset is the effect of the room.</p></div>
 <div class="meta">2026-09-08<br>data: laptop backup of 2 Sept<br>script: scripts/arc_error_map.py<br>full guide: docs/arc-validation-guide.html</div></header>
 
-<img src="analysis/brief-fig1-polars.png" alt="" style="width:78%;margin:0 auto">
+<img src="analysis/brief-fig1-polars.png" alt="" style="width:70%;margin:0 auto">
 <div class="two">
 <div>
-<h2>What the room does</h2>
-<div class="card bad"><b>The level at −72° is 2.4 to 5.7 dB too low between 500 and 2000 Hz, in all twelve runs.</b> The dip is deepest at 630 and 800 Hz (−4.5 dB). It stays when a different microphone sits there (811-1896 in eight runs, 810-8901 in the four runs with the arc turned around). This position is the one closest to the chamber corner.</div>
-<div class="card bad"><b>The level at +36° and +54° is 3 to 7 dB too high, at 200–250 Hz and at 630–1000 Hz.</b> Three different microphones sat at +54° over the twelve runs. The bump stayed the same.</div>
-<div class="card warn"><b>Around the blade tone (200–250 Hz) the two halves of the arc disagree:</b> −36° reads −7.6 dB, +36° reads +4.8 dB; −54° reads −3 dB, +54° and +72° read +2 dB. The negative-angle half of the arc (−36°, −54°) is too low, the positive-angle half (+36°, +54°, +72°) is too high. The dip also moves with motor speed (−9 dB at PWM 1900, −2 dB at 2000). A sound wave that bounces off a surface and adds to the direct wave does exactly this: it cancels at some frequencies and adds at others, and the tone slides through those frequencies as the speed changes.</div>
-<div class="card ok"><b>Above 4 kHz the arc reads a circle within ±1 dB at every position.</b> The positions 0°, ±18° and ±90° are within about 1 dB in every band.</div>
+<h2>What the room does (right panel of Fig. 2)</h2>
+<div class="card"><b>How to read the map.</b> Row = spot on the arc, column = frequency band. White: the spot reads what a circle predicts. Red: too loud. Blue: too quiet. Each microphone's own error is already taken out (left panel), so the colour is the room.</div>
+<div class="card bad"><b>Deep blue at −72° and red at +36°/+54°, 500–1000 Hz.</b> A sound wave that bounces off a nearby surface arrives a little later than the direct wave. If the extra path is half a wavelength the two cancel and the spot goes blue; if it is a whole wavelength they add and the spot goes red. The extra path depends on the spot, so neighbours can be opposite colours and one spot can flip colour from band to band. Wavelength here is 35–70 cm, so the surface is within about a metre.</div>
+<div class="card warn"><b>The 200–250 Hz column: the blade tone.</b> −36° is deep blue, +36° red. Wavelength about 1.4 m: only a large surface (wall, floor, table) reflects a wave that long. The blue cell moves with motor speed because the tone slides through the cancelling frequency, the textbook sign of a reflection.</div>
+<div class="card warn"><b>One side blue, the other red.</b> Every deep blue cell is at a negative angle (−36°, −54°, −72°), every strong red at a positive one. A surface on one side of the rig does exactly this.</div>
+<div class="card ok"><b>White above 4 kHz.</b> Short waves are absorbed by the foam and scattered by small objects, so only direct sound reaches the microphones. The arc itself is fine.</div>
 </div>
 <div>
 <h2>What it is not</h2>
