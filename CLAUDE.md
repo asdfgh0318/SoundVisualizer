@@ -6,6 +6,17 @@ Drone-noise directivity measurement tool. Captures audio from up to 6 miniDSP UM
 
 **Refactor MVP is built.** Phases 0/1/2/3/4/5/7/8/9/10 of [PLAN.md](PLAN.md) are complete. Server + frontend run end-to-end against either real hardware (when `tyto.enabled = true` in `config.toml`) or against synthesised "fake capture" data for results-tool development without the rig.
 
+## Next session — start here (written 2026-09-08)
+
+Read `docs/arc-validation-remedies.pdf` §00 (nine lines) and §15 (the campaign plan), then:
+
+1. **Get the missing geometry from Adam** and put it in `docs/mic_arc.md`: hub height above the floor, room L×W×H, foam material/thickness/coverage, what stands within 1.5 m of the −72°/−90° and +36°/+54° microphones, how far below the propeller disc the Tyto beam sits and on which side. Known: ring diameter 1.68 m (r ≈ 0.84 m); the propeller blew upward, so the stand is in the inflow. Then re-run the plane fit in `scripts/arc_validation_diagnostics.py` with the real numbers.
+2. **Loudspeaker session (arc flat):** 20 Hz–20 kHz sine sweep from the hub, all 11 mics, motor off; each mic's own impulse response gives its echo delays (no clock sync needed); then tones at 216/238/258 Hz. Decides room-vs-inflow for the 238 Hz pattern (report Problems 1, 7, 8) and names the 0.7 m and 1.5 m reflectors. Needs the small sealed loudspeaker Adam is arranging.
+3. **Speed ladder with cyclic mic rotation:** 12–15 PWM steps 1750–2050, 2 s each, BPF read from the audio; shift every mic one spot per run over 11 runs; one run with reversed rotation. Report §15 sessions 3–4.
+4. **Software before those runs:** store the audio-derived BPF in `meta.json`; report tone levels per harmonic and tone-notched third-octaves (not one mixed band); reject captures whose BPF is >3 % off the run median or whose supply voltage is not ~12 V; find out why the PWM-1800 WAVs were cut to 0.2–1.8 s.
+5. **Any new PDF Adam drops** (they land in `papers/anechoic-simulation/` or `papers/arc-validation/`): identify from front matter, rename `Author_Year_Venue_slug`, `pdftotext -q` into `txt/`, extract with page-referenced quotes under `papers/arc-validation/PROTOCOL.md`, run `scripts/verify_quotes.py`, update the report chapter and Appendix B/C, commit in the **papers** repo (private), push. Fetch list: report Appendix C (35 items; ISO/IEC are paywalled at PW, skip them).
+6. Still pending from before: re-check `docs/reflection-localization.html` against Sun 2012 / Mabande 2013 (full texts held).
+
 Remaining phases:
 - **Phase 6 — Norsonic NOR-145**: hardware pending delivery. Paweł's `norsonic*.py` is vendored and dormant in `server/vendor/pawel/`.
 
