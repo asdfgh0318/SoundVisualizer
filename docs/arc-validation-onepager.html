@@ -1,20 +1,20 @@
 <!doctype html>
 <html lang="en"><head><meta charset="utf-8"><title>Arc Validation — Chamber Findings</title>
 <style>
-@page{size:A4;margin:5mm 7mm 4mm}
+@page{size:A4;margin:3mm 5mm 3mm}
 :root{--ink:#10171b;--ink-2:#46545c;--ink-3:#74828a;--rule:#c6d0d5;--panel:#f1f4f6;--accent:#17566e;--bad:#96382a;--warn:#8f5c0d;--ok:#2f6b3a;
  --sans:"IBM Plex Sans","DejaVu Sans","Helvetica Neue",Arial,sans-serif;--serif:"Source Serif 4",Charter,"DejaVu Serif",Georgia,serif;--mono:"IBM Plex Mono","DejaVu Sans Mono",monospace}
 *{box-sizing:border-box} html,body{margin:0;padding:0}
-body{font-family:var(--serif);font-size:6.1pt;line-height:1.15;color:var(--ink);background:#fff;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+body{font-family:var(--serif);font-size:5.6pt;line-height:1.1;color:var(--ink);background:#fff;-webkit-print-color-adjust:exact;print-color-adjust:exact}
 header{display:grid;grid-template-columns:1fr auto;align-items:end;border-bottom:1.5pt solid var(--ink);padding-bottom:3pt;margin-bottom:5pt}
 .eyebrow{font-family:var(--mono);font-size:5.6pt;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-3);margin:0 0 1pt}
-h1{font-family:var(--sans);font-weight:700;font-size:16pt;letter-spacing:-.025em;line-height:1;margin:0}
+h1{font-family:var(--sans);font-weight:700;font-size:13pt;letter-spacing:-.025em;line-height:1;margin:0}
 .sub{font-size:7.6pt;color:var(--ink-2);margin:2pt 0 0;max-width:150mm}
 .meta{font-family:var(--mono);font-size:5.6pt;color:var(--ink-3);text-align:right;line-height:1.45}
-h2{font-family:var(--sans);font-weight:700;font-size:8.2pt;margin:4pt 0 1.5pt;letter-spacing:-.01em}
+h2{font-family:var(--sans);font-weight:700;font-size:7.4pt;margin:2.5pt 0 1pt;letter-spacing:-.01em}
 p{margin:0 0 3pt} b{font-family:var(--sans);font-weight:600}
 .two{display:grid;grid-template-columns:1fr 1fr;gap:0 5mm} .three{display:grid;grid-template-columns:1fr 1fr 1fr;gap:0 4mm}
-.card{background:var(--panel);border-left:1.6pt solid var(--accent);padding:3pt 3mm 2pt;margin:3pt 0}
+.card{background:var(--panel);border-left:1.6pt solid var(--accent);padding:2pt 2.5mm 1.5pt;margin:2pt 0}
 .card.bad{border-color:var(--bad)} .card.warn{border-color:var(--warn)} .card.ok{border-color:var(--ok)}
 img{width:100%;display:block;margin:2pt 0 1pt}
 table{border-collapse:collapse;width:100%;font-size:6.6pt;margin:2pt 0}
@@ -28,7 +28,7 @@ code{font-family:var(--mono);font-size:.92em}</style></head><body>
 <p class="sub">For these runs the arc was laid flat (horizontal), with the propeller axis vertical. All microphones then sit at the same height, in the propeller plane, around the propeller. A perfect setup reads the same level at every position: a circle. We did this twelve times (keys prop7–18, 1–2 Sept 2026, PWM 1900). What is left after we remove each microphone's own offset is the effect of the room.</p></div>
 <div class="meta">2026-09-08<br>data: laptop backup of 2 Sept<br>script: scripts/arc_error_map.py<br>full guide: docs/arc-validation-guide.html</div></header>
 
-<img src="analysis/brief-fig1-polars.png" alt="" style="width:78%;margin:1pt auto">
+<img src="analysis/brief-fig1-polars.png" alt="" style="width:66%;margin:0 auto">
 <div class="two">
 <div>
 <h2>What the room does</h2>
@@ -41,11 +41,11 @@ code{font-family:var(--mono);font-size:.92em}</style></head><body>
 <h2>What it is not</h2>
 <p><b>Not the microphones</b>, with one exception. Because the microphones at +72° and +54° were swapped after prop10, and the arc was turned around for prop11–14, we can tell apart what belongs to a microphone and what belongs to a position. Ten microphones agree within ±1.8 dB in every band. <b>Microphone 811-1892 reads 2–6 dB too low from 125 Hz to 2.5 kHz.</b> Its calibration file does not match the capsule (its sensitivity value, −10.63 dB, is the least negative of the set, while the raw capsule is only about 1 dB low). When it sat at +54° it made the room error look like 7 dB. Take it off the arc or measure it again.</p>
 <p><b>Not a labelling error.</b> prop11, 12, 13 and 14 were measured with the arc turned around. Their patterns match the mirror image of the other runs (correlation +0.79 to +0.98). Plotted by label, the dip appears on the other side. Plotted by physical position, they agree with the other eight runs.</p>
-<p><b>Not one frequency.</b> The error sits in three separate bands, 200–250 Hz, 630–1000 Hz and 3150 Hz, and nowhere else (Fig. 2). Rajmane and Baumann (DAGA 2016) put steel plates into a good chamber and found that a plate only shows up once the wavelength is shorter than the plate: a 35 cm plate from 1.25 kHz, a 10 cm plate from 3.15 kHz. So three bands point to three objects of different size: about 1.5 m (floor, table or wall), about 0.4 m (stand base or a bar of the arc frame), about 0.1 m (a microphone clamp or mount).</p>
+<p><b>Not one frequency.</b> The error sits in three separate bands, 200–250 Hz, 630–1000 Hz and 3150 Hz, and nowhere else (Fig. 2). Rajmane and Baumann (DAGA 2016) found a steel plate in a chamber only shows up once the wavelength is shorter than the plate (35 cm from 1.25 kHz, 10 cm from 3.15 kHz). So three bands point to three object sizes: about 1.5 m (floor, table or wall), about 0.4 m (stand base or a bar of the arc frame), about 0.1 m (a microphone clamp or mount).</p>
 </div>
 </div>
-<h2 style="margin-top:3pt">Fig. 2 · Room error at each position and frequency band, in dB from a circle (microphone offsets removed; run-to-run scatter 0.6–2.3 dB)</h2>
-<img src="analysis/brief-fig2-errormap.png" alt="" style="width:80%;margin:1pt auto">
+<h2 style="margin-top:3pt">Fig. 2 · Microphone error map (left) and room error map (right), same fit, same scale</h2>
+<img src="analysis/brief-fig2-errormap.png" alt="" style="width:84%;margin:0 auto">
 <div class="three">
 <div><h2>Fig. 3 · Two positions, twelve runs, three microphones</h2><img src="analysis/brief-fig3-position-vs-mic.png" alt=""><p style="font-size:6pt;color:var(--ink-2)">500–2000 Hz, microphone offsets removed; * = arc turned around. The dip at −72° and the bump at +54° keep their size no matter which microphone sits there.</p></div>
 <div><h2>Where it points</h2><p>With the arc flat, all microphones are at the same height. Floor and ceiling reflect the same into every microphone and cannot make one half of the arc differ from the other. The pattern we see is one-sided: the −36°/−54°/−72° side reads low, the +36°/+54° side reads high. So the surface is beside the propeller, in the horizontal plane: the wall, the corner or an object on the −angle side of the rig. The dip at 240 Hz that moves with motor speed means the bounced path is about 0.7 m longer than the direct one (half a wavelength), so that surface is close, within about half a metre of the microphones. The −72° dip at 630–1000 Hz (wavelength about 0.4 m) is a smaller object at the −90° end of the arc, on the corner side.</p></div>
@@ -60,5 +60,10 @@ code{font-family:var(--mono);font-size:.92em}</style></head><body>
 <p style="font-size:5.8pt;color:var(--ink-2);margin-top:1pt">Left out: the 31 Aug keys and <code>prop1</code>–<code>prop6</code>; their patterns match neither arc orientation, so the rig or room was different then. "180°" = label +e was physically at −e.</p>
 <h2 style="margin-top:3pt">How the numbers were made (not a sum, not an average)</h2>
 <p>Every level in the twelve runs (11 microphones × 19 third-octave bands × 12 runs) is written as three parts added together: <b>run gain + position error + microphone offset</b>. The three parts are found by least squares, i.e. the single set of values that fits all 12 × 11 levels best in every band. <b>Run gain</b> takes up any level difference between runs (RPM, day, load). <b>Microphone offset</b> takes up each serial's own error after calibration. <b>Position error</b> is what is left that belongs to a spot on the arc; it is forced to average zero over the eleven spots, so it reads as dB from a circle. That is what Figs. 1 and 2 show.</p>
-<p>The turned-around runs are handled before the fit: for prop11–14 the label +e is entered as physical −e, so "−72°" always means the same spot in the room. The four microphone offsets and the eleven position errors can be told apart only because the same spot was covered by different microphones (the swap after prop10 and the four turned runs). Without that, a low microphone and a low spot would be indistinguishable. Fig. 3 is not from the fit: each bar is one run, level at the spot minus the mean of all eleven microphones in that run, with that microphone's fitted offset subtracted. Checks: mirroring prop11–14 lowers the run-to-run scatter; the −72° dip and the +54° bump keep their size with three different microphones in the spot. Spectra: Welch 4096-point Hann, UMIK-2 calibration as the app applies it, third-octave sums 125 Hz–8 kHz. Code: <code>scripts/arc_error_map.py</code>, function <code>fit</code>; inputs and outputs in <code>docs/analysis/</code>.</p>
+<p>The turned-around runs are handled before the fit: for prop11–14 the label +e is entered as physical −e, so "−72°" always means the same spot in the room. The four microphone offsets and the eleven position errors can be told apart only because the same spot was covered by different microphones (the swap after prop10 and the four turned runs). Without that, a low microphone and a low spot would be indistinguishable. Fig. 3 is not from the fit: each bar is one run, level at the spot minus the mean of all eleven microphones in that run, with that microphone's fitted offset subtracted. Spectra: Welch 4096-point Hann, UMIK-2 calibration as the app applies it, third-octave sums 125 Hz–8 kHz. Code: <code>scripts/arc_error_map.py</code>, function <code>fit</code>; inputs and outputs in <code>docs/analysis/</code>.</p>
+<div class="two" style="margin-top:2pt"><div><h2>Do the numbers add up?</h2><p>Refitting from the data pack reproduces the published maps to 0.01 dB; each map sums to zero per band by construction. 132 measured cells per band are explained by 34 unknowns. 87% of all cells are within 2 dB of gain + P + M. Scatter is 0.6–0.8 dB in the quiet bands and 1.5–2.3 dB in 200–250 Hz and 500–1000 Hz, the bands where the room acts. The worst cells (+11 dB at −36°/250 Hz in prop7; +6 to +7 dB at 0°/2–4 kHz in prop7–8) are single tone-band cells in the first two runs where the blade tone sits on a band edge; they do not follow a microphone or a spot and move the maps by under 1 dB. Limit: the 0° microphone (810-8897) never moved, so its M and the 0° P are known only as a sum.</p></div>
+<div><h2>Worked example · −72° spot at 800 Hz, two mics, two orientations</h2><table><thead><tr><th>run</th><th>mic there</th><th>measured</th><th>gain</th><th>P</th><th>M</th><th>model</th><th>left</th></tr></thead><tbody>
+<tr><td>prop18</td><td>811-1896</td><td>59.1</td><td>62.3</td><td class="neg">−4.6</td><td>+2.5</td><td>60.2</td><td>−1.1</td></tr>
+<tr><td>prop12 (180°)</td><td>810-8901</td><td>58.6</td><td>62.2</td><td class="neg">−4.6</td><td>+1.4</td><td>59.0</td><td>−0.4</td></tr>
+<tr><td colspan="8" class="t">+54° at 800 Hz: prop8 with 810-8901 reads +5.6 re gain = P +4.7 + M +1.4; prop18 with 811-1892 reads +3.1 = +4.7 − 4.2. Two mics, one room value.</td></tr></tbody></table></div></div>
 </body></html>
