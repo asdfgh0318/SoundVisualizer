@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en"><head><meta charset="utf-8"><title>Arc Validation — Chamber Findings</title>
+<html lang="en"><head><meta charset="utf-8"><title>An Overview of Our Chamber Problem</title>
 <style>
 @page{size:A4;margin:3mm 5mm 3mm}
 :root{--ink:#10171b;--ink-2:#46545c;--ink-3:#74828a;--rule:#c6d0d5;--panel:#f1f4f6;--accent:#17566e;--bad:#96382a;--warn:#8f5c0d;--ok:#2f6b3a;
@@ -24,8 +24,8 @@ td{padding:1pt 3pt;border-bottom:.4pt solid #e0e6e9;vertical-align:top;font-fami
 ol{margin:0;padding-left:4mm} li{margin:0 0 1.5pt}
 .foot{margin-top:4pt;padding-top:2pt;border-top:.6pt solid var(--rule);font-size:5.6pt;color:var(--ink-3);line-height:1.35}
 code{font-family:var(--mono);font-size:.92em}</style></head><body>
-<header><div><p class="eyebrow">SoundVisualizer · arc validation · what the chamber does to the polar</p><h1>The arc works from 125 Hz up for broadband; below 2 kHz the room bends the blade tones by up to 8 dB.</h1>
-<p class="sub">For these runs the arc was laid flat (horizontal), with the propeller axis vertical. All microphones then sit at the same height, in the propeller plane, around the propeller. A perfect setup reads the same level at every position: a circle. We did this twelve times (keys prop7–18, 1–2 Sept 2026, PWM 1900). What is left after we remove each microphone's own offset is the effect of the room.</p></div>
+<header><div><p class="eyebrow">SoundVisualizer · arc validation · what the chamber does to the polar</p><h1>An overview of our chamber problem</h1>
+<p class="sub"><b>Broadband directivity works from 125 Hz up; below 2 kHz the room bends the blade tones by up to 8 dB.</b> For these runs the arc was laid flat (horizontal), with the propeller axis vertical. All microphones then sit at the same height in the propeller plane, so a perfect setup reads the same level everywhere: a circle. Twelve runs (prop7–18, 1–2 Sept 2026, PWM 1900); what is left after each microphone's own offset is removed is the room.</p></div>
 <div class="meta">2026-09-08 · rev 2<br>data: laptop backup of 2 Sept<br>scripts: arc_error_map.py, arc_validation_diagnostics.py<br>full guide: docs/arc-validation-guide.html<br>remedies report: docs/arc-validation-remedies.pdf</div></header>
 
 <img src="analysis/brief-fig1-polars.png" alt="" style="width:52%;margin:0 auto">
