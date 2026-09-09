@@ -2,6 +2,7 @@ import numpy as np
 
 from server.core.trigger_sync import (
     align_captures,
+    is_genuine_onset,
     block_rms_db,
     find_trigger_index,
 )
@@ -77,3 +78,31 @@ def test_align_captures_preserves_preroll():
     )
     idx = find_trigger_index(aligned[0], -10, 128)
     assert idx >= 384  # roughly preroll_samples (within block rounding)
+
+
+def test_align_captures_leaves_running_source_untouched():
+    # Issue #13: the motor is already running. Loud mics are above threshold in
+    # block 0; one quiet mic crosses only at a late transient. Nothing may be cropped.
+    n = 96000  # 2 s @ 48 kHz
+    loud = np.full(n, 0.2, dtype=np.float32)
+    quiet = np.full(n, 0.005, dtype=np.float32)  # -46 dBFS, under the -40 dBFS threshold
+    quiet[80000:80500] = 0.3  # a transient 1.67 s in
+    out = align_captures([loud, loud.copy(), quiet], threshold_db=-40, block_size=128, preroll_samples=480)
+    assert all(len(o) == n for o in out)
+
+
+def test_align_captures_rejects_triggers_too_far_apart():
+    n = 96000
+    a = np.zeros(n, dtype=np.float32)
+    b = np.zeros(n, dtype=np.float32)
+    a[5000:5500] = 0.5
+    b[60000:60500] = 0.5  # 1.15 s later: not the same onset
+    out = align_captures([a, b], threshold_db=-10, block_size=128, preroll_samples=128)
+    assert len(out[0]) == n and len(out[1]) == n
+
+
+def test_is_genuine_onset():
+    assert is_genuine_onset([5000, 5200, 4900], 4800)
+    assert not is_genuine_onset([0, 5000], 4800)
+    assert not is_genuine_onset([5000, 60000], 4800)
+    assert not is_genuine_onset([-1, 5000], 4800)

@@ -10,6 +10,15 @@ Mics that never trigger (silent) are kept but are *not* aligned — they're trim
 to `min_length` from the start, matching the JS implementation. Throwing them
 out would lose information; misaligning them is a smaller cost than dropping a mic.
 
+Alignment is only applied when the triggers describe a real onset inside the
+recording: every mic triggered, none already above threshold in its first block,
+and all triggers within `max_lag_samples` of each other. A source that is already
+running when the recording starts (a stepped PWM run) produces triggers at 0 for
+the loud mics and, for a mic hovering just below threshold, a late trigger at some
+transient; cropping everyone to that tail silently threw away most of the
+PWM-1800 captures of the Sept 2026 runs (issue #13). Such captures are returned
+untouched.
+
 Port of `src/audio/triggerSync.ts`.
 """
 
@@ -36,12 +45,22 @@ def find_trigger_index(samples: np.ndarray, threshold_db: float, block_size: int
     return -1
 
 
+def is_genuine_onset(triggers: list[int], max_lag_samples: int) -> bool:
+    """True when every mic triggered, none was already loud in its first block, and
+    the triggers sit within `max_lag_samples` of each other (independent USB clocks
+    start within milliseconds; anything wider is not the same onset)."""
+    if any(t <= 0 for t in triggers):
+        return False
+    return max(triggers) - min(triggers) <= max_lag_samples
+
+
 def align_captures(
     audios: list[np.ndarray],
     *,
     threshold_db: float = -40.0,
     block_size: int = 128,
     preroll_samples: int = 480,
+    max_lag_samples: int = 4800,
 ) -> list[np.ndarray]:
     if not audios:
         return audios
@@ -49,6 +68,8 @@ def align_captures(
     triggers = [find_trigger_index(a, threshold_db, block_size) for a in audios]
 
     if all(t == -1 for t in triggers):
+        return audios
+    if not is_genuine_onset(triggers, max_lag_samples):
         return audios
 
     starts = [max(0, t - preroll_samples) if t != -1 else 0 for t in triggers]
