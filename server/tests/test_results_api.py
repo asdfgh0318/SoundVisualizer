@@ -218,3 +218,57 @@ def test_performance_summary_404_on_acoustic(client):
     saved = _write_acoustic(k.slug, datetime.now(UTC), "X", 0.0, MeasurementHalf.TOP, 1500)
     r = client.get(f"/keys/{k.slug}/measurements/{saved.id}/performance_summary")
     assert r.status_code == 404
+
+
+def _write_rotor_capture(slug: str, t_start, pwm: int, bpf: float, mics=("A", "B")):
+    """Two mics with a rotor-like signal: BPF comb + shaft harmonics + noise."""
+    sr = 48000
+    rng = np.random.default_rng(0)
+    tt = np.arange(2 * sr) / sr
+    x = 0.002 * rng.standard_normal(len(tt))
+    for h in range(1, 7):
+        x += 0.05 / h * np.sin(2 * np.pi * h * bpf * tt)
+    x = x.astype(np.float32)
+    saved = []
+    for i, mic in enumerate(mics):
+        meta = AcousticMeasurementMeta(
+            t_start=t_start,
+            t_end=t_start + timedelta(seconds=2),
+            pwm_setpoint=pwm,
+            mic_serial=mic,
+            elevation_deg=18.0 * i,
+            half=MeasurementHalf.FULL,
+            sample_rate=sr,
+            bpf_hz=bpf,
+        )
+        s = measurements.create_measurement(slug, meta)
+        write_wav_float32(measurement_dir(slug, s.id) / "audio.wav", x, sr)
+        saved.append(s)
+    return saved
+
+
+def test_fft_reports_bpf_tones_and_notched_bands(client):
+    k = _make_key()
+    saved = _write_rotor_capture(k.slug, datetime.now(UTC), 1900, 238.0)[0]
+    body = client.get(f"/keys/{k.slug}/measurements/{saved.id}/fft").json()
+    assert abs(body["bpf_hz"] - 238.0) < 1.0
+    assert [t["harmonic"] for t in body["tones"]] == [1, 2, 3, 4, 5, 6]
+    assert body["tones"][0]["level_db"] > body["tones"][1]["level_db"]
+    assert len(body["broadband_bands_db"]) == len(body["band_centres_hz"]) == 19
+    # the 250 Hz band holds the BPF; notched it must sit far below the tone
+    i250 = min(range(19), key=lambda i: abs(body["band_centres_hz"][i] - 250))
+    assert body["broadband_bands_db"][i250] is not None
+    assert body["broadband_bands_db"][i250] < body["tones"][0]["level_db"] - 20
+
+
+def test_pwm_points_flags_off_speed_capture(client):
+    k = _make_key()
+    t0 = datetime.now(UTC)
+    _write_rotor_capture(k.slug, t0, 1900, 238.0)
+    _write_rotor_capture(k.slug, t0 + timedelta(minutes=1), 1900, 239.0)
+    _write_rotor_capture(k.slug, t0 + timedelta(minutes=2), 1900, 164.0)  # supply-limited run
+    pts = client.get(f"/keys/{k.slug}/pwm_points").json()
+    caps = [u for p in pts for u in p["underlying"]]
+    assert len(caps) == 3
+    flags = {round(u["bpf_hz"]): u["off_speed"] for u in caps}
+    assert flags == {238: False, 239: False, 164: True}

@@ -1,3 +1,4 @@
+
 """Results endpoints — group measurements into merged PWM points, compute FFTs, summarize telemetry.
 
 A "merged PWM point" combines all captures at the same PWM setpoint that are
@@ -7,6 +8,7 @@ split into separate sibling points so the user can still see them.
 """
 
 import csv
+import math
 from io import StringIO
 from typing import Annotated, Any
 
@@ -20,6 +22,7 @@ from server.api.schemas import (
     MeasurementHalf,
     PerformanceMeasurementMeta,
 )
+from server.core import tones
 from server.core.calibration import (
     apply_calibration_to_spectrum,
     is_absolute_spl,
@@ -63,10 +66,17 @@ class PerformanceSummary(BaseModel):
 
 def _empty_summary() -> PerformanceSummary:
     return PerformanceSummary(
-        n_samples=0, duration_s=0.0,
-        thrust_n_mean=0.0, thrust_n_max=0.0, torque_nm_mean=0.0,
-        current_a_mean=0.0, voltage_v_mean=0.0, rpm_mean=0.0,
-        temp0_c_max=0.0, temp1_c_max=0.0, temp2_c_max=0.0,
+        n_samples=0,
+        duration_s=0.0,
+        thrust_n_mean=0.0,
+        thrust_n_max=0.0,
+        torque_nm_mean=0.0,
+        current_a_mean=0.0,
+        voltage_v_mean=0.0,
+        rpm_mean=0.0,
+        temp0_c_max=0.0,
+        temp1_c_max=0.0,
+        temp2_c_max=0.0,
     )
 
 
@@ -116,9 +126,7 @@ def get_performance_summary(slug: str, meas_id: str) -> PerformanceSummary:
 # ----- Compatibility check -----------------------------------------------
 
 
-def _compatible(
-    a: PerformanceSummary, b: PerformanceSummary, tol: CompatibilityTolerances
-) -> bool:
+def _compatible(a: PerformanceSummary, b: PerformanceSummary, tol: CompatibilityTolerances) -> bool:
     pairs = [
         (a.thrust_n_mean, b.thrust_n_mean, tol.thrust_n),
         (a.torque_nm_mean, b.torque_nm_mean, tol.torque_nm),
@@ -171,6 +179,11 @@ class UnderlyingCapture(BaseModel):
     performance_id: str | None
     acoustic: list[AcousticInPoint]
     performance_summary: PerformanceSummary | None
+    # Blade-passage frequency of this capture (median over its mics, from the audio at
+    # capture time) and whether it is more than 3 % off the median of all captures at
+    # this PWM in the key: the prop7 case, a supply-limited run at a different speed.
+    bpf_hz: float | None = None
+    off_speed: bool = False
 
 
 class MergedPWMPoint(BaseModel):
@@ -193,17 +206,26 @@ def list_pwm_points(slug: str) -> list[MergedPWMPoint]:
         key = m.t_start.isoformat()
         bucket = by_t.setdefault(
             key,
-            {"t_start": m.t_start, "performance_id": None, "acoustic": [],
-             "half": None, "pwm_us": None},
+            {
+                "t_start": m.t_start,
+                "performance_id": None,
+                "acoustic": [],
+                "half": None,
+                "pwm_us": None,
+            },
         )
         if isinstance(m, PerformanceMeasurementMeta):
             bucket["performance_id"] = m.id
             bucket["pwm_us"] = m.pwm_setpoint
         elif isinstance(m, AcousticMeasurementMeta):
+            if m.bpf_hz is not None:
+                bucket.setdefault("bpf", []).append(m.bpf_hz)
             bucket["acoustic"].append(
                 AcousticInPoint(
-                    id=m.id, mic_serial=m.mic_serial,
-                    elevation_deg=m.elevation_deg, half=m.half,
+                    id=m.id,
+                    mic_serial=m.mic_serial,
+                    elevation_deg=m.elevation_deg,
+                    half=m.half,
                     calibration_file_id=m.calibration_file_id,
                 )
             )
@@ -229,6 +251,11 @@ def list_pwm_points(slug: str) -> list[MergedPWMPoint]:
             _load_performance_summary(slug, c["performance_id"]) if c["performance_id"] else None
             for c in captures_at_pwm
         ]
+
+        cap_bpf = [float(np.median(c["bpf"])) if c.get("bpf") else None for c in captures_at_pwm]
+        known = [b for b in cap_bpf if b is not None]
+        pwm_bpf = float(np.median(known)) if known else None
+        off_speed = [b is not None and pwm_bpf is not None and abs(b / pwm_bpf - 1) > 0.03 for b in cap_bpf]
 
         # Greedy first-match grouping
         groups: list[list[int]] = []
@@ -263,6 +290,8 @@ def list_pwm_points(slug: str) -> list[MergedPWMPoint]:
                         performance_id=c["performance_id"],
                         acoustic=c["acoustic"],
                         performance_summary=perfs[idx],
+                        bpf_hz=cap_bpf[idx],
+                        off_speed=off_speed[idx],
                     )
                 )
                 combined_acoustic.extend(c["acoustic"])
@@ -299,6 +328,12 @@ def list_pwm_points(slug: str) -> list[MergedPWMPoint]:
 # ----- FFT ----------------------------------------------------------------
 
 
+class ToneLevelOut(BaseModel):
+    harmonic: int
+    frequency_hz: float
+    level_db: float
+
+
 class FFTResponse(BaseModel):
     frequencies: list[float]
     magnitudes_db: list[float]
@@ -310,6 +345,14 @@ class FFTResponse(BaseModel):
     absolute_spl: bool
     window: str
     size: int
+    # Tone/broadband split (issue #12). bpf_hz is None when no blade-passage comb is
+    # found; tones are the BPF harmonics (+-3 bins each); broadband_bands_db are the
+    # third-octave levels with every shaft harmonic notched (None where the notches
+    # leave no bins), computed on a 16384-point Welch so the 125-250 Hz bands survive.
+    bpf_hz: float | None = None
+    tones: list[ToneLevelOut] = []
+    band_centres_hz: list[float] = []
+    broadband_bands_db: list[float | None] = []
 
 
 @router.get("/measurements/{meas_id}/fft", response_model=FFTResponse)
@@ -343,6 +386,13 @@ def get_fft(
             calibrated = True
             absolute_spl = is_absolute_spl(cal)
 
+    tone_view = tones.analyse(freq, mag_db)
+    # broadband bands on a fine grid so the low bands keep bins after notching
+    ffreq, fmag = compute_fft(audio, sr, window=window, size=16384, overlap=overlap)
+    if calibrated:
+        fmag = apply_calibration_to_spectrum(ffreq, fmag, cal)
+    bands = tones.notched_band_levels(ffreq, fmag, tone_view.bpf_hz)
+
     return FFTResponse(
         frequencies=freq.tolist(),
         magnitudes_db=mag_db.tolist(),
@@ -351,6 +401,13 @@ def get_fft(
         absolute_spl=absolute_spl,
         window=window,
         size=size,
+        bpf_hz=tone_view.bpf_hz,
+        tones=[
+            ToneLevelOut(harmonic=t.harmonic, frequency_hz=t.frequency_hz, level_db=t.level_db)
+            for t in tone_view.tones
+        ],
+        band_centres_hz=tone_view.band_centres_hz,
+        broadband_bands_db=[None if math.isnan(b) else b for b in bands],
     )
 
 

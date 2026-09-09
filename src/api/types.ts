@@ -306,6 +306,10 @@ export interface UnderlyingCapture {
   performance_id: string | null;
   acoustic: AcousticInPoint[];
   performance_summary: PerformanceSummary | null;
+  /** Blade-passage frequency of this capture from the audio (median over mics); null = no tone. */
+  bpf_hz?: number | null;
+  /** More than 3 % off the median BPF of the captures at this PWM (a supply-limited run, e.g. prop7). */
+  off_speed?: boolean;
 }
 
 /** A "merged PWM point" — all captures at the same PWM µs that pass compatibility
@@ -366,6 +370,20 @@ export interface FFTResponse {
   absolute_spl: boolean;
   window: string;
   size: number;
+  /** Blade-passage frequency found in this capture's own spectrum; null when no tone comb. */
+  bpf_hz: number | null;
+  /** Level of each BPF harmonic (±3 bins), same units as magnitudes_db integrated over Hz. */
+  tones: ToneLevel[];
+  /** Third-octave centres (125 Hz … 8 kHz) for broadband_bands_db. */
+  band_centres_hz: number[];
+  /** Third-octave levels with every shaft harmonic notched out; null where nothing is left. */
+  broadband_bands_db: (number | null)[];
+}
+
+export interface ToneLevel {
+  harmonic: number;
+  frequency_hz: number;
+  level_db: number;
 }
 
 export interface PerformanceSummary {

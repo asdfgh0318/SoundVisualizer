@@ -31,6 +31,7 @@ from collections.abc import Callable, Sequence
 from datetime import UTC, datetime
 from typing import TYPE_CHECKING, Any
 
+import numpy as np
 from pydantic import BaseModel
 
 from server.api.schemas import (
@@ -44,6 +45,8 @@ from server.api.schemas import (
     PWMStep,
 )
 from server.core.capture import MicCaptureSpec, capture_simultaneous
+from server.core.fft import compute_fft
+from server.core.tones import find_bpf
 from server.core.trigger_sync import align_captures
 from server.core.wav import write_wav_float32
 from server.store import keys as keys_store
@@ -56,6 +59,25 @@ if TYPE_CHECKING:
     from server.core.thrust_stand_service import TareOffsets, ThrustStandService
 
 log = logging.getLogger(__name__)
+
+
+def _arc_bpf(audios: list, sample_rate: int) -> float | None:
+    """Blade-passage frequency of the step from the arc-mean spectrum, or None when
+    no tone comb is present (idle motor). Stored in every mic's meta so the results
+    side can reject off-speed captures without a tachometer."""
+    spectra = []
+    f = None
+    for a in audios:
+        if len(a) < 4096:
+            continue
+        f, m = compute_fft(a, sample_rate, size=4096)
+        spectra.append(m)
+    if not spectra:
+        return None
+    try:
+        return find_bpf(f, np.mean(spectra, axis=0))
+    except Exception:
+        return None
 
 
 class TytoLinkLost(Exception):
@@ -102,8 +124,7 @@ def _telemetry_to_csv(
     samples: Sequence[PollResponse], poll_period_s: float, tare: "TareOffsets"
 ) -> bytes:
     header = (
-        "t_offset_s,thrust_n,torque_nm,current_a,voltage_v,rpm,"
-        "temp0_c,temp1_c,temp2_c,vibration"
+        "t_offset_s,thrust_n,torque_nm,current_a,voltage_v,rpm,temp0_c,temp1_c,temp2_c,vibration"
     )
     rows = [header]
     for i, s in enumerate(samples):
@@ -351,6 +372,7 @@ class CaptureOrchestrator:
                 preroll_samples=req.trigger.preroll_samples,
             )
 
+        bpf_hz = _arc_bpf(audios, req.sample_rate)
         for mic, audio in zip(req.mics, audios, strict=True):
             meta = AcousticMeasurementMeta(
                 t_start=t_start,
@@ -361,6 +383,7 @@ class CaptureOrchestrator:
                 half=req.half,
                 sample_rate=req.sample_rate,
                 calibration_file_id=mic.calibration_file_id,
+                bpf_hz=bpf_hz,
             )
             saved = meas_store.create_measurement(key_slug, meta)
             write_wav_float32(

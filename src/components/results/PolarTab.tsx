@@ -1,6 +1,8 @@
 import { useEffect, useMemo, useState } from 'react';
 import { api } from '../../api/client';
 import type { FFTResponse } from '../../api/types';
+import { type LevelSource, levelForSource } from './levelSource';
+import { LevelSourceSelector } from './LevelSourceSelector';
 import { type CompareSeries, type CompareSeriesApi, SeriesPicker } from './compareSeries';
 import {
   DEFAULT_BAND,
@@ -21,6 +23,7 @@ export function PolarTab({ compare }: Props) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<Error | null>(null);
   const [band, setBand] = useState<FreqBand>(DEFAULT_BAND);
+  const [source, setSource] = useState<LevelSource>({ kind: 'band' });
   const [rangeMode, setRangeMode] = useState<180 | 360>(180);
 
   // Fetch FFTs for every mic across every series (cache-keyed by measurement id).
@@ -60,15 +63,13 @@ export function PolarTab({ compare }: Props) {
       points: s.acoustic
         .map((a): PolarPoint => {
           const fft = ffts[a.id];
-          const spl = fft
-            ? bandPowerDb(fft.frequencies, fft.magnitudes_db, band.low_hz, band.high_hz)
-            : Number.NaN;
+          const spl = fft ? levelForSource(fft, source, band) : Number.NaN;
           return { elevation_deg: a.elevation_deg, spl_db: spl, mic_serial: a.mic_serial };
         })
         .filter((p) => Number.isFinite(p.spl_db))
         .sort((a, b) => b.elevation_deg - a.elevation_deg),
     }));
-  }, [series, ffts, band]);
+  }, [series, ffts, band, source]);
 
   const allAbsolute =
     allAcoustic.length > 0 && allAcoustic.every((a) => ffts[a.id]?.absolute_spl);
@@ -92,10 +93,13 @@ export function PolarTab({ compare }: Props) {
       />
 
       <FrequencyBandSelector band={band} onChange={setBand} />
+      <LevelSourceSelector source={source} onChange={setSource} ffts={Object.values(ffts)} />
 
       <div className="flex items-center justify-between gap-4 flex-wrap">
         <div className="text-xs text-gray-400">
-          Band: <span className="font-mono text-gray-200">{Math.round(band.low_hz)}–{Math.round(band.high_hz)} Hz</span>
+          {source.kind === 'tone'
+            ? <>Level: <span className="font-mono text-gray-200">BPF harmonic {source.harmonic}</span></>
+            : <>Band: <span className="font-mono text-gray-200">{Math.round(band.low_hz)}–{Math.round(band.high_hz)} Hz</span>{source.kind === 'broadband' ? ', tones notched' : ''}</>}
           {' · '}
           {drawable.length} curve{drawable.length === 1 ? '' : 's'}
           {' · '}
@@ -157,22 +161,4 @@ export function RangeModeToggle({
       ))}
     </div>
   );
-}
-
-function bandPowerDb(freqs: number[], magsDb: number[], low: number, high: number): number {
-  let totalPower = 0;
-  for (let i = 0; i < freqs.length; i++) {
-    const f = freqs[i];
-    if (f < low || f > high) continue;
-    const power = Math.pow(10, magsDb[i] / 10);
-    const df =
-      i + 1 < freqs.length
-        ? freqs[i + 1] - freqs[i]
-        : i > 0
-          ? freqs[i] - freqs[i - 1]
-          : 1;
-    totalPower += power * df;
-  }
-  if (totalPower <= 0) return -200;
-  return 10 * Math.log10(totalPower);
 }

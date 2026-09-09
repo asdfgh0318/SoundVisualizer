@@ -70,7 +70,10 @@ function PWMRow({
         >
           <div className="flex items-center justify-between gap-2">
             <span className="font-semibold text-gray-100">PWM {point.pwm_us} µs</span>
-            <CompositionChip composition={point.composition} singleHalf={onlyOneHalf} />
+            <span className="flex items-center gap-1">
+              {point.underlying.some((u) => u.off_speed) && <OffSpeedChip />}
+              <CompositionChip composition={point.composition} singleHalf={onlyOneHalf} />
+            </span>
           </div>
           <div className="text-[11px] text-gray-500 mt-0.5">{point.acoustic.length} mics</div>
         </button>
@@ -140,6 +143,11 @@ function UnderlyingRow({
         }`}
       >
         <span>{time}</span>
+        {capture.bpf_hz != null && (
+          <span className={`font-mono ${capture.off_speed ? 'text-red-300' : 'text-gray-500'}`}>
+            {capture.bpf_hz.toFixed(0)} Hz{capture.off_speed ? ' off-speed' : ''}
+          </span>
+        )}
         <span
           className={`uppercase tracking-wide px-1.5 py-0.5 rounded text-[10px] ${
             capture.half === 'top'
@@ -151,6 +159,17 @@ function UnderlyingRow({
         </span>
       </button>
     </li>
+  );
+}
+
+function OffSpeedChip() {
+  return (
+    <span
+      title="A capture at this PWM spun more than 3 % off the others' blade-passage frequency (supply-limited or off-speed run); its levels are not comparable."
+      className="text-[10px] uppercase tracking-wide px-1.5 py-0.5 rounded bg-red-500/20 text-red-300 border border-red-500/40"
+    >
+      off-speed
+    </span>
   );
 }
 

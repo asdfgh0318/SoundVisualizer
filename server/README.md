@@ -16,7 +16,7 @@ uvicorn server.main:app --reload --port 8000
 # → http://localhost:8000/docs   (OpenAPI / Swagger)
 ```
 
-Tests: `pytest server/tests/`. Lint: `ruff check server/ scripts/`.
+Tests: `pytest server/tests/` (122 passing). Lint: `ruff check server/ scripts/`.
 
 ## Layout
 
@@ -39,7 +39,8 @@ server/
   core/              # Hardware orchestration + signal processing
     audio_devices.py   # sounddevice device enumeration (hw: only)
     capture.py         # multi-stream capture
-    trigger_sync.py    # dBFS onset alignment (port from src/audio/triggerSync.ts)
+    trigger_sync.py    # dBFS onset alignment (port from src/audio/triggerSync.ts); skips already-running sources (#13)
+    tones.py           # blade-passage frequency from the audio, per-harmonic tone levels, tone-notched third-octaves (#12)
     wav.py             # float32 WAV read/write via scipy
     fft.py             # Welch PSD → dB
     calibration.py     # REW-format UMIK-2 cal parser + response curve + dBFS→dB SPL + Pa scalar
@@ -80,8 +81,8 @@ GET  /keys/{slug}
 GET  /keys/{slug}/measurements
 POST /keys/{slug}/measurements
 GET  /keys/{slug}/measurements/{id}
-GET  /keys/{slug}/pwm_points
-GET  /keys/{slug}/measurements/{id}/fft
+GET  /keys/{slug}/pwm_points                     # underlying[].bpf_hz / off_speed flag (>3 % off the PWM's median BPF)
+GET  /keys/{slug}/measurements/{id}/fft          # + bpf_hz, tones[], band_centres_hz, broadband_bands_db (tone/broadband split)
 GET  /keys/{slug}/measurements/{id}/performance_summary
 POST /capture/acoustic         (single-shot, no Tyto)
 POST /capture/run              (orchestrated PWM-ramp capture)

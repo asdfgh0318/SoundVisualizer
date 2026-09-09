@@ -48,6 +48,9 @@ class AcousticMeasurementMeta(_BaseMeasurementMeta):
     half: MeasurementHalf
     sample_rate: int = 48000
     calibration_file_id: str | None = None
+    # Blade-passage frequency read from the audio at capture time (no RPM channel
+    # on the stand). None = no tone found (motor idle, or a pre-2026-09 capture).
+    bpf_hz: float | None = None
 
 
 class PerformanceMeasurementMeta(_BaseMeasurementMeta):
