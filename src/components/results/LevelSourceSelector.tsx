@@ -11,6 +11,11 @@ export function LevelSourceSelector({ source, onChange, ffts }: Props) {
   const bpfs = ffts.map((f) => f.bpf_hz).filter((b): b is number => b != null);
   const bpf = bpfs.length ? medianOf(bpfs) : null;
   const noTone = ffts.length > 0 && bpfs.length === 0;
+  // Captures at different speeds are not the same measurement: a 3 % BPF change moved the
+  // room error from one microphone to another in the arc validation, and prop7 spun at
+  // 164 Hz where the others spun at 238 Hz (supply current limit).
+  const spread = bpfs.length > 1 ? Math.max(...bpfs) / Math.min(...bpfs) - 1 : 0;
+  const offSpeed = spread > 0.03;
   const options: { key: string; label: string; value: LevelSource }[] = [
     { key: 'band', label: 'Mixed band', value: { kind: 'band' } },
     { key: 'broadband', label: 'Broadband (tones notched)', value: { kind: 'broadband' } },
@@ -39,6 +44,11 @@ export function LevelSourceSelector({ source, onChange, ffts }: Props) {
           ? <>BPF <span className="font-mono text-gray-200">{bpf.toFixed(1)} Hz</span> (from the audio)</>
           : noTone ? 'no blade-passage tone found in these captures' : ''}
       </span>
+      {offSpeed && (
+        <span className="text-red-300">
+          ⚠ These captures spin at different blade-passage frequencies ({Math.min(...bpfs).toFixed(0)}–{Math.max(...bpfs).toFixed(0)} Hz): not the same speed, do not compare their tone levels.
+        </span>
+      )}
       {source.kind === 'tone' && (
         <span className="text-amber-400">
           A tone samples the room at one frequency; below ~1 kHz it can be off by several dB (see docs/arc-validation-remedies.pdf).
