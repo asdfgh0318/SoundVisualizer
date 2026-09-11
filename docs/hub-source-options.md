@@ -56,3 +56,57 @@ source; all are quote-only.
 
 No sweep tooling exists: no playback path in the server, no sweep generator, no
 deconvolution script. Needed before the session, not after.
+
+## Build sheet (chosen route, 2026-09-11)
+
+A 1 litre sealed cube around one Visaton FRS 8 M. Gross 1.00 l, about 0.94 l net after the
+driver; light stuffing gives most of it back. The alignment barely moves over that range:
+
+| net volume | Fc | Qtc |
+|---|---|---|
+| 0.90 l | 186 Hz | 0.73 |
+| 1.00 l | 181 Hz | 0.71 |
+
+### Cut list, 12 mm MDF or birch ply
+
+External 124 mm cube, internal 100 mm cube. Total panel area 0.076 m², so a 290 × 290 mm
+offcut is enough. Butt joints, the two large panels outermost.
+
+| panel | size (mm) | qty |
+|---|---|---|
+| baffle (driver, faces **up** in use) | 124 × 124 | 1 |
+| opposite face | 124 × 124 | 1 |
+| two faces spanning between them | 124 × 100 | 2 |
+| two faces fitting inside | 100 × 100 | 2 |
+
+- Driver cutout **75 mm Ø** (datasheet), centred on the baffle at 62, 62.
+- Chamfer the four edges between the side faces, 45° × 10 mm. Those edges are vertical in
+  use, so chamfering makes the horizontal cross-section closer to a circle and evens out
+  what the eleven microphones see around the azimuth.
+- 6 mm cable hole in the face opposite the driver, sealed with silicone.
+- Glue and seal every joint. No port, no vent. About 10 g of polyester, loosely packed.
+- Measure the driver flange on arrival; Visaton publishes the cutout but not the frame.
+
+### Orientation and mounting
+
+The driver fires **up**, along the rig's vertical axis, the direction the propeller blew.
+The arc then samples one constant polar angle from the source, so the box's directivity is a
+gain common to all eleven microphones and is absorbed by the run-gain term of the fit.
+
+Mount so the cone plane sits at the propeller disc height if the motor allows it; otherwise
+record the offset, it is a geometry input like any other.
+
+### Qualification before the box is trusted
+
+1. One sweep, motor off. Check each microphone's impulse response: the source's own decay
+   must be over before the echoes at 2.0 ms (−72°) and 4.4 ms (+36°/+54°).
+2. Rotate the box 45° about the vertical axis and sweep again. What moves with the box is
+   the box; what stays is the room. Ten minutes, and it is the control that makes the rest
+   of the session interpretable.
+
+For the later vertical-arc session the microphones span different angles and the directivity
+stops cancelling. The method then is Papadakis & Stavroulakis (Appl. Sci. 8:1703, 2018, held
+in `papers/arc-validation/`): record with the speaker in 12–26 orientations and sum the
+impulse responses; they matched a dodecahedron's reverberation time to within 0.08 s. Their
+stated limitation is a two-way speaker's tweeter, which a single full-range driver does not
+have.
