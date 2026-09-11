@@ -23,14 +23,14 @@ export function KeyPicker({ value, onChange }: Props) {
   }, []);
 
   if (error)
-    return <div className="text-sm text-red-400">Error loading keys: {error.message}</div>;
+    return <div className="text-sm text-red-400">Error loading bases: {error.message}</div>;
   if (!keys) return <div className="text-sm text-gray-400 italic">Loading…</div>;
   if (keys.length === 0)
-    return <div className="text-sm text-gray-400 italic">No measurements yet — run a capture.</div>;
+    return <div className="text-sm text-gray-400 italic">No measurements yet — start a capture.</div>;
 
   return (
     <label className="block">
-      <span className="text-xs uppercase tracking-wide text-gray-400 mr-3">Key</span>
+      <span className="text-xs uppercase tracking-wide text-gray-400 mr-3">Base</span>
       <select
         className="input min-w-[24rem]"
         value={value ?? ''}

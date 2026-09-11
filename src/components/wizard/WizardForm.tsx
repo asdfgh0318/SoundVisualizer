@@ -3,17 +3,14 @@ import { useSetupStore } from '../../stores/setupStore';
 import { useWizardStore } from '../../stores/wizardStore';
 import { Button } from '../ui/Button';
 import { Card } from '../ui/Card';
+import { InfoToggle } from '../ui/InfoToggle';
+import { CAPTURE_HELP } from '../../content/parameterHelp';
 import { KeyFieldsForm } from './KeyFieldsForm';
 import { ResearchTreeNodePicker } from './ResearchTreeNodePicker';
 import { MicSelector } from './MicSelector';
 import { PWMRampEditor } from './PWMRampEditor';
 
-interface WizardFormProps {
-  fakeRunning: boolean;
-  onFakeRun: () => void;
-}
-
-export function WizardForm({ fakeRunning, onFakeRun }: WizardFormProps) {
+export function WizardForm() {
   const form = useWizardStore((s) => s.form);
   const updateForm = useWizardStore((s) => s.updateForm);
   const setPhase = useWizardStore((s) => s.setPhase);
@@ -36,22 +33,20 @@ export function WizardForm({ fakeRunning, onFakeRun }: WizardFormProps) {
     form.propeller.trim() !== '' &&
     form.pwm_steps.length > 0;
 
-  // Real capture requires fully-configured mics (USB device + serial).
+  // A capture requires fully-configured mics (USB device + serial).
   const canContinue = baseFilled && usableMics.length > 0;
 
-  // Fake capture doesn't need hardware-bound mics.
-  const canFakeRun = baseFilled && !fakeRunning;
 
   return (
     <div className="space-y-6">
-      <Card title="Test article" description="Becomes the storage key motor__propeller__shroud__notes. Optionally link to a research-tree node to autofill fields and push the Results URL back on success.">
+      <Card title="Test article" description="Becomes the base motor__propeller__shroud__notes that groups the measurements on the Results page. Optionally link to a research-tree node to autofill fields and push the Results URL back on success.">
         <div className="space-y-4">
           <ResearchTreeNodePicker form={form} onChange={updateForm} />
           <KeyFieldsForm form={form} onChange={updateForm} />
         </div>
       </Card>
 
-      <Card title="PWM ramp" description="One acoustic + one performance measurement saved per step.">
+      <Card title="ESC signal ramp" description="One acoustic + one performance measurement saved per step.">
         <PWMRampEditor
           steps={form.pwm_steps}
           onChange={(s) => updateForm({ pwm_steps: s })}
@@ -60,7 +55,7 @@ export function WizardForm({ fakeRunning, onFakeRun }: WizardFormProps) {
 
       <Card title="Capture settings">
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-          <Labeled label="Sample rate (Hz)">
+          <Labeled label="Sample rate (Hz)" info={CAPTURE_HELP.sample_rate}>
             <select
               className="input w-full"
               value={form.sample_rate}
@@ -73,11 +68,11 @@ export function WizardForm({ fakeRunning, onFakeRun }: WizardFormProps) {
         </div>
         <p className="text-xs text-gray-500 mt-3">
           Single-pass capture: every configured mic records simultaneously. Recording duration
-          per step is configured in the PWM ramp above.
+          per step is configured in the ESC signal ramp above.
         </p>
       </Card>
 
-      <Card title="Microphones" description="Pick which configured mics to record this run.">
+      <Card title="Microphones" description="Pick which configured mics to record in this capture.">
         <MicSelector
           mics={mics}
           selectedIds={form.selected_mic_ids}
@@ -87,7 +82,7 @@ export function WizardForm({ fakeRunning, onFakeRun }: WizardFormProps) {
 
       <Card title="Advanced">
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
-          <Labeled label="Stabilize window (samples)">
+          <Labeled label="Stabilize window (samples)" info={CAPTURE_HELP.stabilize_window}>
             <input
               type="number"
               min={1}
@@ -96,7 +91,7 @@ export function WizardForm({ fakeRunning, onFakeRun }: WizardFormProps) {
               onChange={(e) => updateForm({ stabilize_window: Number(e.target.value) })}
             />
           </Labeled>
-          <Labeled label="Stabilize tolerance (RPM)">
+          <Labeled label="Stabilize tolerance (RPM)" info={CAPTURE_HELP.stabilize_tolerance}>
             <input
               type="number"
               min={0.1}
@@ -106,7 +101,7 @@ export function WizardForm({ fakeRunning, onFakeRun }: WizardFormProps) {
               onChange={(e) => updateForm({ stabilize_tolerance: Number(e.target.value) })}
             />
           </Labeled>
-          <Labeled label="Stabilize timeout (s)">
+          <Labeled label="Stabilize timeout (s)" info={CAPTURE_HELP.stabilize_timeout}>
             <input
               type="number"
               min={1}
@@ -115,7 +110,7 @@ export function WizardForm({ fakeRunning, onFakeRun }: WizardFormProps) {
               onChange={(e) => updateForm({ stabilize_timeout_seconds: Number(e.target.value) })}
             />
           </Labeled>
-          <Labeled label="Trigger sync">
+          <Labeled label="Trigger sync" info={CAPTURE_HELP.trigger_sync}>
             <CheckboxLabel
               label={form.trigger.enabled ? 'Enabled' : 'Disabled'}
               checked={form.trigger.enabled}
@@ -127,30 +122,29 @@ export function WizardForm({ fakeRunning, onFakeRun }: WizardFormProps) {
         </div>
       </Card>
 
-      <div className="flex items-center justify-between gap-3 pt-2 border-t border-gray-700">
-        <Button variant="secondary" onClick={onFakeRun} disabled={!canFakeRun}>
-          {fakeRunning ? 'Generating…' : '✦ Run fake capture (no hardware)'}
-        </Button>
+      <div className="flex items-center justify-end gap-3 pt-2 border-t border-gray-700">
         <Button onClick={() => setPhase('review')} disabled={!canContinue}>
           Continue → Review
         </Button>
       </div>
       {!canContinue && baseFilled && (
         <p className="text-xs text-gray-500 -mt-2">
-          To start a real capture, configure at least one mic with a USB device on the Setup page.
-          The fake capture works with the elevations you've set, or default ones if none.
+          To start a capture, configure at least one mic with a USB device on the Setup page.
         </p>
       )}
     </div>
   );
 }
 
-function Labeled({ label, children }: { label: string; children: React.ReactNode }) {
+function Labeled({ label, info, children }: { label: string; info?: string; children: React.ReactNode }) {
   return (
-    <label className="block">
-      <span className="text-xs uppercase tracking-wide text-gray-400">{label}</span>
+    <div className="block">
+      <span className="text-xs uppercase tracking-wide text-gray-400">
+        {label}
+        {info && <InfoToggle label={label}>{info}</InfoToggle>}
+      </span>
       <div className="mt-1">{children}</div>
-    </label>
+    </div>
   );
 }
 

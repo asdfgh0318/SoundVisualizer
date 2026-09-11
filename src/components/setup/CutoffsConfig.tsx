@@ -3,6 +3,8 @@ import { api, ApiError } from '../../api/client';
 import type { CutoffChannelName } from '../../api/types';
 import { useSetupStore } from '../../stores/setupStore';
 import { Button } from '../ui/Button';
+import { InfoToggle } from '../ui/InfoToggle';
+import { CUTOFF_HELP } from '../../content/parameterHelp';
 
 const CHANNELS: { name: CutoffChannelName; label: string; unit: string }[] = [
   { name: 'current', label: 'Current',     unit: 'A'   },
@@ -42,9 +44,9 @@ export function CutoffsConfig() {
         <thead>
           <tr className="text-left text-gray-400 border-b border-gray-700">
             <th className="py-2 pr-3 font-medium w-8"></th>
-            <th className="pr-3 font-medium">Channel</th>
-            <th className="pr-3 font-medium">Trips when</th>
-            <th className="pr-3 font-medium">Threshold</th>
+            <th className="pr-3 font-medium">Channel<InfoToggle label="safety cutoffs">{CUTOFF_HELP.general}</InfoToggle></th>
+            <th className="pr-3 font-medium">Trips when<InfoToggle label="trip direction">{CUTOFF_HELP.direction}</InfoToggle></th>
+            <th className="pr-3 font-medium">Threshold<InfoToggle label="threshold">{CUTOFF_HELP.threshold}</InfoToggle></th>
             <th className="font-medium">Unit</th>
           </tr>
         </thead>
@@ -62,7 +64,12 @@ export function CutoffsConfig() {
                     aria-label={`Enable ${label} cutoff`}
                   />
                 </td>
-                <td className="pr-3 text-gray-200">{label}</td>
+                <td className="pr-3 text-gray-200">
+                  {label}
+                  {CUTOFF_HELP.channels[name] && (
+                    <InfoToggle label={label}>{CUTOFF_HELP.channels[name]}</InfoToggle>
+                  )}
+                </td>
                 <td className="pr-3">
                   <select
                     className="input w-24"
@@ -105,7 +112,7 @@ export function CutoffsConfig() {
         )}
       </div>
       <p className="text-xs text-gray-500">
-        "Push to Tyto" sends thresholds to the running watchdog. Requires <code className="font-mono">tyto.enabled = true</code> in <code className="font-mono">config.toml</code>.
+        "Push to Tyto" sends the thresholds to the server-side safety cutoffs. Requires <code className="font-mono">tyto.enabled = true</code> in <code className="font-mono">config.toml</code>.
       </p>
     </div>
   );

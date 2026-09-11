@@ -103,10 +103,11 @@ export function Navbar() {
     <nav className="bg-gray-800 border-b border-gray-700" aria-label="Main navigation">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-14">
-          <span className="text-white font-bold text-lg tracking-tight">
+          <NavLink to="/intro" className="text-white font-bold text-lg tracking-tight">
             SoundVisualizer
-          </span>
+          </NavLink>
           <div className="flex items-center gap-2">
+            <NavLink to="/intro" className={linkClass}>Intro</NavLink>
             <NavLink to="/setup" className={linkClass}>Setup</NavLink>
             <NavLink to="/capture" className={linkClass}>Capture</NavLink>
             <NavLink to="/results" className={linkClass}>Results</NavLink>

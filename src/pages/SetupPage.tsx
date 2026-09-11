@@ -55,14 +55,14 @@ export function SetupPage() {
 
       <Card
         title="Safety cutoffs (Tyto Robotics 1585)"
-        description="Watchdog reads telemetry at ~33 Hz and slams PWM to 1000 µs on the first tripped channel. Trip is latched until manually reset."
+        description="The server reads telemetry at ~33 Hz and forces the ESC signal to 1000 µs on the first tripped channel. A trip is latched until you reset it."
       >
         <CutoffsConfig />
       </Card>
 
       <Card
-        title="PWM point compatibility tolerances"
-        description="Used to merge top + bottom captures at the same PWM into one Results-page PWM point. Captures whose performance metrics agree within these tolerances are grouped; incompatible captures show as separate sidebar entries."
+        title="ESC signal point compatibility tolerances"
+        description="Used to merge captures at the same ESC signal into one Results-page point. Captures whose performance metrics agree within these tolerances are grouped; incompatible captures show as separate sidebar entries."
       >
         <CompatToleranceConfig />
       </Card>

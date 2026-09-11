@@ -64,7 +64,6 @@ interface WizardState {
   activeRunId: string | null;
   measurementIds: string[];
   errorMessage: string | null;
-  fakeMode: boolean;
   setPhase: (p: WizardPhase) => void;
   updateForm: (patch: Partial<WizardForm>) => void;
   setForm: (form: WizardForm) => void;
@@ -73,7 +72,6 @@ interface WizardState {
   setActiveRunId: (id: string | null) => void;
   setMeasurementIds: (ids: string[]) => void;
   setError: (msg: string | null) => void;
-  setFakeMode: (v: boolean) => void;
   reset: () => void;
 }
 
@@ -84,7 +82,6 @@ export const useWizardStore = create<WizardState>((set) => ({
   activeRunId: null,
   measurementIds: [],
   errorMessage: null,
-  fakeMode: false,
   setPhase: (p) => set({ phase: p }),
   updateForm: (patch) => set((s) => ({ form: { ...s.form, ...patch } })),
   setForm: (form) => set({ form }),
@@ -93,7 +90,6 @@ export const useWizardStore = create<WizardState>((set) => ({
   setActiveRunId: (id) => set({ activeRunId: id }),
   setMeasurementIds: (ids) => set({ measurementIds: ids }),
   setError: (msg) => set({ errorMessage: msg }),
-  setFakeMode: (v) => set({ fakeMode: v }),
   reset: () =>
     set({
       phase: 'form',
@@ -101,6 +97,5 @@ export const useWizardStore = create<WizardState>((set) => ({
       activeRunId: null,
       measurementIds: [],
       errorMessage: null,
-      fakeMode: false,
     }),
 }));

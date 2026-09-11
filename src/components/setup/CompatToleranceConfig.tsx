@@ -3,6 +3,8 @@ import { api, ApiError } from '../../api/client';
 import type { CompatibilityTolerances } from '../../api/types';
 import { COMPAT_CHANNELS } from '../../api/types';
 import { Button } from '../ui/Button';
+import { InfoToggle } from '../ui/InfoToggle';
+import { COMPAT_HELP } from '../../content/parameterHelp';
 
 export function CompatToleranceConfig() {
   const [tolerances, setTolerances] = useState<CompatibilityTolerances | null>(null);
@@ -49,7 +51,7 @@ export function CompatToleranceConfig() {
   return (
     <div className="space-y-4">
       <p className="text-xs text-gray-500">
-        Top and bottom captures at the same PWM are grouped into one PWM point on the Results
+        Top and bottom captures at the same ESC signal are grouped into one point on the Results
         page when their performance metrics agree within these tolerances. A pair is compatible
         on a channel when <code className="font-mono text-gray-300">|a − b| ≤ max(abs, rel × mean(|a|, |b|))</code>.
       </p>
@@ -57,9 +59,9 @@ export function CompatToleranceConfig() {
       <table className="w-full text-sm">
         <thead>
           <tr className="text-left text-gray-400 border-b border-gray-700">
-            <th className="py-2 pr-3 font-medium">Channel</th>
-            <th className="pr-3 font-medium">Absolute</th>
-            <th className="pr-3 font-medium">Relative (fraction)</th>
+            <th className="py-2 pr-3 font-medium">Channel<InfoToggle label="compatibility tolerances">{COMPAT_HELP.general}</InfoToggle></th>
+            <th className="pr-3 font-medium">Absolute<InfoToggle label="absolute tolerance">{COMPAT_HELP.abs}</InfoToggle></th>
+            <th className="pr-3 font-medium">Relative (fraction)<InfoToggle label="relative tolerance">{COMPAT_HELP.rel}</InfoToggle></th>
             <th className="font-medium">Unit</th>
           </tr>
         </thead>

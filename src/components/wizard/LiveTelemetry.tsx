@@ -35,7 +35,7 @@ export function LiveTelemetry({ active }: Props) {
         </span>
       </div>
       <div className="p-3 grid grid-cols-2 sm:grid-cols-4 gap-3 text-sm">
-        <Cell label="PWM" value={message ? `${message.pwm_us}` : '—'} unit="µs" />
+        <Cell label="ESC signal" value={message ? `${message.pwm_us}` : '—'} unit="µs" />
         <Cell label="Thrust" value={message ? message.thrust_n.toFixed(2) : '—'} unit="N" />
         <Cell label="Torque" value={message ? message.torque_nm.toFixed(3) : '—'} unit="N·m" />
         <Cell label="RPM" value={message ? message.rpm.toFixed(0) : '—'} unit="" />
@@ -46,8 +46,8 @@ export function LiveTelemetry({ active }: Props) {
       </div>
       {linkDown && (
         <div className="px-3 py-2 border-t border-red-700/60 bg-red-900/30 text-red-300 text-xs">
-          Tyto serial link dropped — reconnecting. No telemetry, no PWM output and{' '}
-          <strong>no cutoff watchdog</strong> until it&apos;s back.
+          Tyto serial link dropped — reconnecting. No telemetry, no ESC signal output and{' '}
+          <strong>no safety cutoffs</strong> until it&apos;s back.
           {raw && 'link_error' in raw && raw.link_error && (
             <span className="block font-mono text-[11px] text-red-400/80 mt-1">
               {raw.link_error}
@@ -57,7 +57,7 @@ export function LiveTelemetry({ active }: Props) {
       )}
       {message?.tripped && (
         <div className="px-3 py-2 border-t border-red-700/60 bg-red-900/30 text-red-300 text-xs">
-          Tripped on <strong>{message.tripped}</strong> — PWM forced to 1000 µs.
+          Tripped on <strong>{message.tripped}</strong> — ESC signal forced to 1000 µs.
         </div>
       )}
     </div>

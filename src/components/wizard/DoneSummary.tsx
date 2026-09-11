@@ -16,7 +16,7 @@ export function DoneSummary({ keySlug, measurementIds, onNew }: Props) {
         </div>
         {keySlug && (
           <div className="text-sm text-gray-400">
-            Stored under key:{' '}
+            Stored under base:{' '}
             <code className="font-mono text-gray-200 bg-gray-900 px-2 py-0.5 rounded">
               {keySlug}
             </code>

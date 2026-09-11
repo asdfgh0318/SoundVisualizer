@@ -34,7 +34,7 @@ type ColumnKey =
   | 'spl_band';
 
 const COLUMNS: { key: ColumnKey; label: string; unit: string }[] = [
-  { key: 'pwm_us',         label: 'PWM',           unit: 'µs'  },
+  { key: 'pwm_us',         label: 'ESC signal',    unit: 'µs'  },
   { key: 'thrust_n_mean',  label: 'Thrust (mean)', unit: 'N'   },
   { key: 'thrust_n_max',   label: 'Thrust (max)',  unit: 'N'   },
   { key: 'torque_nm_mean', label: 'Torque (mean)', unit: 'N·m' },
@@ -380,7 +380,7 @@ function SelectedPointFFTPanel({
     <div className="bg-gray-800 border border-gray-700 rounded-md p-3">
       <div className="flex items-baseline gap-3 mb-2 px-1">
         <span className="text-xs uppercase tracking-wide text-gray-500">Selected</span>
-        <span className="text-sm font-mono text-gray-200">PWM {row.pwm_us} µs</span>
+        <span className="text-sm font-mono text-gray-200">ESC {row.pwm_us} µs</span>
         {row.spl_band !== null && (
           <span className="text-xs text-gray-400">
             band level: <span className="font-mono text-gray-200">{row.spl_band.toFixed(1)} {unit}</span>

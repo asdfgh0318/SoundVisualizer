@@ -30,7 +30,7 @@ export function PWMRampVisualization({ steps }: Props) {
   if (steps.length === 0) {
     return (
       <div className="bg-gray-900/40 border border-gray-700 rounded-md p-6 text-center text-sm text-gray-500 italic">
-        Add a PWM step to see the ramp visualization.
+        Add an ESC signal step to see the ramp visualization.
       </div>
     );
   }
@@ -71,7 +71,7 @@ export function PWMRampVisualization({ steps }: Props) {
         preserveAspectRatio="xMidYMid meet"
         className="w-full h-auto"
         role="img"
-        aria-label="PWM ramp visualization"
+        aria-label="ESC signal ramp visualization"
       >
         {/* horizontal grid */}
         {Y_TICKS.map((pwm) => (
@@ -107,7 +107,7 @@ export function PWMRampVisualization({ steps }: Props) {
           fontSize="10"
           transform={`rotate(-90 6 ${PAD_T + innerH / 2})`}
         >
-          PWM (µs)
+          ESC signal (µs)
         </text>
         <text x={W / 2} y={H - 6} textAnchor="middle" fill={LABEL} fontSize="10">
           time (ms)

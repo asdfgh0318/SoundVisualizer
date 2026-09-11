@@ -6,7 +6,6 @@ import type {
   CaptureRunStatus,
   CompatibilityTolerances,
   CutoffTriggers,
-  FakeCaptureResult,
   FFTResponse,
   FFTSettings,
   Key,
@@ -88,8 +87,6 @@ export const api = {
     request<CaptureRunStatus>('/capture/run', json(body)),
   abortCaptureRun: () => request<void>('/capture/run', { method: 'DELETE' }),
   captureRunStatus: () => request<CaptureRunStatus>('/capture/run'),
-  runFakeCapture: (body: CaptureRunRequest) =>
-    request<FakeCaptureResult>('/dev/fake_capture', json(body)),
 
   listSetupPresets: () => request<SetupPreset[]>('/setup-presets'),
   createSetupPreset: (name: string, mics: MicPresetEntry[]) =>

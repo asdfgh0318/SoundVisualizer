@@ -95,5 +95,5 @@ POST /tyto/cutoffs
 POST /tyto/reset
 WS   /tyto/ws/telemetry        (~33 Hz Tyto poll stream; link-down frames on serial drop)
 POST /dev/seed                 (creates a demo key with synthetic drone-noise data)
-POST /dev/fake_capture         (real capture-run body, bypasses hardware)
+POST /dev/fake_capture         (real capture-run body, bypasses hardware; curl-only since the wizard button went, issue #17)
 ```

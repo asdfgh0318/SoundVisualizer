@@ -9,7 +9,7 @@ import {
   FrequencyBandSelector,
   type FreqBand,
 } from './FrequencyBandSelector';
-import { type PolarPoint, PolarPolarPlot, type PolarSeries } from './PolarPlot';
+import { type PolarPoint, PolarPlotFrame, type PolarSeries } from './PolarPlot';
 
 interface Props {
   compare: CompareSeriesApi;
@@ -132,7 +132,7 @@ export function PolarTab({ compare }: Props) {
           </div>
         )}
         {!loading && !error && drawable.length > 0 && (
-          <PolarPolarPlot series={drawable} rangeMode={rangeMode} unit={unit} />
+          <PolarPlotFrame series={drawable} rangeMode={rangeMode} unit={unit} />
         )}
       </div>
     </div>

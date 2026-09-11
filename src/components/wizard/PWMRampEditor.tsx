@@ -1,4 +1,6 @@
 import { Button } from '../ui/Button';
+import { InfoToggle } from '../ui/InfoToggle';
+import { CAPTURE_HELP } from '../../content/parameterHelp';
 import { PWMRampVisualization } from './PWMRampVisualization';
 
 interface Step {
@@ -34,8 +36,8 @@ export function PWMRampEditor({ steps, onChange }: Props) {
         <thead>
           <tr className="text-left text-gray-400 border-b border-gray-700">
             <th className="py-1.5 pr-3 font-medium w-12">#</th>
-            <th className="pr-3 font-medium">PWM (µs)</th>
-            <th className="pr-3 font-medium">Recording duration (ms)</th>
+            <th className="pr-3 font-medium">ESC signal (µs)<InfoToggle label="ESC signal">{CAPTURE_HELP.esc_signal}</InfoToggle></th>
+            <th className="pr-3 font-medium">Recording duration (ms)<InfoToggle label="recording duration">{CAPTURE_HELP.recording_ms}</InfoToggle></th>
             <th></th>
           </tr>
         </thead>
@@ -83,7 +85,7 @@ export function PWMRampEditor({ steps, onChange }: Props) {
         + Add step
       </Button>
       <p className="text-xs text-gray-500">
-        Each step: drive Tyto to the configured PWM, wait for RPM to stabilize, then record audio
+        Each step: drive the stand to the configured ESC signal, wait for the RPM to stabilize, then record audio
         for the specified duration.
       </p>
     </div>

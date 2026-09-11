@@ -1,12 +1,13 @@
 import Plotly from 'plotly.js-dist-min';
 import { useEffect, useRef } from 'react';
-import type { Data, Layout, PlotMouseEvent } from 'plotly.js';
+import type { Config, Data, Layout, PlotMouseEvent } from 'plotly.js';
 
 interface Props {
   data: Data[];
   layout: Partial<Layout>;
   className?: string;
   onClick?: (event: PlotMouseEvent) => void;
+  config?: Partial<Config>;
 }
 
 const DEFAULT_CONFIG = { responsive: true, displayModeBar: false } as const;
@@ -16,13 +17,13 @@ interface PlotlyHTMLDiv extends HTMLDivElement {
   removeAllListeners?: (event: string) => void;
 }
 
-export function PlotlyChart({ data, layout, className, onClick }: Props) {
+export function PlotlyChart({ data, layout, className, onClick, config }: Props) {
   const ref = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const node = ref.current as PlotlyHTMLDiv | null;
     if (!node) return;
-    Plotly.newPlot(node, data, layout, DEFAULT_CONFIG);
+    Plotly.newPlot(node, data, layout, { ...DEFAULT_CONFIG, ...config });
     if (onClick && node.on) {
       node.on('plotly_click', onClick);
     }
@@ -30,7 +31,7 @@ export function PlotlyChart({ data, layout, className, onClick }: Props) {
       if (node.removeAllListeners) node.removeAllListeners('plotly_click');
       Plotly.purge(node);
     };
-  }, [data, layout, onClick]);
+  }, [data, layout, onClick, config]);
 
   return <div ref={ref} className={className} />;
 }

@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { WS_BASE } from '../../api/base';
 import { useSetupStore } from '../../stores/setupStore';
-import { PolarPolarPlot, type PolarSeries } from './PolarPlot';
+import { PolarPlotFrame, type PolarSeries } from './PolarPlot';
 import { RangeModeToggle } from './PolarTab';
 
 interface LiveLevel {
@@ -224,7 +224,7 @@ export function LiveTab() {
 
       <div className="bg-gray-800 border border-gray-700 rounded-md p-3">
         {series.length > 0 ? (
-          <PolarPolarPlot series={series} rangeMode={rangeMode} unit={unit} />
+          <PolarPlotFrame series={series} rangeMode={rangeMode} unit={unit} />
         ) : (
           <p className="text-sm text-gray-500 py-8 text-center">
             {running ? 'waiting for the first frame…' : 'Not running.'}

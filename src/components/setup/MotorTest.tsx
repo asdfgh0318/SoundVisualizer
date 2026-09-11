@@ -105,7 +105,7 @@ export function MotorTest({ ready, readyReason }: Props) {
   return (
     <div className="space-y-2">
       <p className="text-xs text-gray-500">
-        Runs {RAMP_COUNT} gentle spool-up/down cycles to PWM {TEST_PWM_US} µs so you can
+        Performs {RAMP_COUNT} gentle spool-up/down cycles to ESC signal {TEST_PWM_US} µs so you can
         eyeball which way the prop is turning. Stop with the red button if anything looks wrong.
       </p>
 
@@ -116,7 +116,7 @@ export function MotorTest({ ready, readyReason }: Props) {
             disabled={!ready}
             title={ready ? '' : readyReason}
           >
-            Run direction check
+            Start direction check
           </Button>
           {!ready && (
             <p className="text-[11px] text-amber-400">{readyReason}</p>
@@ -128,7 +128,7 @@ export function MotorTest({ ready, readyReason }: Props) {
         <div className="bg-amber-500/10 border border-amber-500/40 rounded p-3 space-y-2">
           <p className="text-xs text-amber-200">
             <strong>Prop clear?</strong> After a {START_DELAY_S}s countdown the motor will spool to
-            PWM {TEST_PWM_US} µs {RAMP_COUNT} times. Make sure nothing is in the prop arc.
+            ESC signal {TEST_PWM_US} µs {RAMP_COUNT} times. Make sure nothing is in the prop arc.
           </p>
           <div className="flex gap-2">
             <Button onClick={runSequence}>Start</Button>

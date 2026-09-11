@@ -9,9 +9,9 @@ interface CardProps {
 
 export function Card({ title, description, right, children }: CardProps) {
   return (
-    <section className="bg-gray-800 border border-gray-700 rounded-lg overflow-hidden">
+    <section className="bg-gray-800 border border-gray-700 rounded-lg">
       {(title || right) && (
-        <div className="px-5 py-3 border-b border-gray-700 bg-gray-800/60 flex items-start justify-between gap-4">
+        <div className="px-5 py-3 border-b border-gray-700 bg-gray-800/60 rounded-t-lg flex items-start justify-between gap-4">
           <div>
             {title && (
               <h2 className="text-sm font-semibold uppercase tracking-wide text-gray-200">

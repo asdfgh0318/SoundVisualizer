@@ -1,6 +1,7 @@
 import type { Data, Layout } from 'plotly.js';
-import { useMemo } from 'react';
+import { useMemo, useState } from 'react';
 import { PlotlyChart } from '../ui/PlotlyChart';
+import { MicArcSchematic } from './MicArcSchematic';
 
 export interface PolarPoint {
   elevation_deg: number;
@@ -20,7 +21,11 @@ interface Props {
   rangeMode: 180 | 360;
   /** "dB SPL" once a Sens Factor is applied, otherwise "dBFS". */
   unit: string;
+  /** Bump to redraw the plot at its default range (a "reset view"). */
+  resetKey?: number;
 }
+
+const POLAR_CONFIG = { scrollZoom: true, doubleClick: 'reset' as const };
 
 const GRID = '#374151';
 const TEXT = '#9ca3af';
@@ -35,7 +40,7 @@ const elevToTheta = (e: number): number => (e >= 0 ? e : 360 + e);
 // Mirror across the vertical axis (the 12-6 line): θ_mirror = 180 - θ_right.
 const elevToMirrorTheta = (e: number): number => 180 - e;
 
-export function PolarPolarPlot({ series, rangeMode, unit }: Props) {
+export function PolarPolarPlot({ series, rangeMode, unit, resetKey = 0 }: Props) {
   const showLegend = series.length > 1;
 
   const data = useMemo<Data[]>(() => {
@@ -116,7 +121,45 @@ export function PolarPolarPlot({ series, rangeMode, unit }: Props) {
       showlegend: showLegend,
       legend: { orientation: 'h', x: 0, y: 1.08, font: { color: '#d1d5db', size: 11 }, bgcolor: 'rgba(0,0,0,0)' },
     };
-  }, [rangeMode, showLegend, unit, radialRange]);
+    // resetKey is a dependency on purpose: a new layout object makes PlotlyChart
+    // call newPlot again, which drops any zoom or pan the user applied.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [rangeMode, showLegend, unit, radialRange, resetKey]);
 
-  return <PlotlyChart data={data} layout={layout} className="w-full" />;
+  return <PlotlyChart data={data} layout={layout} config={POLAR_CONFIG} className="w-full" />;
+}
+
+/** The polar plot with the mic-arc schematic beside it, a zoom hint and a
+ *  reset button underneath. Both Results tabs that draw a polar use this. */
+export function PolarPlotFrame({ series, rangeMode, unit }: Omit<Props, 'resetKey'>) {
+  const [resetKey, setResetKey] = useState(0);
+  const activeSerials = useMemo(
+    () => Array.from(new Set(series.flatMap((s) => s.points.map((p) => p.mic_serial)))),
+    [series],
+  );
+  return (
+    <div className="space-y-2">
+      <div className="flex gap-3">
+        <div className="flex-1 min-w-0">
+          <PolarPolarPlot series={series} rangeMode={rangeMode} unit={unit} resetKey={resetKey} />
+        </div>
+        <aside className="hidden md:block w-44 shrink-0 pt-2">
+          <MicArcSchematic activeSerials={activeSerials} />
+        </aside>
+      </div>
+      <div className="flex items-center justify-between gap-3 flex-wrap text-[11px] text-gray-500 px-1">
+        <span>
+          Zoom: scroll over the plot, or drag along the radial axis. Revert: double-click the plot
+          or press Reset view.
+        </span>
+        <button
+          type="button"
+          onClick={() => setResetKey((k) => k + 1)}
+          className="text-xs px-2 py-1 rounded border border-gray-600 text-gray-300 hover:bg-gray-700 hover:text-white"
+        >
+          ⟲ Reset view
+        </button>
+      </div>
+    </div>
+  );
 }

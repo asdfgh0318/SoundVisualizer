@@ -22,7 +22,7 @@ export function ResultsPage() {
       <header>
         <h1 className="text-2xl font-bold text-white">Results</h1>
         <p className="text-sm text-gray-400 mt-1">
-          Group acoustic + performance measurements by PWM point and inspect spectra.
+          Group acoustic + performance measurements by ESC signal point and inspect spectra.
         </p>
       </header>
 
@@ -31,13 +31,13 @@ export function ResultsPage() {
         <Tabs value={tab} onChange={setTab} />
       </div>
 
-      {/* Live reads the mics directly, so it needs no stored key. */}
+      {/* Live reads the mics directly, so it needs no stored base. */}
       {tab === 'live' ? (
         <LiveTab />
       ) : keySlug ? (
         <ResultsBody keySlug={keySlug} tab={tab} />
       ) : (
-        <div className="text-sm text-gray-400 italic">Pick a key to see results.</div>
+        <div className="text-sm text-gray-400 italic">Pick a base to see results.</div>
       )}
     </div>
   );
@@ -90,11 +90,11 @@ function ResultsBody({ keySlug, tab }: { keySlug: string; tab: Tab }) {
   const compare = useCompareSeries(keySlug, effectivePoint);
 
   if (error) return <div className="text-sm text-red-400">Error: {error.message}</div>;
-  if (!points) return <div className="text-sm text-gray-400 italic">Loading PWM points…</div>;
+  if (!points) return <div className="text-sm text-gray-400 italic">Loading ESC signal points…</div>;
   if (points.length === 0) {
     return (
       <div className="text-sm text-gray-400 italic">
-        No measurements under this key yet.
+        No measurements under this base yet.
       </div>
     );
   }
@@ -105,7 +105,7 @@ function ResultsBody({ keySlug, tab }: { keySlug: string; tab: Tab }) {
       <aside>
         <div className="flex items-center justify-between mb-2 px-1">
           <div className="text-xs uppercase tracking-wide text-gray-500">
-            PWM points ({points.length})
+            ESC signal points ({points.length})
           </div>
           <button
             type="button"

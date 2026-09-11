@@ -13,7 +13,7 @@ export function PWMPointSidebar({
   points, selectedId, drilldownTStart, onSelect, onDrilldown,
 }: Props) {
   if (points.length === 0) {
-    return <div className="text-sm text-gray-400 italic p-3">No PWM points yet.</div>;
+    return <div className="text-sm text-gray-400 italic p-3">No ESC signal points yet.</div>;
   }
   return (
     <ul className="space-y-1">
@@ -69,7 +69,7 @@ function PWMRow({
           }`}
         >
           <div className="flex items-center justify-between gap-2">
-            <span className="font-semibold text-gray-100">PWM {point.pwm_us} µs</span>
+            <span className="font-semibold text-gray-100">ESC {point.pwm_us} µs</span>
             <span className="flex items-center gap-1">
               {point.underlying.some((u) => u.off_speed) && <OffSpeedChip />}
               <CompositionChip composition={point.composition} singleHalf={onlyOneHalf} />
@@ -165,7 +165,7 @@ function UnderlyingRow({
 function OffSpeedChip() {
   return (
     <span
-      title="A capture at this PWM spun more than 3 % off the others' blade-passage frequency (supply-limited or off-speed run); its levels are not comparable."
+      title="A capture at this ESC signal spun more than 3 % off the others' blade-passage frequency (supply-limited or off-speed capture); its levels are not comparable."
       className="text-[10px] uppercase tracking-wide px-1.5 py-0.5 rounded bg-red-500/20 text-red-300 border border-red-500/40"
     >
       off-speed

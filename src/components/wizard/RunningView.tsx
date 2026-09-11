@@ -9,8 +9,8 @@ interface Props {
 
 const PHASE_LABELS: Record<string, string> = {
   starting: 'Starting…',
-  taring: 'Taring stand (zeroing at idle)',
-  setting_pwm: 'Setting PWM',
+  taring: 'Taring load cells at idle',
+  setting_pwm: 'Setting ESC signal',
   stabilizing: 'Waiting for RPM to stabilize',
   recording: 'Recording audio',
   writing: 'Writing measurements',
@@ -27,7 +27,7 @@ export function RunningView({ status, onAbort }: Props) {
       ? `Step ${status.current_step} of ${status.total_steps}`
       : 'Initializing'
     : 'Connecting…';
-  const pwmLabel = status?.current_pwm_us ? `PWM ${status.current_pwm_us} µs` : '';
+  const pwmLabel = status?.current_pwm_us ? `ESC ${status.current_pwm_us} µs` : '';
   const phaseLabel = status?.phase ? (PHASE_LABELS[status.phase] ?? status.phase) : '—';
 
   return (

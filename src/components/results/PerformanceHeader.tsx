@@ -23,7 +23,7 @@ export function PerformanceHeader({ point, drilldownTStart }: Props) {
   return (
     <div className="bg-gray-800 border border-gray-700 rounded-md p-4">
       <div className="flex items-baseline gap-3 mb-3">
-        <span className="text-xs uppercase tracking-wide text-amber-400">PWM</span>
+        <span className="text-xs uppercase tracking-wide text-amber-400">ESC</span>
         <span className="text-2xl font-bold text-white font-mono">
           {point.pwm_us} <span className="text-gray-400 text-base">µs</span>
         </span>

@@ -259,11 +259,6 @@ export interface ResearchTreeNodesResponse {
   nodes: ResearchTreeNode[];
 }
 
-export interface FakeCaptureResult {
-  key: string;
-  measurement_ids: string[];
-}
-
 export interface TelemetryFrame {
   t: string;
   connected?: true;

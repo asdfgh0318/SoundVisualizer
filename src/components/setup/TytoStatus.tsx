@@ -61,7 +61,7 @@ export function TytoStatus() {
           <span className="text-red-300">Serial link dropped — reconnecting…</span>
         </div>
         <p className="text-xs text-amber-300">
-          Telemetry, PWM output and the cutoff watchdog are all down until the link is back.
+          Telemetry, ESC signal output and the safety cutoffs are all down until the link is back.
           Any running capture has been failed.
         </p>
         {status.link_error && (
@@ -105,11 +105,11 @@ export function TytoStatus() {
         </span>
       </div>
       <div className="text-xs text-gray-400">
-        PWM: <span className="font-mono text-gray-200">{status.pwm_us ?? '—'} µs</span>
+        ESC signal: <span className="font-mono text-gray-200">{status.pwm_us ?? '—'} µs</span>
       </div>
 
-      {/* Tare / zero — the load cell reads a non-zero resting baseline; zero it
-          at idle so thrust/torque/current are referenced to rest. */}
+      {/* Tare — the load cells read a non-zero resting baseline; tare at idle so
+          thrust/torque/current are referenced to rest. */}
       <div className="border-t border-gray-700 pt-2 space-y-1">
         {tared ? (
           <div className="text-xs text-gray-400">
@@ -131,7 +131,7 @@ export function TytoStatus() {
         )}
         <div className="flex items-center gap-2">
           <Button onClick={() => run(api.zeroTytoStand)} disabled={busy || status.pwm_us !== 1000}>
-            {busy ? 'Zeroing…' : 'Zero stand'}
+            {busy ? 'Taring…' : 'Tare'}
           </Button>
           {tared && (
             <button
@@ -144,13 +144,13 @@ export function TytoStatus() {
           )}
         </div>
         {status.pwm_us !== 1000 && (
-          <p className="text-[11px] text-amber-400">Spool down to idle (1000 µs) before zeroing.</p>
+          <p className="text-[11px] text-amber-400">Spool down to idle (ESC signal 1000 µs) before taring.</p>
         )}
       </div>
 
       {tripped && (
         <Button variant="danger" onClick={onReset}>
-          Reset watchdog
+          Reset safety cutoffs
         </Button>
       )}
 
@@ -166,9 +166,9 @@ export function TytoStatus() {
             !status.connected
               ? 'Tyto serial link is down — wait for it to reconnect.'
               : tripped
-              ? 'Watchdog tripped — reset before running the direction check.'
+              ? 'Safety cutoff tripped — reset it before the direction check.'
               : status.pwm_us !== 1000
-                ? 'Motor not at idle (PWM ≠ 1000) — spool down before running the direction check.'
+                ? 'Motor not at idle (ESC signal ≠ 1000 µs) — spool down before the direction check.'
                 : ''
           }
         />

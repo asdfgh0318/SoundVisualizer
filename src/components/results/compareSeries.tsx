@@ -120,13 +120,13 @@ export function SeriesPicker({
 
   return (
     <div className="bg-gray-800 border border-gray-700 rounded-md p-3 space-y-3">
-      <div className="text-xs uppercase tracking-wide text-gray-400">Compare configs (overlay)</div>
+      <div className="text-xs uppercase tracking-wide text-gray-400">Compare bases (overlay)</div>
 
       <div className="flex flex-wrap items-end gap-2">
         <label className="block">
-          <span className="text-[11px] text-gray-500">Config</span>
+          <span className="text-[11px] text-gray-500">Base</span>
           <select className="input mt-1 w-56" value={selKey} onChange={(e) => setSelKey(e.target.value)}>
-            <option value="">— pick a config —</option>
+            <option value="">— pick a base —</option>
             {keys.map((k) => (
               <option key={k.slug} value={k.slug}>
                 {k.motor} · {k.propeller}{k.shroud && k.shroud !== 'none' ? ` · ${k.shroud}` : ''}
@@ -136,7 +136,7 @@ export function SeriesPicker({
           </select>
         </label>
         <label className="block">
-          <span className="text-[11px] text-gray-500">PWM point</span>
+          <span className="text-[11px] text-gray-500">ESC signal point</span>
           <select
             className="input mt-1 w-40"
             value={selPoint}
@@ -167,7 +167,7 @@ export function SeriesPicker({
             <span className="inline-block w-2.5 h-2.5 rounded-full" style={{ background: s.color }} />
             <span className="text-gray-200">{s.label}</span>
             {s.id === baseId ? (
-              <span className="text-[10px] text-gray-500 uppercase px-1">base</span>
+              <span className="text-[10px] text-gray-500 uppercase px-1">current</span>
             ) : (
               <button
                 onClick={() => onRemove(s.id)}
