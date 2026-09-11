@@ -22,3 +22,13 @@ Same twelve runs, all five PWM steps, tones and broadband separated. Behind `doc
 - `remedies-fig-tones-vs-broadband.png` — tone probe map beside the tone-notched broadband map.
 - `remedies-fig-probe-comb.png` — per position, the room term vs probe frequency with the best single-echo comb (+36°/+54°: extra path 1.5 m; −72°: 0.7 m; nothing fits −36° at 238 Hz).
 - `remedies-fig-cepstrum.png`, `remedies-fig-bpf-tone-vs-broadband.png` — cepstrum of the tone-notched ripple (peaks are harmonic residue, common to all mics) and tone-vs-broadband per speed.
+
+## Self-audit of 2026-09-11
+
+- `audit_2026_09_11.py` — recomputes every figure the one-pager, the remedies report, the
+  chamber-fighting guide and `CLAUDE.md` assert from our own data, and checks each against what
+  the document prints. Exit code 1 if anything disagrees. Re-run it after changing any of them.
+- `AUDIT-2026-09-11.md` — the write-up: 40 of 40 pass after one correction. The error found was a
+  9.3 dB contrast labelled broadband when it came from the mixed-band fit; the broadband value at
+  that position pair and frequency is 2.87 dB.
+- `AUDIT-2026-09-11.log.txt` — the run log.

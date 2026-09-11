@@ -1,0 +1,60 @@
+=== A. Broadband position map ===
+PASS  broadband cells within +-1.3 dB (%)                        claimed       92 | recomputed   92.344 %
+PASS  worst broadband cell (dB)                                  claimed      2.7 | recomputed    2.690 dB
+PASS  cells beyond 3 s.e.                                        claimed       99 | recomputed   99.000 
+PASS  total cells                                                claimed      209 | recomputed  209.000 
+PASS  within 1.3 dB below 3.15 kHz (%)                           claimed     92.2 | recomputed   92.208 %
+PASS  within 1.3 dB at/above 3.15 kHz (%)                        claimed     92.7 | recomputed   92.727 %
+PASS  worst cell below 3.15 kHz (dB)                             claimed     2.69 | recomputed    2.690 dB
+PASS  worst cell at/above 3.15 kHz (dB)                          claimed     2.58 | recomputed    2.580 dB
+
+=== B. Largest within-group contrasts (the degeneracy argument) ===
+PASS  largest broadband within-group contrast (dB)               claimed      4.3 | recomputed    4.340 dB at 397 Hz
+PASS  largest mixed-band within-group contrast (dB)              claimed     12.5 | recomputed   12.460 dB at 250 Hz
+
+=== C. ISO 3745 tolerance as an analogy ===
+PASS  broadband cells outside tolerance                          claimed       29 | recomputed   29.000 of 209
+PASS  mixed-band cells outside tolerance                         claimed       55 | recomputed   55.000 of 209
+
+=== D. Microphone terms ===
+PASS  mic terms minimum (dB)                                     claimed     -5.8 | recomputed   -5.780 dB
+PASS  mic terms maximum (dB)                                     claimed      3.0 | recomputed    2.990 dB
+
+=== E. Echo delays and the gating limit ===
+PASS  delay for 0.68 m (ms)                                      claimed     1.98 | recomputed    1.983 ms
+PASS  1/T limit for 0.68 m (Hz)                                  claimed      500 | recomputed  504.412 Hz
+PASS  delay for 1.49 m (ms)                                      claimed     4.34 | recomputed    4.344 ms
+PASS  1/T limit for 1.49 m (Hz)                                  claimed      230 | recomputed  230.201 Hz
+PASS  extra path to gate at 250 Hz (m)                           claimed     1.37 | recomputed    1.372 m
+
+=== F. Fit identifiability ===
+PASS  parameters per band                                        claimed       34 | recomputed   34.000 
+PASS  observations per band                                      claimed      132 | recomputed  132.000 
+PASS  rank of the design                                         claimed       28 | recomputed   28.000 
+PASS  undetermined directions                                    claimed        6 | recomputed    6.000 
+PASS  undetermined directions if M known                         claimed        1 | recomputed    1.000 
+PASS  connected position/serial groups                           claimed        5 | recomputed    5.000 
+
+=== G. The degeneracy check at 794 Hz ===
+PASS  residual RMS at 794 Hz (dB)                                claimed   1.5012 | recomputed    1.501 dB
+PASS  residual RMS after the 1 dB group shift (dB)               claimed   1.5012 | recomputed    1.501 dB
+
+=== H. Hub source design (Visaton FRS 8 M datasheet parameters) ===
+PASS  sealed 1 l Fc (Hz)                                         claimed      181 | recomputed  181.142 Hz
+PASS  sealed 1 l Qtc                                             claimed     0.71 | recomputed    0.710 
+PASS  box response at 216 Hz (dB)                                claimed     -1.7 | recomputed   -1.711 dB
+PASS  box response at 238 Hz (dB)                                claimed     -1.2 | recomputed   -1.225 dB
+PASS  box response at 258 Hz (dB)                                claimed     -0.9 | recomputed   -0.916 dB
+PASS  box response at 125 Hz (dB)                                claimed     -7.3 | recomputed   -7.304 dB
+PASS  effective piston diameter (cm)                             claimed      6.1 | recomputed    6.077 cm
+PASS  ka=1 omni limit (Hz)                                       claimed     1800 | recomputed 1796.760 Hz
+PASS  decay to -20 dB (ms)                                       claimed      2.9 | recomputed    2.874 ms
+PASS  decay to -30 dB (ms)                                       claimed      4.3 | recomputed    4.310 ms
+
+=== I. Propeller levels at the microphones (prop18, PWM 1900) ===
+PASS  lowest band mean (dB)                                      claimed       24 | recomputed   24.380 dB
+PASS  highest band mean (dB)                                     claimed       62 | recomputed   62.314 dB
+PASS  overall 100 Hz-10 kHz mean (dB)                            claimed       67 | recomputed   67.328 dB
+
+======================================================================
+AUDIT RESULT: 40 passed, 0 failed
