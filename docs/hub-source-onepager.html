@@ -1,0 +1,241 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><title>The Hub Source</title>
+<style>
+:root{--ink:#10171b;--ink2:#46545c;--ink3:#7a878f;--rule:#ccd5da;--panel:#f2f5f7;
+--accent:#17566e;--bad:#96382a;--warn:#8f5c0d;--ok:#2f6b3a;--wood:#e3d3b8;
+--sans:"IBM Plex Sans","DejaVu Sans",Helvetica,Arial,sans-serif;
+--serif:"Source Serif 4",Charter,"DejaVu Serif",Georgia,serif;
+--mono:"IBM Plex Mono","DejaVu Sans Mono",monospace}
+*{box-sizing:border-box}
+body{margin:0;background:#e9edef;font-family:var(--serif);color:var(--ink);font-size:14px;line-height:1.42}
+.sheet{max-width:1180px;margin:22px auto;background:#fff;padding:26px 30px 20px;box-shadow:0 1px 4px rgba(0,0,0,.16)}
+header{display:grid;grid-template-columns:1fr auto;align-items:end;border-bottom:2px solid var(--ink);padding-bottom:8px}
+.eyebrow{font-family:var(--mono);font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink3);margin:0 0 3px}
+h1{font-family:var(--sans);font-size:30px;font-weight:700;letter-spacing:-.02em;margin:0;line-height:1.05}
+.sub{color:var(--ink2);margin:7px 0 0;max-width:62em}
+.meta{font-family:var(--mono);font-size:10.5px;color:var(--ink3);text-align:right;line-height:1.6}
+h2{font-family:var(--sans);font-size:13px;font-weight:700;margin:16px 0 5px;letter-spacing:.01em}
+h2 .n{font-family:var(--mono);color:var(--accent);margin-right:7px;font-size:12px}
+p{margin:0 0 8px} b{font-family:var(--sans);font-weight:600}
+.cols{display:grid;grid-template-columns:1.05fr 1fr;gap:0 30px;margin-top:12px}
+.card{background:var(--panel);border-left:3px solid var(--accent);padding:7px 11px;margin:8px 0}
+.card.warn{border-color:var(--warn)} .card.ok{border-color:var(--ok)}
+table{border-collapse:collapse;width:100%;margin:6px 0 10px;font-size:12.5px}
+th{font-family:var(--sans);font-size:10px;text-transform:uppercase;letter-spacing:.06em;color:var(--ink2);
+text-align:left;padding:3px 6px;border-bottom:1.5px solid var(--ink)}
+td{padding:3px 6px;border-bottom:1px solid #e6ebed;font-family:var(--mono);font-size:12px;vertical-align:top}
+td.t{font-family:var(--serif);font-size:13px}
+ol{margin:0;padding-left:18px} li{margin:0 0 5px}
+svg{display:block;width:100%;height:auto;margin:2px 0 4px}
+.fig{font-family:var(--sans);font-size:10.5px;color:var(--ink3);margin:0 0 12px}
+.tk{font-family:var(--mono);font-size:9px;fill:var(--ink3)}
+.lbl{font-family:var(--sans);font-size:10px;fill:var(--ink2)}
+.gr{stroke:#dfe6e9;stroke-width:1} .ax{stroke:#aab6bc;stroke-width:1.2}
+.curve{fill:none;stroke:var(--accent);stroke-width:2.2}
+.tone{stroke:var(--bad);stroke-width:1;stroke-dasharray:2 2}
+.tonedot{fill:var(--bad)}
+.need{stroke:var(--ok);stroke-width:1.4;stroke-dasharray:5 3}
+.echo{stroke:var(--bad);stroke-width:1.4;stroke-dasharray:4 3} .echoT{fill:var(--bad)}
+.box{fill:var(--wood);stroke:#8c7a5c;stroke-width:1.4}
+.boxL{fill:#f0e7d6;stroke:#8c7a5c;stroke-width:1.4}
+.dim{stroke:var(--ink3);stroke-width:.9} .dimT{font-family:var(--mono);font-size:10px;fill:var(--ink2)}
+.mic{fill:var(--accent)} .ray{stroke:var(--accent);stroke-width:.9;stroke-dasharray:3 2;opacity:.75}
+.wide{border-top:1px solid var(--rule);margin-top:14px;padding-top:4px}
+.wide ol{column-count:2;column-gap:30px} .wide li{break-inside:avoid}
+.wide .card{margin-top:10px}
+.foot{margin-top:14px;padding-top:7px;border-top:1px solid var(--rule);font-size:11px;color:var(--ink3)}
+a{color:var(--accent)}
+@media print{body{background:#fff} .sheet{box-shadow:none;margin:0;max-width:none;padding:0}}
+</style></head><body><div class="sheet">
+
+<header><div>
+<p class="eyebrow">SoundVisualizer · arc validation · campaign session 2 · the source that replaces the propeller</p>
+<h1>A one-litre box that answers the 238 Hz question</h1>
+<p class="sub">To decide whether the 8 dB hole in the blade-tone polar is the room or the propeller's own inflow, something
+that is <i>not</i> a propeller has to stand in the same place and play the same frequencies. This is that thing:
+one 8 cm driver, a sealed cube, about 250 zł. Everything below is computed from the driver's published parameters
+and from our own September captures.</p></div>
+<div class="meta">2026-09-11<br>report §15, sessions 2<br>docs/hub-source-options.md<br>driver: Visaton FRS 8 M</div></header>
+
+<div class="cols">
+<div>
+
+<h2><span class="n">01</span>Why a cheap single driver is allowed here</h2>
+<p>Textbook practice for room measurement is a dodecahedron: twelve drivers on a sphere, radiating equally in all
+directions. The smallest sold is 25 cm and 4.5 kg. Put that at the hub and it becomes the reflector we are hunting.</p>
+<p>We escape the requirement through geometry rather than hardware. With the arc laid flat, all eleven microphones
+sit at the same height in one plane around the vertical axis. Point the driver <b>straight up</b>, the way the
+propeller blew, and every microphone is then at the same angle from the source. Whatever directivity the box has
+becomes a single gain shared by all eleven, and our fit already has a term that swallows exactly that: the run gain.
+It cancels out of the position map, which is the thing we read.</p>
+
+<svg viewBox="0 0 430 200" role="img" aria-label="Side view: the box fires up the rig axis, every microphone sits at the same angle">
+  <line x1="20" y1="170" x2="410" y2="170" stroke="#aab6bc" stroke-width="1.2"/>
+  <text x="22" y="183" class="tk">floor</text>
+  <!-- stand -->
+  <rect x="200" y="96" width="30" height="74" fill="#dde3e6" stroke="#9aa7ad" stroke-width="1.2"/>
+  <text x="215" y="188" class="tk" text-anchor="middle">stand</text>
+  <!-- box -->
+  <rect x="192" y="58" width="46" height="40" class="box"/>
+  <ellipse cx="215" cy="58" rx="17" ry="4.5" fill="#c9b894" stroke="#8c7a5c" stroke-width="1.2"/>
+  <!-- up arrows -->
+  <path d="M215 50 L215 30 M209 37 L215 30 L221 37" stroke="#8c7a5c" stroke-width="1.6" fill="none"/>
+  <text x="232" y="36" class="lbl">driver fires up the rig axis</text>
+  <!-- arc plane -->
+  <line x1="40" y1="58" x2="390" y2="58" stroke="#c6d0d5" stroke-width="1" stroke-dasharray="4 3"/>
+  <text x="40" y="52" class="tk">arc plane</text>
+  <circle cx="50" cy="58" r="4" class="mic"/><circle cx="83" cy="58" r="4" class="mic"/><circle cx="116" cy="58" r="4" class="mic"/><circle cx="149" cy="58" r="4" class="mic"/><circle cx="182" cy="58" r="4" class="mic"/><circle cx="248" cy="58" r="4" class="mic"/><circle cx="281" cy="58" r="4" class="mic"/><circle cx="314" cy="58" r="4" class="mic"/><circle cx="347" cy="58" r="4" class="mic"/><circle cx="380" cy="58" r="4" class="mic"/>
+  <line x1="215" y1="58" x2="50" y2="58" class="ray"/><line x1="215" y1="58" x2="116" y2="58" class="ray"/><line x1="215" y1="58" x2="314" y2="58" class="ray"/><line x1="215" y1="58" x2="380" y2="58" class="ray"/>
+  <text x="215" y="212" class="tk" text-anchor="middle"></text>
+  <path d="M50 72 L380 72" stroke="none"/>
+  <text x="150" y="50" class="lbl" text-anchor="end" fill="#8c7a5c">r = 0.84 m</text>
+</svg>
+<p class="fig">Figure 1 · Side view. Every microphone lies on the source's equator, so the box's pattern is one
+common gain. It stops being free when the arc goes back upright; the method for that day is in the note.</p>
+
+<h2><span class="n">02</span>The box</h2>
+<p>External 124 mm cube in 12 mm MDF or birch ply, internal 100 mm cube, one litre. Cutout 75 mm from the datasheet.
+Butt joints, glue and seal everything, no port, about 10 g of polyester loosely packed, a 6 mm cable hole in the
+bottom sealed with silicone. Chamfer the four vertical edges 45° × 10 mm: a cube has four-fold symmetry, not
+rotational symmetry, and the chamfers push its horizontal cross-section closer to a circle.</p>
+
+<svg viewBox="0 0 430 176" role="img" aria-label="Baffle and side view with dimensions, and the cut list nested in one offcut">
+  <!-- baffle -->
+  <g transform="translate(14,18)">
+    <path d="M14 0 L110 0 L124 14 L124 110 L110 124 L14 124 L0 110 L0 14 Z" class="box"/>
+    <circle cx="62" cy="62" r="37.5" fill="#fff" stroke="#8c7a5c" stroke-width="1.4"/>
+    <circle cx="62" cy="62" r="2" fill="#8c7a5c"/>
+    <line x1="0" y1="136" x2="124" y2="136" class="dim"/>
+    <text x="62" y="150" class="dimT" text-anchor="middle">124</text>
+    <line x1="24.5" y1="62" x2="99.5" y2="62" class="dim"/>
+    <text x="62" y="58" class="dimT" text-anchor="middle">Ø75</text>
+    <text x="62" y="-6" class="lbl" text-anchor="middle">baffle, faces up</text>
+  </g>
+  <!-- side -->
+  <g transform="translate(168,18)">
+    <rect x="0" y="0" width="124" height="124" class="boxL"/>
+    <rect x="0" y="0" width="124" height="12" class="box"/>
+    <rect x="0" y="112" width="124" height="12" class="box"/>
+    <rect x="0" y="12" width="12" height="100" class="box"/>
+    <rect x="112" y="12" width="12" height="100" class="box"/>
+    <text x="62" y="66" class="dimT" text-anchor="middle">1.00 l</text>
+    <text x="62" y="80" class="tk" text-anchor="middle">100 × 100 × 100</text>
+    <text x="62" y="-6" class="lbl" text-anchor="middle">section, 12 mm walls</text>
+  </g>
+  <!-- nesting -->
+  <g transform="translate(322,18)">
+    <rect x="0" y="0" width="96" height="96" fill="none" stroke="#aab6bc" stroke-dasharray="3 2"/>
+    <rect x="2" y="2" width="41" height="41" class="box"/><rect x="45" y="2" width="41" height="41" class="box"/>
+    <rect x="2" y="45" width="41" height="33" class="box"/><rect x="45" y="45" width="41" height="33" class="box"/>
+    <rect x="2" y="80" width="33" height="14" class="boxL"/><rect x="37" y="80" width="33" height="14" class="boxL"/>
+    <text x="48" y="-6" class="lbl" text-anchor="middle">one 290 mm offcut</text>
+    <text x="48" y="110" class="tk" text-anchor="middle">0.076 m² of panel</text>
+  </g>
+</svg>
+
+<table>
+<thead><tr><th>panel</th><th>size mm</th><th>qty</th></tr></thead>
+<tbody>
+<tr><td class="t">baffle, and the face opposite</td><td>124 × 124</td><td>2</td></tr>
+<tr><td class="t">faces spanning between them</td><td>124 × 100</td><td>2</td></tr>
+<tr><td class="t">faces fitting inside</td><td>100 × 100</td><td>2</td></tr>
+</tbody></table>
+
+<div class="card ok"><b>Try it without an amplifier first.</b> We need about 62 dB at one metre. A laptop output into
+8 Ω gives roughly 79 dB. If that measures cleanly the amplifier money stays in your pocket. The catch is not
+loudness but damping: a headphone output's high source impedance raises Qtc and lengthens the ring in figure 4.</div>
+
+</div>
+<div>
+
+<h2><span class="n">04</span>What it will do at the three tones</h2>
+<p>In one litre sealed the alignment lands on Butterworth, Fc 181 Hz and Qtc 0.71, which is the flattest and
+shortest-ringing behaviour a sealed box has. The three blade-passage frequencies we must reproduce sit just above
+the knee, essentially unattenuated.</p>
+
+<svg viewBox="0 0 430 150" role="img" aria-label="Sealed-box response, one litre, with the three tones marked">
+  <line x1="34" x2="422" y1="10.0" y2="10.0" class="gr"/><text x="30" y="13.0" class="tk" text-anchor="end">+6</text><line x1="34" x2="422" y1="39.5" y2="39.5" class="ax"/><text x="30" y="42.5" class="tk" text-anchor="end">+0</text><line x1="34" x2="422" y1="69.0" y2="69.0" class="gr"/><text x="30" y="72.0" class="tk" text-anchor="end">-6</text><line x1="34" x2="422" y1="98.5" y2="98.5" class="gr"/><text x="30" y="101.5" class="tk" text-anchor="end">-12</text><line x1="34" x2="422" y1="128.0" y2="128.0" class="gr"/><text x="30" y="131.0" class="tk" text-anchor="end">-18</text>
+  <polyline points="34.0,134.0 36.2,132.4 38.4,130.7 40.6,129.0 42.8,127.3 45.0,125.7 47.1,124.0 49.3,122.4 51.5,120.7 53.7,119.1 55.9,117.4 58.1,115.8 60.3,114.1 62.5,112.5 64.7,110.8 66.9,109.2 69.1,107.6 71.2,106.0 73.4,104.3 75.6,102.7 77.8,101.1 80.0,99.5 82.2,97.9 84.4,96.4 86.6,94.8 88.8,93.2 91.0,91.7 93.2,90.1 95.4,88.6 97.5,87.1 99.7,85.6 101.9,84.1 104.1,82.6 106.3,81.1 108.5,79.7 110.7,78.3 112.9,76.8 115.1,75.4 117.3,74.1 119.5,72.7 121.6,71.4 123.8,70.1 126.0,68.8 128.2,67.6 130.4,66.3 132.6,65.1 134.8,63.9 137.0,62.8 139.2,61.7 141.4,60.6 143.6,59.6 145.7,58.5 147.9,57.5 150.1,56.6 152.3,55.7 154.5,54.8 156.7,53.9 158.9,53.1 161.1,52.3 163.3,51.6 165.5,50.8 167.7,50.2 169.9,49.5 172.0,48.9 174.2,48.3 176.4,47.7 178.6,47.2 180.8,46.7 183.0,46.2 185.2,45.8 187.4,45.3 189.6,44.9 191.8,44.6 194.0,44.2 196.1,43.9 198.3,43.6 200.5,43.3 202.7,43.0 204.9,42.8 207.1,42.5 209.3,42.3 211.5,42.1 213.7,41.9 215.9,41.7 218.1,41.6 220.2,41.4 222.4,41.3 224.6,41.1 226.8,41.0 229.0,40.9 231.2,40.8 233.4,40.7 235.6,40.6 237.8,40.5 240.0,40.4 242.2,40.4 244.4,40.3 246.5,40.2 248.7,40.2 250.9,40.1 253.1,40.1 255.3,40.0 257.5,40.0 259.7,39.9 261.9,39.9 264.1,39.9 266.3,39.8 268.5,39.8 270.6,39.8 272.8,39.8 275.0,39.7 277.2,39.7 279.4,39.7 281.6,39.7 283.8,39.7 286.0,39.7 288.2,39.6 290.4,39.6 292.6,39.6 294.7,39.6 296.9,39.6 299.1,39.6 301.3,39.6 303.5,39.6 305.7,39.6 307.9,39.6 310.1,39.6 312.3,39.6 314.5,39.5 316.7,39.5 318.9,39.5 321.0,39.5 323.2,39.5 325.4,39.5 327.6,39.5 329.8,39.5 332.0,39.5 334.2,39.5 336.4,39.5 338.6,39.5 340.8,39.5 343.0,39.5 345.1,39.5 347.3,39.5 349.5,39.5 351.7,39.5 353.9,39.5 356.1,39.5 358.3,39.5 360.5,39.5 362.7,39.5 364.9,39.5 367.1,39.5 369.2,39.5 371.4,39.5 373.6,39.5 375.8,39.5 378.0,39.5 380.2,39.5 382.4,39.5 384.6,39.5 386.8,39.5 389.0,39.5 391.2,39.5 393.3,39.5 395.5,39.5 397.7,39.5 399.9,39.5 402.1,39.5 404.3,39.5 406.5,39.5 408.7,39.5 410.9,39.5 413.1,39.5 415.3,39.5 417.5,39.5 419.6,39.5 421.8,39.5" class="curve"/>
+  <line x1="175.7" x2="175.7" y1="47.9" y2="128" class="tone"/><line x1="175.7" x2="175.7" y1="43.9" y2="17.9" class="tone"/><circle cx="175.7" cy="47.9" r="3" class="tonedot"/><text x="179.7" y="13.899999999999999" class="lbl echoT" text-anchor="start">216 Hz, -1.7 dB</text><line x1="186.5" x2="186.5" y1="45.5" y2="128" class="tone"/><line x1="186.5" x2="186.5" y1="41.5" y2="25.5" class="tone"/><circle cx="186.5" cy="45.5" r="3" class="tonedot"/><text x="190.5" y="21.5" class="lbl echoT" text-anchor="start">238 Hz, -1.2 dB</text><line x1="195.4" x2="195.4" y1="44.0" y2="128" class="tone"/><line x1="195.4" x2="195.4" y1="40.0" y2="34.0" class="tone"/><circle cx="195.4" cy="44.0" r="3" class="tonedot"/><text x="199.4" y="30.0" class="lbl echoT" text-anchor="start">258 Hz, -0.9 dB</text>
+  <text x="39.4" y="142" class="tk" text-anchor="middle">63</text><text x="115.2" y="142" class="tk" text-anchor="middle">125</text><text x="191.9" y="142" class="tk" text-anchor="middle">250</text><text x="268.6" y="142" class="tk" text-anchor="middle">500</text><text x="345.3" y="142" class="tk" text-anchor="middle">1k</text><text x="422.0" y="142" class="tk" text-anchor="middle">2k</text>
+</svg>
+<p class="fig">Figure 2 · Response of the driver in a one-litre sealed box. At 216, 238 and 258 Hz it is down
+1.7, 1.2 and 0.9 dB. The 125 Hz third-octave is down 7 dB, which still leaves 25 dB of margin.</p>
+
+<h2><span class="n">05</span>Loudness is not the problem</h2>
+<svg viewBox="0 0 430 120" role="img" aria-label="Maximum output against the level actually required">
+  <line x1="34" x2="422" y1="24.7" y2="24.7" class="gr"/><text x="30" y="27.7" class="tk" text-anchor="end">100</text><line x1="34" x2="422" y1="54.0" y2="54.0" class="gr"/><text x="30" y="57.0" class="tk" text-anchor="end">80</text><line x1="34" x2="422" y1="80.4" y2="80.4" class="need"/><text x="30" y="83.4" class="tk" text-anchor="end">62</text>
+  <polyline points="34.0,67.5 36.2,66.9 38.4,66.4 40.6,65.9 42.8,65.4 45.0,64.9 47.1,64.4 49.3,63.9 51.5,63.4 53.7,62.9 55.9,62.4 58.1,61.9 60.3,61.4 62.5,60.9 64.7,60.4 66.9,59.9 69.1,59.4 71.2,58.9 73.4,58.4 75.6,57.9 77.8,57.4 80.0,56.9 82.2,56.4 84.4,55.8 86.6,55.3 88.8,54.8 91.0,54.3 93.2,53.8 95.4,53.3 97.5,52.8 99.7,52.3 101.9,51.8 104.1,51.3 106.3,50.8 108.5,50.3 110.7,49.8 112.9,49.3 115.1,48.8 117.3,48.3 119.5,47.8 121.6,47.3 123.8,46.8 126.0,46.3 128.2,45.8 130.4,45.3 132.6,44.7 134.8,44.2 137.0,43.7 139.2,43.2 141.4,42.7 143.6,42.2 145.7,41.7 147.9,41.2 150.1,40.7 152.3,40.2 154.5,39.7 156.7,39.2 158.9,38.7 161.1,38.2 163.3,37.7 165.5,37.2 167.7,36.7 169.9,36.2 172.0,35.7 174.2,35.2 176.4,34.7 178.6,34.2 180.8,33.6 183.0,33.1 185.2,32.6 187.4,32.1 189.6,32.0 191.8,32.0 194.0,32.0 196.1,32.0 198.3,32.0 200.5,32.0 202.7,32.0 204.9,32.0 207.1,32.0 209.3,32.0 211.5,32.0 213.7,32.0 215.9,32.0 218.1,32.0 220.2,32.0 222.4,32.0 224.6,32.0 226.8,32.0 229.0,32.0 231.2,32.0 233.4,32.0 235.6,32.0 237.8,32.0 240.0,32.0 242.2,32.0 244.4,32.0 246.5,32.0 248.7,32.0 250.9,32.0 253.1,32.0 255.3,32.0 257.5,32.0 259.7,32.0 261.9,32.0 264.1,32.0 266.3,32.0 268.5,32.0 270.6,32.0 272.8,32.0 275.0,32.0 277.2,32.0 279.4,32.0 281.6,32.0 283.8,32.0 286.0,32.0 288.2,32.0 290.4,32.0 292.6,32.0 294.7,32.0 296.9,32.0 299.1,32.0 301.3,32.0 303.5,32.0 305.7,32.0 307.9,32.0 310.1,32.0 312.3,32.0 314.5,32.0 316.7,32.0 318.9,32.0 321.0,32.0 323.2,32.0 325.4,32.0 327.6,32.0 329.8,32.0 332.0,32.0 334.2,32.0 336.4,32.0 338.6,32.0 340.8,32.0 343.0,32.0 345.1,32.0 347.3,32.0 349.5,32.0 351.7,32.0 353.9,32.0 356.1,32.0 358.3,32.0 360.5,32.0 362.7,32.0 364.9,32.0 367.1,32.0 369.2,32.0 371.4,32.0 373.6,32.0 375.8,32.0 378.0,32.0 380.2,32.0 382.4,32.0 384.6,32.0 386.8,32.0 389.0,32.0 391.2,32.0 393.3,32.0 395.5,32.0 397.7,32.0 399.9,32.0 402.1,32.0 404.3,32.0 406.5,32.0 408.7,32.0 410.9,32.0 413.1,32.0 415.3,32.0 417.5,32.0 419.6,32.0 421.8,32.0" class="curve"/>
+  <text x="39.4" y="112" class="tk" text-anchor="middle">63</text><text x="115.2" y="112" class="tk" text-anchor="middle">125</text><text x="191.9" y="112" class="tk" text-anchor="middle">250</text><text x="268.6" y="112" class="tk" text-anchor="middle">500</text><text x="345.3" y="112" class="tk" text-anchor="middle">1k</text><text x="422.0" y="112" class="tk" text-anchor="middle">2k</text>
+  <text x="418" y="75.4" class="lbl" text-anchor="end" fill="#2f6b3a">what we actually need, 62 dB</text>
+  <text x="30" y="16" class="tk" text-anchor="end">dB</text>
+</svg>
+<p class="fig">Figure 3 · Output on a few watts, limited by cone excursion below 300 Hz, against the requirement.
+The propeller itself only produced 25 to 62 dB per third-octave at the microphones, and a ten-second sweep adds
+roughly 50 dB of processing gain on top of everything here.</p>
+
+<h2><span class="n">06</span>The one real constraint: it must stop ringing</h2>
+<p>We are hunting two echoes: an extra path of 0.7 m at −72°, arriving 2.0 ms after the direct sound, and 1.5 m at
++36° and +54°, arriving at 4.4 ms. The source's own decay has to be out of the way by then.</p>
+
+<svg viewBox="0 0 430 118" role="img" aria-label="Decay of the box resonance against the two echo arrival times">
+  <line x1="34.0" x2="422" y1="10.0" y2="10.0" class="gr"/><text x="30.0" y="13.0" class="tk" text-anchor="end">0</text><line x1="34.0" x2="422" y1="45.8" y2="45.8" class="gr"/><text x="30.0" y="48.8" class="tk" text-anchor="end">-20</text><line x1="34.0" x2="422" y1="63.8" y2="63.8" class="gr"/><text x="30.0" y="66.8" class="tk" text-anchor="end">-30</text><line x1="34.0" x2="422" y1="81.7" y2="81.7" class="gr"/><text x="30.0" y="84.7" class="tk" text-anchor="end">-40</text>
+  <polyline points="34.0,10.0 35.6,10.3 37.2,10.6 38.9,10.9 40.5,11.2 42.1,11.6 43.7,11.9 45.3,12.2 46.9,12.5 48.5,12.8 50.2,13.1 51.8,13.4 53.4,13.7 55.0,14.1 56.6,14.4 58.2,14.7 59.9,15.0 61.5,15.3 63.1,15.6 64.7,15.9 66.3,16.2 68.0,16.5 69.6,16.9 71.2,17.2 72.8,17.5 74.4,17.8 76.0,18.1 77.7,18.4 79.3,18.7 80.9,19.0 82.5,19.3 84.1,19.7 85.7,20.0 87.3,20.3 89.0,20.6 90.6,20.9 92.2,21.2 93.8,21.5 95.4,21.8 97.1,22.2 98.7,22.5 100.3,22.8 101.9,23.1 103.5,23.4 105.1,23.7 106.8,24.0 108.4,24.3 110.0,24.6 111.6,25.0 113.2,25.3 114.8,25.6 116.5,25.9 118.1,26.2 119.7,26.5 121.3,26.8 122.9,27.1 124.5,27.4 126.2,27.8 127.8,28.1 129.4,28.4 131.0,28.7 132.6,29.0 134.2,29.3 135.9,29.6 137.5,29.9 139.1,30.3 140.7,30.6 142.3,30.9 143.9,31.2 145.6,31.5 147.2,31.8 148.8,32.1 150.4,32.4 152.0,32.7 153.6,33.1 155.2,33.4 156.9,33.7 158.5,34.0 160.1,34.3 161.7,34.6 163.3,34.9 164.9,35.2 166.6,35.6 168.2,35.9 169.8,36.2 171.4,36.5 173.0,36.8 174.7,37.1 176.3,37.4 177.9,37.7 179.5,38.0 181.1,38.4 182.7,38.7 184.3,39.0 186.0,39.3 187.6,39.6 189.2,39.9 190.8,40.2 192.4,40.5 194.1,40.8 195.7,41.2 197.3,41.5 198.9,41.8 200.5,42.1 202.1,42.4 203.8,42.7 205.4,43.0 207.0,43.3 208.6,43.7 210.2,44.0 211.8,44.3 213.4,44.6 215.1,44.9 216.7,45.2 218.3,45.5 219.9,45.8 221.5,46.1 223.2,46.5 224.8,46.8 226.4,47.1 228.0,47.4 229.6,47.7 231.2,48.0 232.9,48.3 234.5,48.6 236.1,48.9 237.7,49.3 239.3,49.6 240.9,49.9 242.5,50.2 244.2,50.5 245.8,50.8 247.4,51.1 249.0,51.4 250.6,51.8 252.2,52.1 253.9,52.4 255.5,52.7 257.1,53.0 258.7,53.3 260.3,53.6 262.0,53.9 263.6,54.2 265.2,54.6 266.8,54.9 268.4,55.2 270.0,55.5 271.6,55.8 273.3,56.1 274.9,56.4 276.5,56.7 278.1,57.1 279.7,57.4 281.4,57.7 283.0,58.0 284.6,58.3 286.2,58.6 287.8,58.9 289.4,59.2 291.1,59.5 292.7,59.9 294.3,60.2 295.9,60.5 297.5,60.8 299.1,61.1 300.8,61.4 302.4,61.7 304.0,62.0 305.6,62.3 307.2,62.7 308.8,63.0 310.4,63.3 312.1,63.6 313.7,63.9 315.3,64.2 316.9,64.5 318.5,64.8 320.1,65.2 321.8,65.5 323.4,65.8 325.0,66.1 326.6,66.4 328.2,66.7 329.9,67.0 331.5,67.3 333.1,67.6 334.7,68.0 336.3,68.3 337.9,68.6 339.6,68.9 341.2,69.2 342.8,69.5 344.4,69.8 346.0,70.1 347.6,70.4 349.2,70.8 350.9,71.1 352.5,71.4 354.1,71.7 355.7,72.0 357.3,72.3 358.9,72.6 360.6,72.9 362.2,73.3 363.8,73.6 365.4,73.9 367.0,74.2 368.6,74.5 370.3,74.8 371.9,75.1 373.5,75.4 375.1,75.7 376.7,76.1 378.4,76.4 380.0,76.7 381.6,77.0 383.2,77.3 384.8,77.6 386.4,77.9 388.1,78.2 389.7,78.6 391.3,78.9 392.9,79.2 394.5,79.5 396.1,79.8 397.8,80.1 399.4,80.4 401.0,80.7 402.6,81.0 404.2,81.4 405.8,81.7 407.4,82.0 409.1,82.3 410.7,82.6 412.3,82.9 413.9,83.2 415.5,83.5 417.1,83.8 418.8,84.2 420.4,84.5 422.0,84.8" class="curve"/>
+  <line x1="163.3" x2="163.3" y1="8" y2="96" class="echo"/><text x="166.3" y="16" class="lbl echoT">2.0 ms</text><line x1="318.5" x2="318.5" y1="8" y2="96" class="echo"/><text x="321.5" y="16" class="lbl echoT">4.4 ms</text>
+  <text x="34.0" y="110" class="tk" text-anchor="middle">0</text><text x="98.7" y="110" class="tk" text-anchor="middle">1</text><text x="163.3" y="110" class="tk" text-anchor="middle">2</text><text x="228.0" y="110" class="tk" text-anchor="middle">3</text><text x="292.7" y="110" class="tk" text-anchor="middle">4</text><text x="357.3" y="110" class="tk" text-anchor="middle">5</text><text x="422.0" y="110" class="tk" text-anchor="middle">6</text>
+</svg>
+<p class="fig">Figure 4 · Decay of the box's own resonance at 181 Hz, with the two echo arrivals marked. It is
+20 dB down at 2.9 ms and 30 dB down at 4.3 ms.</p>
+
+<div class="card warn"><b>Read this honestly: the ring and the far echo overlap.</b> At 4.4 ms the box is only just
+30 dB down, so the 1.5 m reflection must be picked from a band-limited impulse response above about 400 Hz, where
+the box does not ring at all. That is normal practice and it is why the sweep runs to several kHz rather than
+stopping at 1 kHz. A ported box would be worse here, which is the whole reason for sealing it.</div>
+
+<h2><span class="n">03</span>Parts</h2>
+<table>
+<thead><tr><th>item</th><th>where</th><th>zł</th></tr></thead>
+<tbody>
+<tr><td class="t">Visaton FRS 8 M, 8 Ω, ×2 (one spare)</td><td class="t">thomann.pl, in stock</td><td>116</td></tr>
+<tr><td class="t">12 mm MDF or ply, 290 mm square</td><td class="t">any hardware store</td><td>30</td></tr>
+<tr><td class="t">polyester wool, cable, screws, sealant</td><td class="t">hardware store</td><td>50</td></tr>
+<tr><td class="t">amplifier, only if the laptop proves too weak</td><td class="t">TPA3116 board, gotronik.pl</td><td>180</td></tr>
+</tbody></table>
+
+
+</div>
+</div>
+
+<div class="wide">
+<h2><span class="n">07</span>Order of work</h2>
+<ol>
+<li><b>Write the sweep tooling.</b> There is no generator, no playback path and no deconvolution script in the
+repository today. Until that exists the speaker is an ornament. This part is mine.</li>
+<li><b>Build the cube.</b> An evening. Measure the driver flange when it arrives; Visaton publishes the cutout
+but not the frame.</li>
+<li><b>Qualify the box before trusting it.</b> One sweep to confirm the decay of figure 4 in the real room.
+Then rotate the box 45° about the vertical axis and sweep again: what moves with the box is the box, what stays
+is the room. Ten minutes, and without it nothing that follows is interpretable.</li>
+<li><b>Record the geometry</b> that is still missing: hub height, room size, foam, what stands near the arc ends.
+Cheapest measurement available and still not done.</li>
+<li><b>Run the session.</b> Motor off, stand in place because its inflow distortion is one of the two hypotheses.
+Sweep first, then tones at 216, 238 and 258 Hz.</li>
+<li><b>Decide.</b> If the 8 dB pattern returns from the loudspeaker it is the room, and the echo delays name the
+surfaces. If it does not, it is the propeller's inflow and no amount of foam will help.</li>
+</ol>
+
+<div class="card"><b>When the arc goes back upright</b> the microphones spread over different angles and the
+cancellation of §01 stops working. Papadakis and Stavroulakis record with one ordinary speaker in twelve to
+twenty-six orientations and sum the impulse responses, matching a dodecahedron's reverberation time to within
+0.08 s (Applied Sciences 8:1703, 2018, held in <code>papers/arc-validation/</code>). Their stated limitation is a
+two-way speaker's tweeter, which a single full-range driver does not have.</div>
+
+</div>
+
+<p class="foot">Driver parameters from Visaton's datasheet for the FRS 8 M: Sd 29 cm², fs 125 Hz, Qts 0.49,
+Vas 1.1 l, 88 dB/1 W/1 m, cutout 75 mm, excursion limit ±2.5 mm. Box behaviour computed from those. Level
+requirement and echo delays computed from the September 2026 horizontal runs. Sources, prices and the borrow-first
+option are in <code>docs/hub-source-options.md</code>; the problem this session settles is Problems 1, 7 and 8 of
+<code>docs/arc-validation-remedies.pdf</code>.</p>
+
+</div></body></html>
