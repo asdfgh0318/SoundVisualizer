@@ -110,3 +110,39 @@ in `papers/arc-validation/`): record with the speaker in 12–26 orientations an
 impulse responses; they matched a dodecahedron's reverberation time to within 0.08 s. Their
 stated limitation is a two-way speaker's tweeter, which a single full-range driver does not
 have.
+
+## Parts chosen (Adam, 2026-09-11)
+
+Chain: laptop → USB → **Behringer UCA202** → RCA → **XH-M189 (TPA3116D2, 2×50 W)** →
+**Visaton FRS 8 M** in the 1 litre sealed cube.
+
+| part | why it is the right choice | verified spec |
+|---|---|---|
+| Behringer UCA202 | replaces the laptop headphone jack with a real line output, so the unknown headphone source impedance that would have raised Qtc and lengthened the box's ring is gone | 16-bit/48 kHz, 2 RCA in, 2 RCA out, headphone out with level control, optical out, USB bus-powered |
+| XH-M189, TPA3116D2 | class D, 2 × 50 W, far more than the well-under-1 W we need | DC 5–24 V (24 V for full power), 84 × 51 × 29 mm, short-circuit and reverse-polarity protected |
+| Visaton FRS 8 M | see the build sheet above | 58 zł at thomann.pl, in stock |
+
+**Still to buy: a DC supply for the amplifier.** The board does not include one. 12 V at 2 A is
+ample for our output and gentler than the 24 V maximum. Plus an input cable to whatever connector
+the board carries, and speaker wire.
+
+**Why the cheapness does not matter.** For the substitution calibration the whole source chain
+cancels, because every capsule hears the same chain at the same point. For the room sweep the
+chain is common to all eleven microphones and we compare microphones to each other. Only an
+absolute spectrum would carry the chain's own response, and we never use one.
+
+**Three operating rules.**
+
+1. **Set the level digitally, not with the pot.** Put the amplifier's volume at a sensible mid
+   position, mark it, and never touch it again; control the level in the sweep file. That keeps
+   the analog chain in a good operating point and makes the drive repeatable and recordable.
+2. **The pot is now part of source stability.** If it is nudged between capsule swaps the source
+   level changes. The drift-monitor capsule cancels exactly that, which is one more reason not to
+   skip it.
+3. **Never loop the amplifier output back into the UCA202 inputs.** TPA3116 boards drive a
+   bridge-tied load, so neither speaker terminal is at ground; connecting one to an input ground
+   shorts the output stage. If an electrical reference of the drive signal is ever wanted, take it
+   in software from the playback side.
+
+Generate the sweep as mono, or on the one channel that is wired, and drive a single amplifier
+channel.
