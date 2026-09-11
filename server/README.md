@@ -54,7 +54,7 @@ server/
     paths.py keys.py measurements.py calibration.py
     setup_presets.py compat_tolerances.py psychoacoustics.py (versioned metrics cache)
   vendor/pawel/      # Vendored — Paweł's Tyto MSP + Norsonic protocol code
-  tests/             # 111 passing tests
+  tests/             # 122 passing tests
 ```
 
 ## Conventions
