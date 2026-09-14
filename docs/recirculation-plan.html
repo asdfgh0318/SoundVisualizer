@@ -1,0 +1,894 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Recirculation Check — Feature Plan</title>
+
+<style>
+  :root {
+    --ground:      #f2f5f4;
+    --panel:       #ffffff;
+    --panel-2:     #e8edec;
+    --rule:        #ccd6d4;
+    --rule-soft:   #dde5e4;
+    --text:        #17201f;
+    --text-2:      #4a5a58;
+    --text-3:      #71827f;
+    --accent:      #a86a1f;
+    --accent-soft: #f0e2cd;
+    --clean:       #2f7d6d;
+    --clean-soft:  #d5e8e3;
+    --dirty:       #a24834;
+    --dirty-soft:  #f2ddd7;
+    --shadow:      0 1px 2px rgba(23,32,31,.06), 0 8px 24px -12px rgba(23,32,31,.18);
+
+    --mono: ui-monospace, "SF Mono", "Cascadia Mono", "JetBrains Mono", "Roboto Mono", Menlo, Consolas, monospace;
+    --sans: ui-sans-serif, system-ui, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+
+    --measure: 68ch;
+    --pad: clamp(1.1rem, 4vw, 2.2rem);
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --ground:      #0e1413;
+      --panel:       #161e1d;
+      --panel-2:     #1d2726;
+      --rule:        #2c3937;
+      --rule-soft:   #232e2d;
+      --text:        #e4ecea;
+      --text-2:      #a3b3b0;
+      --text-3:      #74847f;
+      --accent:      #dfa45c;
+      --accent-soft: #3a2c17;
+      --clean:       #5cbba6;
+      --clean-soft:  #17332e;
+      --dirty:       #d9755c;
+      --dirty-soft:  #3a1f18;
+      --shadow:      0 1px 2px rgba(0,0,0,.4), 0 10px 30px -14px rgba(0,0,0,.7);
+    }
+  }
+
+  :root[data-theme="dark"] {
+    --ground:      #0e1413;
+    --panel:       #161e1d;
+    --panel-2:     #1d2726;
+    --rule:        #2c3937;
+    --rule-soft:   #232e2d;
+    --text:        #e4ecea;
+    --text-2:      #a3b3b0;
+    --text-3:      #74847f;
+    --accent:      #dfa45c;
+    --accent-soft: #3a2c17;
+    --clean:       #5cbba6;
+    --clean-soft:  #17332e;
+    --dirty:       #d9755c;
+    --dirty-soft:  #3a1f18;
+    --shadow:      0 1px 2px rgba(0,0,0,.4), 0 10px 30px -14px rgba(0,0,0,.7);
+  }
+
+  :root[data-theme="light"] {
+    --ground:      #f2f5f4;
+    --panel:       #ffffff;
+    --panel-2:     #e8edec;
+    --rule:        #ccd6d4;
+    --rule-soft:   #dde5e4;
+    --text:        #17201f;
+    --text-2:      #4a5a58;
+    --text-3:      #71827f;
+    --accent:      #a86a1f;
+    --accent-soft: #f0e2cd;
+    --clean:       #2f7d6d;
+    --clean-soft:  #d5e8e3;
+    --dirty:       #a24834;
+    --dirty-soft:  #f2ddd7;
+    --shadow:      0 1px 2px rgba(23,32,31,.06), 0 8px 24px -12px rgba(23,32,31,.18);
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    background: var(--ground);
+    color: var(--text);
+    font-family: var(--sans);
+    font-size: 16px;
+    line-height: 1.62;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .wrap {
+    max-width: 78rem;
+    margin: 0 auto;
+    padding: var(--pad);
+    display: flex;
+    flex-direction: column;
+    gap: clamp(2.2rem, 5vw, 3.6rem);
+  }
+
+  .col { max-width: var(--measure); }
+
+  .masthead {
+    display: flex;
+    flex-direction: column;
+    gap: .9rem;
+    padding-bottom: 1.6rem;
+    border-bottom: 2px solid var(--text);
+  }
+
+  .eyebrow {
+    font-family: var(--mono);
+    font-size: .7rem;
+    letter-spacing: .16em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: .5rem 1.1rem;
+  }
+
+  h1 {
+    font-family: var(--mono);
+    font-size: clamp(1.65rem, 4.4vw, 2.6rem);
+    font-weight: 700;
+    letter-spacing: -.02em;
+    line-height: 1.12;
+    margin: 0;
+    text-wrap: balance;
+  }
+
+  .standfirst {
+    margin: 0;
+    max-width: var(--measure);
+    color: var(--text-2);
+    font-size: clamp(1rem, 2.2vw, 1.12rem);
+  }
+
+  section { display: flex; flex-direction: column; gap: 1.1rem; }
+
+  h2 {
+    font-family: var(--mono);
+    font-size: .78rem;
+    font-weight: 700;
+    letter-spacing: .15em;
+    text-transform: uppercase;
+    color: var(--text);
+    margin: 0;
+    padding-bottom: .6rem;
+    border-bottom: 1px solid var(--rule);
+    display: flex;
+    align-items: baseline;
+    gap: .8rem;
+  }
+
+  h2 .n { color: var(--accent); font-variant-numeric: tabular-nums; }
+
+  h3 {
+    font-family: var(--mono);
+    font-size: .95rem;
+    font-weight: 700;
+    letter-spacing: -.01em;
+    margin: 0;
+    color: var(--text);
+  }
+
+  p { margin: 0; max-width: var(--measure); color: var(--text-2); }
+  p strong { color: var(--text); font-weight: 600; }
+
+  code {
+    font-family: var(--mono);
+    font-size: .86em;
+    background: var(--panel-2);
+    border: 1px solid var(--rule-soft);
+    border-radius: 3px;
+    padding: .08em .34em;
+    color: var(--text);
+  }
+
+  .callout {
+    background: var(--panel);
+    border: 1px solid var(--rule);
+    border-left: 3px solid var(--accent);
+    border-radius: 3px;
+    padding: 1.1rem 1.3rem;
+    display: flex;
+    flex-direction: column;
+    gap: .6rem;
+    box-shadow: var(--shadow);
+  }
+  .callout.alarm { border-left-color: var(--dirty); }
+  .callout.good { border-left-color: var(--clean); }
+  .callout .tag {
+    font-family: var(--mono);
+    font-size: .66rem;
+    letter-spacing: .15em;
+    text-transform: uppercase;
+    color: var(--accent);
+  }
+  .callout.alarm .tag { color: var(--dirty); }
+  .callout.good .tag { color: var(--clean); }
+
+  .panel {
+    background: var(--panel);
+    border: 1px solid var(--rule);
+    border-radius: 4px;
+    box-shadow: var(--shadow);
+    overflow: hidden;
+  }
+
+  .panel-head {
+    padding: .85rem 1.2rem;
+    border-bottom: 1px solid var(--rule);
+    background: var(--panel-2);
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: .6rem 1.2rem;
+  }
+
+  .panel-title {
+    font-family: var(--mono);
+    font-size: .74rem;
+    letter-spacing: .14em;
+    text-transform: uppercase;
+    color: var(--text-2);
+  }
+
+  .panel-body { padding: 1.2rem; display: flex; flex-direction: column; gap: 1.3rem; }
+
+  .controls { display: flex; flex-wrap: wrap; gap: 1.4rem; align-items: flex-end; }
+  .ctl { display: flex; flex-direction: column; gap: .45rem; flex: 1 1 22rem; min-width: 16rem; }
+
+  .ctl-label {
+    font-family: var(--mono);
+    font-size: .68rem;
+    letter-spacing: .13em;
+    text-transform: uppercase;
+    color: var(--text-3);
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 1rem;
+  }
+
+  .ctl-val {
+    font-family: var(--mono);
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: var(--accent);
+    letter-spacing: -.01em;
+    font-variant-numeric: tabular-nums;
+    text-transform: none;
+  }
+
+  input[type="range"] {
+    -webkit-appearance: none; appearance: none;
+    width: 100%; height: 22px; background: transparent; cursor: pointer; margin: 0;
+  }
+  input[type="range"]::-webkit-slider-runnable-track { height: 3px; background: var(--rule); border-radius: 2px; }
+  input[type="range"]::-moz-range-track { height: 3px; background: var(--rule); border-radius: 2px; }
+  input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none; appearance: none;
+    width: 15px; height: 15px; margin-top: -6px; border-radius: 50%;
+    background: var(--accent); border: 2px solid var(--panel); box-shadow: 0 0 0 1px var(--accent);
+  }
+  input[type="range"]::-moz-range-thumb {
+    width: 13px; height: 13px; border-radius: 50%;
+    background: var(--accent); border: 2px solid var(--panel); box-shadow: 0 0 0 1px var(--accent);
+  }
+  input[type="range"]:focus-visible { outline: 2px solid var(--accent); outline-offset: 4px; }
+
+  .presets { display: flex; flex-wrap: wrap; gap: .4rem; }
+
+  .chip {
+    font-family: var(--mono); font-size: .7rem;
+    padding: .34rem .6rem; border-radius: 3px;
+    border: 1px solid var(--rule); background: var(--panel); color: var(--text-2);
+    cursor: pointer; line-height: 1.3;
+    transition: border-color .12s, color .12s, background .12s;
+  }
+  .chip:hover { border-color: var(--accent); color: var(--text); }
+  .chip[aria-pressed="true"] { background: var(--accent-soft); border-color: var(--accent); color: var(--text); }
+  .chip:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+  .toggle {
+    display: inline-flex; align-items: center; gap: .55rem;
+    font-family: var(--mono); font-size: .74rem; color: var(--text-2);
+    cursor: pointer; user-select: none;
+  }
+  .toggle input { accent-color: var(--accent); width: 15px; height: 15px; cursor: pointer; }
+  .toggle input:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+  .tl-scroll { overflow-x: auto; }
+  .tl { min-width: 34rem; display: flex; flex-direction: column; gap: .3rem; }
+
+  .tl-markers { position: relative; height: 54px; }
+  .marker { position: absolute; top: 0; bottom: 0; transform: translateX(-50%); }
+  .marker i { position: absolute; left: 50%; bottom: 0; width: 1px; height: 14px; background: var(--text-3); }
+  .marker span {
+    position: absolute; left: 50%; transform: translateX(-50%);
+    font-family: var(--mono); font-size: .6rem; line-height: 1.25;
+    color: var(--text-3); white-space: nowrap; text-align: center;
+  }
+  .marker.hi i { background: var(--accent); width: 2px; }
+  .marker.hi span { color: var(--accent); }
+  .marker.lo span { top: 0; }
+  .marker.mid span { top: 17px; }
+
+  .tl-axis { position: relative; height: 20px; border-top: 1px solid var(--rule); }
+  .tick { position: absolute; top: 0; transform: translateX(-50%); }
+  .tick i { position: absolute; left: 50%; top: 0; width: 1px; height: 4px; background: var(--rule); }
+  .tick span {
+    position: absolute; top: 6px; left: 50%; transform: translateX(-50%);
+    font-family: var(--mono); font-size: .62rem; color: var(--text-3);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .lanes { display: flex; flex-direction: column; gap: 5px; position: relative; padding-top: .4rem; }
+  .lane { position: relative; height: 30px; }
+  .lane-bg { position: absolute; inset: 0; background: var(--panel-2); border-radius: 2px; }
+  .bar { position: absolute; top: 0; bottom: 0; border-radius: 2px; overflow: hidden; display: flex; border: 1px solid transparent; }
+  .seg-clean { background: var(--clean-soft); border-right: 0; }
+  .seg-dirty { background: var(--dirty-soft); }
+  .bar-label {
+    position: absolute; left: .5rem; top: 50%; transform: translateY(-50%);
+    font-family: var(--mono); font-size: .68rem; font-variant-numeric: tabular-nums;
+    color: var(--text); white-space: nowrap; z-index: 2; text-shadow: 0 0 4px var(--panel);
+  }
+  .bar-note {
+    position: absolute; top: 50%; transform: translateY(-50%);
+    font-family: var(--mono); font-size: .64rem; color: var(--text-3);
+    white-space: nowrap; padding-left: .5rem;
+  }
+  .cutline { position: absolute; top: 0; bottom: 0; width: 2px; background: var(--accent); z-index: 3; pointer-events: none; }
+  .cutline::after {
+    content: ""; position: absolute; top: -4px; left: -3px;
+    border-left: 4px solid transparent; border-right: 4px solid transparent;
+    border-top: 5px solid var(--accent);
+  }
+
+  .verdict {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(10rem, 1fr));
+    gap: 1px; background: var(--rule); border: 1px solid var(--rule);
+    border-radius: 3px; overflow: hidden;
+  }
+  .stat { background: var(--panel); padding: .85rem 1rem; display: flex; flex-direction: column; gap: .2rem; }
+  .stat dt { font-family: var(--mono); font-size: .64rem; letter-spacing: .12em; text-transform: uppercase; color: var(--text-3); }
+  .stat dd {
+    margin: 0; font-family: var(--mono); font-size: 1.5rem; font-weight: 700;
+    font-variant-numeric: tabular-nums; letter-spacing: -.02em; line-height: 1.15;
+  }
+  .stat dd small { font-size: .8rem; font-weight: 400; color: var(--text-3); }
+  .ok { color: var(--clean); }
+  .bad { color: var(--dirty); }
+  .neutral { color: var(--text); }
+
+  .readout {
+    font-family: var(--mono); font-size: .8rem; line-height: 1.6;
+    color: var(--text-2); padding: .9rem 1rem;
+    background: var(--panel-2); border-radius: 3px; border-left: 3px solid var(--accent);
+  }
+  .readout b { color: var(--text); font-weight: 700; }
+
+  .legend { display: flex; flex-wrap: wrap; gap: .4rem 1.2rem; font-family: var(--mono); font-size: .68rem; color: var(--text-3); }
+  .legend i { display: inline-block; width: 10px; height: 10px; border-radius: 2px; margin-right: .35rem; vertical-align: -1px; }
+
+  .t-scroll { overflow-x: auto; border: 1px solid var(--rule); border-radius: 3px; }
+  table { border-collapse: collapse; width: 100%; min-width: 30rem; background: var(--panel); }
+  th, td { text-align: left; padding: .6rem .85rem; border-bottom: 1px solid var(--rule-soft); vertical-align: top; }
+  th {
+    font-family: var(--mono); font-size: .65rem; letter-spacing: .12em;
+    text-transform: uppercase; color: var(--text-3); background: var(--panel-2);
+    border-bottom: 1px solid var(--rule);
+  }
+  td { font-size: .88rem; color: var(--text-2); }
+  td:first-child { color: var(--text); }
+  tr:last-child td { border-bottom: 0; }
+  td.num { font-family: var(--mono); font-variant-numeric: tabular-nums; }
+  .file { font-family: var(--mono); font-size: .8rem; }
+  td.strike { color: var(--text-3); text-decoration: line-through; }
+
+  ol.steps { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: .6rem; counter-reset: st; }
+  ol.steps li {
+    counter-increment: st;
+    display: grid; grid-template-columns: 2rem 1fr; gap: .9rem;
+    background: var(--panel); border: 1px solid var(--rule); border-radius: 3px;
+    padding: .85rem 1rem;
+  }
+  ol.steps li::before {
+    content: counter(st);
+    font-family: var(--mono); font-weight: 700; font-size: 1.05rem;
+    color: var(--accent); font-variant-numeric: tabular-nums; line-height: 1.35;
+  }
+  ol.steps .s-t { font-family: var(--mono); font-size: .88rem; font-weight: 700; color: var(--text); }
+  ol.steps .s-d { font-size: .85rem; color: var(--text-2); }
+
+  ul.plain { margin: 0; padding-left: 1.1rem; color: var(--text-2); display: flex; flex-direction: column; gap: .45rem; max-width: var(--measure); }
+  ul.plain li::marker { color: var(--accent); }
+  ul.plain strong { color: var(--text); }
+
+  .diagram { width: 100%; height: auto; display: block; }
+  .dg-trace { fill: none; stroke: var(--accent); stroke-width: 2; stroke-linejoin: round; stroke-linecap: round; }
+  .dg-axis { stroke: var(--rule); stroke-width: 1; }
+  .dg-knee { stroke: var(--dirty); stroke-width: 1.5; stroke-dasharray: 4 3; }
+  .dg-t { font-family: var(--mono); font-size: 10px; fill: var(--text-3); }
+  .dg-t.em { fill: var(--dirty); }
+
+  footer {
+    border-top: 1px solid var(--rule); padding-top: 1.2rem;
+    font-family: var(--mono); font-size: .7rem; color: var(--text-3);
+    display: flex; flex-wrap: wrap; gap: .4rem 1.4rem;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    * { transition: none !important; animation: none !important; }
+  }
+</style>
+</head>
+<body>
+
+<div class="wrap">
+
+  <header class="masthead">
+    <p class="eyebrow">
+      <span>SoundVisualizer</span>
+      <span>Setup · new feature</span>
+      <span>Minimum scope · rev 2</span>
+    </p>
+    <h1>Recirculation Check</h1>
+    <p class="standfirst">
+      Six papers put chamber recirculation onset anywhere from under one second to thirty, and none
+      of those numbers transfers to your stand. Record one long take, plot the level against time,
+      read the knee. One function, one endpoint, one chart.
+    </p>
+  </header>
+
+  <!-- 01 -->
+  <section>
+    <h2><span class="n">01</span> Why</h2>
+
+    <p class="col">
+      The capture orchestrator sets PWM, stabilizes, records, then moves to the next step — the rotor
+      never stops (<code>capture_orchestrator.py:276</code>). So the wake-development clock is not
+      per-take; it runs for the whole 14.2-second sequence, and PWM ascends monotonically through it.
+    </p>
+
+    <div class="callout alarm">
+      <span class="tag">The structural problem</span>
+      <p>
+        Accumulated recirculation is <strong>rank-correlated with your independent variable</strong>.
+        Higher PWM means more air pumped and a dirtier room, and the high-thrust steps are the ones
+        you care most about.
+      </p>
+    </div>
+
+    <div class="callout">
+      <span class="tag">Before you re-run anything</span>
+      <p>
+        All five material sets ran the same schedule to within 0.2&nbsp;s, so the bias is largely
+        <strong>common-mode</strong>. Material-vs-material comparison at a fixed step is far better
+        protected than absolute levels or the PWM trend. This is not a reason to discard the campaign.
+      </p>
+    </div>
+  </section>
+
+  <!-- 02 -->
+  <section>
+    <h2><span class="n">02</span> Onset explorer</h2>
+    <p class="col">
+      Your five takes on the rotor-elapsed clock, against a clean window you set. Drag it, or jump to
+      what each paper measured on <em>its</em> rig — the spread across those presets is the entire
+      argument for measuring your own.
+    </p>
+
+    <div class="panel">
+      <div class="panel-head">
+        <span class="panel-title">Rotor-elapsed timeline · dp1 material study</span>
+        <span class="panel-title" id="modeLabel">continuous run</span>
+      </div>
+
+      <div class="panel-body">
+        <div class="controls">
+          <div class="ctl">
+            <label class="ctl-label" for="tclean">
+              <span>Assumed clean window</span>
+              <span class="ctl-val"><span id="tval">7.5</span> s</span>
+            </label>
+            <input type="range" id="tclean" min="0.3" max="32" step="0.1" value="7.5"
+                   aria-label="Assumed clean window in seconds" />
+          </div>
+
+          <div class="ctl" style="flex: 0 1 auto;">
+            <span class="ctl-label"><span>Jump to a measured onset</span></span>
+            <div class="presets" id="presets"></div>
+          </div>
+        </div>
+
+        <label class="toggle">
+          <input type="checkbox" id="purge" />
+          <span>Spool down between steps (resets the clock each take)</span>
+        </label>
+
+        <div class="tl-scroll">
+          <div class="tl">
+            <div class="tl-markers" id="markers"></div>
+            <div class="tl-axis" id="axis"></div>
+            <div class="lanes" id="lanes"></div>
+          </div>
+        </div>
+
+        <div class="legend">
+          <span><i style="background:var(--clean-soft);border:1px solid var(--clean)"></i>inside clean window</span>
+          <span><i style="background:var(--dirty-soft);border:1px solid var(--dirty)"></i>past clean window</span>
+          <span><i style="background:var(--accent);width:3px"></i>clean-window cutoff</span>
+        </div>
+
+        <dl class="verdict">
+          <div class="stat"><dt>Steps affected</dt><dd id="sAffected" class="neutral">3<small> / 5</small></dd></div>
+          <div class="stat"><dt>Recording past window</dt><dd id="sPct" class="neutral">42<small>%</small></dd></div>
+          <div class="stat"><dt>First step affected</dt><dd id="sFirst" class="neutral">1800<small> µs</small></dd></div>
+          <div class="stat"><dt>Run length</dt><dd id="sLen" class="neutral">14.2<small> s</small></dd></div>
+        </dl>
+
+        <p class="readout" id="readout"></p>
+      </div>
+    </div>
+
+    <p class="col" style="font-size:.85rem">
+      Step timings measured from the stored <code>meta.json</code> of all five sets — mean take
+      2.59&nbsp;s, run span 14.2&nbsp;s. Paper markers are each study's own facility, shown for scale.
+    </p>
+  </section>
+
+  <!-- 03 -->
+  <section>
+    <h2><span class="n">03</span> The whole feature</h2>
+
+    <div class="callout good">
+      <span class="tag">Already exists — nothing to build</span>
+      <p>
+        <code>POST /capture/acoustic</code> accepts <code>duration_seconds</code> up to
+        <strong>120&nbsp;s</strong> (<code>capture.py:35</code>), records every mic simultaneously and
+        writes WAV + meta. The recording half of this feature is free.
+      </p>
+    </div>
+
+    <h3>What you do</h3>
+    <ol class="steps">
+      <li><div>
+        <div class="s-t">Set PWM to 2000</div>
+        <div class="s-d">Top of your campaign range — worst case, so the window you measure is conservative for everything below it. <code>POST /tyto/pwm</code> already exists.</div>
+      </div></li>
+      <li><div>
+        <div class="s-t">Press Record 60 s</div>
+        <div class="s-d">Calls <code>/capture/acoustic</code> with <code>duration_seconds: 60</code> and <code>trigger.enabled: false</code>.</div>
+      </div></li>
+      <li><div>
+        <div class="s-t">Read the knee off the chart</div>
+        <div class="s-d">That is your clean window. Write it down.</div>
+      </div></li>
+    </ol>
+
+    <h3>What gets built</h3>
+    <div class="t-scroll">
+      <table>
+        <thead><tr><th>File</th><th>Size</th><th>What</th></tr></thead>
+        <tbody>
+          <tr>
+            <td class="file">server/core/recirculation.py</td>
+            <td class="num">~30 lines</td>
+            <td>One function — <code>level_over_time(audio, sr)</code>. Frame the signal, band-RMS per frame, return times and per-band levels.</td>
+          </tr>
+          <tr>
+            <td class="file">server/api/results.py</td>
+            <td class="num">~20 lines</td>
+            <td><code>GET /keys/{slug}/measurements/{id}/level_over_time</code> — copies the existing <code>/fft</code> endpoint shape exactly.</td>
+          </tr>
+          <tr>
+            <td class="file">src/components/setup/…</td>
+            <td class="num">1 component</td>
+            <td>Record button plus a line chart: level vs time, one trace per band.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="panel">
+      <div class="panel-head">
+        <span class="panel-title">What you are looking for</span>
+        <span class="panel-title">read by eye</span>
+      </div>
+      <div class="panel-body">
+        <svg class="diagram" viewBox="0 0 540 190" role="img"
+             aria-label="A level-versus-time curve: flat for the first several seconds, then bending upward and rising to a plateau. The bend is the onset.">
+          <line class="dg-axis" x1="46" y1="150" x2="512" y2="150" />
+          <line class="dg-axis" x1="46" y1="24" x2="46" y2="150" />
+
+          <polyline class="dg-trace" points="46,112 70,110 94,113 118,111 142,112 166,110 190,113 214,111 232,108 248,101 264,92 284,80 306,69 330,60 354,54 378,50 402,48 426,49 450,47 474,48 500,47" />
+
+          <line class="dg-knee" x1="232" y1="30" x2="232" y2="150" />
+          <text class="dg-t em" x="237" y="38">the knee — your clean window</text>
+
+          <text class="dg-t" x="60" y="128">flat: clean</text>
+          <text class="dg-t" x="300" y="128">rising: contaminated</text>
+
+          <text class="dg-t" x="46" y="166">0 s</text>
+          <text class="dg-t" x="500" y="166" text-anchor="end">60 s</text>
+          <text class="dg-t" x="20" y="90" transform="rotate(-90 20 90)" text-anchor="middle">level</text>
+        </svg>
+
+        <p style="font-size:.87rem">
+          Four fixed bands — <strong>100–500 / 500–2k / 2k–8k / 8k–20k&nbsp;Hz</strong> — so no
+          blade-pass estimation is needed. Whichever band contains BPF is where the rise appears.
+          Your eye finds this bend instantly and will not be fooled by a transient.
+        </p>
+      </div>
+    </div>
+
+    <div class="callout alarm">
+      <span class="tag">One thing not to get wrong</span>
+      <p>
+        <strong>Turn <code>trigger.enabled</code> off.</strong> It defaults to <code>true</code>, and
+        trigger-onset alignment shifts the start of the signal — which would corrupt the very time
+        axis you are reading the onset from.
+      </p>
+    </div>
+  </section>
+
+  <!-- 04 -->
+  <section>
+    <h2><span class="n">04</span> Cut from the first draft</h2>
+    <div class="t-scroll">
+      <table>
+        <thead><tr><th>Dropped</th><th>Why</th></tr></thead>
+        <tbody>
+          <tr><td class="strike">Automatic onset detection</td><td>Thresholds, persistence windows, baseline validation, three corroborating channels — where all the complexity and all the false-positive risk lived. Replaced by a chart and your eye.</td></tr>
+          <tr><td class="strike">StreamingCapture + adaptive stop</td><td>The streaming primitive, live analysis loop and WebSocket existed only to end the run early. A fixed 60 s take is one call to a function that already exists. Biggest single saving.</td></tr>
+          <tr><td class="strike">recirculation_runner.py</td><td>No orchestration left to do once the run length is fixed.</td></tr>
+          <tr><td class="strike">Dedicated store type</td><td>The take is an ordinary acoustic measurement. It stores itself.</td></tr>
+          <tr><td class="strike">Capture wizard warning + meta.json field</td><td>The number lives in your notes instead of being checked automatically.</td></tr>
+          <tr><td class="strike">BPF estimation, thrust + vibration channels</td><td>Fixed bands make blade-pass tracking unnecessary; one channel is enough when a human reads it.</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p class="col">
+      What survives is the only thing that mattered: <strong>the number, measured on your rig</strong>
+      instead of borrowed from someone else's chamber. Everything else was scaffolding around it.
+    </p>
+  </section>
+
+  <!-- 05 -->
+  <section>
+    <h2><span class="n">05</span> Two rig facts, found on the way</h2>
+    <p class="col">
+      Neither blocks this feature any more, but both are true and worth knowing.
+    </p>
+    <ul class="plain">
+      <li><strong>RPM is dead.</strong> <code>rot_e</code> reads 0.0 in all 275 stored takes. Harmless here because fixed bands don't need it — but it disables anything that wants blade-pass frequency.</li>
+      <li><strong>Stabilization is a no-op.</strong> <code>stabilize_rpm</code> tests <code>max(rpm) − min(rpm) &lt; tolerance</code>; with RPM pinned at zero that is always true, so it returns as soon as the sample window fills. That is the measured 0.3 s gap — every take records the spool-up transient, not steady state. A safeguard failing silently, which is the same failure class the papers are about.</li>
+    </ul>
+  </section>
+
+  <!-- 06 -->
+  <section>
+    <h2><span class="n">06</span> Still open</h2>
+    <div class="callout">
+      <span class="tag">Needs your answer</span>
+      <p>
+        <strong>Is the space you measure in fixed?</strong> It blocks nothing here. But if the room can
+        be moved or screened, a measured onset number becomes something to iterate against rather than
+        live with.
+      </p>
+    </div>
+  </section>
+
+  <footer>
+    <span>Rev 2 · minimum scope</span>
+    <span>Timings measured from SoundVisualizer-data @ auto-backup 2026-07-27</span>
+    <span>Sources: Pettingill 2020 · Weitsman 2020 · Stephenson 2019 · Ma 2024 · Simonich 1989 · Nardari 2019 · Fasulo 2025</span>
+  </footer>
+
+</div>
+
+<script>
+(function () {
+  "use strict";
+
+  var STEPS = [
+    { pwm: 1200, start: 0.0,  end: 2.6  },
+    { pwm: 1500, start: 3.0,  end: 5.6  },
+    { pwm: 1800, start: 5.9,  end: 8.4  },
+    { pwm: 1900, start: 8.7,  end: 11.3 },
+    { pwm: 2000, start: 11.6, end: 14.2 }
+  ];
+
+  var TAKE = 2.6;
+  var TMAX = 32;
+
+  var PAPERS = [
+    { t: 0.9,  label: "Pettingill", sub: "no screen",   row: "lo"  },
+    { t: 2.0,  label: "Pettingill", sub: "with screen", row: "mid" },
+    { t: 3.5,  label: "Stephenson", sub: "BPF shift",   row: "lo"  },
+    { t: 7.5,  label: "Stephenson", sub: "established", row: "mid" },
+    { t: 30.0, label: "Ma",         sub: "free flight", row: "lo"  }
+  ];
+
+  var tclean    = document.getElementById("tclean");
+  var purge     = document.getElementById("purge");
+  var tval      = document.getElementById("tval");
+  var lanesEl   = document.getElementById("lanes");
+  var axisEl    = document.getElementById("axis");
+  var markEl    = document.getElementById("markers");
+  var presetsEl = document.getElementById("presets");
+  var readout   = document.getElementById("readout");
+  var modeLabel = document.getElementById("modeLabel");
+
+  var sAffected = document.getElementById("sAffected");
+  var sPct      = document.getElementById("sPct");
+  var sFirst    = document.getElementById("sFirst");
+  var sLen      = document.getElementById("sLen");
+
+  function pct(t) { return (t / TMAX) * 100; }
+
+  (function buildAxis() {
+    var frag = document.createDocumentFragment();
+    for (var s = 0; s <= TMAX; s += 4) {
+      var d = document.createElement("div");
+      d.className = "tick";
+      d.style.left = pct(s) + "%";
+      d.innerHTML = '<i></i><span>' + s + (s === 0 ? " s" : "") + '</span>';
+      frag.appendChild(d);
+    }
+    axisEl.appendChild(frag);
+  })();
+
+  (function buildMarkers() {
+    var frag = document.createDocumentFragment();
+    PAPERS.forEach(function (p) {
+      var d = document.createElement("div");
+      d.className = "marker " + p.row;
+      d.style.left = pct(p.t) + "%";
+      d.dataset.t = String(p.t);
+      d.innerHTML = '<span>' + p.label + '<br>' + p.sub + " · " + p.t + 's</span><i></i>';
+      frag.appendChild(d);
+    });
+    markEl.appendChild(frag);
+  })();
+
+  (function buildPresets() {
+    var frag = document.createDocumentFragment();
+    PAPERS.forEach(function (p) {
+      var b = document.createElement("button");
+      b.type = "button";
+      b.className = "chip";
+      b.dataset.t = String(p.t);
+      b.setAttribute("aria-pressed", "false");
+      b.textContent = p.label + " " + p.t + "s";
+      b.title = p.label + " — " + p.sub;
+      b.addEventListener("click", function () { tclean.value = String(p.t); render(); });
+      frag.appendChild(b);
+    });
+    presetsEl.appendChild(frag);
+  })();
+
+  (function buildLanes() {
+    var frag = document.createDocumentFragment();
+    STEPS.forEach(function (st, i) {
+      var lane = document.createElement("div");
+      lane.className = "lane";
+      lane.innerHTML =
+        '<div class="lane-bg"></div>' +
+        '<div class="bar" data-i="' + i + '"><div class="seg-clean"></div><div class="seg-dirty"></div></div>' +
+        '<div class="bar-label">PWM ' + st.pwm + '</div>' +
+        '<div class="bar-note" data-note="' + i + '"></div>';
+      frag.appendChild(lane);
+    });
+    lanesEl.appendChild(frag);
+
+    var cut = document.createElement("div");
+    cut.className = "cutline";
+    cut.id = "cutline";
+    lanesEl.appendChild(cut);
+  })();
+
+  function render() {
+    var T = parseFloat(tclean.value);
+    var purged = purge.checked;
+
+    tval.textContent = T.toFixed(1);
+    modeLabel.textContent = purged ? "spool-down between steps" : "continuous run";
+    document.getElementById("cutline").style.left = pct(T) + "%";
+
+    Array.prototype.forEach.call(presetsEl.children, function (b) {
+      b.setAttribute("aria-pressed", Math.abs(parseFloat(b.dataset.t) - T) < 0.05 ? "true" : "false");
+    });
+    Array.prototype.forEach.call(markEl.children, function (m) {
+      m.classList.toggle("hi", Math.abs(parseFloat(m.dataset.t) - T) < 0.05);
+    });
+
+    var affected = 0, dirtySec = 0, totalSec = 0, firstPwm = null;
+
+    STEPS.forEach(function (st, i) {
+      var a = purged ? 0 : st.start;
+      var b = purged ? TAKE : st.end;
+      var dur = b - a;
+      totalSec += dur;
+
+      var cleanDur = Math.max(0, Math.min(b, T) - a);
+      var dirtyDur = Math.max(0, dur - cleanDur);
+      dirtySec += dirtyDur;
+      if (dirtyDur > 0.001) {
+        affected++;
+        if (firstPwm === null) firstPwm = st.pwm;
+      }
+
+      var bar = lanesEl.querySelector('.bar[data-i="' + i + '"]');
+      bar.style.left = pct(a) + "%";
+      bar.style.width = pct(dur) + "%";
+      bar.style.borderColor = dirtyDur > 0.001 ? "var(--dirty)" : "var(--clean)";
+      bar.children[0].style.flex = cleanDur;
+      bar.children[1].style.flex = dirtyDur;
+
+      var note = lanesEl.querySelector('[data-note="' + i + '"]');
+      note.style.left = pct(b) + "%";
+      if (dirtyDur > 0.001) {
+        note.textContent = Math.round((dirtyDur / dur) * 100) + "% past";
+        note.style.color = "var(--dirty)";
+      } else {
+        note.textContent = "clean";
+        note.style.color = "var(--clean)";
+      }
+    });
+
+    var pctDirty = Math.round((dirtySec / totalSec) * 100);
+
+    sAffected.innerHTML = affected + '<small> / 5</small>';
+    sAffected.className = affected === 0 ? "ok" : "bad";
+
+    sPct.innerHTML = pctDirty + '<small>%</small>';
+    sPct.className = pctDirty === 0 ? "ok" : "bad";
+
+    sFirst.innerHTML = firstPwm === null ? '—' : firstPwm + '<small> µs</small>';
+    sFirst.className = firstPwm === null ? "ok" : "bad";
+
+    sLen.innerHTML = (purged ? TAKE : 14.2).toFixed(1) + '<small> s</small>';
+    sLen.className = "neutral";
+
+    var msg;
+    if (purged) {
+      if (affected === 0) {
+        msg = "<b>All five takes fit.</b> With a spool-down between steps every take starts its own " +
+              "clock at zero, so the longest exposure is one take — " + TAKE.toFixed(1) + " s — not " +
+              "14.2 s. A clean window of " + T.toFixed(1) + " s is enough. The cost is spool-up time " +
+              "and motor cycling on every step.";
+      } else {
+        msg = "<b>Even with a reset per step, " + TAKE.toFixed(1) + " s is too long.</b> A clean " +
+              "window of " + T.toFixed(1) + " s means no take of the current length survives — " +
+              "recording_ms itself has to come down, not just the gaps.";
+      }
+    } else if (affected === 0) {
+      msg = "<b>The whole run fits inside the window.</b> At " + T.toFixed(1) + " s of clean time, " +
+            "all five takes complete before onset. Nothing to change.";
+    } else if (affected === 5) {
+      msg = "<b>Every take is affected.</b> At " + T.toFixed(1) + " s, onset arrives during the first " +
+            "take and never lets go — " + pctDirty + "% of all recorded audio sits past the window.";
+    } else {
+      msg = "<b>" + affected + " of 5 takes run past the window</b>, starting at PWM " + firstPwm +
+            " µs — " + pctDirty + "% of recorded audio. Because PWM ascends with time, the affected " +
+            "steps are the high-thrust ones you care most about.";
+    }
+    readout.innerHTML = msg;
+  }
+
+  tclean.addEventListener("input", render);
+  purge.addEventListener("change", render);
+  render();
+})();
+</script>
+
+</body>
+</html>

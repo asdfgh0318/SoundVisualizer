@@ -50,3 +50,10 @@ venv/
 # symlinks into the private repo github.com/asdfgh0318/papers (clone at
 # ../papers). Only the symlinks are tracked here; the PDFs, text dumps and
 # extracts live there. The write-ups in docs/ stay here.
+
+# Claude Code per-machine settings (permission allowlists etc.) — local, not shared.
+/.claude/settings.local.json
+
+# Loose PDFs dropped in the repo root while reading. Papers belong in the private
+# papers repo (see the note above), never here: this repo is public.
+/*.pdf

@@ -29,8 +29,8 @@ Browser and server are decoupled. The server owns the hardware and the data on d
 | **Setup** | Lists detected ALSA `(hw:…)` audio devices · per-mic configuration (USB device + serial + single absolute elevation (free-text degrees in −90…+90, decimals OK) + optional UMIK-2 calibration file) · safety cutoffs (8 channels with tickbox + threshold + direction) · live Tyto connection status. |
 | **🌳 Research tree** | Header link (when running on the Pi or on a host with the [`duct-research-tree`](https://github.com/asdfgh0318/duct-research-tree) editor on `:8123`) opens the tree editor in a new tab. Capture wizard surfaces an optional **Linked research-tree node** picker — pick a node, the key fields autofill from its geometry, and on a successful capture the SoundVis Results URL is pushed back into that node (status flips to *in-progress*). Configured under `[research_tree]` in `config.toml`. |
 | **Capture** | Wizard: motor/propeller/shroud/notes form → editable PWM ramp with **live SVG visualization** → review summary → safety modal → **single-pass capture** (all mics record simultaneously; live progress + Tyto telemetry over WS) → done summary. Every numeric parameter has a ⓘ toggle explaining what it does. Labels follow RCbenchmark (ESC signal, tare, safety cutoffs). (Two-pass — physically remount mics between halves — is supported by the backend but not surfaced in the wizard yet.) |
-| **Results — FFT** | Pick a **base** (the `motor__propeller__shroud__notes` group) and an ESC-signal point. Per-point page with performance header (PWM/thrust/torque/current/voltage/RPM/temp), scrollable per-mic FFT rows on a log-x axis. Settings popover for window/size/overlap. **Compare-bases overlay**: a series picker (base → ESC-signal point → add) overlays additional measurements on top of the current one, matched by elevation — so each mic-position row shows one labelled, colored line per series. Cross-key (compare different propellers/shrouds) and cross-PWM; selection is transient and **shared with the Polar tab**. Warns when mixing calibrated (dB SPL) and uncalibrated (dBFS) series. |
-| **Results — Polar** | Polar SPL-vs-elevation plot. 180°/360° render toggle, scroll/drag zoom with a Reset-view button, and a side-view **schematic of the mic arc** as configured in Setup (+90° up) beside the plot. **Top+bottom merge** combines sibling captures at the same PWM into a single full-sphere view. Right rail: freq-band selector (manual range + 1/3-octave + octave snap-to) and a **level source**: mixed band (everything between the band edges), a single blade-passage harmonic (BPF ×1…×4, read from each capture's own spectrum), or broadband with every shaft harmonic notched out — the arc validation showed the room bends the tones by up to 8 dB while the broadband stays round, so the two must not be mixed when reading directivity. **Compare-bases overlay**: shares the FFT tab's series selection — each series becomes its own directivity curve, overlaid and color-matched. |
+| **Results — FFT** | Pick a **base** (the `motor__propeller__shroud__notes` group) and an ESC-signal point. Per-point page with performance header (PWM/thrust/torque/current/voltage/RPM/temp), scrollable per-mic FFT rows on a log-x axis. Settings popover for window/size/overlap. **Compare-bases overlay**: a series picker (base → ESC-signal point → add) overlays additional measurements on top of the current one, matched by elevation — so each mic-position row shows one labelled, colored line per series. Cross-key (compare different propellers/shrouds) and cross-PWM; selection is transient and **shared with the Polar tab**. Warns when mixing calibrated (dB SPL) and uncalibrated (dBFS) series. Both base pickers share one label builder (`keyLabel.ts`) and carry an **arc-orientation mark**: unmarked = arc standing normally, `[H]` = laid flat for the validation campaign, `[H F]` = laid flat and turned 180° so every elevation label is mirrored, `[H ?]` = laid flat with the orientation unrecovered. A ⓘ beside each Base label explains it. |
+| **Results — Polar** | Polar SPL-vs-elevation plot. 180°/360° render toggle, scroll/drag zoom with a Reset-view button, and a side-view **schematic of the mic arc** as configured in Setup (+90° up) beside the plot. **Top+bottom merge** combines sibling captures at the same PWM into a single full-sphere view. Right rail: freq-band selector (manual range + 1/3-octave + octave snap-to) and a **level source**: mixed band (everything between the band edges), a single blade-passage harmonic (BPF ×1…×4, read from each capture's own spectrum), or broadband with every shaft harmonic notched out — the arc validation showed the room bends the tones by up to 8 dB while the broadband stays round, so the two must not be mixed when reading directivity — a ⓘ on the selector says which curve to trust, and a second one on the BPF readout explains that the frequency is read from each capture's own spectrum and why the tone buttons grey out when no tone is present. **Compare-bases overlay**: shares the FFT tab's series selection — each series becomes its own directivity curve, overlaid and color-matched. |
 | **Results — Custom** | Plotly port of Paweł's Bokeh viz: X/Y scatter with column pickers (PWM / thrust / torque / current / voltage / RPM / temp / SPL-in-band) where each measurement point is clickable. Clicking a point also re-points the FFT and Polar tabs to that PWM step. |
 
 ## Quick start — pick your path
@@ -91,7 +91,7 @@ bash scripts/setup.sh           # Linux / macOS / WSL
 .\scripts\setup.ps1             # Windows PowerShell
 ```
 
-The script: detects your OS, warns about missing system packages, creates `.venv/`, installs Python + npm deps, runs the pytest suite (111 tests should pass), builds the production bundle. Ends with `Setup complete!`.
+The script: detects your OS, warns about missing system packages, creates `.venv/`, installs Python + npm deps, runs the pytest suite (122 tests should pass), builds the production bundle. Ends with `Setup complete!`.
 
 #### B.3 Start the services (two terminals)
 
@@ -118,7 +118,7 @@ The fake-capture flow is the same as Path A above.
 python3.12 -m venv .venv
 .venv/bin/pip install -e ".[dev]"
 npm install
-.venv/bin/pytest server/tests/    # 111 tests should pass
+.venv/bin/pytest server/tests/    # 122 tests should pass
 npm run build                      # type-check + bundle
 ```
 
@@ -215,7 +215,7 @@ Caveat: the timer runs every 15 min, so a capture from the last few minutes may 
 
 **Client:** React 19 · Vite 7 · TypeScript · Tailwind 4 · Zustand 5 · Plotly.js (`plotly.js-dist-min`).
 
-**Tests:** pytest (111 passing) covering FFT, calibration, trigger-sync alignment, cutoff watchdog, config loading, capture orchestrator with a fake stand, results endpoints, psychoacoustics. Lint via ruff.
+**Tests:** pytest (122 passing) covering FFT, calibration, trigger-sync alignment, cutoff watchdog, config loading, capture orchestrator with a fake stand, results endpoints, psychoacoustics. Lint via ruff.
 
 ## Acknowledgements
 
