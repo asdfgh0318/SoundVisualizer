@@ -1,7 +1,8 @@
 import { useEffect, useMemo, useState } from 'react';
 import { api } from '../../api/client';
 import type { AcousticInPoint, Key, MergedPWMPoint } from '../../api/types';
-import { ARC_ORIENTATION_LEGEND } from '../../content/arcOrientation';
+import { BASE_HELP } from '../../content/parameterHelp';
+import { InfoToggle } from '../ui/InfoToggle';
 import { keyLabel, seriesLabel } from './keyLabel';
 
 // Series #0 is always the indigo base (the currently selected point); extras cycle the rest.
@@ -118,14 +119,14 @@ export function SeriesPicker({
   return (
     <div className="bg-gray-800 border border-gray-700 rounded-md p-3 space-y-3">
       <div className="text-xs uppercase tracking-wide text-gray-400">Compare bases (overlay)</div>
-      <div className="text-[11px] text-gray-500">{ARC_ORIENTATION_LEGEND}</div>
 
       <div className="flex flex-wrap items-end gap-2">
         <label className="block">
-          <span className="text-[11px] text-gray-500">Base</span>
+          <span className="text-[11px] text-gray-500">
+            Base<InfoToggle label="arc orientation marks">{BASE_HELP.arcMark}</InfoToggle>
+          </span>
           <select
             className="input mt-1 min-w-[24rem]"
-            title={ARC_ORIENTATION_LEGEND}
             value={selKey}
             onChange={(e) => setSelKey(e.target.value)}
           >

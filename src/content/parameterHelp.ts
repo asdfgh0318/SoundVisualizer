@@ -41,3 +41,15 @@ export const COMPAT_HELP = {
   abs: 'Absolute tolerance in the channel unit. The pair passes when the difference is at most this value, whatever the level.',
   rel: 'Relative tolerance as a fraction of the mean of the two readings (0.05 is 5 %). Whichever of absolute and relative is larger applies.',
 };
+
+export const BASE_HELP = {
+  arcMark:
+    'Two rig geometries sit side by side in this store and no capture records which was used, ' +
+    'so the mark is reconstructed. Unmarked: the arc stood normally and the microphones really ' +
+    'were at different elevations. [H]: the arc was laid flat for the validation campaign, all ' +
+    'eleven microphones at one height around the propeller axis. [H F]: laid flat and turned 180°, ' +
+    'so that capture\u2019s +e microphone sat physically at \u2212e \u2014 overlay it on an [H] base and you ' +
+    'are comparing mirrored elevations. [H ?]: laid flat, but which of the two orientations was ' +
+    'never recovered. The flat campaign is recognised from the base notes; the turn was worked out ' +
+    'afterwards by the arc-error-map fit, because nobody wrote it down at the time.',
+};

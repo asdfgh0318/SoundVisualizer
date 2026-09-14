@@ -79,9 +79,3 @@ export function arcMark(k: Key): string {
       return '';
   }
 }
-
-export const ARC_ORIENTATION_LEGEND =
-  'H = arc laid flat for the validation campaign, not in its normal orientation. ' +
-  'H F = laid flat and turned 180°, so every elevation label is mirrored. ' +
-  'H ? = laid flat, but which of the two orientations was never recovered. ' +
-  'Unmarked bases were captured with the arc standing normally.';

@@ -1,6 +1,8 @@
 import { useEffect, useState } from 'react';
 import { api, ApiError } from '../../api/client';
 import type { Key } from '../../api/types';
+import { BASE_HELP } from '../../content/parameterHelp';
+import { InfoToggle } from '../ui/InfoToggle';
 import { keyLabel } from './keyLabel';
 
 interface Props {
@@ -31,7 +33,9 @@ export function KeyPicker({ value, onChange }: Props) {
 
   return (
     <label className="block">
-      <span className="text-xs uppercase tracking-wide text-gray-400 mr-3">Base</span>
+      <span className="text-xs uppercase tracking-wide text-gray-400 mr-3">
+        Base<InfoToggle label="arc orientation marks">{BASE_HELP.arcMark}</InfoToggle>
+      </span>
       <select
         className="input min-w-[24rem]"
         value={value ?? ''}
