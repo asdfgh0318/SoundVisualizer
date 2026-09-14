@@ -1,4 +1,6 @@
 import type { FFTResponse } from '../../api/types';
+import { LEVEL_SOURCE_HELP } from '../../content/parameterHelp';
+import { InfoToggle } from '../ui/InfoToggle';
 import { type LevelSource, medianOf } from './levelSource';
 
 interface Props {
@@ -24,6 +26,9 @@ export function LevelSourceSelector({ source, onChange, ffts }: Props) {
   const activeKey = source.kind === 'tone' ? `tone${source.harmonic}` : source.kind;
   return (
     <div className="flex items-center gap-3 flex-wrap text-xs">
+      <span className="text-gray-400">
+        Level<InfoToggle label="level source">{LEVEL_SOURCE_HELP.general}</InfoToggle>
+      </span>
       <div className="flex bg-gray-800 border border-gray-700 rounded-md overflow-hidden">
         {options.map((o) => (
           <button
@@ -43,6 +48,9 @@ export function LevelSourceSelector({ source, onChange, ffts }: Props) {
         {bpf != null
           ? <>BPF <span className="font-mono text-gray-200">{bpf.toFixed(1)} Hz</span> (from the audio)</>
           : noTone ? 'no blade-passage tone found in these captures' : ''}
+        {(bpf != null || noTone) && (
+          <InfoToggle label="blade-passage frequency">{LEVEL_SOURCE_HELP.bpfReadout}</InfoToggle>
+        )}
       </span>
       {offSpeed && (
         <span className="text-red-300">

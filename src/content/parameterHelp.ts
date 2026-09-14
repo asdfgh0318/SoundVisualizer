@@ -53,3 +53,23 @@ export const BASE_HELP = {
     'never recovered. The flat campaign is recognised from the base notes; the turn was worked out ' +
     'afterwards by the arc-error-map fit, because nobody wrote it down at the time.',
 };
+
+export const LEVEL_SOURCE_HELP = {
+  general:
+    'Which number the polar is drawn from. A rotor makes two kinds of noise and the room ' +
+    'treats them differently, so one curve cannot honestly show both. ' +
+    '\u201cMixed band\u201d sums everything inside the frequency range above, tones and flow noise ' +
+    'together \u2014 the obvious default, and the one that hides the problem. ' +
+    '\u201cBroadband (tones notched)\u201d is the same range with every multiple of half the blade-passage ' +
+    'frequency cut out, so it is the flow noise alone. ' +
+    '\u201cBPF \u00d71\u20134\u201d is one blade-passage harmonic on its own, measured at its own frequency ' +
+    'rather than inside a band. ' +
+    'Why it matters: in the September validation the room bent the blade tones by up to 8 dB ' +
+    'between 200 and 260 Hz while the tone-notched broadband beside them stayed inside ' +
+    '\u00b11.3 dB. Read the broadband curve as the trustworthy one and treat tone levels below ' +
+    'about 1 kHz as provisional until the loudspeaker check is done.',
+  bpfReadout:
+    'The blade-passage frequency is read from each capture\u2019s own spectrum, because the stand ' +
+    'reports no RPM. The figure shown is the median across the captures on screen. If none was ' +
+    'found the tone buttons are disabled: at low ESC signal the propeller makes no tone at all.',
+};
