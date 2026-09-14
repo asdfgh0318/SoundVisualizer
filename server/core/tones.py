@@ -65,9 +65,9 @@ def find_bpf(
     lo..hi has its 2nd and 3rd harmonics standing >= prominence_db above their
     surroundings. `mag_db` may be one spectrum or the mean over several mics."""
     df = float(freq[1] - freq[0])
-    # peaks are found on a window twice as wide as lo..hi so that a fundamental near
-    # hi_hz keeps its full prominence (a peak at the window edge is otherwise measured
-    # against the edge and dropped), then restricted to lo..hi
+    # peaks are found over lo/2..2*hi, then restricted to lo..hi, so that a fundamental
+    # sitting near either bound keeps its full prominence — a peak at the edge of the
+    # search window is otherwise measured against that edge and dropped
     wide = (freq > lo_hz / 2) & (freq < 2 * hi_hz)
     idx = np.where(wide)[0]
     if len(idx) < 3:

@@ -7,8 +7,8 @@
 #
 # Usage:
 #   scripts/deploy_to_pi.sh <user>@<host>
-#   scripts/deploy_to_pi.sh jama@jama.local
-#   scripts/deploy_to_pi.sh jama@192.168.190.89
+#   scripts/deploy_to_pi.sh pi@sound-viz.local
+#   scripts/deploy_to_pi.sh pi@192.168.190.89
 #
 # Auth: uses your normal ssh (set up an ssh key, or you'll be prompted per
 # connection). No passwords are stored or accepted on the command line.
@@ -23,7 +23,7 @@ step() { printf "\n${GREEN}==>${NC} %s\n" "$*"; }
 fail() { printf "${RED}FAIL:${NC} %s\n" "$*"; exit 1; }
 
 TARGET="${1:-}"
-[ -n "$TARGET" ] || fail "Usage: scripts/deploy_to_pi.sh <user>@<host>   (e.g. jama@jama.local)"
+[ -n "$TARGET" ] || fail "Usage: scripts/deploy_to_pi.sh <user>@<host>   (e.g. pi@sound-viz.local)"
 REMOTE_DIR="SoundVisualizer"   # relative to the remote user's home
 
 command -v rsync >/dev/null || fail "rsync not found on this machine."

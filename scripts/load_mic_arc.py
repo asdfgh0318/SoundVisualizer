@@ -14,7 +14,7 @@ keep it in sync with docs/mic_arc.md.
 
 Usage:
   python scripts/load_mic_arc.py --dir ~/Pobrane
-  python scripts/load_mic_arc.py --dir ~/Downloads --base-url http://jama.local:8000
+  python scripts/load_mic_arc.py --dir ~/Downloads --base-url http://sound-viz.local:8000
   python scripts/load_mic_arc.py --dir ~/Pobrane --ninety   # use the _90deg cal files
 
 Cal-file choice: by default the on-axis file (`<serial>.txt`) is used — correct
@@ -96,7 +96,7 @@ def find_cal_file(cal_dir: Path, serial: str, ninety: bool) -> Path | None:
 def main() -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("--dir", required=True, help="folder containing the downloaded cal .txt files")
-    ap.add_argument("--base-url", default="http://jama.local:8000", help="SoundVis base URL")
+    ap.add_argument("--base-url", default="http://sound-viz.local:8000", help="SoundVis base URL")
     ap.add_argument("--ninety", action="store_true", help="use the _90deg cal files")
     ap.add_argument("--name", default="11-mic preset", help="preset name")
     ap.add_argument("--dry-run", action="store_true", help="report only; no uploads")

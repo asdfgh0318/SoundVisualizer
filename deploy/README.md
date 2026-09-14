@@ -3,7 +3,7 @@
 Production target for the rig. The Pi runs the **same** `server/` code as the
 laptop — only the host moves. One `systemd` service serves both the API and the
 prebuilt React bundle on port 8000, reachable on the LAN at
-`http://<hostname>.local:8000` (our unit is `jama`, so `http://jama.local:8000`).
+`http://<hostname>.local:8000` (our unit is `sound-viz`, so `http://sound-viz.local:8000`).
 
 > The browser-only demo path (`docker compose up`) is unrelated to this and
 > stays as-is for hardware-free UI testing. This document is the **real rig**.
@@ -35,7 +35,7 @@ The Pi never installs Node — best for small SD cards. One command from the rep
 root on the laptop:
 
 ```bash
-scripts/deploy_to_pi.sh jama@jama.local      # or jama@<pi-ip>
+scripts/deploy_to_pi.sh pi@sound-viz.local   # or pi@<pi-ip>
 ```
 
 It builds `dist/` locally, rsyncs the source + bundle to `~/SoundVisualizer` on
@@ -45,7 +45,7 @@ changed files. Auth uses your normal ssh (set up a key, or get prompted).
 ## Alternative: install directly on the Pi
 
 ```bash
-# On the Pi, as the normal user (e.g. 'jama'), NOT root:
+# On the Pi, as the normal user (e.g. 'pi'), NOT root:
 git clone https://github.com/asdfgh0318/SoundVisualizer.git
 cd SoundVisualizer
 bash scripts/setup_rpi.sh
@@ -66,7 +66,7 @@ What `setup_rpi.sh` does (idempotent — safe to re-run after `git pull`):
 ## mDNS — reaching it at `<hostname>.local`
 
 avahi (installed by the script) advertises the Pi at `http://<hostname>.local:8000`.
-Our unit's hostname is `jama`, so it's **http://jama.local:8000**. macOS/Linux
+Our unit's hostname is `sound-viz`, so it's **http://sound-viz.local:8000**. macOS/Linux
 resolve `.local` out of the box; Windows needs Bonjour. If `.local` won't
 resolve, use the Pi's IP directly (`http://<pi-ip>:8000`).
 
@@ -81,9 +81,14 @@ sudo systemctl restart avahi-daemon
 
 ```bash
 ls /dev/ttyACM* /dev/ttyUSB*        # find the stand's serial device
-nano config.toml                    # set tyto.enabled = true and tyto.tty = "/dev/ttyACM0"
+ls -l /dev/serial/by-id/            # and take the stable by-id path, not the ttyUSBn node
+nano config.toml                    # set tyto.enabled = true and tyto.tty = "/dev/serial/by-id/usb-FTDI_..."
 sudo systemctl restart soundvis
 ```
+
+**Always use the `/dev/serial/by-id/...` path.** A replug re-enumerates the FTDI to a different
+`/dev/ttyUSBn` while the running service keeps the dead handle: telemetry stops, `connected`
+stays stale, and PWM stops being transmitted (it rides on each poll) with no error.
 
 `config.toml` is gitignored and survives `git pull` + re-running the installer.
 The `[server]` section there controls the bind host/port the service uses.
@@ -105,7 +110,7 @@ USB serial), restarts on failure, and starts on boot.
 From the laptop (recommended):
 
 ```bash
-scripts/deploy_to_pi.sh jama@jama.local
+scripts/deploy_to_pi.sh pi@sound-viz.local
 ```
 
 Or on the Pi directly:

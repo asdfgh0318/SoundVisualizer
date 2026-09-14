@@ -102,7 +102,6 @@ echo "  Open:        http://localhost:5173"
 echo
 echo "Populate demo data without hardware:"
 echo "  curl -X POST http://localhost:8000/dev/seed"
-echo "  (or use the Capture form's 'Run fake capture' button)"
 echo
 
 case "$PLATFORM" in

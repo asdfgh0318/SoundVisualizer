@@ -86,27 +86,6 @@ class CutoffTriggers(BaseModel):
     temp2: CutoffChannel = CutoffChannel()
 
 
-class MicPlacement(BaseModel):
-    serial: str
-    usb_path: str | None = None
-    top_elevation_deg: float | None = None
-    bottom_elevation_deg: float | None = None
-    calibration_file_id: str | None = None
-
-
-class FFTConfig(BaseModel):
-    window: Literal["hann"] = "hann"
-    size: int = 4096
-    overlap: float = 0.5
-
-
-class SetupConfig(BaseModel):
-    mics: list[MicPlacement] = []
-    cutoffs: CutoffTriggers = CutoffTriggers()
-    fft: FFTConfig = FFTConfig()
-    sample_rate: int = 48000
-
-
 class PWMStep(BaseModel):
     pwm_us: int = Field(ge=1000, le=2000)
     recording_ms: int = Field(ge=100, le=60_000)

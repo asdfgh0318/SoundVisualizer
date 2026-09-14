@@ -261,7 +261,7 @@ function ScatterPlot({
       const point: Point = {
         x: xv,
         y: yv,
-        text: `PWM ${r.pwm_us} µs · ${compositionLabel(r.composition)}`,
+        text: `ESC ${r.pwm_us} µs · ${compositionLabel(r.composition)}`,
         customdata: r.id,
       };
       if (r.id === selectedId) selected.push(point);

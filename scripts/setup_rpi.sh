@@ -32,7 +32,7 @@ RUN_USER="$(id -un)"
 RUN_GROUP="$(id -gn)"
 INSTALL_DIR="$(pwd)"
 
-[ "$RUN_USER" = "root" ] && fail "Run as the normal user (e.g. 'jama'), not root. The script uses sudo where needed."
+[ "$RUN_USER" = "root" ] && fail "Run as the normal user (e.g. 'pi'), not root. The script uses sudo where needed."
 
 # --- platform sanity -------------------------------------------------------
 step "Platform check"
@@ -154,7 +154,7 @@ for entry in "${RESEARCH_TREES[@]}"; do
   # Without a local git author, the commit silently fails. Set a benign one
   # scoped to this clone so pushes from SoundVisualizer land in the log.
   step "Configuring $RT_NAME git author"
-  git -C "$RT_DIR" config user.email "soundvis@${HOSTNAME_GUESS:-localhost}" >/dev/null
+  git -C "$RT_DIR" config user.email "soundvis@$(hostname)" >/dev/null
   git -C "$RT_DIR" config user.name "SoundVis on $(hostname)" >/dev/null
 
   step "Installing $RT_SVC systemd unit (sudo)"

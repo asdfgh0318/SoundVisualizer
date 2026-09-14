@@ -31,15 +31,17 @@ server/
     calibration.py     # /calibrations upload + list
     capture.py         # /capture/acoustic (single-shot, no Tyto)
     capture_run.py     # /capture/run (orchestrated PWM-ramp + mics + WS)
-    thrust_stand.py    # /tyto/{status,pwm,cutoffs,reset,ws/telemetry}
+    thrust_stand.py    # /tyto/{status,zero,pwm,cutoffs,reset,ws/telemetry}
+    research_tree.py   # /research-tree/nodes — aggregates the configured [[research_trees]]
     results.py         # /keys/{slug}/{pwm_points, .../fft, .../performance_summary, .../psychoacoustics}
     setup_presets.py   # /setup-presets — named mic-list snapshots
     compat_tolerances.py # /compat-tolerances — PWM-point merge tolerances
     dev.py             # /dev/{seed, fake_capture} — synthetic drone-noise data
+    schemas.py         # shared Pydantic models (Key, meta, cutoffs, setup, capture run)
   core/              # Hardware orchestration + signal processing
     audio_devices.py   # sounddevice device enumeration (hw: only)
     capture.py         # multi-stream capture
-    trigger_sync.py    # dBFS onset alignment (port from src/audio/triggerSync.ts); skips already-running sources (#13)
+    trigger_sync.py    # dBFS onset alignment (server-side; the old client-side version is gone); skips already-running sources (#13)
     tones.py           # blade-passage frequency from the audio, per-harmonic tone levels, tone-notched third-octaves (#12)
     wav.py             # float32 WAV read/write via scipy
     fft.py             # Welch PSD → dB
@@ -64,11 +66,13 @@ server/
 - Type-hint everything Python 3.12-style (`list[str]`, `int | None`, `dict[str, X]`). Pydantic for any data crossing the API boundary.
 - No comments unless the *why* is non-obvious. No docstring bloat.
 
-## Endpoints (17 routes)
+## Endpoints (37 routes: 33 HTTP + 4 WS)
 
 ```
 GET  /health
 GET  /devices/audio
+WS   /devices/audio/{index}/level                # one mic's live level meter (physical-identify tool)
+WS   /devices/audio/levels                       # every configured mic at once — Setup level board + Results Live tab
 GET  /calibrations
 POST /calibrations             (multipart UMIK-2 .txt upload)
 GET  /setup-presets
@@ -84,16 +88,22 @@ GET  /keys/{slug}/measurements/{id}
 GET  /keys/{slug}/pwm_points                     # underlying[].bpf_hz / off_speed flag (>3 % off the PWM's median BPF)
 GET  /keys/{slug}/measurements/{id}/fft          # + bpf_hz, tones[], band_centres_hz, broadband_bands_db (tone/broadband split)
 GET  /keys/{slug}/measurements/{id}/performance_summary
+GET  /keys/{slug}/measurements/{id}/psychoacoustics   # cached, versioned; rel/abs per calibration
 POST /capture/acoustic         (single-shot, no Tyto)
 POST /capture/run              (orchestrated PWM-ramp capture)
 GET  /capture/run
 DELETE /capture/run            (abort, slams PWM=1000)
 WS   /capture/run/ws           (live capture status stream)
 GET  /tyto/status              (live link_state: absent | connected | reconnecting)
+POST /tyto/zero                (tare)
+POST /tyto/zero/clear          (drop the tare offsets)
 POST /tyto/pwm
 POST /tyto/cutoffs
 POST /tyto/reset
 WS   /tyto/ws/telemetry        (~33 Hz Tyto poll stream; link-down frames on serial drop)
+GET  /research-tree/nodes      (nodes from every configured tree, prefixed per tree)
+GET  /compat-tolerances
+PUT  /compat-tolerances        (PWM-point merge tolerances, stored at data/compat-tolerances.json)
 POST /dev/seed                 (creates a demo key with synthetic drone-noise data)
 POST /dev/fake_capture         (real capture-run body, bypasses hardware; curl-only since the wizard button went, issue #17)
 ```

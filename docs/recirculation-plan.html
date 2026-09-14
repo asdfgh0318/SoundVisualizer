@@ -452,7 +452,7 @@
 
     <p class="col">
       The capture orchestrator sets PWM, stabilizes, records, then moves to the next step — the rotor
-      never stops (<code>capture_orchestrator.py:276</code>). So the wake-development clock is not
+      never stops (<code>capture_orchestrator.py</code>, the PWM-step loop). So the wake-development clock is not
       per-take; it runs for the whole 14.2-second sequence, and PWM ascends monotonically through it.
     </p>
 

@@ -60,7 +60,7 @@ git add -A data/
 [ -f README.md ] || cat > README.md <<EOF
 # SoundVisualizer-data
 
-Auto-pushed measurement backups from the live SoundVisualizer rig on jama.
+Auto-pushed measurement backups from the live SoundVisualizer rig.
 Push cadence: every 15 min via systemd timer. See setup_rpi.sh on the main
 SoundVisualizer repo for the backup pipeline.
 EOF
@@ -71,7 +71,7 @@ if git diff --cached --quiet; then
   exit 0
 fi
 
-git -c user.email="soundvis-data@jama" -c user.name="SoundVis backup" \
+git -c user.email="soundvis-data@sound-viz" -c user.name="SoundVis backup" \
   commit -q -m "auto-backup $(date -u +%Y-%m-%dT%H:%M:%SZ)"
 git push -q origin "$BRANCH"
 echo "pushed $(git rev-parse --short HEAD)"

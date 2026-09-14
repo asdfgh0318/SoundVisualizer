@@ -262,7 +262,7 @@
   <div class="phase-num">5</div>
   <div class="phase-body">
     <h3>Capture wizard <span class="badge ok">Done</span></h3>
-    <p>Motor/propeller/shroud/notes form → PWM ramp with <strong>live SVG visualization</strong> (per-step <code>recording_ms</code>) → safety modal → top → reconfigure modal → bottom → done. Top-only / bottom-only tickboxes. Landing <strong>Intro</strong> page, RCbenchmark wording (tare, ESC signal, safety cutoffs), ⓘ parameter help. Synthetic data via <code>POST /dev/seed</code> only.</p>
+    <p>Motor/propeller/shroud/notes form → PWM ramp with <strong>live SVG visualization</strong> (per-step <code>recording_ms</code>) → safety modal → one pass, every configured mic recording simultaneously → done. The backend still accepts the legacy top/bottom halves, but the wizard has not driven that flow since single-pass became the default. Landing <strong>Intro</strong> page, RCbenchmark wording (tare, ESC signal, safety cutoffs), ⓘ parameter help. Synthetic data via <code>POST /dev/seed</code> only.</p>
     <div class="meta"><span>Full stack</span></div>
   </div>
 </div>
@@ -271,7 +271,7 @@
   <div class="phase-num">7</div>
   <div class="phase-body">
     <h3>Results — FFT tab <span class="badge ok">Done</span></h3>
-    <p>Per-PWM-point page with performance header strip and scrollable per-mic FFT rows. Settings popover for window/size/overlap.</p>
+    <p>Per-PWM-point page with performance header strip and scrollable per-mic FFT rows. Inline bar for FFT size and overlap (the window is fixed Hann, shown as text).</p>
     <div class="meta"><span>Data only</span></div>
   </div>
 </div>
@@ -307,7 +307,7 @@
   <div class="phase-num">10</div>
   <div class="phase-body">
     <h3>RPi 5 packaging <span class="badge ok">Done &amp; deployed</span></h3>
-    <p>Live on a Pi 5 (Debian 13 Trixie) at <code>http://jama.local:8000</code>. Native systemd service (<code>deploy/soundvis.service</code>) on <strong>system Python 3.13</strong> — no pyenv (all deps have aarch64 wheels). Deploy from the laptop via <code>scripts/deploy_to_pi.sh</code> (builds bundle locally, ships it — no Node on the Pi); <code>scripts/setup_rpi.sh</code> is the dist-aware on-device installer. Pi 5's RP1 chip has real USB 3.0 — no VL805 workaround. Bring-up docs in <code>deploy/README.md</code>.</p>
+    <p>Live on a Pi 5 (Debian 13 Trixie) at <code>http://sound-viz.local:8000</code>. Native systemd service (<code>deploy/soundvis.service</code>) on <strong>system Python 3.13</strong> — no pyenv (all deps have aarch64 wheels). Deploy from the laptop via <code>scripts/deploy_to_pi.sh</code> (builds bundle locally, ships it — no Node on the Pi); <code>scripts/setup_rpi.sh</code> is the dist-aware on-device installer. Pi 5's RP1 chip has real USB 3.0 — no VL805 workaround. Bring-up docs in <code>deploy/README.md</code>.</p>
     <div class="meta"><span>RPi 5 (live)</span></div>
   </div>
 </div>

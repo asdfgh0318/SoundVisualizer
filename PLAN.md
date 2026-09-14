@@ -27,7 +27,7 @@ data/
       2026-05-12T09-39-48-105828__acoustic__top__mic-8100001/
         meta.json    # {type:"acoustic", t_start, t_end, mic_serial,
                      #  elevation_deg, azimuth_deg:null, sample_rate,
-                     #  calibration_file_id, pwm_setpoint, half}
+                     #  calibration_file_id, pwm_setpoint, half, bpf_hz}
         audio.wav
       2026-05-12T09-39-48-105828__performance/
         meta.json    # {type:"performance", t_start, t_end, pwm_setpoint}
@@ -51,12 +51,12 @@ Order chosen so the existing browser-only app kept working as a reference until 
 | 4 | UMIK-2 capture | ✅ Done | `sounddevice` multi-stream, REW-format cal parser, server-side trigger-onset sync, udev rule generator. |
 | 3 | Tyto integration | ✅ Done | Paweł's `msp.py`/`thrust_stand.py` wired up. Calibration constants moved to `config.toml`. **Cutoff watchdog** added (all 8 channels). Live telemetry over `/tyto/ws/telemetry`. |
 | 2 | Frontend rebuild | ✅ Done | Legacy Web Audio + spinorama stripped. New Setup page: manual USB-path picker, mic list with add/delete, per-mic cal upload, cutoff-trigger config UI, live Tyto status, audio device list filtered to `(hw:…)` only. |
-| 5 | Capture wizard | ✅ Done | Motor/propeller/shroud/notes form → PWM ramp with **live SVG visualization** → review → safety modal → **single-pass capture** (all mics record simultaneously) → done. Backend still accepts `half="top"`/`"bottom"` for two-pass clients (legacy data + future two-pass UI). **Recording duration is per-step** (`recording_ms`). **"Run fake capture (no hardware)" button** bypasses Tyto and synthesizes realistic drone-noise data. |
-| 7 | Results — FFT tab | ✅ Done | Per-PWM-point page with performance header strip + scrollable per-mic FFT rows. Settings popover for window/size/overlap. |
+| 5 | Capture wizard | ✅ Done | Motor/propeller/shroud/notes form → PWM ramp with **live SVG visualization** → review → safety modal → **single-pass capture** (all mics record simultaneously) → done. Backend still accepts `half="top"`/`"bottom"` for two-pass clients (legacy data + future two-pass UI). **Recording duration is per-step** (`recording_ms`). The fake-capture button was removed 2026-09-11 (issue #17); `/dev/fake_capture` and `/dev/seed` remain as curl-only dev endpoints. |
+| 7 | Results — FFT tab | ✅ Done | Per-PWM-point page with performance header strip + scrollable per-mic FFT rows. Inline bar for FFT size and overlap (the window is fixed Hann, shown as text). |
 | 8 | Results — Polar tab | ✅ Done | SPL-vs-elevation polar plot. 180°/360° toggle. **Top+bottom merge** combines sibling captures at same PWM. Right rail: range + 1/3-octave + octave columns with snap-to. |
 | 9 | Results — Custom tab | ✅ Done | Plotly port of Paweł's Bokeh viz. X/Y scatter with column pickers (PWM/thrust/torque/current/voltage/RPM/temp/SPL-in-band). Clicking a point snaps the FFT and Polar tabs to that PWM step via shared sidebar selection. |
 | 6 | Norsonic | ⏳ Deferred | Waiting on NOR-145 delivery. Paweł's `norsonic*.py` already vendored, dormant. Setup page shows deferred placeholder. |
-| 10 | RPi packaging | ✅ Done & deployed | Raspberry Pi **5** (delivered; replaced the planned RPi 4), running **Debian 13 Trixie** → **system Python 3.13**, so no pyenv/compile (all deps have aarch64 wheels). Native systemd + venv: `deploy/soundvis.service`, `python -m server` entrypoint reading `[server]` host/port from config, FastAPI-served prod bundle on :8000. Deploy from the laptop with `scripts/deploy_to_pi.sh <user>@<host>` (builds bundle locally + ships it → no Node on the Pi, good for small SD cards); `scripts/setup_rpi.sh` is the on-device installer (dist-aware). Live at `http://jama.local:8000` (hostname `jama`). Setup docs in `deploy/README.md`. The old VL805 firmware-bandwidth caveat is gone — the Pi 5's RP1 chip has real USB 3.0. 48 kHz stays (locked decision for the drone band, not a bandwidth workaround). |
+| 10 | RPi packaging | ✅ Done & deployed | Raspberry Pi **5** (delivered; replaced the planned RPi 4), running **Debian 13 Trixie** → **system Python 3.13**, so no pyenv/compile (all deps have aarch64 wheels). Native systemd + venv: `deploy/soundvis.service`, `python -m server` entrypoint reading `[server]` host/port from config, FastAPI-served prod bundle on :8000. Deploy from the laptop with `scripts/deploy_to_pi.sh <user>@<host>` (builds bundle locally + ships it → no Node on the Pi, good for small SD cards); `scripts/setup_rpi.sh` is the on-device installer (dist-aware). Live at `http://sound-viz.local:8000` (hostname `sound-viz`; the old `jama` identity died with the second SD card on 2026-07-22 and now survives only as a laptop SSH alias). Setup docs in `deploy/README.md`. The old VL805 firmware-bandwidth caveat is gone — the Pi 5's RP1 chip has real USB 3.0. 48 kHz stays (locked decision for the drone band, not a bandwidth workaround). |
 
 ## Post-MVP enhancements delivered
 

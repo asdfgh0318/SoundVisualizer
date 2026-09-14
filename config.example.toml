@@ -3,7 +3,7 @@
 # Defaults match Paweł's calibration of OUR specific Tyto Robotics 1585 unit.
 
 [server]
-host = "0.0.0.0"             # 0.0.0.0 = reachable on the LAN (e.g. soundvis.local)
+host = "0.0.0.0"             # 0.0.0.0 = reachable on the LAN (our Pi answers on sound-viz.local)
 port = 8000
 
 [tyto]

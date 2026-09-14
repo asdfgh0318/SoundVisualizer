@@ -26,11 +26,12 @@ Browser and server are decoupled. The server owns the hardware and the data on d
 | Page | What it does |
 |------|--------------|
 | **Intro** (default) | What the tool is and does, who it is for, the Setup → Capture → Results flow, project and funding information, link to this repo. Text lives in `src/content/projectInfo.ts`. |
-| **Setup** | Lists detected ALSA `(hw:…)` audio devices · per-mic configuration (USB device + serial + single absolute elevation (free-text degrees in −90…+90, decimals OK) + optional UMIK-2 calibration file) · safety cutoffs (8 channels with tickbox + threshold + direction) · live Tyto connection status. |
-| **🌳 Research tree** | Header link (when running on the Pi or on a host with the [`duct-research-tree`](https://github.com/asdfgh0318/duct-research-tree) editor on `:8123`) opens the tree editor in a new tab. Capture wizard surfaces an optional **Linked research-tree node** picker — pick a node, the key fields autofill from its geometry, and on a successful capture the SoundVis Results URL is pushed back into that node (status flips to *in-progress*). Configured under `[research_tree]` in `config.toml`. |
+| **Setup** | Lists detected ALSA `(hw:…)` audio devices · per-mic configuration (USB device + serial + single absolute elevation (free-text degrees in −90…+90, decimals OK) + optional UMIK-2 calibration file) · safety cutoffs (8 channels with tickbox + threshold + direction) · live Tyto connection status · a **live mic level board** for identifying which physical capsule is which · a **calibration library** of uploaded UMIK cal files · **compatibility tolerances** for the top/bottom PWM-point merge · savable **mic presets**. |
+| **🌳 Research tree** | Header link (when running on the Pi or on a host with the [`duct-research-tree`](https://github.com/asdfgh0318/duct-research-tree) editor on `:8123`) opens a tree editor in a new tab; with more than one tree configured the link becomes a dropdown. Capture wizard surfaces an optional **Linked research-tree node** picker — pick a node, the key fields autofill from its geometry, and on a successful capture the SoundVis Results URL is pushed back into that node (status flips to *in-progress*). Configured with repeated `[[research_trees]]` tables in `config.toml` (the legacy singular `[research_tree]` still loads as a one-entry list). On the Pi: `duct-research-tree` on `:8123` and `drone-paczek-research-tree` on `:8124`; node-id prefixes (`p1-*`, `dp1-*`) route a capture-completion push to the right tree. |
 | **Capture** | Wizard: motor/propeller/shroud/notes form → editable PWM ramp with **live SVG visualization** → review summary → safety modal → **single-pass capture** (all mics record simultaneously; live progress + Tyto telemetry over WS) → done summary. Every numeric parameter has a ⓘ toggle explaining what it does. Labels follow RCbenchmark (ESC signal, tare, safety cutoffs). (Two-pass — physically remount mics between halves — is supported by the backend but not surfaced in the wizard yet.) |
-| **Results — FFT** | Pick a **base** (the `motor__propeller__shroud__notes` group) and an ESC-signal point. Per-point page with performance header (PWM/thrust/torque/current/voltage/RPM/temp), scrollable per-mic FFT rows on a log-x axis. Settings popover for window/size/overlap. **Compare-bases overlay**: a series picker (base → ESC-signal point → add) overlays additional measurements on top of the current one, matched by elevation — so each mic-position row shows one labelled, colored line per series. Cross-key (compare different propellers/shrouds) and cross-PWM; selection is transient and **shared with the Polar tab**. Warns when mixing calibrated (dB SPL) and uncalibrated (dBFS) series. Both base pickers share one label builder (`keyLabel.ts`) and carry an **arc-orientation mark**: unmarked = arc standing normally, `[H]` = laid flat for the validation campaign, `[H F]` = laid flat and turned 180° so every elevation label is mirrored, `[H ?]` = laid flat with the orientation unrecovered. A ⓘ beside each Base label explains it. |
+| **Results — FFT** | Pick a **base** (the `motor__propeller__shroud__notes` group) and an ESC-signal point. Per-point page with performance header (PWM/thrust/torque/current/voltage/RPM/temp), scrollable per-mic FFT rows on a log-x axis. Inline bar for FFT size and overlap (the window is fixed Hann, shown as text). **Compare-bases overlay**: a series picker (base → ESC-signal point → add) overlays additional measurements on top of the current one, matched by elevation — so each mic-position row shows one labelled, colored line per series. Cross-key (compare different propellers/shrouds) and cross-PWM; selection is transient and **shared with the Polar tab**. Warns when mixing calibrated (dB SPL) and uncalibrated (dBFS) series. Both base pickers share one label builder (`keyLabel.ts`) and carry an **arc-orientation mark**: unmarked = arc standing normally, `[H]` = laid flat for the validation campaign, `[H F]` = laid flat and turned 180° so every elevation label is mirrored, `[H ?]` = laid flat with the orientation unrecovered. A ⓘ beside each Base label explains it. |
 | **Results — Polar** | Polar SPL-vs-elevation plot. 180°/360° render toggle, scroll/drag zoom with a Reset-view button, and a side-view **schematic of the mic arc** as configured in Setup (+90° up) beside the plot. **Top+bottom merge** combines sibling captures at the same PWM into a single full-sphere view. Right rail: freq-band selector (manual range + 1/3-octave + octave snap-to) and a **level source**: mixed band (everything between the band edges), a single blade-passage harmonic (BPF ×1…×4, read from each capture's own spectrum), or broadband with every shaft harmonic notched out — the arc validation showed the room bends the tones by up to 8 dB while the broadband stays round, so the two must not be mixed when reading directivity — a ⓘ on the selector says which curve to trust, and a second one on the BPF readout explains that the frequency is read from each capture's own spectrum and why the tone buttons grey out when no tone is present. **Compare-bases overlay**: shares the FFT tab's series selection — each series becomes its own directivity curve, overlaid and color-matched. |
+| **Results — Live** | Live broadband level from every configured mic at once over `WS /devices/audio/levels`, drawn on the same polar frame. Built for one job: put a uniform source at the rig and check the arc reads evenly — so the numbers it surfaces are the **spread** (max−min across mics) and which mic sits furthest from the rest, with an adjustable tolerance band and averaging time. Needs no stored base. The per-mic average is held in linear power, not dB, because averaging dB biases a fluctuating mic low and that bias is exactly what this tab measures. |
 | **Results — Custom** | Plotly port of Paweł's Bokeh viz: X/Y scatter with column pickers (PWM / thrust / torque / current / voltage / RPM / temp / SPL-in-band) where each measurement point is clickable. Clicking a point also re-points the FFT and Polar tabs to that PWM step. |
 
 ## Quick start — pick your path
@@ -162,7 +163,7 @@ For team workflow (branches, PRs, issues, the maintenance directive), see [CLAUD
 ## Deploy to a Raspberry Pi 5 (production rig)
 
 The production target runs the same `server/` code as a `systemd` service on a
-Raspberry Pi 5, serving the API + bundled UI on `http://soundvis.local:8000`.
+Raspberry Pi 5, serving the API + bundled UI on `http://sound-viz.local:8000`.
 One command on a fresh Pi:
 
 ```bash
@@ -182,20 +183,26 @@ data/
     key.json                                  # { motor, propeller, shroud, notes }
     measurements/
       2026-05-12T09-39-48-105828__acoustic__top__mic-8100001/
-        meta.json    # type, t_start, t_end, mic_serial, elevation_deg, half, bpf_hz (from the audio at capture time),
+        meta.json    # type, t_start, t_end, mic_serial, elevation_deg, azimuth_deg (always null — no azimuth
+                     #              measurement), half, bpf_hz (from the audio at capture time),
                      # pwm_setpoint, sample_rate, calibration_file_id
         audio.wav    # float32 IEEE_FLOAT, 48 kHz
       2026-05-12T09-39-48-105828__performance/
         meta.json    # type, t_start, t_end, pwm_setpoint
         telemetry.csv  # t_offset_s,thrust_n,torque_nm,current_a,voltage_v,rpm,
                        # temp0_c,temp1_c,temp2_c,vibration
+  calibrations/
+    <mic_serial>.txt                          # the uploaded REW-format cal file, verbatim
+    <mic_serial>.json                         # parsed curve + sens_factor + again
+  setup-presets/<uuid>.json                   # named mic-list snapshots
+  compat-tolerances.json                      # per-channel tolerances for the top/bottom merge
 ```
 
 One performance + N acoustic measurements per PWM step share the same `t_start`, which is how the Results page groups them into "PWM points".
 
 ### Backup + reviewing results away from the rig
 
-The Pi mirrors `data/` to the private repo [`SoundVisualizer-data`](https://github.com/asdfgh0318/SoundVisualizer-data) every 15 min (`soundvis-backup.timer` → `scripts/backup_data.sh`). Since the store is just files, any clone of that repo is a complete dataset — point a local server at it and you get the full Results UI (FFT, polar, psychoacoustics, compare-overlay) with no Pi involved:
+Measurements are mirrored to the private repo [`SoundVisualizer-data`](https://github.com/asdfgh0318/SoundVisualizer-data) every 15 min. **Since 2026-09-02 this runs from the laptop, not the Pi**: a user systemd timer calls `scripts/backup_from_laptop.sh`, which rsyncs the Pi's measurements into `../SoundVisualizer-data`, commits and pushes. It is additive (no `--delete`, so pruning the Pi never deletes history), `flock`-serialised, and exits quietly when the Pi is unreachable or a capture is in flight. The Pi-side `scripts/backup_data.sh` and its `soundvis-backup.timer` are still installed but exit immediately while the marker `/home/pi/data/backup.laptop-managed` exists (`backup_data.sh` reads `SOUNDVIS_BACKUP_DISABLE_MARKER`, `SOUNDVIS_DATA`, `SOUNDVIS_BACKUP_DIR` and `SOUNDVIS_BACKUP_REMOTE` from the environment if you need to point it elsewhere). It was moved off the Pi because keeping the measurements twice, as a working copy plus git objects, filled the 2.3 GB data partition. Since the store is just files, any clone of that repo is a complete dataset — point a local server at it and you get the full Results UI (FFT, polar, psychoacoustics, compare-overlay) with no Pi involved:
 
 ```bash
 git clone git@github.com:asdfgh0318/SoundVisualizer-data.git ../SoundVisualizer-data
@@ -207,7 +214,7 @@ npm run dev     # → http://localhost:5173/results
 
 `SOUNDVIS_DATA` is what the store reads for its root (`server/store/paths.py`), so this works on any machine that can clone the repo — nothing is hardcoded to the Pi.
 
-Caveat: the timer runs every 15 min, so a capture from the last few minutes may not be pushed yet. Force one with `ssh jama '~/SoundVisualizer/scripts/backup_data.sh'`.
+Caveat: the timer runs every 15 min, so a capture from the last few minutes may not be pushed yet. Force one by running `scripts/backup_from_laptop.sh` **on the laptop** — running the Pi-side script does nothing while the marker is in place.
 
 ## Tech stack
 
