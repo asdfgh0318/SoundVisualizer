@@ -16,15 +16,29 @@ import type { Key } from '../api/types';
  * labelling makes the twelve coherent runs agree, and its verdict is in the data pack
  * `docs/analysis/arc-validation-data.json` as `runs[*].flipped`.
  *
- * Only those twelve runs have a recovered orientation. Every other flat-arc capture is
- * unknown, not "the reference one" — the same fit found prop1–prop6 and the two 31 August
- * captures incoherent with both orientations (`runs[*].coherent === false`). Listing the
- * confirmed ones rather than the unknown ones is deliberate: a flat-arc capture added later
- * then reads as unknown by default instead of silently looking confirmed.
+ * Orientation comes from the fit where the fit could recover it, and from Adam otherwise.
+ * A flat-arc capture that has neither reads as unknown rather than as the reference one,
+ * which is why the confirmed sets are listed rather than the unknown ones: one added later
+ * then shows as unknown instead of silently looking confirmed.
  */
 
-/** Flat-arc runs confirmed to be in the reference orientation. */
+/** Flat-arc runs confirmed to be in the reference orientation.
+ *
+ * prop1–prop6 are here on Adam's own account of the session (2026-09-14), not on the
+ * fit's: `detect_rotated()` could place only the twelve coherent runs, and it found
+ * prop1–prop6 consistent with neither orientation. Whoever ran the rig outranks a fit
+ * that cannot see the room. What it leaves behind is an open question rather than a
+ * settled one — if the arc was standing the same way, something *else* differed in that
+ * morning session (prop1 11:55 to prop6 13:13, then a three-and-a-half hour gap before
+ * prop7 at 16:42), and we do not know what. They stay out of the maps until we do.
+ */
 const FLAT_REFERENCE = new Set([
+  'dp1-baseline-horizontal-prop1',
+  'dp1-baseline-horizontal-prop2',
+  'dp1-baseline-horizontal-prop3',
+  'dp1-baseline-horizontal-prop4',
+  'dp1-baseline-horizontal-prop5',
+  'dp1-baseline-horizontal-prop6',
   'dp1-baseline-horizontal-prop7',
   'dp1-baseline-horizontal-prop8',
   'dp1-baseline-horizontal-prop9',
