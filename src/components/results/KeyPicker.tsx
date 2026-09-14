@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { api, ApiError } from '../../api/client';
 import type { Key } from '../../api/types';
+import { keyLabel } from './keyLabel';
 
 interface Props {
   value: string | null;
@@ -38,7 +39,7 @@ export function KeyPicker({ value, onChange }: Props) {
       >
         {keys.map((k) => (
           <option key={k.slug} value={k.slug}>
-            {k.motor} · {k.propeller} · {k.shroud} · {k.notes}
+            {keyLabel(k)}
           </option>
         ))}
       </select>

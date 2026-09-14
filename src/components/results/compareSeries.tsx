@@ -1,6 +1,8 @@
 import { useEffect, useMemo, useState } from 'react';
 import { api } from '../../api/client';
 import type { AcousticInPoint, Key, MergedPWMPoint } from '../../api/types';
+import { ARC_ORIENTATION_LEGEND } from '../../content/arcOrientation';
+import { keyLabel, seriesLabel } from './keyLabel';
 
 // Series #0 is always the indigo base (the currently selected point); extras cycle the rest.
 export const SERIES_PALETTE = ['#818cf8', '#f472b6', '#34d399', '#fb923c', '#22d3ee', '#a78bfa', '#facc15'];
@@ -41,12 +43,7 @@ export function useCompareSeries(keySlug: string, point: MergedPWMPoint | null):
     return (slug: string): string => {
       const k = bySlug.get(slug);
       if (!k) return slug.split('__')[1] ?? slug; // fallback: propeller part of the slug
-      // Notes carries what actually distinguishes two otherwise-identical keys
-      // (e.g. two baselines of the same motor+prop, one per session). Without it
-      // both render as "6in [unset]" and can't be told apart in an overlay.
-      const shroud = k.shroud && k.shroud !== 'none' ? ` [${k.shroud}]` : '';
-      const notes = k.notes && k.notes !== 'unset' ? ` · ${k.notes}` : '';
-      return `${k.propeller}${shroud}${notes}`.trim() || k.motor || slug;
+      return seriesLabel(k);
     };
   }, [keys]);
 
@@ -121,16 +118,21 @@ export function SeriesPicker({
   return (
     <div className="bg-gray-800 border border-gray-700 rounded-md p-3 space-y-3">
       <div className="text-xs uppercase tracking-wide text-gray-400">Compare bases (overlay)</div>
+      <div className="text-[11px] text-gray-500">{ARC_ORIENTATION_LEGEND}</div>
 
       <div className="flex flex-wrap items-end gap-2">
         <label className="block">
           <span className="text-[11px] text-gray-500">Base</span>
-          <select className="input mt-1 w-56" value={selKey} onChange={(e) => setSelKey(e.target.value)}>
+          <select
+            className="input mt-1 min-w-[24rem]"
+            title={ARC_ORIENTATION_LEGEND}
+            value={selKey}
+            onChange={(e) => setSelKey(e.target.value)}
+          >
             <option value="">— pick a base —</option>
             {keys.map((k) => (
               <option key={k.slug} value={k.slug}>
-                {k.motor} · {k.propeller}{k.shroud && k.shroud !== 'none' ? ` · ${k.shroud}` : ''}
-                {k.notes && k.notes !== 'unset' ? ` · ${k.notes}` : ''}
+                {keyLabel(k)}
               </option>
             ))}
           </select>
