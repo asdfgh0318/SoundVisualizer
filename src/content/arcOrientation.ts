@@ -1,48 +1,73 @@
-/** Which September 2026 horizontal-arc captures were taken with the arc turned 180°.
+import type { Key } from '../api/types';
+
+/** How the arc was standing for a given base: normal, or laid flat and possibly turned.
  *
- * Not derivable from the stored data: the orientation was never recorded at capture
- * time, and `detect_rotated()` in `scripts/arc_error_map.py` recovered it afterwards by
- * testing which labelling makes the twelve runs agree. Its verdict is in the data pack
- * `docs/analysis/arc-validation-data.json` (`runs[*].flipped`) and is repeated here so
- * the UI can warn before anyone overlays a flipped capture on an unflipped one, where
- * every elevation label is mirrored.
+ * The September 2026 validation captures were taken with the arc **laid flat**, propeller
+ * axis vertical, so all eleven microphones sit at one height around the axis and an
+ * axisymmetric source must read the same everywhere. That is a different rig geometry
+ * from every other capture in the store, where the arc stands in its normal orientation
+ * and the microphones really are at different elevations. Nothing in the capture path
+ * records which it was, so the flat-arc campaign is recognised by `horizontal` in the
+ * base's notes.
  *
- * prop1–prop6 and the two 31 August captures are `UNDETERMINED`, not "upright": the
- * same fit found them incoherent with both orientations (`runs[*].coherent === false`),
- * so their labelling is unknown rather than known-good.
+ * Within the flat campaign the arc was also turned 180° for four runs, which mirrors every
+ * elevation label: a capture's `+e` is physically at `−e`. That was never recorded either;
+ * `detect_rotated()` in `scripts/arc_error_map.py` recovered it afterwards by testing which
+ * labelling makes the twelve coherent runs agree, and its verdict is in the data pack
+ * `docs/analysis/arc-validation-data.json` as `runs[*].flipped`.
+ *
+ * Only those twelve runs have a recovered orientation. Every other flat-arc capture is
+ * unknown, not "the reference one" — the same fit found prop1–prop6 and the two 31 August
+ * captures incoherent with both orientations (`runs[*].coherent === false`). Listing the
+ * confirmed ones rather than the unknown ones is deliberate: a flat-arc capture added later
+ * then reads as unknown by default instead of silently looking confirmed.
  */
 
-/** Arc turned 180°, so a capture's `+e` label is physically at `−e`. */
-export const FLIPPED_KEY_SLUGS: ReadonlySet<string> = new Set([
-  '2004__6in__unset__dp1-baseline-horizontal-prop11',
-  '2004__6in__unset__dp1-baseline-horizontal-prop12',
-  '2004__6in__unset__dp1-baseline-horizontal-prop13',
-  '2004__6in__unset__dp1-baseline-horizontal-prop14',
+/** Flat-arc runs confirmed to be in the reference orientation. */
+const FLAT_REFERENCE = new Set([
+  'dp1-baseline-horizontal-prop7',
+  'dp1-baseline-horizontal-prop8',
+  'dp1-baseline-horizontal-prop9',
+  'dp1-baseline-horizontal-prop10',
+  'dp1-baseline-horizontal-prop15',
+  'dp1-baseline-horizontal-prop16',
+  'dp1-baseline-horizontal-prop17',
+  'dp1-baseline-horizontal-prop18',
 ]);
 
-/** Orientation could not be recovered — do not assume these are upright. */
-export const UNDETERMINED_KEY_SLUGS: ReadonlySet<string> = new Set([
-  '2004__6in__unset__dp1-baseline-horizontal-2026-08-31',
-  '2004__6in__unset__dp1-baseline-horizontal-2',
-  '2004__6in__unset__dp1-baseline-horizontal-3',
-  '2004__6in__unset__dp1-baseline-horizontal-4',
-  '2004__6in__unset__dp1-baseline-horizontal-5',
-  '2004__6in__unset__dp1-baseline-horizontal-6',
-  '2004__6in__unset__dp1-baseline-horizontal-prop1',
-  '2004__6in__unset__dp1-baseline-horizontal-prop2',
-  '2004__6in__unset__dp1-baseline-horizontal-prop3',
-  '2004__6in__unset__dp1-baseline-horizontal-prop4',
-  '2004__6in__unset__dp1-baseline-horizontal-prop5',
-  '2004__6in__unset__dp1-baseline-horizontal-prop6',
+/** Flat-arc runs confirmed to have been turned 180°, so the elevation labels are mirrored. */
+const FLAT_TURNED = new Set([
+  'dp1-baseline-horizontal-prop11',
+  'dp1-baseline-horizontal-prop12',
+  'dp1-baseline-horizontal-prop13',
+  'dp1-baseline-horizontal-prop14',
 ]);
 
-/** `F` if the arc was turned 180° for this base, `?` if the orientation is unknown. */
-export function arcOrientationMark(slug: string): '' | 'F' | '?' {
-  if (FLIPPED_KEY_SLUGS.has(slug)) return 'F';
-  if (UNDETERMINED_KEY_SLUGS.has(slug)) return '?';
-  return '';
+export type ArcState = 'normal' | 'flat' | 'flat-turned' | 'flat-unknown';
+
+export function arcState(k: Key): ArcState {
+  if (!/horizontal/i.test(k.notes)) return 'normal';
+  if (FLAT_TURNED.has(k.notes)) return 'flat-turned';
+  if (FLAT_REFERENCE.has(k.notes)) return 'flat';
+  return 'flat-unknown';
+}
+
+/** Short mark for a base picker: `H` flat, `H F` flat and turned, `H ?` flat and unknown. */
+export function arcMark(k: Key): string {
+  switch (arcState(k)) {
+    case 'flat-turned':
+      return 'H F';
+    case 'flat-unknown':
+      return 'H ?';
+    case 'flat':
+      return 'H';
+    default:
+      return '';
+  }
 }
 
 export const ARC_ORIENTATION_LEGEND =
-  'F = arc turned 180°, so every elevation label is mirrored. ' +
-  '? = orientation could not be recovered from the data.';
+  'H = arc laid flat for the validation campaign, not in its normal orientation. ' +
+  'H F = laid flat and turned 180°, so every elevation label is mirrored. ' +
+  'H ? = laid flat, but which of the two orientations was never recovered. ' +
+  'Unmarked bases were captured with the arc standing normally.';

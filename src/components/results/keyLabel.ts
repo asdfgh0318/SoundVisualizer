@@ -1,5 +1,5 @@
 import type { Key } from '../../api/types';
-import { arcOrientationMark } from '../../content/arcOrientation';
+import { arcMark } from '../../content/arcOrientation';
 
 /** One place both base pickers get their option text from.
  *
@@ -11,8 +11,8 @@ export function keyLabel(k: Key): string {
   const parts = [k.motor, k.propeller];
   if (k.shroud && k.shroud !== 'none') parts.push(k.shroud);
   if (k.notes && k.notes !== 'unset') parts.push(k.notes);
-  const mark = arcOrientationMark(k.slug);
-  return parts.join(' · ') + (mark ? `  ${mark}` : '');
+  const mark = arcMark(k);
+  return parts.join(' · ') + (mark ? `  [${mark}]` : '');
 }
 
 /** Shorter form for chart legends and series chips, where the motor is the same for
@@ -21,6 +21,6 @@ export function seriesLabel(k: Key): string {
   const parts = [k.propeller];
   if (k.shroud && k.shroud !== 'none') parts.push(k.shroud);
   if (k.notes && k.notes !== 'unset') parts.push(k.notes);
-  const mark = arcOrientationMark(k.slug);
-  return (parts.join(' · ') || k.motor) + (mark ? `  ${mark}` : '');
+  const mark = arcMark(k);
+  return (parts.join(' · ') || k.motor) + (mark ? `  [${mark}]` : '');
 }
