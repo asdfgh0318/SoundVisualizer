@@ -25,7 +25,9 @@ interface Props {
   resetKey?: number;
 }
 
-const POLAR_CONFIG = { scrollZoom: true, doubleClick: 'reset' as const };
+// No scrollZoom: Plotly implements wheel zoom for cartesian/gl3d/geo/map only,
+// never for polar, so asking for it here would do nothing but mislead.
+const POLAR_CONFIG = { doubleClick: 'reset' as const };
 
 const GRID = '#374151';
 const TEXT = '#9ca3af';
@@ -108,6 +110,7 @@ export function PolarPolarPlot({ series, rangeMode, unit, resetKey = 0 }: Props)
           ...radialRange,
         },
         angularaxis: {
+          rotation: 0,
           tickmode: 'array',
           tickvals: rangeMode === 360 ? ticks360 : ticks180,
           ticktext: rangeMode === 360 ? labels360 : labels180,
@@ -126,7 +129,9 @@ export function PolarPolarPlot({ series, rangeMode, unit, resetKey = 0 }: Props)
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [rangeMode, showLegend, unit, radialRange, resetKey]);
 
-  return <PlotlyChart data={data} layout={layout} config={POLAR_CONFIG} className="w-full" />;
+  return (
+    <PlotlyChart data={data} layout={layout} config={POLAR_CONFIG} className="w-full" pinPolarOrientation />
+  );
 }
 
 /** The polar plot with the mic-arc schematic beside it, a zoom hint and a
@@ -149,8 +154,7 @@ export function PolarPlotFrame({ series, rangeMode, unit }: Omit<Props, 'resetKe
       </div>
       <div className="flex items-center justify-between gap-3 flex-wrap text-[11px] text-gray-500 px-1">
         <span>
-          Zoom: scroll over the plot, or drag along the radial axis. Revert: double-click the plot
-          or press Reset view.
+          Zoom: drag along the radial axis. Revert: double-click the plot or press Reset view.
         </span>
         <button
           type="button"
