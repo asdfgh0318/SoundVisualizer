@@ -399,6 +399,84 @@ def take_octave_series(
     return results
 
 
+def assert_tone_stable(
+    sample: np.ndarray,
+    freq: float,
+    *,
+    sr: int = SR,
+    chunk_s: float = 0.25,
+    level_tol_db: float = 6.0,
+    freq_tol: float = 0.01,
+    snr_min_db: float = 10.0,
+) -> dict:
+    """Verify the tone at `freq` is present and stable across the whole window.
+
+    Three checks on a capture: the tone stands above the adjacent-band floor
+    by `snr_min_db` (a dead mic or silent speaker must not pass as perfectly
+    stable silence); every chunk's tone level stays within `level_tol_db` of
+    the median chunk (dropouts, clicks); every chunk's peak stays within
+    `freq_tol` of the nominal (clock or underrun wander). Raises with the
+    offending chunks; returns the stats on success.
+    """
+    x = np.asarray(sample, dtype=np.float64).reshape(-1)
+    if not 0.0 < freq < sr / 2:
+        raise CalibratorError(f"freq {freq} outside (0, {sr / 2}) Hz")
+    n_chunk = round(chunk_s * sr)
+    if len(x) < 2 * n_chunk:
+        raise CalibratorError(
+            f"need at least 2 chunks of {chunk_s} s, capture is {len(x) / sr:.2f} s"
+        )
+
+    w = np.hanning(len(x))
+    X = np.abs(np.fft.rfft(x * w)) * 2 / w.sum()
+    f = np.fft.rfftfreq(len(x), 1 / sr)
+    tone_band = (f >= freq * 0.97) & (f <= freq * 1.03)
+    floor_band = (f > 0) & (
+        ((f >= freq * 0.85) & (f <= freq * 0.95))
+        | ((f >= freq * 1.05) & (f <= freq * 1.15))
+    )
+    if not tone_band.any() or not floor_band.any():
+        raise CalibratorError(f"no FFT bins inside the bands around {freq} Hz — longer capture")
+
+    level_full = 20 * np.log10(X[tone_band].max() + 1e-12)
+    floor_full = 20 * np.log10(np.sqrt(np.mean(X[floor_band] ** 2)) + 1e-12)
+    if level_full - floor_full < snr_min_db:
+        raise CalibratorError(
+            f"no tone at {freq} Hz: peak {level_full:.1f} dBFS vs adjacent floor "
+            f"{floor_full:.1f} dBFS = {level_full - floor_full:.1f} dB SNR, need {snr_min_db} dB"
+        )
+
+    n = len(x) // n_chunk
+    xc = x[: n * n_chunk].reshape(n, n_chunk)
+    wc = np.hanning(n_chunk)
+    Xc = np.abs(np.fft.rfft(xc * wc, axis=1)) * 2 / wc.sum()
+    fc = np.fft.rfftfreq(n_chunk, 1 / sr)
+    cb = (fc >= freq * 0.97) & (fc <= freq * 1.03)
+    levels = 20 * np.log10(Xc[:, cb].max(axis=1) + 1e-12)
+    peaks = fc[cb][Xc[:, cb].argmax(axis=1)]
+    med = np.median(levels)
+    bad_level = [i for i in range(n) if abs(levels[i] - med) > level_tol_db]
+    bad_freq = [i for i in range(n) if abs(peaks[i] - freq) > freq_tol * freq]
+    if bad_level or bad_freq:
+        parts = []
+        if bad_level:
+            parts.append("level: " + ", ".join(
+                f"chunk {i} {levels[i]:.1f} dBFS (median {med:.1f})" for i in bad_level))
+        if bad_freq:
+            parts.append("frequency: " + ", ".join(
+                f"chunk {i} {peaks[i]:.1f} Hz" for i in bad_freq))
+        raise CalibratorError(f"tone at {freq} Hz not stable — " + "; ".join(parts))
+
+    return {
+        "chunks": int(n),
+        "level_dbfs": float(med),
+        "worst_level_dev_db": float(np.abs(levels - med).max()),
+        "peak_hz": [float(p) for p in peaks],
+        "worst_freq_dev_hz": float(np.abs(peaks - freq).max()),
+        "snr_db": float(level_full - floor_full),
+    }
+
+
 def save_wav(path: str | Path, audio: np.ndarray, sr: int = SR) -> Path:
     """Write float32 mono WAV (IEEE float, the same convention as the server's store)."""
     path = Path(path)
