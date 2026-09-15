@@ -50,7 +50,10 @@ For colleagues / reviewers / anyone evaluating the app. One command, ~5 minutes 
 ```bash
 git clone https://github.com/asdfgh0318/SoundVisualizer.git
 cd SoundVisualizer
-docker compose up                  # first build ~3-5 min, ~680 MB image
+docker compose up --build          # first build ~3-5 min, ~680 MB image
+#      ^^^^^^^ always pass --build after a git pull: docker-compose.yml pins
+#      image: soundvisualizer:latest, so a plain `docker compose up` reuses the
+#      image you already have and silently serves the OLD bundle.
 ```
 
 Open **http://localhost:8000**. You'll land on the **Intro** page. On **Setup**, Tyto status shows "Not connected" and audio devices are empty; that's expected (the demo image intentionally has no hardware passthrough).

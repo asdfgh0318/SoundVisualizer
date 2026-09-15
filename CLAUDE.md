@@ -45,9 +45,15 @@ Laptop is Linux (kernel 6.8). Same Python server runs on the RPi 5 with no code 
 
 ## Running it
 
+**Always launch the backend against the real measurement repo.** `SOUNDVIS_DATA` must point at
+`../SoundVisualizer-data/data` (the GitHub backup clone, 35+ real bases). Without it the store
+falls back to `./data`, which holds only junk/seed test keys — Adam does not want to see those
+(standing instruction, 2026-09-15). `git pull` the data repo first when it is reachable.
+
 ```bash
-# Backend
-.venv/bin/uvicorn server.main:app --reload --port 8000
+# Backend — SOUNDVIS_DATA is mandatory
+git -C ../SoundVisualizer-data pull --ff-only   # skip if offline / no SSH key
+SOUNDVIS_DATA=../SoundVisualizer-data/data .venv/bin/uvicorn server.main:app --reload --port 8000
 
 # Frontend (separate terminal)
 npm run dev
@@ -60,7 +66,7 @@ curl -X POST http://localhost:8000/dev/seed
 
 Tests: `.venv/bin/pytest server/tests/` (122 passing). Lint: `.venv/bin/ruff check server/ scripts/`.
 
-Demo via Docker (no install needed): `docker compose up` → http://localhost:8000. Multi-stage Dockerfile bundles the React build into FastAPI's static mount; no hardware passthrough.
+Demo via Docker (no install needed): `docker compose up --build` → http://localhost:8000. **The `--build` is not optional after a pull**: `docker-compose.yml` pins `image: soundvisualizer:latest`, so plain `docker compose up` reuses whatever image of that name already exists and serves a stale bundle with no warning (this bit Paweł on 2026-09-15 — he pulled, ran `docker compose up`, and got a build predating the Intro page). Multi-stage Dockerfile bundles the React build into FastAPI's static mount; no hardware passthrough.
 
 ## Locked decisions
 
@@ -101,7 +107,7 @@ Demo via Docker (no install needed): `docker compose up` → http://localhost:80
 - Don't pre-build for hypothetical features. MVP target is laptop + UMIKs + Tyto; Norsonic and RPi packaging are deferred phases — don't write code for them now.
 - `server/vendor/pawel/` is treated as upstream — modifications limited to package-relative import fixes (see `server/vendor/pawel/README.md`). Calibration overrides happen in `server/core/calibration_override.py`, not in the vendored module.
 - Server-side trigger-onset sync is the chosen mic-alignment strategy — UMIK-2s cannot be hardware-clock-locked.
-- For UI changes, dev server is `npm run dev` (frontend) + `uvicorn server.main:app --reload` (backend on `:8000`).
+- For UI changes, dev server is `npm run dev` (frontend) + `SOUNDVIS_DATA=../SoundVisualizer-data/data uvicorn server.main:app --reload` (backend on `:8000`). Never start the backend without `SOUNDVIS_DATA` — see *Running it*.
 - The `/dev/seed` and `/dev/fake_capture` endpoints synthesize realistic propeller noise (BPF + harmonics + LF spreaded + HF broadband, with elevation-dependent directivity) so the Results tools can be developed and demoed without the rig.
 
 ## Maintenance — standing instructions
@@ -138,4 +144,4 @@ The standard Anthropic safety rules still apply: don't commit secrets, don't `--
 - `sudo docker compose build` (rebuilds Stage 1 / Stage 2 with current source).
 - Verify the rebuild succeeded; you don't need to start the container unless the user asks.
 - Skip the rebuild for docs-only commits (CLAUDE.md, PLAN.md, README.md, docs/), commits touching only `.gitignore` / `.dockerignore` exclusions, or test-only commits in `server/tests/` that don't change runtime behaviour.
-- The image is local-only (no registry push). Anyone cloning the repo gets a fresh build on their first `docker compose up`, so this step is for *your* local demo to stay current — not a release artifact.
+- The image is local-only (no registry push). Anyone cloning the repo gets a fresh build on their first `docker compose up --build`, so this step is for *your* local demo to stay current — not a release artifact.
