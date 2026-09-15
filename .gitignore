@@ -60,3 +60,6 @@ venv/
 
 # Regenerable from hardware/hub-source/hub-sphere.scad in one command
 *.stl
+
+# Calibrator session output (WAVs, charts)
+calibrator/fft/
