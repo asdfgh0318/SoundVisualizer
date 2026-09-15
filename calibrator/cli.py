@@ -17,6 +17,7 @@ from .core import (
     assert_mic_ok,
     assert_speaker_ok,
     log_series,
+    third_octave,
 )
 from .postprocess import relative_curves, write_rew_curve
 from .session import capture_capsule
@@ -48,9 +49,20 @@ def cmd_capture(args: argparse.Namespace) -> int:
     m = acquire_umik()
     s = acquire_speaker()
     if args.freqs:
+        if args.fmin is not None or args.fmax is not None:
+            raise CalibratorError("--freqs and --fmin/--fmax are mutually exclusive")
         freqs = [float(f) for f in args.freqs.split(",")]
     elif args.per_octave:
-        freqs = log_series(per_octave=args.per_octave)
+        freqs = log_series(
+            fmin=60.0 if args.fmin is None else args.fmin,
+            fmax=16000.0 if args.fmax is None else args.fmax,
+            per_octave=args.per_octave,
+        )
+    elif args.fmin is not None or args.fmax is not None:
+        freqs = third_octave(
+            fmin=63.0 if args.fmin is None else args.fmin,
+            fmax=16000.0 if args.fmax is None else args.fmax,
+        )
     else:
         freqs = None
     out = capture_capsule(m, s, args.label, args.out, freqs=freqs, amplitude=args.amplitude)
@@ -97,6 +109,10 @@ def main(argv: list[str] | None = None) -> int:
                     help="denser log grid (IEC 61260, anchored at 1 kHz) instead of the "
                          "default 1/3-octave list; e.g. 6 = 49 points, 12 = 97 points. "
                          "One grid per session: postprocessing matches exact frequencies.")
+    cap.add_argument("--fmin", type=float, default=None,
+                     help="lower bound of the tone grid (default: the grid's own, 63/60 Hz)")
+    cap.add_argument("--fmax", type=float, default=None,
+                     help="upper bound of the tone grid (default: 16000 Hz)")
     cap.add_argument("--amplitude", type=float, default=1.0)
     cap.set_defaults(func=cmd_capture)
 
