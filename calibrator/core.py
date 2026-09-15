@@ -6,7 +6,7 @@
     )
 
     m = acquire_umik()        # the one UMIK-2 plugged in
-    s = acquire_speaker()     # the one USB hw: output (the interface)
+    s = acquire_speaker()     # our PCM2902 interface (pinned by USB ID)
     sample, sr = take_sample_at_frequency(m, s, 1000)
     save_wav("1000hz.wav", sample, sr)
 
@@ -31,6 +31,13 @@ import sounddevice as sd
 from scipy.io import wavfile
 
 SR = 48000
+
+# The session interface is the Burr-Brown/TI PCM2902 USB codec ("USB Audio
+# CODEC"). Pinned by USB vendor:product ID, not by name or card number: the
+# name is a generic chip string many dongles share, and card numbers shift
+# with every plug. This keeps working with any other USB audio device
+# plugged in; `index=` is the escape hatch for a different interface.
+SPEAKER_USB_ID = ("08bb", "2902")
 
 
 class CalibratorError(RuntimeError):
@@ -68,6 +75,20 @@ def _card_id(card: int | None) -> str | None:
         return None
 
 
+def _usb_id(card: int | None) -> tuple[str, str] | None:
+    """(idVendor, idProduct) of the USB device behind an ALSA card, or None."""
+    if card is None:
+        return None
+    try:
+        base = Path(f"/sys/class/sound/card{card}/device").resolve().parent
+        return (
+            (base / "idVendor").read_text().strip(),
+            (base / "idProduct").read_text().strip(),
+        )
+    except OSError:
+        return None
+
+
 def acquire_umik(index: int | None = None) -> Mic:
     """The one UMIK-2 connected. `index` is the explicit escape hatch."""
     devs = list(sd.query_devices())
@@ -90,10 +111,11 @@ def acquire_umik(index: int | None = None) -> Mic:
 
 
 def acquire_speaker(index: int | None = None) -> Speaker:
-    """The one USB hw: output — the interface driving the loudspeaker.
+    """Our PCM2902 interface (SPEAKER_USB_ID), wherever it is plugged.
 
-    HDMI/HDA outputs are excluded on purpose; the session speaker hangs off a
-    USB codec (here a Burr-Brown PCM2902, 'USB Audio CODEC').
+    Other USB audio devices (the UMIK, headsets, another interface) do not
+    interfere. A second PCM2902 would be an ambiguity and errors out; use
+    `index=` for any deliberate different output.
     """
     devs = list(sd.query_devices())
     if index is not None:
@@ -102,10 +124,12 @@ def acquire_speaker(index: int | None = None) -> Speaker:
             raise CalibratorError(f"device {index} is '{d['name']}', not a hardware output")
     else:
         found = [(i, d) for i, d in enumerate(devs)
-                 if "(hw:" in d["name"] and "USB" in d["name"] and d["max_output_channels"] > 0]
+                 if "(hw:" in d["name"] and d["max_output_channels"] > 0
+                 and _usb_id(_hw_card(d["name"])) == SPEAKER_USB_ID]
         if len(found) != 1:
             raise CalibratorError(
-                f"expected exactly one USB output, found {len(found)}: "
+                f"expected exactly one speaker interface {SPEAKER_USB_ID[0]}:{SPEAKER_USB_ID[1]}, "
+                f"found {len(found)}: "
                 + (_device_list(found) or "none visible to PortAudio — if it is plugged in, "
                    "PipeWire is probably holding it; wpctl set-profile <dev> off")
             )

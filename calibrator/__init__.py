@@ -1,6 +1,7 @@
 """Dead-simple single-mic tone capture — usage sketch in calibrator/core.py."""
 
 from .core import (
+    SPEAKER_USB_ID,
     SR,
     CalibratorError,
     Mic,
@@ -14,6 +15,7 @@ from .core import (
 )
 
 __all__ = [
+    "SPEAKER_USB_ID",
     "SR",
     "CalibratorError",
     "Mic",
