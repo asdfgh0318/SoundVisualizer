@@ -1,0 +1,349 @@
+"""Dead-simple single-mic tone capture for the substitution-calibration session.
+
+    from calibrator import (
+        acquire_umik, acquire_speaker, assert_mic_ok, assert_speaker_ok,
+        take_sample_at_frequency, save_wav,
+    )
+
+    m = acquire_umik()        # the one UMIK-2 plugged in
+    s = acquire_speaker()     # the one USB hw: output (the interface)
+    sample, sr = take_sample_at_frequency(m, s, 1000)
+    save_wav("1000hz.wav", sample, sr)
+
+Two rules the whole module hangs on:
+
+* Identity is the connection. No serials, no stored state — the one UMIK plugged
+  in is the mic under test, so 0 or >1 connected is an error.
+* Both devices carry a USB feature-unit volume living in their firmware, shared
+  state that WirePlumber or a replug can silently change (the interface arrived
+  at -23 dB). The gates are therefore re-read before *every* capture, never
+  trusted from session start. Nothing here ever writes a control.
+"""
+
+import re
+import subprocess
+import time
+from dataclasses import dataclass
+from pathlib import Path
+
+import numpy as np
+import sounddevice as sd
+from scipy.io import wavfile
+
+SR = 48000
+
+
+class CalibratorError(RuntimeError):
+    """Every failure mode in this module; the message is meant for a human."""
+
+
+@dataclass(frozen=True)
+class Mic:
+    index: int
+    name: str
+    card: int | None
+    card_id: str | None
+
+
+@dataclass(frozen=True)
+class Speaker:
+    index: int
+    name: str
+    card: int | None
+    card_id: str | None
+    channels: int
+
+
+def _hw_card(name: str) -> int | None:
+    m = re.search(r"\(hw:(\d+),", name)
+    return int(m.group(1)) if m else None
+
+
+def _card_id(card: int | None) -> str | None:
+    if card is None:
+        return None
+    try:
+        return Path(f"/sys/class/sound/card{card}/id").read_text().strip() or None
+    except OSError:
+        return None
+
+
+def acquire_umik(index: int | None = None) -> Mic:
+    """The one UMIK-2 connected. `index` is the explicit escape hatch."""
+    devs = list(sd.query_devices())
+    if index is not None:
+        d = _device_at(devs, index)
+        if "UMIK-2" not in d["name"] or "(hw:" not in d["name"] or d["max_input_channels"] < 1:
+            raise CalibratorError(f"device {index} is '{d['name']}', not a UMIK-2 input")
+    else:
+        found = [(i, d) for i, d in enumerate(devs)
+                 if "UMIK-2" in d["name"] and "(hw:" in d["name"] and d["max_input_channels"] > 0]
+        if len(found) != 1:
+            raise CalibratorError(
+                f"expected exactly one UMIK-2, found {len(found)}: "
+                + (_device_list(found) or "none visible to PortAudio — if it is plugged in, "
+                   "PipeWire is probably holding it; wpctl set-profile <dev> off")
+            )
+        i, d = found[0]
+    card = _hw_card(d["name"])
+    return Mic(index=i, name=d["name"], card=card, card_id=_card_id(card))
+
+
+def acquire_speaker(index: int | None = None) -> Speaker:
+    """The one USB hw: output — the interface driving the loudspeaker.
+
+    HDMI/HDA outputs are excluded on purpose; the session speaker hangs off a
+    USB codec (here a Burr-Brown PCM2902, 'USB Audio CODEC').
+    """
+    devs = list(sd.query_devices())
+    if index is not None:
+        d = _device_at(devs, index)
+        if "(hw:" not in d["name"] or d["max_output_channels"] < 1:
+            raise CalibratorError(f"device {index} is '{d['name']}', not a hardware output")
+    else:
+        found = [(i, d) for i, d in enumerate(devs)
+                 if "(hw:" in d["name"] and "USB" in d["name"] and d["max_output_channels"] > 0]
+        if len(found) != 1:
+            raise CalibratorError(
+                f"expected exactly one USB output, found {len(found)}: "
+                + (_device_list(found) or "none visible to PortAudio — if it is plugged in, "
+                   "PipeWire is probably holding it; wpctl set-profile <dev> off")
+            )
+        i, d = found[0]
+    card = _hw_card(d["name"])
+    return Speaker(index=i, name=d["name"], card=card, card_id=_card_id(card),
+                   channels=min(2, d["max_output_channels"]))
+
+
+def _device_at(devs: list, index: int) -> dict:
+    if index < 0:
+        raise CalibratorError("device index must be >= 0")
+    try:
+        return devs[index]
+    except IndexError as e:
+        raise CalibratorError(f"no sounddevice index {index}") from e
+
+
+def _device_list(found) -> str:
+    return "; ".join(f"[{i}] {d['name']}" for i, d in found)
+
+
+# ---------------------------------------------------------------- mixer gates
+
+@dataclass(frozen=True)
+class _Control:
+    numid: int
+    iface: str
+    name: str
+    idx: int
+    type: str
+    values: list
+    min: int | None
+    max: int | None
+    db_min: float | None
+    db_max: float | None
+
+
+_HDR = re.compile(r"numid=(\d+),iface=(\w+),name='([^']+)'(?:,index=(\d+))?")
+_TYPE = re.compile(r";\s*type=(\w+),access=[\w-]+,values=\d+(?:,min=(-?\d+),max=(-?\d+))?")
+_VALS = re.compile(r":\s*values=(.+)")
+_DBMM = re.compile(r"dBminmax-min=(-?[\d.]+)dB,max=(-?[\d.]+)dB")
+
+_BOOL_TYPES = ("BOOLEAN", "INV_BOOLEAN")
+
+
+def _read_controls(card: int | None) -> list[_Control]:
+    """Parse `amixer -c N contents` into typed controls."""
+    if card is None:
+        raise CalibratorError("device has no ALSA card number — cannot read its mixer")
+    try:
+        proc = subprocess.run(
+            ["amixer", "-c", str(card), "contents"],
+            capture_output=True, text=True, check=True,
+        )
+    except FileNotFoundError as e:
+        raise CalibratorError("amixer not found (install alsa-utils)") from e
+    except subprocess.CalledProcessError as e:
+        raise CalibratorError(f"amixer failed on card {card}: {(e.stderr or '').strip()}") from e
+
+    out: list[_Control] = []
+    cur: dict | None = None
+    for raw in proc.stdout.splitlines():
+        line = raw.strip()
+        if line.startswith("numid="):
+            _flush(cur, out)
+            cur = None
+            m = _HDR.match(line)
+            if m:
+                cur = {
+                    "numid": int(m.group(1)),
+                    "iface": m.group(2),
+                    "name": m.group(3),
+                    "idx": int(m.group(4) or 0),
+                    "type": "",
+                    "values": [],
+                    "min": None,
+                    "max": None,
+                    "db_min": None,
+                    "db_max": None,
+                }
+            continue
+        if cur is None:
+            continue
+        if line.startswith(";"):
+            m = _TYPE.search(line)
+            if m:
+                cur["type"] = m.group(1)
+                if m.group(2) is not None:
+                    cur["min"], cur["max"] = int(m.group(2)), int(m.group(3))
+        elif line.startswith(":"):
+            m = _VALS.search(line)
+            if not m:
+                continue
+            raw_values = [v.strip() for v in m.group(1).split(",")]
+            if cur["type"] in _BOOL_TYPES:
+                cur["values"] = [v == "on" for v in raw_values]
+            elif cur["type"] == "INTEGER":
+                try:
+                    cur["values"] = [int(v) for v in raw_values]
+                except ValueError:
+                    cur["values"] = []
+        elif line.startswith("|"):
+            m = _DBMM.search(line)
+            if m:
+                cur["db_min"], cur["db_max"] = float(m.group(1)), float(m.group(2))
+    _flush(cur, out)
+    return out
+
+
+def _flush(cur: dict | None, out: list) -> None:
+    if cur is not None and cur["type"] in ("INTEGER", *_BOOL_TYPES):
+        out.append(_Control(**cur))
+
+
+def _db_of(c: _Control, v: int) -> str:
+    if c.db_min is None or c.min is None or c.max is None or c.max == c.min:
+        return "? dB"
+    db = c.db_min + (v - c.min) * (c.db_max - c.db_min) / (c.max - c.min)
+    return f"{db:+.2f} dB"
+
+
+def _assert_mixer_gates(handle: Mic | Speaker, prefix: str) -> None:
+    """Every MIXER control named `<prefix> Volume` must sit at max (0 dB
+    firmware attenuation) and every `<prefix> Switch` must be on. On both
+    devices 'on' is the unmuted state. Missing controls fail too."""
+    controls = [c for c in _read_controls(handle.card)
+                if c.iface == "MIXER" and c.name.startswith(prefix)]
+    vols = [c for c in controls if c.type == "INTEGER"]
+    switches = [c for c in controls if c.type in _BOOL_TYPES]
+    problems: list[str] = []
+    if not vols:
+        problems.append(f"no '{prefix} Volume' control found")
+    if not switches:
+        problems.append(f"no '{prefix} Switch' control found")
+    for c in vols:
+        if not c.values:
+            problems.append(f"{c.name}: could not read values")
+            continue
+        bad = [v for v in c.values if v != c.max]
+        if bad:
+            problems.append(
+                f"{c.name} = {c.values} of max {c.max} "
+                f"({', '.join(_db_of(c, v) for v in bad)}), expected 0 dB"
+            )
+    for c in switches:
+        if not all(c.values):
+            problems.append(f"{c.name} = off, expected on")
+    if problems:
+        raise CalibratorError(
+            f"{handle.name}: digital state not at unity — " + "; ".join(problems)
+        )
+
+
+def assert_mic_ok(m: Mic) -> Mic:
+    """UMIK mixer at unity + the input opens at 48 kHz. Returns m for chaining."""
+    _assert_mixer_gates(m, "Mic Capture")
+    try:
+        with sd.InputStream(device=m.index, channels=1, samplerate=SR, dtype="float32") as stream:
+            stream.start()
+            stream.stop()
+    except Exception as e:
+        raise CalibratorError(f"cannot open '{m.name}' for capture at {SR} Hz: {e}") from e
+    return m
+
+
+def assert_speaker_ok(s: Speaker) -> Speaker:
+    """Interface mixer at unity + the output opens at 48 kHz. Returns s for chaining."""
+    _assert_mixer_gates(s, "PCM Playback")
+    try:
+        with sd.OutputStream(device=s.index, channels=s.channels, samplerate=SR,
+                             dtype="float32") as stream:
+            stream.start()
+            stream.stop()
+    except Exception as e:
+        raise CalibratorError(f"cannot open '{s.name}' for playback at {SR} Hz: {e}") from e
+    return s
+
+
+# ------------------------------------------------------------------ capture
+
+def _tone(freq: float, amplitude: float, buffer_s: float = 1.0) -> np.ndarray:
+    # Whole number of cycles per buffer so the loop seam is phase-continuous;
+    # a fractional count would insert a broadband click at every wrap.
+    n_cycles = max(1, round(freq * buffer_s))
+    n = round(n_cycles * SR / freq)
+    t = np.arange(n, dtype=np.float64) / SR
+    return (amplitude * np.sin(2.0 * np.pi * freq * t)).astype(np.float32)
+
+
+def take_sample_at_frequency(
+    m: Mic,
+    s: Speaker,
+    freq: float,
+    *,
+    settle_s: float = 0.5,
+    capture_s: float = 1.0,
+    amplitude: float = 0.25,
+) -> tuple[np.ndarray, int]:
+    """Play a steady tone at `freq` on `s` and record `m` while it plays.
+
+    Both gates re-run here, so every capture is independently verified: a
+    control moved since the last capture fails loudly instead of shifting
+    this capture by an unknown number of dB.
+    """
+    assert_mic_ok(m)
+    assert_speaker_ok(s)
+    if not 0.0 < freq < SR / 2:
+        raise CalibratorError(f"freq {freq} outside (0, {SR / 2}) Hz")
+    if not 0.0 < amplitude <= 1.0:
+        raise CalibratorError(f"amplitude {amplitude} outside (0, 1]")
+    if settle_s < 0.0:
+        raise CalibratorError(f"settle_s {settle_s} must be >= 0")
+    if capture_s <= 0.0:
+        raise CalibratorError(f"capture_s {capture_s} must be > 0")
+
+    sig = _tone(freq, amplitude)
+    if s.channels == 2:
+        sig = np.column_stack((sig, sig))
+    try:
+        sd.play(sig, samplerate=SR, device=s.index, loop=True)
+        time.sleep(settle_s)
+        rec = sd.rec(
+            round(capture_s * SR),
+            samplerate=SR,
+            device=m.index,
+            channels=1,
+            dtype="float32",
+            blocking=True,
+        )
+    finally:
+        sd.stop()
+    return rec.reshape(-1), SR
+
+
+def save_wav(path: str | Path, audio: np.ndarray, sr: int = SR) -> Path:
+    """Write float32 mono WAV (IEEE float, the same convention as the server's store)."""
+    path = Path(path)
+    path.parent.mkdir(parents=True, exist_ok=True)
+    wavfile.write(path, sr, np.asarray(audio, dtype=np.float32))
+    return path

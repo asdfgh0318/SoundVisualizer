@@ -86,7 +86,7 @@ Raised by the arc validation (Sept 2026) and its remedies report (`docs/arc-vali
 - **Room or rotor at the blade-passage frequency?** The tone polar is ±8 dB while the broadband floor beside the tone is flat; narrow room modes and a non-axisymmetric inflow (stand, wall) both fit. Decided by a loudspeaker at the hub (sweep for the room transfer function, tones at 216/238/258 Hz) plus a reversed-rotation run.
 - **Done 2026-09-09 (issue #12):** BPF from the audio in `meta.json`, per-harmonic tone levels and tone-notched third-octaves in the FFT response, off-speed flags in `pwm_points`, level-source selector on the Polar tab. Still open: a low-voltage flag from the telemetry (the compat grouping already splits prop7 by voltage), and a per-band tone/broadband view in the Custom tab.
 - **Capture bookkeeping:** the short PWM-1800 WAVs were the trigger sync cropping an already-running source to a late trigger (issue #13, fixed 2026-09-09); PWM 1200 never spins up a tone (motor near idle); prop18's PWM-2000 step did not spin up (1.9 A at 11.9 V, cause unknown); prop7's different speed was the supply current-limiting at 8 V.
-- **Next campaign** (report §15): geometry → loudspeaker session (arc flat) → speed ladder of 12–15 PWM steps with a cyclic mic rotation across runs → treat/move what the sweep names → loudspeaker session (arc vertical) → calibrator session for the eleven UMIK-2s.
+- **Next campaign** (report §15): geometry → loudspeaker session (arc flat) → speed ladder of 12–15 PWM steps with a cyclic mic rotation across runs → treat/move what the sweep names → loudspeaker session (arc vertical) → calibrator session for the eleven UMIK-2s (capture tool built: `calibrator/`, 2026-09-15).
 
 ## Resolved
 
