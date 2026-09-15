@@ -391,6 +391,19 @@ def third_octave(fmin: float = 63.0, fmax: float = 16000.0) -> list[float]:
     return [float(f) for f in THIRD_OCTAVE_HZ if fmin <= f <= fmax]
 
 
+def log_series(fmin: float = 60.0, fmax: float = 16000.0, per_octave: int = 6) -> list[float]:
+    """Log-spaced tone grid anchored at 1 kHz (base-2, IEC 61260 convention),
+    rounded to whole Hz: per_octave=6 gives 62, 70, 79 ... 15844 (49 points).
+    One grid per session: relative_curves matches exact frequency keys, and
+    this grid does not repeat THIRD_OCTAVE_HZ's preferred roundings.
+    """
+    if per_octave < 1:
+        raise CalibratorError(f"per_octave {per_octave} must be >= 1")
+    k_lo = int(np.ceil(per_octave * np.log2(fmin / 1000)))
+    k_hi = int(np.floor(per_octave * np.log2(fmax / 1000)))
+    return [float(round(1000 * 2 ** (k / per_octave))) for k in range(k_lo, k_hi + 1)]
+
+
 def take_octave_series(
     m: Mic,
     s: Speaker,

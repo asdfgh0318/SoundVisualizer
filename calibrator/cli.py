@@ -16,6 +16,7 @@ from .core import (
     acquire_umik,
     assert_mic_ok,
     assert_speaker_ok,
+    log_series,
 )
 from .postprocess import relative_curves, write_rew_curve
 from .session import capture_capsule
@@ -46,7 +47,12 @@ def cmd_devices(_args: argparse.Namespace) -> int:
 def cmd_capture(args: argparse.Namespace) -> int:
     m = acquire_umik()
     s = acquire_speaker()
-    freqs = [float(f) for f in args.freqs.split(",")] if args.freqs else None
+    if args.freqs:
+        freqs = [float(f) for f in args.freqs.split(",")]
+    elif args.per_octave:
+        freqs = log_series(per_octave=args.per_octave)
+    else:
+        freqs = None
     out = capture_capsule(m, s, args.label, args.out, freqs=freqs, amplitude=args.amplitude)
     print(f"\ncurve saved: {out}")
     return 0
@@ -87,6 +93,10 @@ def main(argv: list[str] | None = None) -> int:
     cap.add_argument("--out", type=Path, default=_today_dir(),
                      help="session dir (default: calibrator/sessions/<today>)")
     cap.add_argument("--freqs", help="comma-separated override, e.g. 200,1000,16000")
+    cap.add_argument("--per-octave", type=int, default=None,
+                    help="denser log grid (IEC 61260, anchored at 1 kHz) instead of the "
+                         "default 1/3-octave list; e.g. 6 = 49 points, 12 = 97 points. "
+                         "One grid per session: postprocessing matches exact frequencies.")
     cap.add_argument("--amplitude", type=float, default=1.0)
     cap.set_defaults(func=cmd_capture)
 
