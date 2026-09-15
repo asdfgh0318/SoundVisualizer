@@ -380,6 +380,17 @@ def octave_series(f0: float = 200.0, fmax: float = 15000.0) -> list[float]:
                                                          initial=f0)))
 
 
+# Preferred 1/3-octave band centers (IEC 61260 rounded series).
+THIRD_OCTAVE_HZ = (50, 63, 80, 100, 125, 160, 200, 250, 315, 400, 500, 630, 800,
+                   1000, 1250, 1600, 2000, 2500, 3150, 4000, 5000, 6300, 8000,
+                   10000, 12500, 16000)
+
+
+def third_octave(fmin: float = 63.0, fmax: float = 16000.0) -> list[float]:
+    """Preferred 1/3-octave centers within [fmin, fmax]: 63...16000 Hz by default."""
+    return [float(f) for f in THIRD_OCTAVE_HZ if fmin <= f <= fmax]
+
+
 def take_octave_series(
     m: Mic,
     s: Speaker,
@@ -455,8 +466,12 @@ def assert_tone_stable(
     levels = 20 * np.log10(Xc[:, cb].max(axis=1) + 1e-12)
     peaks = fc[cb][Xc[:, cb].argmax(axis=1)]
     med = np.median(levels)
+    # The chunk FFT quantizes the peak to 1/chunk_s bins: at low frequencies
+    # that alone exceeds a 1% tolerance (63 Hz lands on a 4 Hz bin grid), so
+    # the tolerance has a floor of 1.5 bin widths.
+    tol_hz = max(freq_tol * freq, 1.5 * sr / n_chunk)
     bad_level = [i for i in range(n) if abs(levels[i] - med) > level_tol_db]
-    bad_freq = [i for i in range(n) if abs(peaks[i] - freq) > freq_tol * freq]
+    bad_freq = [i for i in range(n) if abs(peaks[i] - freq) > tol_hz]
     if bad_level or bad_freq:
         parts = []
         if bad_level:
