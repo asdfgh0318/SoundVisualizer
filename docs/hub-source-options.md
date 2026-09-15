@@ -34,9 +34,12 @@ with Dacron stuffing, one 5.25" paper cone, no tweeter and no crossover, 200 Hz�
 The only sealed single-driver active found. Genelec 8010A, Neumann KH 80, Yamaha HS3 and
 IK iLoud are all bass-reflex; Adam D3V uses passive radiators.
 
-**Build.** Visaton FRS 8 M 8 Ω, 58 zł at thomann.pl (73.70 zł at grelton.pl, the Polish
+**Build.** Visaton FRS 8 M 8 Ω, 58 zł at thomann.pl (article 218171, in stock, re-checked 2026-09-15) (73.70 zł at grelton.pl, the Polish
 Visaton distributor). Sd 29 cm² = 6.1 cm effective piston, so omnidirectional to ~1.8 kHz;
-fs 125 Hz, Qts 0.49, Vas 1.1 l, 88 dB/1 W/1 m. In a **1.0 litre sealed box** (a 10 cm cube,
+fs 125 Hz, Qts 0.49, Vas 1.1 l, 88 dB/1 W/1 m — all quoted from Visaton themselves and held
+with the datasheet at `papers/datasheets/` (Qes 0.58, Qms 3.24, Mms 1.8 g, Bxl 4.0 Tm, Rdc 7.2 Ω,
+Le 0.3 mH, 30 W, xmech ±2.5 mm). The alignment below stands on those three numbers, so they are
+no longer carried on trust. In a **1.0 litre sealed box** (a 10 cm cube,
 lightly stuffed) the alignment is Butterworth: Fc 181 Hz, Qtc 0.71.
 
 | band | 125 | 157 | 198 | 250 | 315 | 400 Hz |
