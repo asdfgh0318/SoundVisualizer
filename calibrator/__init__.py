@@ -10,7 +10,9 @@ from .core import (
     acquire_umik,
     assert_mic_ok,
     assert_speaker_ok,
+    octave_series,
     save_wav,
+    take_octave_series,
     take_sample_at_frequency,
 )
 
@@ -24,6 +26,8 @@ __all__ = [
     "acquire_umik",
     "assert_mic_ok",
     "assert_speaker_ok",
+    "octave_series",
     "save_wav",
+    "take_octave_series",
     "take_sample_at_frequency",
 ]

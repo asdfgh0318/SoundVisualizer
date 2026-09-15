@@ -20,6 +20,8 @@ Two rules the whole module hangs on:
   trusted from session start. Nothing here ever writes a control.
 """
 
+import itertools
+import operator
 import re
 import subprocess
 import time
@@ -363,6 +365,32 @@ def take_sample_at_frequency(
     finally:
         sd.stop()
     return rec.reshape(-1), SR
+
+
+def octave_series(f0: float = 200.0, fmax: float = 15000.0) -> list[float]:
+    """f0, 2*f0, 4*f0, ... stopping at or below fmax: 200...12800 Hz by default."""
+    return list(itertools.takewhile(lambda f: f <= fmax,
+                                    itertools.accumulate(itertools.repeat(2), operator.mul,
+                                                         initial=f0)))
+
+
+def take_octave_series(
+    m: Mic,
+    s: Speaker,
+    f0: float = 200.0,
+    fmax: float = 15000.0,
+    **kwargs,
+) -> dict[float, np.ndarray]:
+    """One capture per octave step, {freq: samples}; SR is the module constant.
+
+    kwargs pass straight through to take_sample_at_frequency
+    (settle_s, capture_s, amplitude).
+    """
+    results: dict[float, np.ndarray] = {}
+    for freq in octave_series(f0, fmax):
+        print(f"{freq:g} Hz", flush=True)
+        results[freq] = take_sample_at_frequency(m, s, freq, **kwargs)[0]
+    return results
 
 
 def save_wav(path: str | Path, audio: np.ndarray, sr: int = SR) -> Path:
