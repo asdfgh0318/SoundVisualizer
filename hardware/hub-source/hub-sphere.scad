@@ -16,7 +16,11 @@
 //   part="both" (default) shows the assembly for inspection.
 
 /* [What to build] */
-part = "both";          // "top", "bottom", "both", "section"
+// "onepiece" is the intended build: a single shell whose only opening is the
+// driver cutout, printed with that flat face on the bed. "top"/"bottom" are the
+// older split-at-the-equator version, kept because it needs no bridging at all.
+part = "onepiece";      // "onepiece", "section", "top", "bottom", "both"
+orient_for_print = true; // onepiece only: lay the driver flat on z=0, opening down
 
 /* [Acoustic] */
 volume_l    = 1.0;      // NET air volume the driver sees, litres -> FRS 8 M: Fc 181 Hz, Qtc 0.71
@@ -24,23 +28,36 @@ wall        = 5.0;      // shell wall thickness, mm
 driver_displacement_ml = 20; // air the cone/magnet occupies; measure or take from the datasheet
 stuffing_g  = 10;       // polyester, loose — not modelled, just a reminder
 
-/* [Driver — VERIFY AGAINST THE UNIT IN YOUR HAND] */
-driver_cutout_d = 75.0; // datasheet cutout for the FRS 8 M
-driver_flat_d   = 88.0; // flat seating face; must clear the frame (~80 mm) + gasket
-gasket_rebate   = 0.0;  // set e.g. 1.5 to recess the frame flush
+/* [Driver — Visaton FRS 8 M, Art. 2001, datasheet drawing dated 27.07.2018] */
+// Frame is a 78 mm SQUARE with corner tabs, 93 mm across the diagonal; screws on
+// an 83 mm bolt circle through 4.5 x 5.5 slots; cut-out 75 mm; overall depth 47 mm
+// with a 2.1 mm flange. The seating flat therefore has to clear 93 mm, not the
+// ~80 mm a round 8 cm driver would suggest.
+driver_cutout_d = 75.0;
+driver_frame_across = 93.0; // corner-to-corner, the number the flat must beat
+driver_flat_d   = 98.0;     // seating face = frame diagonal + 5 mm of landing
+driver_depth    = 47.0;     // for the clearance echo below
+gasket_rebate   = 0.0;      // set e.g. 2.5 to recess the flange flush
 
-screw_holes   = false;  // leave false and drill after measuring the real frame
-screw_circle_d = 92.0;
-screw_d        = 3.5;
-screw_n        = 4;
+screw_holes   = true;   // bolt circle is from the drawing, so these are safe now
+screw_circle_d = 83.0;
+screw_d        = 3.2;   // pilot for a 4 mm self-tapper into plastic; open to 4.3
+screw_n        = 4;     // for M4 clearance, or 5.6 for M4 heat-set inserts
 
 /* [Cable + mount] */
-cable_d        = 6.0;   // grommet hole, sealed with silicone on assembly
-cable_offset   = 25.0;  // off-axis, so the south pole is free for the mount
-mount_boss     = true;  // pad + blind hole for an M6 heat-set insert
+cable_d        = 6.0;   // grommet hole, sealed with silicone once wired
+cable_z        = -12.0; // onepiece: through the side wall, where it is vertical and
+                        // prints as a clean 6 mm bridge. Split build: ignored.
+cable_offset   = 25.0;  // split build only: off-axis hole in the bottom cap
+mount_boss     = true;  // blind hole for an M6 heat-set insert
 mount_insert_d = 8.0;
 mount_insert_h = 10.0;
 mount_pad_d    = 26.0;
+boss_d         = 30.0;  // onepiece: solid CONE at the apex, so the insert goes into solid
+boss_h         = 24.0;  // material. A cone, not a cylinder: printed flat-face-down the
+                        // apex is the highest point, and a cone that widens upward is
+                        // self-supporting, where a cylinder would leave its whole
+                        // underside as an unsupported island in mid-air.
 
 /* [Print fit] */
 lip_h    = 6.0;         // spigot that locates the two halves
@@ -53,9 +70,16 @@ $fn      = 220;
 // losses depend on r_in, so solve for the radius that leaves volume_l behind.
 function cap_v(ri, fz) = (ri <= fz) ? 0
     : PI * pow(ri - fz, 2) * (3 * ri - (ri - fz)) / 3;
+// The apex plug eats into the cavity by whatever of boss_h reaches past the wall.
+// Only the part of the cone past the wall steals cavity volume. At depth `wall`
+// from the base the cone radius is rb, and what intrudes is a cone of height
+// boss_h - wall on that radius.
+function boss_v(ri) = (part != "onepiece" || !mount_boss) ? 0
+    : PI * pow(boss_d / 2 * (1 - wall / boss_h), 2) * (boss_h - wall) / 3;
 function net_v(ri) =
     4 / 3 * PI * pow(ri, 3)
     - cap_v(ri, sqrt(pow(ri + wall, 2) - pow(driver_flat_d / 2, 2)))
+    - boss_v(ri)
     - driver_displacement_ml * 1000;
 // Bisection: plain, converges, and OpenSCAD has no solver of its own.
 function solve_r(lo, hi, target, n) =
@@ -72,6 +96,11 @@ echo(str("internal radius  ", r_in,  " mm  (dia ", 2 * r_in,  ")"));
 echo(str("external radius  ", r_out, " mm  (dia ", 2 * r_out, ")"));
 echo(str("driver flat at z ", flat_z, " mm, flat dia ", driver_flat_d));
 echo(str("net air volume   ", net_v(r_in) / 1000, " ml  (target ", volume_l * 1000, ")"));
+echo(str("flat clears frame diagonal by ", (driver_flat_d - driver_frame_across) / 2, " mm per side"));
+echo(str("driver protrudes to z = ", flat_z - (driver_depth - 2.1),
+         " mm; cavity floor at ", -r_in, " mm"));
+echo(str("first-layer ring width ", (driver_flat_d - driver_cutout_d) / 2, " mm"));
+echo(str("overhang at the bed ", asin((driver_flat_d / 2) / r_out), " deg from vertical"));
 
 module shell() {
     difference() {
@@ -162,11 +191,47 @@ module top_half() {
     }
 }
 
-if (part == "bottom") bottom_half();
+module apex_plug() {
+    // Solid material filling the shell at the -Z pole, so the M6 insert has
+    // something to bite into and the printed dome closes to a point instead of
+    // bridging a flat cap.
+    intersection() {
+        sphere(r = r_out);
+        translate([0, 0, -r_out - 0.1]) cylinder(h = boss_h + 0.1, d1 = boss_d, d2 = 0);
+    }
+}
+
+module side_cable_hole() {
+    translate([0, 0, cable_z]) rotate([0, 90, 0])
+        cylinder(h = r_out + 2, d = cable_d);
+}
+
+module one_piece() {
+    difference() {
+        union() {
+            shell();
+            if (mount_boss) apex_plug();
+        }
+        driver_flat_cut();
+        driver_bore();
+        side_cable_hole();
+        if (mount_boss)
+            translate([0, 0, -r_out - 0.1])
+                cylinder(h = mount_insert_h + 0.1, d = mount_insert_d);
+    }
+}
+
+module one_piece_oriented() {
+    if (orient_for_print) translate([0, 0, flat_z]) rotate([180, 0, 0]) one_piece();
+    else one_piece();
+}
+
+if (part == "onepiece") one_piece_oriented();
+else if (part == "bottom") bottom_half();
 else if (part == "top") top_half();
 else if (part == "section")
     difference() {
-        union() { bottom_half(); top_half(); }
+        if (true) { one_piece(); }
         translate([0, -r_out - 5, -r_out - 5]) cube([r_out + 10, r_out + 10, 2 * r_out + 10]);
     }
 else { bottom_half(); top_half(); }

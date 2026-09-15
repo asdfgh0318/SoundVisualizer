@@ -69,7 +69,8 @@ driver; light stuffing gives most of it back. The alignment barely moves over th
 
 ### 3D-printed sphere (alternative, modelled 2026-09-15)
 
-A parametric model is in `hardware/hub-source/hub-sphere.scad` with notes in that
+A parametric model is in `hardware/hub-source/hub-sphere.scad` — **one piece**, the driver cutout its
+only opening, printed flat-face-down with no support and no glue line with notes in that
 directory's README: 1 litre net, 5 mm wall, internal dia 125.8 mm, external 135.8 mm,
 split at the equator on a spigot, M6 mount pad at the south pole, driver firing up.
 
@@ -100,7 +101,11 @@ offcut is enough. Butt joints, the two large panels outermost.
   what the eleven microphones see around the azimuth.
 - 6 mm cable hole in the face opposite the driver, sealed with silicone.
 - Glue and seal every joint. No port, no vent. About 10 g of polyester, loosely packed.
-- Measure the driver flange on arrival; Visaton publishes the cutout but not the frame.
+- Driver mechanics, from the datasheet drawing (27.07.2018), held at
+  `papers/datasheets/Visaton_2023_datasheet_FRS-8-M-2001.pdf`: cut-out Ø75 mm, frame a
+  **78 mm square** with corner tabs **93 mm across the diagonal**, bolt circle Ø83 mm through
+  4.5 × 5.5 slots, overall depth 47 mm, flange 2.1 mm, 30 W, xmech ±2.5 mm. The square frame is
+  the trap: the seating face has to clear 93 mm, not the ~80 mm a round 8 cm driver implies.
 
 ### Orientation and mounting
 
