@@ -29,9 +29,11 @@ Every number is a parameter at the top of the file. The ones that matter:
 | `driver_flat_d` | 98.0 | seating face; must clear the 93 mm frame diagonal |
 | `driver_displacement_ml` | 20 | estimate — see below, it barely matters |
 | `boss_d` / `boss_h` | 30 / 24 | apex cone the M6 insert screws into |
+| `land_t` | 8.0 | baffle land behind the seating face — see below, it is not optional |
+| `screw_depth` | 6.0 | blind pilot depth into that land |
 
-With the defaults: internal dia **126.8 mm**, external **136.8 mm**, overall printed height
-**116 mm**, net 1000 ml → **Fc 181 Hz, Qtc 0.71** with the FRS 8 M (fs 125, Qts 0.49, Vas 1.1 l).
+With the defaults: internal dia **127.5 mm**, external **137.5 mm**, overall printed height
+**116.8 mm**, net 1000 ml → **Fc 181 Hz, Qtc 0.71** with the FRS 8 M (fs 125, Qts 0.49, Vas 1.1 l).
 
 ## Driver data — from the datasheet, not from guesswork
 
@@ -55,6 +57,24 @@ have sat on. The flat is now 98 mm, clearing by 2.5 mm per side.
 The driver reaches to 2.8 mm past the centre of the sphere, against a cavity floor at
 −63.4 mm, so there is no clash. `driver_displacement_ml` is still an estimate; it hardly
 matters, because 20 ml against 60 ml moves Fc by about 2 Hz.
+
+## Every hole in the part
+
+| hole | size | where | notes |
+|---|---|---|---|
+| driver bore | **Ø75** | on the axis, through the seating face | the only opening; the driver closes it |
+| driver screws | **4 × Ø3.2**, 6 mm deep | Ø83 bolt circle | **blind** — a through pilot would be four leaks |
+| cable | **Ø6** | side wall, 12 mm below the equator | sealed with silicone once wired |
+| M6 insert | **Ø8**, 10 mm deep | apex, on the axis | blind, into the solid cone |
+
+Four holes, and only two of them go through into the cavity: the driver bore, which the
+driver seals against its gasket, and the cable hole, which silicone seals.
+
+**The land is why the screw holes work at all.** The cavity is a sphere, so where the
+seating plane cuts it the opening is **83.4 mm** — wider than the 75 mm bore. Without a
+land the seating face would be a 7 mm rim, and the screws at the 83 mm bolt circle would
+come down in open air. `driver_land()` fills the ring from the bore out to the wall over
+`land_t`, which restores a full 11.5 mm face and gives the screws 8 mm of material.
 
 ## Printing
 

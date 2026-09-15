@@ -38,6 +38,13 @@ driver_frame_across = 93.0; // corner-to-corner, the number the flat must beat
 driver_flat_d   = 98.0;     // seating face = frame diagonal + 5 mm of landing
 driver_depth    = 47.0;     // for the clearance echo below
 gasket_rebate   = 0.0;      // set e.g. 2.5 to recess the flange flush
+land_t          = 8.0;      // thickness of the baffle land behind the seating face.
+                            // Without it the cavity is WIDER than the bore where the
+                            // flat cuts it (opening 83.5 mm against a 75 mm bore), so
+                            // the seating face is a 7 mm rim and the screws at the
+                            // 83 mm bolt circle land in thin air.
+screw_depth     = 6.0;      // BLIND. A through pilot would be four leaks in a box
+                            // whose whole point is being sealed.
 
 screw_holes   = true;   // bolt circle is from the drawing, so these are safe now
 screw_circle_d = 83.0;
@@ -76,10 +83,24 @@ function cap_v(ri, fz) = (ri <= fz) ? 0
 // boss_h - wall on that radius.
 function boss_v(ri) = (part != "onepiece" || !mount_boss) ? 0
     : PI * pow(boss_d / 2 * (1 - wall / boss_h), 2) * (boss_h - wall) / 3;
+// The land fills the cavity from the bore out to the wall over land_t of height.
+// No closed form worth writing, so integrate it in slices.
+function cav_r(ri, z) = (abs(z) >= ri) ? 0 : sqrt(ri * ri - z * z);
+function land_slice(ri, z, dz) =
+    let (cr = cav_r(ri, z))
+    (cr <= driver_cutout_d / 2) ? 0 : PI * (cr * cr - pow(driver_cutout_d / 2, 2)) * dz;
+function land_sum(ri, fz, i, n) =
+    let (dz = land_t / n)
+    (i >= n) ? 0
+    : land_slice(ri, fz - land_t + (i + 0.5) * dz, dz) + land_sum(ri, fz, i + 1, n);
+function land_v(ri) = (part != "onepiece") ? 0
+    : land_sum(ri, sqrt(pow(ri + wall, 2) - pow(driver_flat_d / 2, 2)), 0, 48);
+
 function net_v(ri) =
     4 / 3 * PI * pow(ri, 3)
     - cap_v(ri, sqrt(pow(ri + wall, 2) - pow(driver_flat_d / 2, 2)))
     - boss_v(ri)
+    - land_v(ri)
     - driver_displacement_ml * 1000;
 // Bisection: plain, converges, and OpenSCAD has no solver of its own.
 function solve_r(lo, hi, target, n) =
@@ -99,7 +120,12 @@ echo(str("net air volume   ", net_v(r_in) / 1000, " ml  (target ", volume_l * 10
 echo(str("flat clears frame diagonal by ", (driver_flat_d - driver_frame_across) / 2, " mm per side"));
 echo(str("driver protrudes to z = ", flat_z - (driver_depth - 2.1),
          " mm; cavity floor at ", -r_in, " mm"));
-echo(str("first-layer ring width ", (driver_flat_d - driver_cutout_d) / 2, " mm"));
+echo(str("seating face ", driver_cutout_d, " to ", driver_flat_d, " mm = ",
+         (driver_flat_d - driver_cutout_d) / 2, " mm wide (also the first layer)"));
+echo(str("cavity would open to ", 2 * sqrt(max(pow(r_in,2) - pow(flat_z,2), 0)),
+         " mm without the land; screws sit at ", screw_circle_d, " mm"));
+echo(str("screw pilots ", screw_depth, " mm deep into a ", land_t,
+         " mm land -> ", land_t - screw_depth, " mm of material left, blind"));
 echo(str("overhang at the bed ", asin((driver_flat_d / 2) / r_out), " deg from vertical"));
 
 module shell() {
@@ -114,6 +140,18 @@ module driver_flat_cut() {
     translate([0, 0, flat_z]) cylinder(h = r_out, r = r_out + 1);
 }
 
+// Solid ring behind the seating face, so the face is a full bore-to-flat annulus
+// and the mounting screws have something to bite.
+module driver_land() {
+    intersection() {
+        sphere(r = r_out);
+        difference() {
+            translate([0, 0, flat_z - land_t]) cylinder(h = land_t, d = driver_flat_d);
+            translate([0, 0, flat_z - land_t - 1]) cylinder(h = land_t + 2, d = driver_cutout_d);
+        }
+    }
+}
+
 module driver_bore() {
     translate([0, 0, -1]) cylinder(h = r_out + 2, d = driver_cutout_d);
     if (gasket_rebate > 0)
@@ -122,8 +160,8 @@ module driver_bore() {
     if (screw_holes)
         for (i = [0 : screw_n - 1])
             rotate([0, 0, i * 360 / screw_n])
-                translate([screw_circle_d / 2, 0, flat_z - wall - 2])
-                    cylinder(h = wall + 4, d = screw_d);
+                translate([screw_circle_d / 2, 0, flat_z - screw_depth])
+                    cylinder(h = screw_depth + 1, d = screw_d);
 }
 
 module cable_hole() {
@@ -210,6 +248,7 @@ module one_piece() {
     difference() {
         union() {
             shell();
+            driver_land();
             if (mount_boss) apex_plug();
         }
         driver_flat_cut();
