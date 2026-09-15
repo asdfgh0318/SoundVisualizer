@@ -63,3 +63,4 @@ venv/
 
 # Calibrator session output (WAVs, charts)
 calibrator/fft/
+calibrator/sessions/
