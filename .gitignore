@@ -57,3 +57,6 @@ venv/
 # Loose PDFs dropped in the repo root while reading. Papers belong in the private
 # papers repo (see the note above), never here: this repo is public.
 /*.pdf
+
+# Regenerable from hardware/hub-source/hub-sphere.scad in one command
+*.stl

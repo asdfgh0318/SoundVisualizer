@@ -67,6 +67,21 @@ driver; light stuffing gives most of it back. The alignment barely moves over th
 | 0.90 l | 186 Hz | 0.73 |
 | 1.00 l | 181 Hz | 0.71 |
 
+### 3D-printed sphere (alternative, modelled 2026-09-15)
+
+A parametric model is in `hardware/hub-source/hub-sphere.scad` with notes in that
+directory's README: 1 litre net, 5 mm wall, internal dia 125.8 mm, external 135.8 mm,
+split at the equator on a spigot, M6 mount pad at the south pole, driver firing up.
+
+Why a sphere once printing is on the table: a doubly-curved shell is far stiffer than
+flat panels of the same thickness, which is the weak point of every printed enclosure,
+and it has no edges to diffract. The risk moves to airtightness — printed walls leak
+through the layer lines, so the interior has to be sealed or the alignment below is
+fiction. For the flat-arc session the shape hardly matters (the source fires along the
+axis, so its directivity is common to all eleven microphones and lands in the run-gain
+term); it starts to matter for the later vertical-arc session, which is the argument
+for building the sphere rather than the cube if only one gets built.
+
 ### Cut list, 12 mm MDF or birch ply
 
 External 124 mm cube, internal 100 mm cube. Total panel area 0.076 m², so a 290 × 290 mm
@@ -122,8 +137,14 @@ Chain: laptop → USB → **Behringer UCA202** → RCA → **XH-M189 (TPA3116D2,
 | XH-M189, TPA3116D2 | class D, 2 × 50 W, far more than the well-under-1 W we need | DC 5–24 V (24 V for full power), 84 × 51 × 29 mm, short-circuit and reverse-polarity protected |
 | Visaton FRS 8 M | see the build sheet above | 58 zł at thomann.pl, in stock |
 
-**Still to buy: a DC supply for the amplifier.** The board does not include one. 12 V at 2 A is
-ample for our output and gentler than the 24 V maximum. Plus an input cable to whatever connector
+**Still to buy: a DC supply for the amplifier.** The board does not include one. **12 V at 2 A**
+is the right choice. What we actually need is tiny: at 88 dB/1 W/1 m, 60 dB SPL at the arc radius
+of 0.84 m is 1.1 mW (0.09 V rms into 8 Ω), a comfortable 75 dB is 35 mW (0.53 V), and even 85 dB is
+350 mW (1.7 V). The worst case is the 125 Hz band, where this box is 7.3 dB down — 75 dB there
+still only asks 190 mW (1.2 V). A TPA3116 on 12 V can deliver about 6.9 W into 8 Ω, so the supply
+is roughly forty times what the loudest planned tone needs, and it is gentler on the board than
+the 24 V maximum. Do not size the supply for the amplifier's rating; size it for the level, and
+set the level digitally. Plus an input cable to whatever connector
 the board carries, and speaker wire.
 
 **Why the cheapness does not matter.** For the substitution calibration the whole source chain
