@@ -34,6 +34,9 @@ from scipy.io import wavfile
 
 SR = 48000
 
+# Discarded head of every capture; must exceed the ~7 ms stream-open burst.
+_LEAD_S = 0.03
+
 # The session interface is the Burr-Brown/TI PCM2902 USB codec ("USB Audio
 # CODEC"). Pinned by USB vendor:product ID, not by name or card number: the
 # name is a generic chip string many dongles share, and card numbers shift
@@ -313,15 +316,6 @@ def assert_speaker_ok(s: Speaker) -> Speaker:
 
 # ------------------------------------------------------------------ capture
 
-def _tone(freq: float, amplitude: float, buffer_s: float = 1.0) -> np.ndarray:
-    # Whole number of cycles per buffer so the loop seam is phase-continuous;
-    # a fractional count would insert a broadband click at every wrap.
-    n_cycles = max(1, round(freq * buffer_s))
-    n = round(n_cycles * SR / freq)
-    t = np.arange(n, dtype=np.float64) / SR
-    return (amplitude * np.sin(2.0 * np.pi * freq * t)).astype(np.float32)
-
-
 def take_sample_at_frequency(
     m: Mic,
     s: Speaker,
@@ -336,6 +330,15 @@ def take_sample_at_frequency(
     Both gates re-run here, so every capture is independently verified: a
     control moved since the last capture fails loudly instead of shifting
     this capture by an unknown number of dB.
+
+    The tone is generated *inside* the PortAudio callback — there is no
+    buffer to feed and nothing to starve. sd.play(loop=True) with its
+    ring-buffer thread produced 20+ ms-scale dropouts per capture behind
+    the dock's full-speed hub; the inline generator measured 0 underflows.
+
+    The first _LEAD_S seconds are discarded: opening the capture stream
+    re-reserves USB isochronous bandwidth and the full-speed CODEC drops
+    ~7 ms of tone right there, once, every time.
     """
     assert_mic_ok(m)
     assert_speaker_ok(s)
@@ -348,23 +351,26 @@ def take_sample_at_frequency(
     if capture_s <= 0.0:
         raise CalibratorError(f"capture_s {capture_s} must be > 0")
 
-    sig = _tone(freq, amplitude)
-    if s.channels == 2:
-        sig = np.column_stack((sig, sig))
-    try:
-        sd.play(sig, samplerate=SR, device=s.index, loop=True)
+    n = [0]
+
+    def tone_cb(outdata, frames, _time, _status):
+        t = (n[0] + np.arange(frames)) / SR
+        outdata[:] = (amplitude * np.sin(2.0 * np.pi * freq * t))[:, None].astype(np.float32)
+        n[0] += frames
+
+    with sd.OutputStream(device=s.index, samplerate=SR, channels=s.channels,
+                         dtype="float32", callback=tone_cb):
         time.sleep(settle_s)
         rec = sd.rec(
-            round(capture_s * SR),
+            round((capture_s + _LEAD_S) * SR),
             samplerate=SR,
             device=m.index,
             channels=1,
             dtype="float32",
             blocking=True,
         )
-    finally:
-        sd.stop()
-    return rec.reshape(-1), SR
+    out = rec.reshape(-1)
+    return out[len(out) - round(capture_s * SR):], SR
 
 
 def octave_series(f0: float = 200.0, fmax: float = 15000.0) -> list[float]:
