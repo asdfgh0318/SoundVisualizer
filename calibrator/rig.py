@@ -53,7 +53,7 @@ _LEAD_S = 0.25  # longer than the single-mic path: eleven streams take longer to
 
 @dataclass(frozen=True)
 class ArcMic:
-    position_deg: float
+    position_deg: float | None
     serial: str          # calibration_file_id — the real capsule serial
     card_id: str         # udev name, e.g. umik_1_1_4_1
     index: int           # PortAudio device index, resolved at run time
@@ -62,6 +62,43 @@ class ArcMic:
 
     def as_mic(self) -> Mic:
         return Mic(index=self.index, name=self.name, card=self.card, card_id=self.card_id)
+
+
+def _usb_port(card: int | None) -> str | None:
+    """`3-6.4.1` for the physical USB port an ALSA card sits on."""
+    if card is None:
+        return None
+    try:
+        return Path(f"/sys/class/sound/card{card}/device").resolve().parent.name
+    except OSError:
+        return None
+
+
+def _port_id(card: int | None) -> str | None:
+    """The udev name generate_udev.py would give this port: `3-6.4.1` -> `umik_3_6_4_1`.
+
+    Derived from sysfs rather than read from the card id, so it works on a machine
+    where the udev rules were never installed — which is the normal case for a laptop
+    that is not the Pi.
+    """
+    port = _usb_port(card)
+    return f"umik_{port.replace('-', '_').replace('.', '_')}"[:15] if port else None
+
+
+def discover_umiks() -> list[ArcMic]:
+    """Every UMIK PortAudio can see, ordered by USB port. Position unknown.
+
+    For when there is no usable preset — which includes the normal case of moving the
+    rig to a different machine, since the preset's identity is a USB PORT PATH and
+    those do not travel. Use it with `identify` to build the map by tapping.
+    """
+    out = []
+    for i, d in enumerate(sd.query_devices()):
+        if "UMIK-2" in d["name"] and "(hw:" in d["name"] and d["max_input_channels"] > 0:
+            card = _hw_card(d["name"])
+            out.append(ArcMic(None, "?", _port_id(card) or _card_id(card) or "?",
+                              i, card, d["name"]))
+    return sorted(out, key=lambda m: m.card_id)
 
 
 def assert_arc_ok(arc: list[ArcMic]) -> None:
@@ -96,13 +133,16 @@ def load_arc(preset: str | Path) -> list[ArcMic]:
     by_card: dict[str, int] = {}
     for i, d in enumerate(devs):
         if "UMIK-2" in d["name"] and "(hw:" in d["name"] and d["max_input_channels"] > 0:
-            cid = _card_id(_hw_card(d["name"]))
-            if cid:
-                by_card[cid] = i
+            card = _hw_card(d["name"])
+            for cid in (_card_id(card), _port_id(card)):
+                if cid:
+                    by_card[cid] = i
 
     out, missing = [], []
     for e in entries:
         cid = e.get("alsa_card_id")
+        if cid not in by_card:
+            cid = next((k for k in by_card if k == e.get("alsa_card_id")), cid)
         if cid in by_card:
             i = by_card[cid]
             out.append(ArcMic(float(e["elevation_deg"]), e["calibration_file_id"], cid, i,
@@ -179,7 +219,8 @@ def identify_live(arc: list[ArcMic], *, refresh_hz: float = 12.0, peak_hold_s: f
                 v, pk = db[i], peak[i][0]
                 bar = "#" * max(0, min(40, int((v + 80) / 2)))
                 tag = " <<< TAP" if v - base[i] > tap_over_db else ("  <- loudest" if i == loud else "")
-                print(f"  {m.position_deg:+8.0f}° {m.serial[-7:]:>9} {m.card_id:>14} "
+                pos = f"{m.position_deg:+8.0f}°" if m.position_deg is not None else "   slot " + f"{i + 1:<2d}"
+                print(f"  {pos:>9} {m.serial[-7:]:>9} {m.card_id:>14} "
                       f"{v:8.1f} {pk:8.1f}   {bar:<40}{tag}   ")
             print(f"  {time.strftime('%H:%M:%S')}   elapsed {now - t0:5.1f} s"
                   + " " * 40)

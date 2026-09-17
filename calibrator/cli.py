@@ -20,7 +20,7 @@ from .core import (
     third_octave,
 )
 from .postprocess import relative_curves, write_rew_curve
-from .rig import capture_rig, identify_live, load_arc
+from .rig import capture_rig, discover_umiks, identify_live, load_arc
 from .session import capture_capsule
 
 
@@ -92,8 +92,16 @@ def cmd_rig(args: argparse.Namespace) -> int:
 
 def cmd_identify(args: argparse.Namespace) -> int:
     """Live per-capsule meter — tap a mic, see which row jumps."""
-    arc = load_arc(args.preset)
-    print(f"arc: {len(arc)} capsules from {args.preset}")
+    if args.preset:
+        arc = load_arc(args.preset)
+        print(f"arc: {len(arc)} capsules from {args.preset}")
+    else:
+        arc = discover_umiks()
+        if not arc:
+            raise CalibratorError("no UMIK-2 inputs visible to PortAudio — if they are plugged "
+                                  "in, PipeWire is holding them; wpctl set-profile <dev> off")
+        print(f"{len(arc)} UMIK-2 inputs, by USB port. Positions unknown — tap them in arc "
+              f"order and write down which port answers.")
     identify_live(arc, refresh_hz=args.refresh_hz, tap_over_db=args.tap_over_db)
     return 0
 
@@ -163,7 +171,10 @@ def main(argv: list[str] | None = None) -> int:
 
     ident = sub.add_parser("identify",
                            help="live meter over the whole arc — verify which capsule is where")
-    ident.add_argument("--preset", type=Path, required=True)
+    ident.add_argument("--preset", type=Path, default=None,
+                       help="verify an existing map; omit to just list every UMIK by USB port "
+                            "(the preset's identity is a port path, and those do not survive "
+                            "a move to another machine or hub)")
     ident.add_argument("--refresh-hz", type=float, default=12.0)
     ident.add_argument("--tap-over-db", type=float, default=12.0,
                        help="how far above its own quiet baseline a channel must jump to be "
