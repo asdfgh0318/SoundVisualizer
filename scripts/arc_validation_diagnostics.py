@@ -209,34 +209,47 @@ def load(data, pattern, exclude):
     return caps
 
 
+MIC_TERM = True  # set False by --no-mic-term; see arc_error_map.fit for why
+
+
 def fit(obs, rotated):
-    """obs: list of (run, elev, serial, vector). Returns runs, poss, sers, P, M, R, SE_P, SE_M."""
+    """obs: list of (run, elev, serial, vector). Returns runs, poss, sers, P, M, R, SE_P, SE_M.
+
+    With MIC_TERM False the microphone block is dropped entirely, which is only
+    honest once the capsules have been evened out against each other by an
+    independent measurement (substitution session 2026-09-16, folded into the cal
+    files). That is what removes the five-cluster degeneracy.
+    """
     runs = sorted({o[0] for o in obs})
     poss = sorted({o[1] for o in obs})
     sers = sorted({o[2] for o in obs})
-    n = len(runs) + len(poss) + len(sers)
+    n = len(runs) + len(poss) + (len(sers) if MIC_TERM else 0)
     A = np.zeros((len(obs), n))
     Y = np.array([o[3] for o in obs])
     for i, (r, e, s, _) in enumerate(obs):
         p = -e if r in rotated else e
         A[i, runs.index(r)] = 1
         A[i, len(runs) + poss.index(p)] = 1
-        A[i, len(runs) + len(poss) + sers.index(s)] = 1
-    c1 = np.zeros(n)
-    c1[len(runs) : len(runs) + len(poss)] = 10
-    c2 = np.zeros(n)
-    c2[len(runs) + len(poss) :] = 10
-    Aa = np.vstack([A, c1, c2])
-    Ya = np.vstack([Y, np.zeros((2, Y.shape[1]))])
+        if MIC_TERM:
+            A[i, len(runs) + len(poss) + sers.index(s)] = 1
+    cons = [np.zeros(n)]
+    cons[0][len(runs) : len(runs) + len(poss)] = 10
+    if MIC_TERM:
+        c2 = np.zeros(n)
+        c2[len(runs) + len(poss) :] = 10
+        cons.append(c2)
+    Aa = np.vstack([A, *cons])
+    Ya = np.vstack([Y, np.zeros((len(cons), Y.shape[1]))])
     X = np.linalg.lstsq(Aa, Ya, rcond=None)[0]
     R = Y - A @ X
-    dof = max(len(obs) - (n - 2), 1)
+    dof = max(len(obs) - (n - len(cons)), 1)
     s2 = (R**2).sum(axis=0) / dof  # per column (band / frequency)
     cov_unit = np.linalg.pinv(Aa.T @ Aa)
     se = np.sqrt(np.outer(np.diag(cov_unit), s2))
     P = X[len(runs) : len(runs) + len(poss)]
-    M = X[len(runs) + len(poss) :]
-    return runs, poss, sers, P, M, R, se[len(runs) : len(runs) + len(poss)], se[len(runs) + len(poss) :]
+    M = X[len(runs) + len(poss) :] if MIC_TERM else np.zeros((len(sers), Y.shape[1]))
+    seM = se[len(runs) + len(poss) :] if MIC_TERM else np.zeros((len(sers), Y.shape[1]))
+    return runs, poss, sers, P, M, R, se[len(runs) : len(runs) + len(poss)], seM
 
 
 def comb_fit(fr, dev, w=None):
@@ -265,7 +278,12 @@ def main():
     ap.add_argument("--rotated", nargs="*", default=[])
     ap.add_argument("--exclude", nargs="*", default=[])
     ap.add_argument("--out", default="docs/analysis")
+    ap.add_argument("--no-mic-term", action="store_true",
+                    help="drop M from every fit — valid once the capsules are evened out in "
+                         "their cal files (substitution session 2026-09-16)")
     a = ap.parse_args()
+    global MIC_TERM
+    MIC_TERM = not a.no_mic_term
     rot = set(a.rotated)
     caps = load(a.data, a.glob, set(a.exclude))
     if not caps:

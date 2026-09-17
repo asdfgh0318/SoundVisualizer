@@ -85,25 +85,43 @@ def load_runs(data: str, pattern: str, pwm: int, exclude: set[str]):
     return obs
 
 
-def fit(obs, rotated: set[str]):
+def fit(obs, rotated: set[str], mic_term: bool = True):
+    """Joint fit of run gain + position + (optionally) microphone.
+
+    `mic_term=False` drops M from the design entirely. That is only honest once the
+    capsules have been evened out against each other by an independent measurement —
+    the substitution session of 2026-09-16 folded that into the cal files, and the
+    spectra are computed on read, so M is already removed from the data. Dropping it
+    is what breaks the degeneracy: with M estimated the position/serial graph splits
+    into five disconnected clusters and four directions are undetermined, so every
+    cross-cluster comparison carries an unmeasured offset of order 1 dB. Without it
+    the only remaining freedom is one overall offset, which the position constraint
+    pins, and the map is determined.
+    """
     runs = sorted({o[0] for o in obs})
     poss = sorted({o[1] for o in obs})
     sers = sorted({o[2] for o in obs})
-    n = len(runs) + len(poss) + len(sers)
+    n = len(runs) + len(poss) + (len(sers) if mic_term else 0)
     A = np.zeros((len(obs), n))
     Y = np.array([o[3] for o in obs])
     for i, (r, e, s, _) in enumerate(obs):
         p = -e if r in rotated else e
         A[i, runs.index(r)] = 1
         A[i, len(runs) + poss.index(p)] = 1
-        A[i, len(runs) + len(poss) + sers.index(s)] = 1
-    c1 = np.zeros(n)
-    c1[len(runs) : len(runs) + len(poss)] = 10
-    c2 = np.zeros(n)
-    c2[len(runs) + len(poss) :] = 10
-    X = np.linalg.lstsq(np.vstack([A, c1, c2]), np.vstack([Y, np.zeros((2, Y.shape[1]))]), rcond=None)[0]
+        if mic_term:
+            A[i, len(runs) + len(poss) + sers.index(s)] = 1
+    cons = [np.zeros(n)]
+    cons[0][len(runs) : len(runs) + len(poss)] = 10
+    if mic_term:
+        c2 = np.zeros(n)
+        c2[len(runs) + len(poss) :] = 10
+        cons.append(c2)
+    X = np.linalg.lstsq(np.vstack([A, *cons]),
+                        np.vstack([Y, np.zeros((len(cons), Y.shape[1]))]), rcond=None)[0]
     R = Y - A @ X
-    return runs, poss, sers, X[len(runs) : len(runs) + len(poss)], X[len(runs) + len(poss) :], R
+    P = X[len(runs) : len(runs) + len(poss)]
+    M = X[len(runs) + len(poss) :] if mic_term else np.zeros((len(sers), Y.shape[1]))
+    return runs, poss, sers, P, M, R
 
 
 def detect_rotated(obs) -> set[str]:
@@ -135,6 +153,9 @@ def main():
     ap.add_argument("--detect-rotated", action="store_true", help="guess rotated runs from the data (greedy on the 500-2 kHz residual; fragile with mixed setups)")
     ap.add_argument("--exclude", nargs="*", default=[], help="run names to leave out")
     ap.add_argument("--out", default=".")
+    ap.add_argument("--no-mic-term", action="store_true",
+                    help="drop M from the fit — only valid when the capsules have already "
+                         "been evened out in their cal files (substitution session 2026-09-16)")
     a = ap.parse_args()
     obs = load_runs(a.data, a.glob, a.pwm, set(a.exclude))
     if not obs:
@@ -143,7 +164,7 @@ def main():
     if a.detect_rotated:
         rot = detect_rotated(obs)
         print("WARNING: rotated runs guessed from the data; confirm against the lab notes")
-    runs, poss, sers, P, M, R = fit(obs, rot)
+    runs, poss, sers, P, M, R = fit(obs, rot, mic_term=not a.no_mic_term)
     hdr = " ".join(f"{f:6.0f}" for f in THIRD_OCT)
     print(f"runs: {runs}\nrotated: {sorted(rot)}\n")
     print("ARC ERROR MAP, dB from a circle per physical position (mic offsets removed)")

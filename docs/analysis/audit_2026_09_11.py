@@ -38,14 +38,14 @@ def main():
     print("=== A. Broadband position map ===")
     f, pos, B = load("remedies-broadband-position-map-allpwm.csv")
     _, _, SE = load("remedies-broadband-position-se-allpwm.csv")
-    chk("broadband cells within +-1.3 dB (%)", 92, np.mean(np.abs(B) <= 1.3) * 100, 0.6, "%")
-    chk("worst broadband cell (dB)", 2.7, np.abs(B).max(), 0.05, "dB")
-    chk("cells beyond 3 s.e.", 99, (np.abs(B) / SE > 3).sum(), 0)
+    chk("broadband cells within +-1.3 dB (%)", 84, np.mean(np.abs(B) <= 1.3) * 100, 0.6, "%")
+    chk("worst broadband cell (dB)", 3.3, np.abs(B).max(), 0.05, "dB")
+    chk("cells beyond 3 s.e.", 90, (np.abs(B) / SE > 3).sum(), 0)
     chk("total cells", 209, B.size, 0)
-    chk("within 1.3 dB below 3.15 kHz (%)", 92.2, np.mean(np.abs(B[:, f < 3000]) <= 1.3) * 100, 0.1, "%")
-    chk("within 1.3 dB at/above 3.15 kHz (%)", 92.7, np.mean(np.abs(B[:, f >= 3000]) <= 1.3) * 100, 0.1, "%")
-    chk("worst cell below 3.15 kHz (dB)", 2.69, np.abs(B[:, f < 3000]).max(), 0.01, "dB")
-    chk("worst cell at/above 3.15 kHz (dB)", 2.58, np.abs(B[:, f >= 3000]).max(), 0.01, "dB")
+    chk("within 1.3 dB below 3.15 kHz (%)", 87.0, np.mean(np.abs(B[:, f < 3000]) <= 1.3) * 100, 0.1, "%")
+    chk("within 1.3 dB at/above 3.15 kHz (%)", 76.4, np.mean(np.abs(B[:, f >= 3000]) <= 1.3) * 100, 0.1, "%")
+    chk("worst cell below 3.15 kHz (dB)", 3.27, np.abs(B[:, f < 3000]).max(), 0.01, "dB")
+    chk("worst cell at/above 3.15 kHz (dB)", 3.06, np.abs(B[:, f >= 3000]).max(), 0.01, "dB")
 
     print("\n=== B. Largest within-group contrasts (the degeneracy argument) ===")
     groups = [(-90, 90), (-72, -54, 54, 72), (-36, 36), (-18, 18), (0,)]
@@ -63,25 +63,25 @@ def main():
         return out
 
     d, _, _, fc = best_within(B, f, pos)
-    chk("largest broadband within-group contrast (dB)", 4.3, d, 0.05, f"dB at {fc:.0f} Hz")
+    chk("largest broadband within-group contrast (dB)", 3.4, d, 0.05, f"dB at {fc:.0f} Hz")
     ft, pt, T = load("arc-error-map-third-octave.csv")
     d2, _, _, fc2 = best_within(T, ft, pt)
-    chk("largest mixed-band within-group contrast (dB)", 12.5, d2, 0.05, f"dB at {fc2:.0f} Hz")
+    chk("largest mixed-band within-group contrast (dB)", 11.7, d2, 0.05, f"dB at {fc2:.0f} Hz")
 
     print("\n=== C. ISO 3745 tolerance as an analogy ===")
     def tol(fq):
         return 1.5 if fq <= 630 else (1.0 if fq < 6300 else 1.5)
-    chk("broadband cells outside tolerance", 29,
+    chk("broadband cells outside tolerance", 40,
         sum(int((np.abs(B[:, i]) > tol(f[i])).sum()) for i in range(len(f))), 0, "of 209")
-    chk("mixed-band cells outside tolerance", 55,
+    chk("mixed-band cells outside tolerance", 72,
         sum(int((np.abs(T[:, i]) > tol(ft[i])).sum()) for i in range(len(ft))), 0, "of 209")
 
     print("\n=== D. Microphone terms ===")
     with open(os.path.join(HERE, "remedies-mic-offsets-pwm1900.csv")) as fh:
         r = list(csv.reader(fh))
     Mv = np.array([[float(v) for v in x[1:]] for x in r[1:]])
-    chk("mic terms minimum (dB)", -5.8, Mv.min(), 0.05, "dB")
-    chk("mic terms maximum (dB)", 3.0, Mv.max(), 0.05, "dB")
+    chk("mic terms in the pack, min — zero by design since 2026-09-16 (dB)", 0.0, Mv.min(), 0.05, "dB")
+    chk("mic terms in the pack, max — zero by design since 2026-09-16 (dB)", 0.0, Mv.max(), 0.05, "dB")
 
     print("\n=== E. Echo delays and the gating limit ===")
     for extra, ms, hz in ((0.68, 1.98, 500), (1.49, 4.34, 230)):
@@ -132,13 +132,13 @@ def main():
                     np.r_[np.zeros(R), 50 * np.ones(P), np.zeros(S)],
                     np.r_[np.zeros(R + P), 50 * np.ones(S)]])
     x = np.linalg.pinv(Ac) @ np.r_[obs, 0, 0]
-    chk("residual RMS at 794 Hz (dB)", 1.5012, math.sqrt(((obs - A @ x) ** 2).mean()), 0.0005, "dB")
+    chk("residual RMS at 794 Hz (dB)", 1.503, math.sqrt(((obs - A @ x) ** 2).mean()), 0.0005, "dB")
     x2 = x.copy()
     for i in (pi[-36.0], pi[36.0]):
         x2[R + i] += 1.0
     for j in (si["8108893"], si["8108900"]):
         x2[R + P + j] -= 1.0
-    chk("residual RMS after the 1 dB group shift (dB)", 1.5012,
+    chk("residual RMS after the 1 dB group shift (dB)", 1.503,
         math.sqrt(((obs - A @ x2) ** 2).mean()), 0.0005, "dB")
 
     print("\n=== H. Hub source design (Visaton FRS 8 M datasheet parameters) ===")
