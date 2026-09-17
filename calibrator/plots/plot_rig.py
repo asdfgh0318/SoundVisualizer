@@ -18,7 +18,7 @@ import numpy as np
 from matplotlib.ticker import FixedLocator, FuncFormatter
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
-from calibrator.rig import read_map
+from calibrator.rig import SOURCE_SUSPECT_HZ, read_map
 
 INK, MUTED, GRID = "#1f2328", "#6b7280", "#e5e7eb"
 
@@ -63,6 +63,13 @@ def main() -> int:
     ticks = [t for t in (250, 315, 400, 500, 630, 800, 1000, 1250, 1600, 2000,
                          2500, 3150, 4000, 5000, 6300) if f.min() <= t <= f.max()]
     fmt = FuncFormatter(lambda v, _: f"{v/1000:g}k" if v >= 1000 else f"{v:g}")
+    lo, hi = SOURCE_SUSPECT_HZ
+    shade = f.min() < hi and f.max() > lo
+    if shade:
+        # On the map an axvspan hides under the mesh, so mark the band with rules.
+        for t in (max(lo, f.min()), min(hi, f.max())):
+            ax.axvline(t, color="#b00020", lw=1.2, alpha=0.75, zorder=5)
+        bx.axvspan(max(lo, f.min()), min(hi, f.max()), color="#b00020", alpha=0.09, zorder=0)
     for a in (ax, bx):
         a.set_xscale("log")
         a.set_xlim(f.min() * 0.97, f.max() * 1.03)
@@ -92,6 +99,12 @@ def main() -> int:
                 xy=(0, 1), xycoords="axes fraction", xytext=(0, 30),
                 textcoords="offset points", ha="left", va="bottom",
                 color=MUTED, fontsize=8.8)
+    if shade:
+        bx.annotate(f"{lo:.0f}–{hi:.0f} Hz: the sphere's driver rocks here (m = 1, 11 dB at 4362 Hz) "
+                    f"— these tones read the loudspeaker, not the rig",
+                    xy=(0, 1), xycoords="axes fraction", xytext=(0, 6),
+                    textcoords="offset points", ha="left", va="bottom",
+                    color="#b00020", fontsize=8.5)
     ax.annotate(f"{len(f)} tones, {f.min():.0f}–{f.max():.0f} Hz",
                 xy=(1, 1), xycoords="axes fraction", xytext=(0, 30),
                 textcoords="offset points", ha="right", va="bottom",

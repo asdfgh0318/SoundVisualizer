@@ -52,6 +52,22 @@ from .core import (
 _LEAD_S = 0.25  # longer than the single-mic path: eleven streams take longer to settle
 CAL_DIR = Path("../SoundVisualizer-data/data/calibrations")
 
+# The hub sphere's own bad band. Measured 2026-09-17 by remounting the DRIVER
+# rotated 180 deg inside a sphere that never moved: below 3 kHz turning it changes
+# nothing (0.20 dB rms over 86 tones, worst 0.58), but at 4362 Hz -- ka 2.39 for the
+# FRS 8 M's 29.9 mm effective radius -- the arc's pattern does not shift, it TURNS
+# OVER, by 11.0 dB. That is an m = 1 rocking mode of the cone, its axis bolted to the
+# driver. Inside this band the eleven capsules are reading the loudspeaker's own
+# radiation, not the rig and not the room, so a position map there means nothing.
+# It is the cone, so a different enclosure would not help.
+SOURCE_SUSPECT_HZ = (3000.0, 5000.0)
+
+
+def suspect_tones(freqs) -> np.ndarray:
+    """Boolean mask of the tones that fall in the sphere's rocking band."""
+    f = np.asarray(freqs, dtype=float)
+    return (f >= SOURCE_SUSPECT_HZ[0]) & (f <= SOURCE_SUSPECT_HZ[1])
+
 
 @dataclass(frozen=True)
 class ArcMic:
@@ -360,7 +376,20 @@ def capture_rig(
                 for m in arc],
         "amplitude": amplitude, "sr": SR, "capture_s": capture_s, "freqs": freqs,
         "calibrations": {m.serial: (CAL_DIR / f"{m.serial}.txt").exists() for m in arc},
+        "source_suspect_band_hz": list(SOURCE_SUSPECT_HZ),
+        "source_suspect_note": (
+            "Tones inside source_suspect_band_hz are NOT usable as a position map: the hub "
+            "sphere's driver has an m=1 rocking mode there (11.0 dB at 4362 Hz, measured "
+            "2026-09-17 by rotating the driver inside a fixed enclosure), so the arc reads the "
+            "loudspeaker's own pattern. Outside the band the source is axisymmetric to 0.20 dB rms."),
     }, indent=2))
+
+    n_suspect = int(suspect_tones(freqs).sum())
+    if n_suspect:
+        print(f"WARNING: {n_suspect} of {len(freqs)} tones fall in {SOURCE_SUSPECT_HZ[0]:.0f}-"
+              f"{SOURCE_SUSPECT_HZ[1]:.0f} Hz, where THIS SPHERE IS NOT AXISYMMETRIC (m=1 rocking "
+              f"mode, 11 dB at 4362 Hz). Those tones measure the loudspeaker, not the rig or the "
+              f"room — exclude them from any position map.", flush=True)
 
     cal: dict[str, object] = {}
     for m in arc:

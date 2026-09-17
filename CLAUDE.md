@@ -8,6 +8,20 @@ Drone-noise directivity measurement tool. Captures audio from up to 6 miniDSP UM
 
 ## Next session — start here (written 2026-09-08)
 
+> **READ THIS BEFORE ANY HUB-LOUDSPEAKER MEASUREMENT.** The printed sphere is a valid
+> axisymmetric source **only outside 3000–5000 Hz**. Inside that band its driver has an
+> **m = 1 rocking mode** — 11.0 dB at 4362 Hz (ka 2.39) — so the eleven capsules read the
+> loudspeaker's own radiation pattern and a position map there means nothing. Measured
+> 2026-09-17 by remounting the *driver* rotated 180° inside a sphere that never moved:
+> below 3 kHz that changes the map by 0.20 dB rms over 86 tones (worst 0.58), inside the
+> band by up to 11 dB with the pattern **inverting**. It is the cone, so a different
+> enclosure does not help. Enforced in code as `calibrator.rig.SOURCE_SUSPECT_HZ` —
+> `capture_rig` warns when a grid enters the band and records it in `meta.json`,
+> `suspect_tones(freqs)` masks it for analysis, and `plot_rig.py` marks it in red.
+> **Exclude those tones, or use a different source, before concluding anything about the
+> rig or the room up there.** Detail in the locked-decisions entry below.
+
+
 Read `docs/arc-validation-remedies.pdf` §00 (nine lines) and §15 (the campaign plan), then:
 
 1. **Get the missing geometry from Adam** and put it in `docs/mic_arc.md`: hub height above the floor, room L×W×H, foam material/thickness/coverage, what stands within 1.5 m of the −72°/−90° and +36°/+54° microphones, how far below the propeller disc the Tyto beam sits and on which side. Known: ring diameter 1.68 m (r ≈ 0.84 m); the propeller blew upward, so the stand is in the inflow. Then re-run the plane fit in `scripts/arc_validation_diagnostics.py` with the real numbers.
