@@ -1,23 +1,29 @@
 """Split the arc's position map into what travels with the rig and what stays in the room.
 
 The arc was measured, physically flipped, and measured again with nothing else
-touched. A component fixed to the capsule (its clamp, its cable, its place on the
-frame) reads the same at the same label before and after; a component fixed to the
-room swaps between mirrored labels. So with A = before and C = after,
+touched. Both runs are indexed by LABEL, and a capsule keeps its label through the
+flip, so with m = mirror about the equator
 
-    X = (A + C) / 2   travels with the arc
-    Y = (A - C) / 2   stays in the room
+    A_p = X_p + Y_p        before
+    C_p = X_p + Y_m(p)     after: same capsule, the room swapped underneath it
 
-and the model is testable rather than assumed: C - A has to come out antisymmetric,
-which it does to 2.07 dB of 2.10.
+X travels with the capsule (its clamp, its cable, its place on the frame), Y stays
+in the room. Un-flipping the second run, C'_q = C_m(q), gives the two useful views:
 
-What the split can and cannot prove. Y is purely the room, but only its
-ANTISYMMETRIC half: any part of the room that is already mirror-symmetric about
-the equator cancels out of A - C and lands in X. So X is the arc plus the
-symmetric part of the room, and only X's own antisymmetric part is provably the
-arc. Calibrated budget: 0.21 dB rms provably rig, 1.05 dB rms provably room,
-0.84 dB rms ambiguous. The antisymmetry of A - C is forced by the arithmetic and
-is a consistency check, not evidence.
+    rig  = (A + C ) / 2 = X + Y_sym
+    room = (A + C') / 2 = Y + X_sym
+
+Each panel shows its own subject WHOLE -- all of the room's asymmetry is in the
+room panel -- contaminated only by the other's mirror-symmetric part. Do not plot
+(A - C)/2 and call it the room: that is only Y's antisymmetric half, and it looks
+antisymmetric because the arithmetic made it so, not because the room is.
+
+Two runs cannot go further than this. Of the four unknowns X_sym, X_anti, Y_sym,
+Y_anti the flip determines three: X_anti = 0.21 dB rms is provably the rig,
+Y_anti = 1.04 dB is provably the room, and X_sym + Y_sym = 0.84 dB is shared
+between them with no way to divide it. Breaking that last tie needs a different
+move on the room (move the source, or move the arc off the symmetry plane), not
+another flip.
 """
 import sys
 from pathlib import Path
@@ -44,7 +50,9 @@ def dev(run):
 def main() -> int:
     f, pos, A, calA = dev("full-rig")
     _, _, C, calC = dev("flipped")
-    X, Y = (A + C) / 2, (A - C) / 2
+    X, Y = (A + C) / 2, (A + C[::-1]) / 2
+    anti = lambda D: (D - D[::-1]) / 2
+    rms = lambda D: float(np.sqrt((D ** 2).mean()))
     lim = float(max(np.abs(X).max(), np.abs(Y).max()))
 
     fig = plt.figure(figsize=(13.5, 8.6), dpi=170)
@@ -61,8 +69,8 @@ def main() -> int:
 
     axes = []
     for row, (D, title) in enumerate((
-            (X, "X — the arc (capsule, clamp, cable, place on the frame) PLUS the mirror-symmetric part of the room"),
-            (Y, "Y — the room, but only its mirror-antisymmetric part"))):
+            (X, "the rig — capsule, clamp, cable, place on the frame  (+ the room's mirror-symmetric part)"),
+            (Y, "the room — whole, asymmetry and all  (+ the rig's mirror-symmetric part)"))):
         ax = fig.add_subplot(gs[row, 0])
         im = ax.pcolormesh(edges, np.arange(len(pos) + 1), D, cmap="RdBu_r",
                            vmin=-lim, vmax=lim, shading="flat")
@@ -76,7 +84,7 @@ def main() -> int:
         axes.append(ax)
 
     bx = fig.add_subplot(gs[2, 0])
-    for D, col, lab in ((X, "#c25e00", "X — arc + symmetric room"), (Y, "#2f6f9f", "Y — antisymmetric room")):
+    for D, col, lab in ((X, "#c25e00", "the rig"), (Y, "#2f6f9f", "the room")):
         bx.plot(f, np.sqrt((D ** 2).mean(axis=0)), color=col, lw=1.8, label=lab)
     bx.axhline(0.026, color="#9aa3ab", lw=1.2, ls=(0, (4, 3)))
     bx.annotate("run-to-run noise, 0.03 dB", (f[0], 0.026), textcoords="offset points",
@@ -105,13 +113,15 @@ def main() -> int:
     bx.grid(True, color=GRID, lw=0.8)
     bx.set_xlabel("frequency  (Hz)", color=MUTED, fontsize=9.5)
 
-    fig.suptitle("The arc was flipped: what that can and cannot separate",
+    fig.suptitle("The arc was flipped: the rig against the room",
                  color=INK, fontsize=13, fontweight="600", x=0.085, ha="left", y=0.985)
     fig.text(0.085, 0.938,
              ("per-capsule calibration applied · " if calA and calC else "RAW dBFS · ")
-             + "same room, same source, arc physically inverted · X = (before+after)/2, "
-             "Y = (before−after)/2\nonly the antisymmetric parts are attributable: 0.21 dB rms "
-             "provably rig, 1.05 dB provably room, 0.84 dB ambiguous",
+             + "same room, same source, arc physically inverted · rig = (before + after)/2, "
+             "room = (before + after un-flipped)/2\n"
+             f"whole panels, {rms(X):.2f} and {rms(Y):.2f} dB rms — but only their antisymmetric parts are "
+             f"attributable: {rms(anti(X)):.2f} dB provably rig, {rms(anti(Y)):.2f} dB provably room, "
+             f"{rms((X + X[::-1]) / 2):.2f} dB shared and undividable",
              color=MUTED, fontsize=9, ha="left", linespacing=1.5)
     fig.tight_layout(rect=(0, 0, 1, 0.915))
     out = Path(sys.argv[1])
