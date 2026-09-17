@@ -169,12 +169,19 @@ def read_map(run: str | Path) -> tuple[np.ndarray, list[float], np.ndarray, bool
     taken before rig.py calibrated (2026-09-17 and earlier) it applies the cal files
     here instead, from the serials in meta.json. Falls back to raw dBFS only if a
     capsule has no calibration file at all, and says so.
+
+    Honours `labels_mirrored` in meta.json: the preset names each capsule by the
+    elevation it had when the preset was written, and remounting the arc the other way
+    up does not change the cabling, so the preset stays correct about WHICH capsule and
+    wrong about WHERE. The flag lives here rather than in each consumer because a map
+    read with the wrong sign is a silent, plausible-looking error.
     """
     run = Path(run)
     rows = json.loads((run / "levels.json").read_text())
     meta = json.loads((run / "meta.json").read_text())
     ser = {f"{m['position_deg']:+.0f}": m["serial"] for m in meta["arc"]}
     pos = sorted(float(k) for k in rows[0] if k != "freq")
+    mirrored = bool(meta.get("labels_mirrored"))
     f = np.array([r["freq"] for r in rows])
     cal, ok = {}, True
     for key, s in ser.items():
@@ -196,6 +203,10 @@ def read_map(run: str | Path) -> tuple[np.ndarray, list[float], np.ndarray, bool
                            + 94.0 - c.sens_factor_db)
             else:
                 L[i, j] = cell["level_dbfs"]
+    if mirrored:
+        order = np.argsort([-q for q in pos])
+        pos = [-pos[i] for i in order]
+        L = L[:, order]
     return f, pos, L, ok
 
 
