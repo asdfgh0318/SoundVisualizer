@@ -20,6 +20,7 @@ from .core import (
     third_octave,
 )
 from .postprocess import relative_curves, write_rew_curve
+from .rig import capture_rig, load_arc
 from .session import capture_capsule
 
 
@@ -70,6 +71,25 @@ def cmd_capture(args: argparse.Namespace) -> int:
     return 0
 
 
+def cmd_rig(args: argparse.Namespace) -> int:
+    """Stepped tones through the whole assembled arc — see calibrator/rig.py."""
+    arc = load_arc(args.preset)
+    s = acquire_speaker()
+    assert_speaker_ok(s)
+    print(f"speaker: {s.name}")
+    print(f"arc: {len(arc)} capsules  " +
+          "  ".join(f"{m.position_deg:+.0f}°={m.serial[-4:]}" for m in arc) + "\n")
+    if args.freqs:
+        freqs = [float(f) for f in args.freqs.split(",")]
+    else:
+        freqs = log_series(fmin=args.fmin, fmax=args.fmax, per_octave=args.per_octave)
+    out = capture_rig(arc, s, args.label, args.out, freqs,
+                      amplitude=args.amplitude, capture_s=args.capture_s,
+                      save_wavs=args.save_wavs)
+    print(f"\nsaved: {out}")
+    return 0
+
+
 def cmd_process(args: argparse.Namespace) -> int:
     res = relative_curves(args.dir, args.ref)
     if res["reference_drift_db"]:
@@ -115,6 +135,23 @@ def main(argv: list[str] | None = None) -> int:
                      help="upper bound of the tone grid (default: 16000 Hz)")
     cap.add_argument("--amplitude", type=float, default=1.0)
     cap.set_defaults(func=cmd_capture)
+
+    rig = sub.add_parser("rig", help="stepped tones through the whole arc at once")
+    rig.add_argument("label", help="what this run is, e.g. full-rig or neighbours-removed")
+    rig.add_argument("--preset", type=Path, required=True,
+                     help="Setup preset json holding the eleven serials + alsa_card_ids")
+    rig.add_argument("--out", type=Path, default=_today_dir(),
+                     help="session dir (default: calibrator/sessions/<today>)")
+    rig.add_argument("--freqs", help="comma-separated override, e.g. 500,1000,1300")
+    rig.add_argument("--per-octave", type=int, default=24,
+                     help="log grid density; 24 resolves a 26 cm neighbour comb (default 24)")
+    rig.add_argument("--fmin", type=float, default=500.0)
+    rig.add_argument("--fmax", type=float, default=4000.0)
+    rig.add_argument("--amplitude", type=float, default=0.03)
+    rig.add_argument("--capture-s", type=float, default=2.0)
+    rig.add_argument("--save-wavs", action="store_true",
+                     help="keep the audio as well as the levels (11 files per frequency)")
+    rig.set_defaults(func=cmd_rig)
 
     proc = sub.add_parser("process", help="difference curves vs the reference")
     proc.add_argument("--ref", required=True, help="reference label")
