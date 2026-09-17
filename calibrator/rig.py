@@ -33,6 +33,7 @@ from threading import Lock
 import numpy as np
 import sounddevice as sd
 
+from server.core.calibration import parse_umik_calibration
 from server.core.capture import MicCaptureSpec, capture_simultaneous
 
 from .core import (
@@ -49,6 +50,7 @@ from .core import (
 )
 
 _LEAD_S = 0.25  # longer than the single-mic path: eleven streams take longer to settle
+CAL_DIR = Path("../SoundVisualizer-data/data/calibrations")
 
 
 @dataclass(frozen=True)
@@ -157,6 +159,44 @@ def load_arc(preset: str | Path) -> list[ArcMic]:
             + "; ".join(missing) + f"  |  visible: {seen}"
         )
     return sorted(out, key=lambda m: -m.position_deg)
+
+
+def read_map(run: str | Path) -> tuple[np.ndarray, list[float], np.ndarray, bool]:
+    """(freqs, positions, level matrix, calibrated?) for one rig run.
+
+    One loader for every consumer, so a plot can never disagree with the capture about
+    what a level means. Prefers the calibrated level baked in at capture time; for runs
+    taken before rig.py calibrated (2026-09-17 and earlier) it applies the cal files
+    here instead, from the serials in meta.json. Falls back to raw dBFS only if a
+    capsule has no calibration file at all, and says so.
+    """
+    run = Path(run)
+    rows = json.loads((run / "levels.json").read_text())
+    meta = json.loads((run / "meta.json").read_text())
+    ser = {f"{m['position_deg']:+.0f}": m["serial"] for m in meta["arc"]}
+    pos = sorted(float(k) for k in rows[0] if k != "freq")
+    f = np.array([r["freq"] for r in rows])
+    cal, ok = {}, True
+    for key, s in ser.items():
+        p = CAL_DIR / f"{s}.txt"
+        cal[key] = parse_umik_calibration(p.read_text()) if p.exists() else None
+        ok &= cal[key] is not None and cal[key].sens_factor_db is not None
+    L = np.full((len(f), len(pos)), np.nan)
+    for j, q in enumerate(pos):
+        key = f"{q:+.0f}"
+        c = cal[key]
+        for i, r in enumerate(rows):
+            cell = r[key]
+            if "error" in cell:
+                continue
+            if "level_db_spl" in cell:
+                L[i, j] = cell["level_db_spl"]
+            elif c is not None and c.sens_factor_db is not None:
+                L[i, j] = (cell["level_dbfs"] - float(np.interp(f[i], c.freq_hz, c.gain_db))
+                           + 94.0 - c.sens_factor_db)
+            else:
+                L[i, j] = cell["level_dbfs"]
+    return f, pos, L, ok
 
 
 def identify_live(arc: list[ArcMic], *, refresh_hz: float = 12.0, peak_hold_s: float = 2.0,
@@ -308,7 +348,17 @@ def capture_rig(
         "arc": [{"position_deg": m.position_deg, "serial": m.serial, "card_id": m.card_id}
                 for m in arc],
         "amplitude": amplitude, "sr": SR, "capture_s": capture_s, "freqs": freqs,
+        "calibrations": {m.serial: (CAL_DIR / f"{m.serial}.txt").exists() for m in arc},
     }, indent=2))
+
+    cal: dict[str, object] = {}
+    for m in arc:
+        p = CAL_DIR / f"{m.serial}.txt"
+        cal[m.serial] = parse_umik_calibration(p.read_text()) if p.exists() else None
+    missing = [m.serial for m in arc if cal[m.serial] is None]
+    if missing:
+        print(f"WARNING: no calibration file for {', '.join(missing)} — "
+              f"those capsules will carry only raw dBFS", flush=True)
 
     rows: list[dict] = []
     for f in freqs:
@@ -318,14 +368,28 @@ def capture_rig(
         for m, x in zip(arc, samples, strict=True):
             key = f"{m.position_deg:+.0f}"
             try:
-                per[key] = {"serial": m.serial, **assert_tone_stable(x, f, sr=SR)}
+                stats = assert_tone_stable(x, f, sr=SR)
+                # A position map compares capsules to each other, so their own
+                # sensitivities have to come out or they read as position error --
+                # ours span 2.76 dB, which is the size of the effects being chased.
+                # Raw dBFS is kept as well: it is what the gate ran on, and it is the
+                # only number that does not depend on which cal file was current.
+                if cal[m.serial] is not None:
+                    c = cal[m.serial]
+                    stats["level_db_spl"] = round(
+                        stats["level_dbfs"] - float(np.interp(f, c.freq_hz, c.gain_db))
+                        + 94.0 - (c.sens_factor_db or 0.0), 3)
+                    stats["calibrated"] = c.sens_factor_db is not None
+                per[key] = {"serial": m.serial, **stats}
             except CalibratorError as e:
                 per[key] = {"serial": m.serial, "error": str(e)}
             if save_wavs:
                 save_wav(out / f"{f:g}hz_{key}.wav", x, SR)
         rows.append({"freq": f, **{k2: v for k2, v in per.items()}})
         (out / "levels.json").write_text(json.dumps(rows, indent=2))
-        ok = [v["level_dbfs"] for v in per.values() if "error" not in v]
+        key_level = "level_db_spl" if all("level_db_spl" in v for v in per.values()
+                                           if "error" not in v) else "level_dbfs"
+        ok = [v[key_level] for v in per.values() if "error" not in v]
         bad = [k2 for k2, v in per.items() if "error" in v]
         print(f"{label:>12}  {f:7g} Hz  {len(ok):2d}/{len(arc)} ok  "
               + (f"{min(ok):6.1f}..{max(ok):6.1f} dBFS" if ok else "  no level ")

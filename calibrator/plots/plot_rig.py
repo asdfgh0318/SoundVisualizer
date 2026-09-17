@@ -11,10 +11,14 @@ import sys
 from pathlib import Path
 
 import matplotlib
+
 matplotlib.use("Agg")
-import matplotlib.pyplot as plt  # noqa: E402
-import numpy as np  # noqa: E402
-from matplotlib.ticker import FixedLocator, FuncFormatter  # noqa: E402
+import matplotlib.pyplot as plt
+import numpy as np
+from matplotlib.ticker import FixedLocator, FuncFormatter
+
+sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
+from calibrator.rig import read_map
 
 INK, MUTED, GRID = "#1f2328", "#6b7280", "#e5e7eb"
 
@@ -22,12 +26,10 @@ INK, MUTED, GRID = "#1f2328", "#6b7280", "#e5e7eb"
 def main() -> int:
     run = Path(sys.argv[1])
     out = Path(sys.argv[2])
-    rows = json.loads((run / "levels.json").read_text())
     meta = json.loads((run / "meta.json").read_text())
-    pos = sorted((k for k in rows[0] if k != "freq"), key=float, reverse=True)
-    f = np.array([r["freq"] for r in rows])
-    L = np.array([[r[p]["level_dbfs"] if "error" not in r[p] else np.nan for p in pos]
-                  for r in rows])
+    f, posf, L, calibrated = read_map(run)
+    pos = [f"{p:+.0f}" for p in sorted(posf, reverse=True)]
+    L = L[:, [sorted(posf).index(float(p)) for p in pos]]
     D = (L - np.nanmean(L, axis=1, keepdims=True)).T          # position x frequency
     spread = np.nanmax(L, axis=1) - np.nanmin(L, axis=1)
     lim = float(np.nanmax(np.abs(D)))
@@ -84,7 +86,9 @@ def main() -> int:
         for a in (ax, bx):
             a.axvline(hz, color="#9aa3ab", lw=1, ls=(0, (4, 3)), zorder=5)
 
-    ax.annotate("every capsule is equidistant from the source, so a perfect rig would be blank",
+    ax.annotate("every capsule is equidistant from the source, so a perfect rig would be blank · "
+                + ("per-capsule calibration applied"
+                   if calibrated else "RAW dBFS — capsules NOT calibrated"),
                 xy=(0, 1), xycoords="axes fraction", xytext=(0, 30),
                 textcoords="offset points", ha="left", va="bottom",
                 color=MUTED, fontsize=8.8)
