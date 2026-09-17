@@ -475,13 +475,19 @@ def assert_tone_stable(
     wc = np.hanning(n_chunk)
     Xc = np.abs(np.fft.rfft(xc * wc, axis=1)) * 2 / wc.sum()
     fc = np.fft.rfftfreq(n_chunk, 1 / sr)
-    cb = (fc >= freq * 0.97) & (fc <= freq * 1.03)
+    # The chunk FFT quantizes to 1/chunk_s bins: 4 Hz at the default 0.25 s. A
+    # flat +/-3% window is narrower than that below ~67 Hz, so it can select NO
+    # bin at all and the reduction below dies on an empty array. Widen the
+    # window to at least 1.5 bins, the same floor the frequency tolerance uses.
+    half_hz = max(0.03 * freq, 1.5 * sr / n_chunk)
+    cb = (fc >= freq - half_hz) & (fc <= freq + half_hz)
+    if not cb.any():
+        raise CalibratorError(
+            f"no chunk-FFT bin within {half_hz:.1f} Hz of {freq} Hz — longer chunk_s"
+        )
     levels = 20 * np.log10(Xc[:, cb].max(axis=1) + 1e-12)
     peaks = fc[cb][Xc[:, cb].argmax(axis=1)]
     med = np.median(levels)
-    # The chunk FFT quantizes the peak to 1/chunk_s bins: at low frequencies
-    # that alone exceeds a 1% tolerance (63 Hz lands on a 4 Hz bin grid), so
-    # the tolerance has a floor of 1.5 bin widths.
     tol_hz = max(freq_tol * freq, 1.5 * sr / n_chunk)
     bad_level = [i for i in range(n) if abs(levels[i] - med) > level_tol_db]
     bad_freq = [i for i in range(n) if abs(peaks[i] - freq) > tol_hz]
