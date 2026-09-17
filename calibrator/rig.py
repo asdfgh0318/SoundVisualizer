@@ -28,6 +28,7 @@ import json
 import time
 from dataclasses import dataclass
 from pathlib import Path
+from threading import Lock
 
 import numpy as np
 import sounddevice as sd
@@ -116,6 +117,82 @@ def load_arc(preset: str | Path) -> list[ArcMic]:
             + "; ".join(missing) + f"  |  visible: {seen}"
         )
     return sorted(out, key=lambda m: -m.position_deg)
+
+
+def identify_live(arc: list[ArcMic], *, refresh_hz: float = 12.0, peak_hold_s: float = 2.0,
+                   tap_over_db: float = 12.0) -> None:
+    """Live per-capsule meter, so YOU identify the mics rather than trusting a detector.
+
+    Tap a capsule and watch which row jumps. Nothing is inferred and nothing is
+    written: the tool only shows what each stream is hearing, right now.
+
+    This exists because the software cannot check the two links that matter. A UMIK-2
+    reports USB serial `00000`, so the capsule on a given cable is unverifiable
+    electronically, and nothing anywhere knows which arc position a cable ends at —
+    `load_arc` only proves which USB PORT each stream comes from. With the source at
+    the hub every capsule is equidistant, so the measurement itself carries no
+    positional information either. A tap is the only signal that does.
+    """
+    n = len(arc)
+    rms = [1e-9] * n
+    peak = [(-120.0, 0.0)] * n            # (dBFS, when)
+    locks = [Lock() for _ in arc]
+
+    def make_cb(i: int):
+        def cb(indata, frames, _t, _status):
+            v = float(np.sqrt(np.mean(np.square(indata[:, 0].astype(np.float64)))) + 1e-12)
+            with locks[i]:
+                rms[i] = v
+        return cb
+
+    streams = []
+    try:
+        for i, m in enumerate(arc):
+            st = sd.InputStream(device=m.index, channels=1, samplerate=SR,
+                                dtype="float32", blocksize=1024, callback=make_cb(i))
+            st.start()
+            streams.append(st)
+
+        base = [-120.0] * n
+        print(f"\nLive meter on {n} capsules — tap one and watch its row. Ctrl-C to stop.\n")
+        print("\n" * (n + 2), end="")
+        t0 = time.time()
+        while True:
+            now = time.time()
+            db = []
+            for i in range(n):
+                with locks[i]:
+                    db.append(20.0 * np.log10(rms[i] + 1e-12))
+            for i, v in enumerate(db):
+                # Quiet baseline: follow a falling level quickly, rise only by a crawl,
+                # so a tap raises the level far above the baseline instead of dragging
+                # the baseline up with it.
+                base[i] = v if base[i] < -119 else (
+                    base[i] * 0.9 + v * 0.1 if v < base[i] else base[i] + 0.02)
+                if v > peak[i][0] or now - peak[i][1] > peak_hold_s:
+                    peak[i] = (v, now)
+            loud = int(np.argmax(db))
+            print(f"\033[{n + 2}A", end="")
+            print(f"  {'position':>9} {'capsule':>9} {'port':>14} {'now':>8} {'peak':>8}   level"
+                  + " " * 12)
+            for i, m in enumerate(arc):
+                v, pk = db[i], peak[i][0]
+                bar = "#" * max(0, min(40, int((v + 80) / 2)))
+                tag = " <<< TAP" if v - base[i] > tap_over_db else ("  <- loudest" if i == loud else "")
+                print(f"  {m.position_deg:+8.0f}° {m.serial[-7:]:>9} {m.card_id:>14} "
+                      f"{v:8.1f} {pk:8.1f}   {bar:<40}{tag}   ")
+            print(f"  {time.strftime('%H:%M:%S')}   elapsed {now - t0:5.1f} s"
+                  + " " * 40)
+            time.sleep(1.0 / refresh_hz)
+    except KeyboardInterrupt:
+        print("\nstopped.")
+    finally:
+        for st in streams:
+            try:
+                st.stop()
+                st.close()
+            except Exception:
+                pass
 
 
 def take_rig_sample(

@@ -20,7 +20,7 @@ from .core import (
     third_octave,
 )
 from .postprocess import relative_curves, write_rew_curve
-from .rig import capture_rig, load_arc
+from .rig import capture_rig, identify_live, load_arc
 from .session import capture_capsule
 
 
@@ -90,6 +90,14 @@ def cmd_rig(args: argparse.Namespace) -> int:
     return 0
 
 
+def cmd_identify(args: argparse.Namespace) -> int:
+    """Live per-capsule meter — tap a mic, see which row jumps."""
+    arc = load_arc(args.preset)
+    print(f"arc: {len(arc)} capsules from {args.preset}")
+    identify_live(arc, refresh_hz=args.refresh_hz, tap_over_db=args.tap_over_db)
+    return 0
+
+
 def cmd_process(args: argparse.Namespace) -> int:
     res = relative_curves(args.dir, args.ref)
     if res["reference_drift_db"]:
@@ -152,6 +160,15 @@ def main(argv: list[str] | None = None) -> int:
     rig.add_argument("--save-wavs", action="store_true",
                      help="keep the audio as well as the levels (11 files per frequency)")
     rig.set_defaults(func=cmd_rig)
+
+    ident = sub.add_parser("identify",
+                           help="live meter over the whole arc — verify which capsule is where")
+    ident.add_argument("--preset", type=Path, required=True)
+    ident.add_argument("--refresh-hz", type=float, default=12.0)
+    ident.add_argument("--tap-over-db", type=float, default=12.0,
+                       help="how far above its own quiet baseline a channel must jump to be "
+                            "flagged as tapped (default 12 dB)")
+    ident.set_defaults(func=cmd_identify)
 
     proc = sub.add_parser("process", help="difference curves vs the reference")
     proc.add_argument("--ref", required=True, help="reference label")
