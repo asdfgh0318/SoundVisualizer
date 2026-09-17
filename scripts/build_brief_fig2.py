@@ -38,10 +38,30 @@ def main() -> int:
     P = {r[0]: np.array([float(x) for x in r[1:]]) for r in rows[1:] if r and r[0].strip()}
     spots = sorted(P, key=float, reverse=True)
 
-    # which capsule sits at which spot, from the data pack's arc_map
+    # Which capsules actually sat at each PHYSICAL spot, over the twelve core runs.
+    # Not one capsule per spot: turning the arc for prop11-14 mirrors every capsule to
+    # the opposite spot, and 811-1892/810-8901 were swapped outright between prop10 and
+    # prop11. The row label has to say so, or the left panel looks like a property of
+    # one capsule when it is a property of up to three.
+    import collections
     import json
+    import re
     pack = json.load(open("docs/analysis/arc-validation-data.json"))
-    at = {int(k): v for k, v in pack["arc_map"].items()}
+    occ = collections.defaultdict(lambda: collections.defaultdict(list))
+    for name in sorted(pack["core_runs"], key=lambda n: int(re.sub(r"\D", "", n))):
+        r = pack["runs"][name]
+        for e, mi in r["mics"].items():
+            occ[-int(e) if r["flipped"] else int(e)][mi["serial"]].append(
+                name.replace("prop", ""))
+    at = {k: max(v.items(), key=lambda kv: len(kv[1]))[0] for k, v in occ.items()}
+
+    def rowlabel(spot: int) -> str:
+        """`+72°  811-1892 · 8901 15-18 · 1896 11-14` — who sat there, and when."""
+        runs = occ[spot]
+        main = at[spot]
+        extra = [f"{s[-4:]} {v[0]}–{v[-1]}" for s, v in
+                 sorted(runs.items(), key=lambda kv: -len(kv[1]))[1:]]
+        return f"{spot:+.0f}°  {main}" + ("  · " + " · ".join(extra) if extra else "  (never moved)")
 
     delta = {}
     for ser in set(at.values()):
@@ -54,17 +74,17 @@ def main() -> int:
     M = np.array([delta[at[int(float(s))]] for s in spots])
     R = np.array([P[s] for s in spots])
     lim = 6.0
-    fig, axes = plt.subplots(1, 2, figsize=(19, 4.6), dpi=110)
+    fig, axes = plt.subplots(1, 2, figsize=(18.5, 4.8), dpi=110)
     for ax, D, title, labels in (
-        (axes[0], M, "What the bench measured and removed, dB (row = its spot)",
-         [f"{float(s):+.0f}°  {at[int(float(s))]}" for s in spots]),
+        (axes[0], M, "What the bench measured and removed, dB — row = the capsule that sat there most",
+         [rowlabel(int(float(s))) for s in spots]),
         (axes[1], R, "Room term P, dB from a circle at that spot — no mic term in the fit",
          [f"{float(s):+.0f}°" for s in spots]),
     ):
         ax.imshow(D, cmap="RdBu_r", vmin=-lim, vmax=lim, aspect="auto")
         ax.set_xticks(range(len(THIRD_OCT)))
         ax.set_xticklabels([f"{f:.0f}" for f in THIRD_OCT], rotation=90, fontsize=8)
-        ax.set_yticks(range(len(spots))); ax.set_yticklabels(labels, fontsize=8)
+        ax.set_yticks(range(len(spots))); ax.set_yticklabels(labels, fontsize=7.4)
         ax.set_title(title, fontsize=11)
         for i in range(D.shape[0]):
             for j in range(D.shape[1]):
@@ -73,13 +93,18 @@ def main() -> int:
                     ax.text(j, i, f"{v:+.1f}", ha="center", va="center", fontsize=6.0,
                             color="white" if abs(v) > 3.2 else "#222")
     fig.colorbar(axes[1].images[0], ax=axes[1], label="dB")
-    fig.text(0.5, 0.005,
-             "Fig. 2 · left: the substitution session of 16 Sept 2026, folded into each "
-             "capsule's calibration file · right: one fit over keys "
-             "dp1-baseline-horizontal-prop7…prop18, PWM 1900, prop11–14 mirrored, "
-             "no microphone term · third-octave centre, Hz",
-             ha="center", fontsize=9, color="#444")
-    fig.tight_layout(rect=(0, 0.035, 1, 1))
+    fig.text(0.5, 0.055,
+             "Fig. 2 · left: the substitution session of 16 Sept 2026, folded into each capsule's "
+             "calibration file. Row labels name the capsule that occupied that spot in most runs, "
+             "then the others with their run numbers.",
+             ha="center", fontsize=8.5, color="#444")
+    fig.text(0.5, 0.008,
+             "prop11–14 were measured with the arc turned 180°, mirroring every capsule to the "
+             "opposite spot; 811-1892 and 810-8901 were swapped outright after prop10, the only "
+             "swap in the campaign.\nRight: one fit over prop7…prop18, PWM 1900, no microphone "
+             "term · third-octave centre, Hz",
+             ha="center", fontsize=8.5, color="#444")
+    fig.tight_layout(rect=(0, 0.10, 1, 1))
     fig.savefig(a.out)
     print(f"wrote {a.out}")
     return 0
