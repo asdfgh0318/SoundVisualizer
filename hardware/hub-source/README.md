@@ -2,7 +2,7 @@
 
 For campaign session 2: a source that sits where the propeller sits, plays a sweep
 and tones, motor off. Acoustic reasoning and the alternatives are in
-[`../../docs/hub-source-options.md`](../../docs/hub-source-options.md); that document governs
+[`../../docs/acoustic-speculations/hub-source-options.md`](../../docs/acoustic-speculations/hub-source-options.md); that document governs
 where the two disagree.
 
 `hub-sphere.scad` is the model. The STLs are **not committed** — they are large and one
