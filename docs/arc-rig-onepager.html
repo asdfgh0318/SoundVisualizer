@@ -4,33 +4,33 @@
 <meta charset="utf-8">
 <title>The arc rig, after the loudspeaker campaign</title>
 <style>
-  @page { size: A4; margin: 8.5mm 10mm; }
+  @page { size: A4; margin: 7mm 9mm; }
   :root {
     --ink:#14181d; --mid:#4b5563; --mut:#6b7280; --line:#e3e7ec;
     --rig:#c25e00; --room:#2f6f9f; --bad:#b00020; --ok:#2f7d32;
   }
   * { box-sizing:border-box; }
-  body { margin:0; font:8.35pt/1.32 "Source Sans 3","Segoe UI",system-ui,sans-serif; color:var(--ink); }
-  h1 { font-size:14pt; margin:0 0 .8mm; letter-spacing:-.2px; }
+  body { margin:0; font:7.7pt/1.24 "Source Sans 3","Segoe UI",system-ui,sans-serif; color:var(--ink); }
+  h1 { font-size:13pt; margin:0 0 .6mm; letter-spacing:-.2px; }
   .sub { color:var(--mut); font-size:7.9pt; margin:0 0 2mm; }
   h2 { font-size:8.6pt; margin:0 0 1mm; text-transform:uppercase; letter-spacing:.6px; color:var(--mid); }
   p { margin:0 0 1.5mm; }
   .cols { display:grid; grid-template-columns:1fr 1fr; gap:0 6mm; }
-  .box { border:1px solid var(--line); border-radius:2mm; padding:2.2mm 2.6mm; margin:0 0 2.4mm; }
+  .box { border:1px solid var(--line); border-radius:2mm; padding:1.9mm 2.3mm; margin:0 0 2mm; }
   .verdict { border-color:#c9d4de; background:#f6f9fb; }
   .verdict b { font-size:9.2pt; }
-  table { width:100%; border-collapse:collapse; font-size:7.9pt; margin:0 0 1.5mm; }
+  table { width:100%; border-collapse:collapse; font-size:7.5pt; margin:0 0 1.5mm; }
   th { text-align:left; font-weight:600; color:var(--mut); border-bottom:1px solid var(--line);
        padding:0 0 .7mm; font-size:7.9pt; text-transform:uppercase; letter-spacing:.4px; }
-  td { padding:.75mm 0; border-bottom:1px solid #f1f4f7; vertical-align:top; }
+  td { padding:.55mm 0; border-bottom:1px solid #f1f4f7; vertical-align:top; }
   td.n { text-align:right; white-space:nowrap; font-variant-numeric:tabular-nums; font-weight:600; }
   .rig { color:var(--rig); } .room { color:var(--room); } .bad { color:var(--bad); } .ok { color:var(--ok); }
-  ul { margin:0 0 1.8mm; padding-left:3.6mm; }
+  ul { margin:0 0 1.5mm; padding-left:3.4mm; }
   li { margin:0 0 .55mm; }
   .kicker { font-weight:600; }
-  figure { margin:0 0 2mm; }
+  figure { margin:0 0 1.6mm; }
   figure img { width:100%; display:block; border:1px solid var(--line); }
-  figcaption { font-size:7.6pt; color:var(--mut); margin-top:.8mm; line-height:1.3; }
+  figcaption { font-size:6.8pt; color:var(--mut); margin-top:.8mm; line-height:1.3; }
   .foot { border-top:1px solid var(--line); margin-top:1.2mm; padding-top:1.2mm;
           font-size:7.1pt; color:var(--mut); }
   code { font-family:"JetBrains Mono",ui-monospace,monospace; font-size:7.8pt; background:#f2f4f7;
@@ -63,18 +63,17 @@ rev 1, 2026-09-17 · every number recomputed from our own captures</p>
   <p>Four ideas, each one a difference that cancels what we cannot model.</p>
   <ul>
     <li><span class="kicker">Capsules first (16 Sept).</span> Every capsule against every other at one
-      seat, 55 pairs. Differencing two capsules in the same place cancels source, room and analog chain
-      <i>exactly</i>; the source need only be stationary, and it was (reference repeated to −0.025 dB
-      over 2 h 13 min). Seven of eleven factory files were wrong by 0.6–3.6 dB. Corrections folded into
-      <code>cal.gain_db</code>; spread across the eleven fell 4.01 → 0.02 dB.</li>
+      seat, 55 pairs. Differencing two capsules in the same place cancels source, room and chain
+      <i>exactly</i> — the source need only be stationary, and it was. Seven of eleven factory files
+      were wrong by 0.6–3.6 dB; corrections folded into <code>cal.gain_db</code>, spread across the
+      eleven 4.01 → 0.02 dB.</li>
     <li><span class="kicker">The whole arc at once (17 Sept).</span> A 1 l printed sphere at the ring
       centre firing along the symmetry axis, so all eleven sit at the same polar angle and source
-      directivity cancels. 112 tones, 257–6350 Hz, 24/octave, all capsules recorded simultaneously.</li>
-    <li><span class="kicker">Flip the arc.</span> What travels with the arc keeps its label; what stays
-      in the room swaps between mirrored labels. Un-flip the second run before averaging, and each half
-      shows its own subject whole.</li>
-    <li><span class="kicker">Stand it vertical.</span> A completely different room geometry with the
-      same hardware — the only way to break the tie a flip leaves behind.</li>
+      directivity cancels. 112 tones, 257–6350 Hz, 24/octave, recorded simultaneously.</li>
+    <li><span class="kicker">Flip the arc, then stand it vertical.</span> What travels with the arc
+      keeps its label; what stays in the room swaps between mirrored labels. Un-flip the second run
+      before averaging and each half shows its subject whole. The vertical session is a different room
+      for the same hardware — the only way to break the tie a flip leaves behind.</li>
   </ul>
 
   <h2>What the numbers say</h2>
@@ -94,6 +93,15 @@ rev 1, 2026-09-17 · every number recomputed from our own captures</p>
   <b>cov = −0.09 dB²</b>, 95 % CI [−0.22, +0.03] by frequency-block bootstrap — consistent with zero.
   So the shared 0.84 dB is the room, and <b>only ~0.2 dB of the position map is arc hardware</b>.</p>
 
+
+  <figure>
+    <img src="figs-onepager-room.png" alt="Room maps, arc horizontal and vertical">
+    <figcaption><b>Top:</b> the room with the arc horizontal — the flip's un-flipped half,
+    <code>(before + mirrored after)/2</code>, so it carries the room whole plus only the rig's
+    mirror-symmetric part. <b>Bottom:</b> the arc stood vertical, which is a different room for the
+    same hardware; the features do not carry over, which is the evidence that they are the room and
+    not the arc. Structure is strongest below 500 Hz and fades above 1 kHz.</figcaption>
+  </figure>
 </div>
 <div>
 
@@ -147,16 +155,7 @@ rev 1, 2026-09-17 · every number recomputed from our own captures</p>
 </div>
 
 <p class="foot">
-<b>Data and code.</b> Sessions in <code>calibrator/sessions/2026-09-16</code> (capsules) and
-<code>2026-09-17</code> (arc); levels and meta mirrored to the measurement repo, WAVs local.
-<code>calibrator/rig.py</code> captures and <code>read_map()</code> is the single loader, so a figure
-cannot disagree with the capture about what a level means. Figures: <code>flip-split.png</code>,
-<code>driver-rotation.png</code>, <code>source-tests-quad.png</code>.
-<b>This page supersedes</b> <code>arc-validation-onepager</code>, <code>arc-validation-remedies</code>,
-<code>arc-validation-guide</code> and <code>hub-source-onepager</code>, which were written while the
-loudspeaker session was still future work and describe it as the thing that "will decide".
-Where this page and <code>CLAUDE.md</code> disagree, <code>CLAUDE.md</code> governs — it is the record
-these numbers were audited into.
+<b>Data and code.</b> Sessions in <code>calibrator/sessions/2026-09-16</code> (capsules) and <code>2026-09-17</code> (arc); levels and meta mirrored to the measurement repo, WAVs local. <code>calibrator/rig.py</code> captures and <code>read_map()</code> is the single loader, so a figure cannot disagree with the capture about what a level means. This page replaces the arc-validation one-pager, remedies report and guide, retired 2026-09-17 because they framed the loudspeaker session as the work that "will decide" — it has been run. Where this page and <code>CLAUDE.md</code> disagree, <code>CLAUDE.md</code> governs.
 </p>
 
 </body>
