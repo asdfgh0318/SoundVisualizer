@@ -22,3 +22,5 @@ for a,b in [(250,400),(400,630),(630,1000),(1000,1600),(1600,3000),(5000,6400)]:
 lo=f<3000
 print(f"all <3k: change {rms(d[lo]):.3f}, worst {np.nanmax(abs(d[lo])):.2f} dB; flatness {rms(ref[lo]):.3f} -> {rms(R[lo]):.3f}")
 print("per position change <3k:", " ".join(f"{p:+.0f}:{rms(d[lo,j]):.2f}" for j,p in enumerate(pos)))
+print("per position, <3k: broadband offset (mean) / frequency ripple (sd):")
+print("  "+" ".join(f"{p:+.0f}:{np.nanmean(d[lo,j]):+.2f}/{np.nanstd(d[lo,j]):.2f}" for j,p in enumerate(pos)))

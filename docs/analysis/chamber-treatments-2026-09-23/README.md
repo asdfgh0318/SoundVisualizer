@@ -39,6 +39,8 @@ A treatment effect clearly above ~0.1 dB is real. Anything compared across days 
 | `foam-2` | same roll, core removed | (see above) |
 | `foam-out` | roll removed | 2.01 / 1.67 / 1.27 / 0.80 / 0.98 |
 | `tripod-unwrapped` | some Thinsulate wrapping taken off the tripod legs | 2.02 / 1.70 / 1.29 / 0.83 / **0.93** |
+| `ring-unwrapped` | + part of the ring's wrapping removed (new physical preset from here) | 2.03 / 1.66 / 1.36 / 0.87 / 0.96 |
+| `ring-unwrapped-2` | + more of the ring unwrapped | 2.04 / 1.67 / 1.36 / 0.87 / 0.96 |
 
 Set aside, not data: `noise-floor-CHAMBER-NOT-READY`, `vertical-2a-ABORTED-chamber-not-ready`,
 `foam-out-NOISY-above-420Hz` (a loud noise started 1–2 min in; the tone gate rejected 77 of 95
@@ -58,11 +60,18 @@ tones on the upper half of the arc, and nothing bad entered the map).
    than sending one echo. `foam-1-reflector.pdf` is kept as the record of that failed guess and
    should not be used to place anything. Improvement is done by **direct search**: material in,
    run, score flatness, material out.
-4. **The room error is largest at 250–630 Hz (1.7–2.0 dB)** and nothing tried so far has moved it.
+4. **Unwrapping the ring made it worse, and only the first section mattered.** Step 1 changed
+   the map 0.18 dB rms, spread over all eleven capsules, and cost flatness at 630 Hz–3 kHz
+   (overall 1.387 → 1.406 dB). Step 2 changed it 0.03 dB, the handling level. The top capsule
+   (+90°) took a frequency-independent +0.17 dB offset at step 1 that step 2 did not move — either
+   that section sat near it or its clamp shifted then. Best state measured: **tripod bare, ring
+   wrapped.** Figure: `ring-unwrapping.pdf`.
+5. **The room error is largest at 250–630 Hz (1.7–2.0 dB)** and nothing tried so far has moved it.
 
 ## Files
 
 - `tripod-unwrapped.pdf/.png` — the headline figure (built by `build_tripod_figure.py`)
+- `ring-unwrapping.pdf/.png` — the three ring states and both steps (built by `build_ring_figure.py`)
 - `vertical-2-repeat.pdf` — the untouched pair and the 2026-09-17 centred run for reference
 - `foam-1-vs-baseline.pdf`, `foam-2-vs-baseline.pdf`, `foam-out-vs-baseline.pdf` — map, map, difference
 - `foam-1-reflector.pdf` — the failed localisation (see finding 3)

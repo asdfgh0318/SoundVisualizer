@@ -17,7 +17,9 @@ def pm(p):
     f,pos,L,_=read_map(p); f=np.asarray(f); L=np.asarray(L,float); o=np.argsort(pos)[::-1]
     L=L[:,o]; return f,[pos[i] for i in o],L-L.mean(1,keepdims=True),L
 f,pos,T,TL=pm(S/run)
-bf,_,A,AL=pm(S/'vertical-2a'); _,_,B,BL=pm(S/'vertical-2b')
+refs=sys.argv[2:] or ['vertical-2a','vertical-2b']
+bf,_,A,AL=pm(S/refs[0]); _,_,B,BL=pm(S/refs[-1])
+refname='+'.join(refs)
 idx=[int(np.argmin(abs(bf-x))) for x in f]; assert np.allclose(bf[idx],f)
 A,B,AL,BL=A[idx],B[idx],AL[idx],BL[idx]
 base=(A+B)/2; baseL=(AL+BL)/2
@@ -39,8 +41,8 @@ for j,p in enumerate(pos):
 fig,axs=plt.subplots(3,1,figsize=(12,9.5),dpi=150,sharex=True)
 lg=np.log10; x=np.arange(len(f)+1)
 lim=max(abs(base).max(),abs(T).max()); dl=max(abs(d).max(),0.1)
-for ax,(t,M,v,cm) in zip(axs,[('baseline (mean of vertical-2a, 2b)',base,lim,'RdBu_r'),(f'{run}',T,lim,'RdBu_r'),
-                             (f'{run} − baseline   (its own scale; repeat floor rms {rms(A-B):.3f} dB)',d,dl,'PuOr_r')]):
+for ax,(t,M,v,cm) in zip(axs,[(f'reference ({refname})',base,lim,'RdBu_r'),(f'{run}',T,lim,'RdBu_r'),
+                             (f'{run} − {refname}   (own scale; repeat floor 0.010 dB, handling ~0.04 dB)',d,dl,'PuOr_r')]):
     im=ax.pcolormesh(x,np.arange(len(pos)+1),M.T,cmap=cm,vmin=-v,vmax=v)
     ax.set_title(f'{t}   —   rms {rms(M):.2f} dB',loc='left',fontsize=10)
     ax.set_yticks(np.arange(len(pos))+.5); ax.set_yticklabels([f'{p:+.0f}°' for p in pos],fontsize=7); ax.invert_yaxis()
@@ -48,5 +50,5 @@ for ax,(t,M,v,cm) in zip(axs,[('baseline (mean of vertical-2a, 2b)',base,lim,'Rd
     gap=np.searchsorted(f,4000); ax.axvline(gap,color='k',lw=1.5)
 tk=[i for i,v in enumerate(f) if any(abs(v-q)/q<0.02 for q in [257,400,630,1000,1600,2500,5000,6000])]
 axs[-1].set_xticks([i+.5 for i in tk]); axs[-1].set_xticklabels([f'{f[i]:.0f}' for i in tk]); axs[-1].set_xlabel('Hz (tone index; 3–5 kHz omitted, black line)')
-fig.suptitle(f'Treatment test 2026-09-23: {run} vs untouched baseline (position = dB vs arc mean)',x=.01,ha='left',fontsize=12)
-fig.tight_layout(); out=S/f'{run}-vs-baseline.pdf'; fig.savefig(out); print(out)
+fig.suptitle(f'Treatment test 2026-09-23: {run} vs {refname} (position = dB vs arc mean)',x=.01,ha='left',fontsize=12)
+fig.tight_layout(); out=S/(f'{run}-vs-baseline.pdf' if not sys.argv[2:] else f'{run}-vs-{refname}.pdf'); fig.savefig(out); print(out)
