@@ -1,0 +1,75 @@
+# Chamber treatments, 2026-09-23
+
+First session of point-improvements to the chamber. Every result is an **in/out difference**
+between runs of the same 95-tone grid (257 Hz–6.35 kHz at 24/octave, 3–5 kHz omitted because the
+sphere is not axisymmetric there), all eleven calibrated capsules at once. The score is
+**flatness**: the rms across the arc of each capsule's level relative to the arc mean. With an
+axisymmetric source every capsule should read the same, so lower is better.
+
+**Headline: unwrapping the tripod legs flattened the room at 1.6–3 kHz, 0.98 → 0.93 dB.** The
+−54° capsule, which sits beside the tripod, was shadowed (−0.79 dB in that band) and filled in
+(−0.17 dB). Below 1.6 kHz unwrapping changed the map by only 0.06–0.13 dB and made it slightly
+worse (0.01–0.03 dB per band), so the net effect is confined to the high band.
+Figure: `tripod-unwrapped.pdf`.
+
+## Geometry
+
+Arc vertical, as remounted 2026-09-17. The 1 l printed sphere is on the tripod, backed 20 cm off
+the ring centre **along the arc's symmetry axis**, facing away, driver at 180°. Off-centre along
+the axis keeps every capsule equidistant (0.863 m) and at the same angle to the aim, so the test
+is still axisymmetric. The source was not moved all session.
+
+## Numbers the method stands on
+
+| | rms, <3 kHz |
+|---|---|
+| repeat floor, two untouched runs minutes apart (`vertical-2a`/`-2b`) | **0.010 dB** |
+| handling: put material in, take it out, compare with before (`foam-out` vs baseline) | **~0.04 dB** |
+| six days untouched (`vertical-2a` vs 2026-09-17 `driver-180`) | 0.15–0.25 dB |
+| noise floor vs the weakest tone | ≥ 65 dB margin |
+
+A treatment effect clearly above ~0.1 dB is real. Anything compared across days carries ~0.2 dB.
+
+## Runs (`calibrator/sessions/2026-09-23/`, gitignored; levels+meta mirrored to the data repo)
+
+| run | state | flatness 250–400 / 400–630 / 630–1k / 1–1.6k / 1.6–3k (dB) |
+|---|---|---|
+| `vertical-2a`, `-2b` | baseline, untouched pair | 2.00 / 1.67 / 1.27 / 0.80 / 0.98 |
+| `foam-1` | 30 cm roll of thick Thinsulate on a cardboard core, in a corner, in the arc's plane | 2.04 / 1.67 / 1.24 / 0.81 / 0.98 (avg with foam-2) |
+| `foam-2` | same roll, core removed | (see above) |
+| `foam-out` | roll removed | 2.01 / 1.67 / 1.27 / 0.80 / 0.98 |
+| `tripod-unwrapped` | some Thinsulate wrapping taken off the tripod legs | 2.02 / 1.70 / 1.29 / 0.83 / **0.93** |
+
+Set aside, not data: `noise-floor-CHAMBER-NOT-READY`, `vertical-2a-ABORTED-chamber-not-ready`,
+`foam-out-NOISY-above-420Hz` (a loud noise started 1–2 min in; the tone gate rejected 77 of 95
+tones on the upper half of the arc, and nothing bad entered the map).
+
+## Findings
+
+1. **The roll changed the room without improving it.** 0.34 dB at 250–630 Hz, falling to 0.05 dB
+   at 1.6–3 kHz; flatness unchanged. Removing the core made no difference (r = +0.92, slope 0.95
+   between foam-1 and foam-2). Removing the roll returned every band to within 0.03–0.04 dB.
+   A 30 cm porous roll behaves at 250–630 Hz as a bulk obstacle, not as an absorber.
+2. **The tripod legs matter above ~1.5 kHz,** where they are close to the source and no longer
+   small against the wavelength. That is where unwrapping helped.
+3. **Locating a reflector from these maps does not work.** The blind single-scatterer fit to the
+   roll put it 1.5 m out of the arc's plane; it was in the plane, in a corner. Constrained to the
+   plane, the best fit sat at the hub. At 250–630 Hz a corner couples to the room's modes rather
+   than sending one echo. `foam-1-reflector.pdf` is kept as the record of that failed guess and
+   should not be used to place anything. Improvement is done by **direct search**: material in,
+   run, score flatness, material out.
+4. **The room error is largest at 250–630 Hz (1.7–2.0 dB)** and nothing tried so far has moved it.
+
+## Files
+
+- `tripod-unwrapped.pdf/.png` — the headline figure (built by `build_tripod_figure.py`)
+- `vertical-2-repeat.pdf` — the untouched pair and the 2026-09-17 centred run for reference
+- `foam-1-vs-baseline.pdf`, `foam-2-vs-baseline.pdf`, `foam-out-vs-baseline.pdf` — map, map, difference
+- `foam-1-reflector.pdf` — the failed localisation (see finding 3)
+- `compare_runs.py <run> <ref…>` — band table and flatness; `plot_vs_baseline.py <run>` — three-panel figure;
+  `plot_repeat_pair.py` — the repeat figure. Run from the repo root with `.venv/bin/python`.
+
+**Preset change:** every run after `tripod-unwrapped` uses
+`setup-presets/1d9a5e2fa2964faf9f10f020edd5a1e9.json`, whose elevations are physical (811-1897 at
+−90° = bottom). Every run listed above used `30f35d3f…` and carries `labels_mirrored: true`, which
+`read_map()` honours.
