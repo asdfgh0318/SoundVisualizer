@@ -42,6 +42,7 @@ A treatment effect clearly above ~0.1 dB is real. Anything compared across days 
 | `ring-unwrapped` | + part of the ring's wrapping removed (new physical preset from here) | 2.03 / 1.66 / 1.36 / 0.87 / 0.96 |
 | `ring-unwrapped-2` | + more of the ring unwrapped | 2.04 / 1.67 / 1.36 / 0.87 / 0.96 |
 | `floor-carpet` | + thick Thinsulate carpet on the floor | **1.74 / 1.51 / 1.30 / 0.81** / 0.95 |
+| `ceiling-carpet` | the same carpet moved to the ceiling | 2.29 / 1.54 / 1.28 / 0.81 / 0.95 |
 
 Set aside, not data: `noise-floor-CHAMBER-NOT-READY`, `vertical-2a-ABORTED-chamber-not-ready`,
 `foam-out-NOISY-above-420Hz` (a loud noise started 1–2 min in; the tone gate rejected 77 of 95
@@ -73,11 +74,16 @@ tones on the upper half of the arc, and nothing bad entered the map).
    nothing above 1.6 kHz. The change is largest at 257–350 Hz on the middle capsules (0°, −18°,
    −36°), filling the strongest low-frequency holes in the map. Figure: `floor-carpet.pdf`
    (built by `build_step_figure.py`).
-6. **What remains:** 250–400 Hz is still the worst band at 1.74 dB.
+6. **The carpet belongs on the floor.** Moved to the ceiling it helped 400 Hz–1.6 kHz about as much
+   as on the floor (−0.12 / −0.08 / −0.06 dB) but made 250–400 Hz **worse** (2.04 → 2.29 dB),
+   opening a new hole near 270 Hz at −18°/−36°; overall 1.408 → 1.431 dB against 1.277 on the
+   floor. Figure: `carpet-floor-vs-ceiling.pdf` (`build_carpet_figure.py`).
+7. **What remains:** 250–400 Hz is still the worst band, 1.74 dB with the carpet on the floor.
 
 ## Files
 
 - `tripod-unwrapped.pdf/.png` — the headline figure (built by `build_tripod_figure.py`)
+- `carpet-floor-vs-ceiling.pdf/.png` — no carpet, floor, ceiling side by side
 - `floor-carpet.pdf/.png` — the carpet step (`build_step_figure.py <ref> <run> "<what>" <name>`)
 - `ring-unwrapping.pdf/.png` — the three ring states and both steps (built by `build_ring_figure.py`)
 - `vertical-2-repeat.pdf` — the untouched pair and the 2026-09-17 centred run for reference
