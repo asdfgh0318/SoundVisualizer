@@ -4,160 +4,57 @@
 <meta charset="utf-8">
 <title>The arc rig, after the loudspeaker campaign</title>
 <style>
-  @page { size: A4; margin: 7mm 9mm; }
-  :root {
-    --ink:#14181d; --mid:#4b5563; --mut:#6b7280; --line:#e3e7ec;
-    --rig:#c25e00; --room:#2f6f9f; --bad:#b00020; --ok:#2f7d32;
-  }
+  @page { size: A4; margin: 7mm 8mm; }
+  :root { --ink:#14181d; --mid:#4b5563; --mut:#6b7280; --line:#e3e7ec; --ok:#2f7d32; --bad:#b00020; }
   * { box-sizing:border-box; }
-  body { margin:0; font:7.7pt/1.24 "Source Sans 3","Segoe UI",system-ui,sans-serif; color:var(--ink); }
-  h1 { font-size:13pt; margin:0 0 .6mm; letter-spacing:-.2px; }
-  .sub { color:var(--mut); font-size:7.9pt; margin:0 0 2mm; }
-  h2 { font-size:8.6pt; margin:0 0 1mm; text-transform:uppercase; letter-spacing:.6px; color:var(--mid); }
-  p { margin:0 0 1.5mm; }
-  .cols { display:grid; grid-template-columns:1fr 1fr; gap:0 6mm; }
-  .box { border:1px solid var(--line); border-radius:2mm; padding:1.9mm 2.3mm; margin:0 0 2mm; }
-  .verdict { border-color:#c9d4de; background:#f6f9fb; }
-  .verdict b { font-size:9.2pt; }
-  table { width:100%; border-collapse:collapse; font-size:7.5pt; margin:0 0 1.5mm; }
-  th { text-align:left; font-weight:600; color:var(--mut); border-bottom:1px solid var(--line);
-       padding:0 0 .7mm; font-size:7.9pt; text-transform:uppercase; letter-spacing:.4px; }
-  td { padding:.55mm 0; border-bottom:1px solid #f1f4f7; vertical-align:top; }
-  td.n { text-align:right; white-space:nowrap; font-variant-numeric:tabular-nums; font-weight:600; }
-  .rig { color:var(--rig); } .room { color:var(--room); } .bad { color:var(--bad); } .ok { color:var(--ok); }
-  ul { margin:0 0 1.5mm; padding-left:3.4mm; }
-  li { margin:0 0 .55mm; }
-  .kicker { font-weight:600; }
-  figure { margin:0 0 1.6mm; }
-  figure img { width:100%; display:block; border:1px solid var(--line); }
-  figcaption { font-size:6.8pt; color:var(--mut); margin-top:.8mm; line-height:1.3; }
-  .foot { border-top:1px solid var(--line); margin-top:1.2mm; padding-top:1.2mm;
-          font-size:7.1pt; color:var(--mut); }
-  code { font-family:"JetBrains Mono",ui-monospace,monospace; font-size:7.8pt; background:#f2f4f7;
-         padding:0 .6mm; border-radius:.6mm; }
-  .tag { display:inline-block; font-size:7.4pt; font-weight:600; padding:.2mm 1.1mm; border-radius:1mm;
-         vertical-align:1px; }
-  .tag-ok { background:#e6f2e7; color:var(--ok); }
-  .tag-bad { background:#fbe7ea; color:var(--bad); }
+  body { margin:0; font:8pt/1.3 "Source Sans 3","Segoe UI",system-ui,sans-serif; color:var(--ink); }
+  .verdict { font-size:9.2pt; line-height:1.3; margin:0 0 1.5mm; }
+  .verdict b { font-weight:700; }
+  figure { margin:0; }
+  figure img { width:100%; max-height:225mm; object-fit:contain; display:block; }
+  .stats { display:grid; grid-template-columns:repeat(4,1fr); gap:0 4mm; margin:1.5mm 0 0; }
+  .stat { border-top:1.2px solid var(--line); padding-top:1.1mm; }
+  .stat .n { font-size:12pt; font-weight:700; letter-spacing:-.3px; }
+  .stat .k { font-size:6.9pt; color:var(--mut); line-height:1.25; display:block; margin-top:.3mm; }
+  .ok { color:var(--ok); } .bad { color:var(--bad); }
+  .foot { border-top:1px solid var(--line); margin-top:1.5mm; padding-top:1mm;
+          font-size:6.6pt; color:var(--mut); line-height:1.35; }
+  code { font-family:"JetBrains Mono",ui-monospace,monospace; font-size:6.4pt;
+         background:#f2f4f7; padding:0 .5mm; border-radius:.6mm; }
 </style>
 </head>
 <body>
 
-<h1>The arc rig, after the loudspeaker campaign</h1>
-<p class="sub">Eleven UMIK-2 capsules on a 1.68 m arc · what is the instrument, what is the room, and what the source can be trusted for ·
-rev 1, 2026-09-17 · every number recomputed from our own captures</p>
+<p class="verdict"><b>The arc is a good instrument; the map it draws is the room.</b>
+Below 3 kHz the hub loudspeaker is a valid axisymmetric source, and from 3–5 kHz it is not.</p>
 
-<div class="box verdict">
-  <b>The arc is a good instrument and the map is mostly the room.</b>
-  Of the per-position error, <span class="rig">0.21 dB rms is provably the rig</span> and
-  <span class="room">1.04 dB rms is provably the room</span>; the 0.84 dB that a single flip could not
-  divide is, on a second and independent test, <b>essentially all room</b>. The arc repeats to
-  <b>0.026 dB</b> when nothing is touched. The hub loudspeaker is a valid axisymmetric source
-  <b>below 3 kHz</b> and unusable from 3–5 kHz.
-</div>
+<figure><img src="figs-onepager-ladder.png"
+  alt="Four interventions: nothing changed, arc flipped, arc vertical, driver turned"></figure>
 
-<div class="cols">
-<div>
-
-  <h2>How it was measured</h2>
-  <p>Four ideas, each one a difference that cancels what we cannot model.</p>
-  <ul>
-    <li><span class="kicker">Capsules first (16 Sept).</span> Every capsule against every other at one
-      seat, 55 pairs. Differencing two capsules in the same place cancels source, room and chain
-      <i>exactly</i> — the source need only be stationary, and it was. Seven of eleven factory files
-      were wrong by 0.6–3.6 dB; corrections folded into <code>cal.gain_db</code>, spread across the
-      eleven 4.01 → 0.02 dB.</li>
-    <li><span class="kicker">The whole arc at once (17 Sept).</span> A 1 l printed sphere at the ring
-      centre firing along the symmetry axis, so all eleven sit at the same polar angle and source
-      directivity cancels. 112 tones, 257–6350 Hz, 24/octave, recorded simultaneously.</li>
-    <li><span class="kicker">Flip the arc, then stand it vertical.</span> What travels with the arc
-      keeps its label; what stays in the room swaps between mirrored labels. Un-flip the second run
-      before averaging and each half shows its subject whole. The vertical session is a different room
-      for the same hardware — the only way to break the tie a flip leaves behind.</li>
-  </ul>
-
-  <h2>What the numbers say</h2>
-  <table>
-    <tr><th>Quantity</th><th style="text-align:right">Value</th></tr>
-    <tr><td>Run-to-run repeatability, nothing touched</td><td class="n ok">0.026 dB</td></tr>
-    <tr><td>Worst single cell, same</td><td class="n">0.20 dB</td></tr>
-    <tr><td>Position spread, arc horizontal</td><td class="n">3.86 dB</td></tr>
-    <tr><td>Position spread, arc vertical</td><td class="n">4.76 dB</td></tr>
-    <tr><td><span class="rig">Provably the rig</span> (antisymmetric under the flip)</td><td class="n rig">0.21 dB</td></tr>
-    <tr><td><span class="room">Provably the room</span> (antisymmetric, un-flipped)</td><td class="n room">1.04 dB</td></tr>
-    <tr><td>Shared symmetric term, undividable by one flip</td><td class="n">0.84 dB</td></tr>
-    <tr><td>…resolved by the vertical session: common part</td><td class="n ok">≤ 0.16 dB</td></tr>
-  </table>
-  <p style="font-size:7.9pt;color:var(--mid)">The reorientation is what settles it. A term that travels
-  with the arc must appear in both geometries; the horizontal and vertical symmetric parts share
-  <b>cov = −0.09 dB²</b>, 95 % CI [−0.22, +0.03] by frequency-block bootstrap — consistent with zero.
-  So the shared 0.84 dB is the room, and <b>only ~0.2 dB of the position map is arc hardware</b>.</p>
-
-
-    <figure>
-    <img src="figs-onepager-driver.png" alt="Arc vertical both times, only the driver turned 180 degrees">
-    <figcaption>The decisive pair: arc vertical in both, enclosure in the same place pointing the same
-    way, <b>only the driver remounted 180° in its own seat</b>. The two maps are the same picture
-    everywhere except between the red rules. Bottom: the effect of turning it sits on the 0.05 dB floor
-    to ~550 Hz, stays ≤0.6 dB through the midrange, then spikes to 11 dB at 4362 Hz — a resonance, not a
-    gradual loss of symmetry.</figcaption>
-  </figure>
-
-</div>
-<div>
-
-  <h2>The source has a bad band <span class="tag tag-bad">3–5 kHz</span></h2>
-  <p>The method needs one property of the loudspeaker: that its radiation be <b>rotationally symmetric
-  about its aim</b> — every capsule sits at 90° to that axis. It need not be omnidirectional. Rolling
-  such a source about its own axis is a no-op <i>by construction</i>, which makes the roll a clean test.</p>
-  <p>Rotating the <b>whole sphere</b> gave a false answer: putting it back at the same roll reproduced
-  only to 1.32 dB, so handling the enclosure costs ~1.3 dB on its own — 56 % of the effect being
-  claimed. The honest test is to move the part under test: <b>unbolt the driver and remount it 180°
-  inside a sphere that never moves</b>.</p>
-  <table>
-    <tr><th>Driver turned 180°, enclosure fixed</th><th style="text-align:right">Change</th></tr>
-    <tr><td>257 Hz – 3 kHz (86 tones, worst 0.58)</td><td class="n ok">0.20 dB</td></tr>
-    <tr><td>3–4 kHz</td><td class="n">1.18 dB</td></tr>
-    <tr><td>4–5 kHz</td><td class="n bad">5.12 dB</td></tr>
-    <tr><td>4362 Hz alone <span style="color:var(--mut)">(ka = 2.39)</span></td><td class="n bad">11.0 dB</td></tr>
-    <tr><td>5–6.35 kHz</td><td class="n">0.71 dB</td></tr>
-  </table>
-  <p>At 4362 Hz the arc pattern does not shift or scramble — it <b>turns over</b> (−90°: +3.8 → −13.0 dB;
-  +90°: −9.3 → +8.0; r = −0.63). A 180° rotation inverting the pattern is an <b>m = 1 rocking mode</b>:
-  the cone pivoting about a diameter instead of pistoning, its axis bolted to the driver. It is the cone,
-  so a different enclosure would not help. Enforced in code as
-  <code>calibrator.rig.SOURCE_SUSPECT_HZ</code>.</p>
-
-
-    <h2>What this changes for measurements</h2>
-  <ul>
-    <li><span class="kicker">A position map below 3 kHz is trustworthy</span> to ~0.2 dB of rig error.
-      Above 3 kHz, exclude the source band or use a different source.</li>
-    <li><span class="kicker">The room, not the rig, is what to treat.</span> Effort belongs on the
-      surfaces and the source position, not on rebuilding clamps.</li>
-    <li><span class="kicker">The loudspeaker map does not reproduce the propeller map</span>
-      (r = −0.04 tone-notched, +0.04 mixed; all 22 relabellings tested, best +0.24). So the September
-      pattern is not simply "the room as any source sees it" — the propeller's own inflow, or the object
-      at the hub, still matters. <b>This is the open question.</b></li>
-    <li><span class="kicker">Identity is manual.</span> Every UMIK reports USB serial <code>00000</code>;
-      capsule-to-position was confirmed by reading labels, and a remount can mirror the map without
-      changing a cable — handled by <code>labels_mirrored</code> in each run's <code>meta.json</code>.</li>
-  </ul>
-
-  <h2>Still open</h2>
-  <ul>
-    <li>Why the loudspeaker and the propeller disagree — inflow asymmetry, or the hub object.</li>
-    <li>The <b>absolute</b> anchor: substitution calibration is blind to error common to all eleven.
-      Needs a 94 dB calibrator.</li>
-    <li>Room geometry is still unrecorded: hub height, room L×W×H, foam, what stands near the arc ends.</li>
-    <li>A repeat run in the vertical configuration, for that geometry's own noise floor.</li>
-  </ul>
-
-</div>
+<div class="stats">
+  <div class="stat"><span class="n ok">0.21 dB</span>
+    <span class="k">of the position map is provably the rig — antisymmetric under the flip</span></div>
+  <div class="stat"><span class="n">1.04 dB</span>
+    <span class="k">is provably the room; the 0.84 dB a single flip cannot divide is room too
+    (cov = −0.09 dB², CI [−0.22, +0.03])</span></div>
+  <div class="stat"><span class="n ok">≤ 0.16 dB</span>
+    <span class="k">is all the two geometries share — so the rig's total contribution is ~0.2 dB</span></div>
+  <div class="stat"><span class="n bad">11.0 dB</span>
+    <span class="k">at 4362 Hz when only the driver turns: an m = 1 rocking mode, ka = 2.39. Avoid
+    3–5 kHz</span></div>
 </div>
 
 <p class="foot">
-<b>Data and code.</b> Sessions in <code>calibrator/sessions/2026-09-16</code> (capsules) and <code>2026-09-17</code> (arc); levels and meta mirrored to the measurement repo, WAVs local. <code>calibrator/rig.py</code> captures and <code>read_map()</code> is the single loader, so a figure cannot disagree with the capture about what a level means. This page replaces the arc-validation one-pager, remedies report and guide, retired 2026-09-17 because they framed the loudspeaker session as the work that "will decide" — it has been run. Where this page and <code>CLAUDE.md</code> disagree, <code>CLAUDE.md</code> governs.
+<b>Open.</b> The loudspeaker map does not reproduce the propeller map (r = −0.04 tone-notched, +0.04
+mixed; all 22 relabellings tested, best +0.24) — the propeller's own inflow, or the object at the hub,
+still matters. The absolute anchor needs a 94 dB calibrator. Room geometry is unrecorded: hub height,
+room L×W×H, foam, what stands near the arc ends.
+<b>Data.</b> <code>calibrator/sessions/2026-09-16</code> (capsules) and <code>2026-09-17</code> (arc);
+levels and meta mirrored to the measurement repo, WAVs local. <code>calibrator/rig.py</code> captures and
+<code>read_map()</code> is the single loader, so a figure cannot disagree with the capture about what a
+level means; the bad band is <code>SOURCE_SUSPECT_HZ</code>. Every number here was recomputed from those
+captures while this page was written. Where this page and <code>CLAUDE.md</code> disagree,
+<code>CLAUDE.md</code> governs. rev 2, 2026-09-17.
 </p>
 
 </body>
