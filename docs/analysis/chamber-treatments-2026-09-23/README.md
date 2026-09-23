@@ -41,6 +41,7 @@ A treatment effect clearly above ~0.1 dB is real. Anything compared across days 
 | `tripod-unwrapped` | some Thinsulate wrapping taken off the tripod legs | 2.02 / 1.70 / 1.29 / 0.83 / **0.93** |
 | `ring-unwrapped` | + part of the ring's wrapping removed (new physical preset from here) | 2.03 / 1.66 / 1.36 / 0.87 / 0.96 |
 | `ring-unwrapped-2` | + more of the ring unwrapped | 2.04 / 1.67 / 1.36 / 0.87 / 0.96 |
+| `floor-carpet` | + thick Thinsulate carpet on the floor | **1.74 / 1.51 / 1.30 / 0.81** / 0.95 |
 
 Set aside, not data: `noise-floor-CHAMBER-NOT-READY`, `vertical-2a-ABORTED-chamber-not-ready`,
 `foam-out-NOISY-above-420Hz` (a loud noise started 1–2 min in; the tone gate rejected 77 of 95
@@ -66,11 +67,18 @@ tones on the upper half of the arc, and nothing bad entered the map).
    (+90°) took a frequency-independent +0.17 dB offset at step 1 that step 2 did not move — either
    that section sat near it or its clamp shifted then. Best state measured: **tripod bare, ring
    wrapped.** Figure: `ring-unwrapping.pdf`.
-5. **The room error is largest at 250–630 Hz (1.7–2.0 dB)** and nothing tried so far has moved it.
+5. **The floor carpet is the first treatment that works where the error is.** Room error below
+   3 kHz 1.408 → **1.277 dB**, the best state measured and better than the untouched baseline
+   (1.380): −0.30 dB at 250–400 Hz, −0.16 at 400–630, −0.06 at 630 Hz–1 kHz and 1–1.6 kHz,
+   nothing above 1.6 kHz. The change is largest at 257–350 Hz on the middle capsules (0°, −18°,
+   −36°), filling the strongest low-frequency holes in the map. Figure: `floor-carpet.pdf`
+   (built by `build_step_figure.py`).
+6. **What remains:** 250–400 Hz is still the worst band at 1.74 dB.
 
 ## Files
 
 - `tripod-unwrapped.pdf/.png` — the headline figure (built by `build_tripod_figure.py`)
+- `floor-carpet.pdf/.png` — the carpet step (`build_step_figure.py <ref> <run> "<what>" <name>`)
 - `ring-unwrapping.pdf/.png` — the three ring states and both steps (built by `build_ring_figure.py`)
 - `vertical-2-repeat.pdf` — the untouched pair and the 2026-09-17 centred run for reference
 - `foam-1-vs-baseline.pdf`, `foam-2-vs-baseline.pdf`, `foam-out-vs-baseline.pdf` — map, map, difference
