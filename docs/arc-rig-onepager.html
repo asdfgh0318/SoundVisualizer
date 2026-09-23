@@ -94,10 +94,15 @@ rev 1, 2026-09-17 · every number recomputed from our own captures</p>
   So the shared 0.84 dB is the room, and <b>only ~0.2 dB of the position map is arc hardware</b>.</p>
 
 
-  <figure>
-    <img src="figs-onepager-room.png" alt="Position maps, arc horizontal and arc vertical">
-    <figcaption>Two raw position maps, same quantity and same colour scale: each cell is one capsule at one tone, relative to the eleven-capsule mean. <b>Top</b> the arc horizontal, <b>bottom</b> the arc stood vertical — same eleven capsules, same clamps and cables, a different room. Almost nothing carries between them, which is what says the structure is the room and not the arc. Both show the source's own artefact between the red rules; it is worst in the vertical run, the column just left of 5 k.</figcaption>
+    <figure>
+    <img src="figs-onepager-driver.png" alt="Arc vertical both times, only the driver turned 180 degrees">
+    <figcaption>The decisive pair: arc vertical in both, enclosure in the same place pointing the same
+    way, <b>only the driver remounted 180° in its own seat</b>. The two maps are the same picture
+    everywhere except between the red rules. Bottom: the effect of turning it sits on the 0.05 dB floor
+    to ~550 Hz, stays ≤0.6 dB through the midrange, then spikes to 11 dB at 4362 Hz — a resonance, not a
+    gradual loss of symmetry.</figcaption>
   </figure>
+
 </div>
 <div>
 
@@ -123,7 +128,8 @@ rev 1, 2026-09-17 · every number recomputed from our own captures</p>
   so a different enclosure would not help. Enforced in code as
   <code>calibrator.rig.SOURCE_SUSPECT_HZ</code>.</p>
 
-  <h2>What this changes for measurements</h2>
+
+    <h2>What this changes for measurements</h2>
   <ul>
     <li><span class="kicker">A position map below 3 kHz is trustworthy</span> to ~0.2 dB of rig error.
       Above 3 kHz, exclude the source band or use a different source.</li>
