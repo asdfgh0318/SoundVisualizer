@@ -12,7 +12,7 @@ Findings (2026-09-08): positions 0°, ±18°, ±90° are within ~1 dB of a circl
 
 ## Remedies diagnostics (2026-09-08, `scripts/arc_validation_diagnostics.py`)
 
-Same twelve runs, all five PWM steps, tones and broadband separated. Behind `docs/arc-validation-remedies.html/pdf`.
+Same twelve runs, all five PWM steps, tones and broadband separated. Was behind `docs/arc-validation-remedies` (retired 2026-09-17); the current summary is `docs/arc-rig-onepager.pdf`.
 
 - `remedies-diagnostics.txt`, `remedies-diagnostics.json` — the full printout and the numbers: BPF per run and step (prop7 spun at 164 Hz at PWM 1900, the others at 238–239 Hz; PWM 1200 never makes a tone; PWM 1800 WAVs are cut short in nine runs), standard errors, comb fits, correlations, cepstral peaks by speed.
 - `remedies-tone-probe-map.csv` — the room term per position at each BPF harmonic (3 speeds × 6 harmonics = 18 probe frequencies, 216 Hz–1.55 kHz), with mean s.e. and residual rows.

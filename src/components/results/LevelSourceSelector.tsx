@@ -59,7 +59,7 @@ export function LevelSourceSelector({ source, onChange, ffts }: Props) {
       )}
       {source.kind === 'tone' && (
         <span className="text-amber-400">
-          A tone samples the room at one frequency; below ~1 kHz it can be off by several dB (see docs/arc-validation-remedies.pdf).
+          A tone samples the room at one frequency; below ~1 kHz it can be off by several dB (see docs/arc-rig-onepager.pdf).
         </span>
       )}
     </div>

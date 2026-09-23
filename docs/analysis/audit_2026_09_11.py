@@ -3,8 +3,10 @@
 
     python docs/analysis/audit_2026_09_11.py
 
-Claimed values are those printed in docs/arc-validation-onepager.pdf,
-docs/arc-validation-remedies.pdf, docs/chamber-fighting-guide.pdf and CLAUDE.md
+Claimed values are those printed in docs/chamber-fighting-guide.pdf and CLAUDE.md
+(the arc-validation one-pager and remedies report it also audited were retired
+2026-09-17; their successor docs/arc-rig-onepager.pdf carries its own numbers,
+recomputed at write time from calibrator/sessions/)
 on 2026-09-11. A FAIL means a document and the data disagree; fix the document.
 """
 import csv

@@ -1,6 +1,6 @@
 # Hub sound source for the loudspeaker session
 
-Written 2026-09-09. Needed for campaign session 2 (report `arc-validation-remedies.pdf` §15):
+Written 2026-09-09. Needed for campaign session 2; that session has since been run — see `arc-rig-onepager.pdf`, which records that the sphere built from these options is only axisymmetric below 3 kHz:
 a source that sits where the propeller sits, plays a 20 Hz–20 kHz exponential sweep and
 tones at 216/238/258 Hz, recorded by all 11 microphones with the motor off.
 

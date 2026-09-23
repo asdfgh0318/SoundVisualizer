@@ -80,7 +80,7 @@ These were not in the original 2.md scope but came up during development:
 
 ## Open questions
 
-Raised by the arc validation (Sept 2026) and its remedies report (`docs/arc-validation-remedies.pdf`, 2026-09-08):
+Raised by the arc validation (Sept 2026); current state in `docs/arc-rig-onepager.pdf` (the remedies report it came from was retired 2026-09-17, superseded by the loudspeaker campaign):
 
 - **Rig geometry is only partly recorded** — ring diameter 1.68 m and the upward-blowing orientation are in `docs/mic_arc.md`; hub height, room size, foam thickness and what stands at the −90° end and near the ±36°/±54° mics are not. The image-source fit, far-field distance and floor comb dips need them.
 - **Room or rotor at the blade-passage frequency?** The tone polar is ±8 dB while the broadband floor beside the tone is flat; narrow room modes and a non-axisymmetric inflow (stand, wall) both fit. Decided by a loudspeaker at the hub (sweep for the room transfer function, tones at 216/238/258 Hz) plus a reversed-rotation run.

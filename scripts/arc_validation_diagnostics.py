@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Diagnostics behind docs/arc-validation-remedies.html.
+"""Diagnostics behind the arc-validation campaign (docs/arc-rig-onepager.pdf).
 
 Extends scripts/arc_error_map.py in four ways, all on the same "horizontal" runs
 (arc laid flat, prop axis vertical, so every mic should read the same):
