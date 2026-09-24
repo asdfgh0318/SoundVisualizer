@@ -51,6 +51,7 @@ A treatment effect clearly above ~0.1 dB is real. Anything compared across days 
 | `2026-09-24/carpet-added` | wedges still off, a carpet laid on the flat foam (material not stated) | 2.60 / 1.74 / 1.61 / 0.94 / 0.98 |
 | `2026-09-24/chaotic-carpet` | the carpet made "chaotic" (uneven) instead of flat; wedges presumed still off — both unconfirmed | **1.73 / 1.45** / 1.48 / 0.90 / 0.97 |
 | `2026-09-24/chaotic-carpet-2` | a second, different chaotic arrangement | 1.71 / 1.46 / 1.48 / 0.91 / 0.98 |
+| `2026-09-24/chaotic-carpet-3` | a third chaotic arrangement | 1.76 / 1.45 / 1.48 / 0.89 / 0.98 |
 
 Set aside, not data: `noise-floor-CHAMBER-NOT-READY`, `vertical-2a-ABORTED-chamber-not-ready`,
 `foam-out-NOISY-above-420Hz` (a loud noise started 1–2 min in; the tone gate rejected 77 of 95
@@ -119,7 +120,10 @@ tones on the upper half of the arc, and nothing bad entered the map).
    `chaotic-carpet-vs-wedges-day2.pdf`. **A second, different chaotic arrangement gave the same
    result** (`chaotic-carpet-2`, 1.318 vs 1.317; the two maps differ by 0.14 dB rms, r = +0.99): what
    matters is that the carpet is not flat, not the particular arrangement. Figures:
-   `chaotic-carpet-2-vs-wedges-day2.pdf`, `chaotic-2-vs-1-day2.pdf`.
+   `chaotic-carpet-2-vs-wedges-day2.pdf`, `chaotic-2-vs-1-day2.pdf`. **A third arrangement agrees
+   too** (`chaotic-carpet-3`, 1.324): the three score 1.317 / 1.318 / 1.324 and their maps differ
+   pairwise by 0.12–0.19 dB (r = +0.99…+1.00). Figures: `chaotic-carpet-3-vs-wedges-day2.pdf`,
+   `chaotic-3-vs-2-day2.pdf`.
 8. **What remains:** 250–400 Hz is still the worst band, 1.74 dB with the carpet on the floor.
 
 ## Files
