@@ -52,6 +52,7 @@ A treatment effect clearly above ~0.1 dB is real. Anything compared across days 
 | `2026-09-24/chaotic-carpet` | the carpet made "chaotic" (uneven) instead of flat; wedges presumed still off — both unconfirmed | **1.73 / 1.45** / 1.48 / 0.90 / 0.97 |
 | `2026-09-24/chaotic-carpet-2` | a second, different chaotic arrangement | 1.71 / 1.46 / 1.48 / 0.91 / 0.98 |
 | `2026-09-24/chaotic-carpet-3` | a third chaotic arrangement | 1.76 / 1.45 / 1.48 / 0.89 / 0.98 |
+| `2026-09-24/wall-mount-decoupled` | same, Thinsulate between speaker and wall | 3.97 / 2.05 / 1.52 / 0.80 / 0.94 |
 | `2026-09-24/wall-mount-a`, `-b` | **new geometry**: sphere on the wall reinforcement ~1.5 m out along the axis, facing the ring; tripod and clutter removed; chaotic carpet unchanged | **4.18** / 2.06 / 1.49 / **0.80 / 0.92** |
 
 Set aside, not data: `noise-floor-CHAMBER-NOT-READY`, `vertical-2a-ABORTED-chamber-not-ready`,
@@ -135,6 +136,11 @@ tones on the upper half of the arc, and nothing bad entered the map).
    The top-to-bottom tilt is gone. Level fell only 2.5 dB (6 dB expected from distance alone), but
    the aim also changed (now facing the ring), so that does not check the distance. Figure:
    `wall-mount-day2.pdf` (cell maps across a geometry change compare distance-from-flat only).
+   **Decoupling the mount with Thinsulate barely helps** (`wall-mount-decoupled`): 250–400 Hz
+   4.18 → 3.97, other bands within ±0.06, overall 2.180 → 2.109; level unchanged (−0.01 dB), so the
+   speaker was not displaced. The deep holes stay (306 Hz at +54° −23.9 → −16.3, 297 Hz at −18°
+   −16.8 → −20.1, 364 Hz at +90° unchanged). Structure-borne sound is at most a small part; **the
+   low-end damage comes from the position.** Figure: `wall-mount-decoupled-day2.pdf`.
 9. **What remains:** 250–400 Hz is still the worst band, 1.74 dB with the carpet on the floor.
 
 ## Files
