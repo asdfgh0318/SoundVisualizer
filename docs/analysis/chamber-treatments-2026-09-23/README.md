@@ -52,6 +52,7 @@ A treatment effect clearly above ~0.1 dB is real. Anything compared across days 
 | `2026-09-24/chaotic-carpet` | the carpet made "chaotic" (uneven) instead of flat; wedges presumed still off — both unconfirmed | **1.73 / 1.45** / 1.48 / 0.90 / 0.97 |
 | `2026-09-24/chaotic-carpet-2` | a second, different chaotic arrangement | 1.71 / 1.46 / 1.48 / 0.91 / 0.98 |
 | `2026-09-24/chaotic-carpet-3` | a third chaotic arrangement | 1.76 / 1.45 / 1.48 / 0.89 / 0.98 |
+| `2026-09-24/wall-mount-a`, `-b` | **new geometry**: sphere on the wall reinforcement ~1.5 m out along the axis, facing the ring; tripod and clutter removed; chaotic carpet unchanged | **4.18** / 2.06 / 1.49 / **0.80 / 0.92** |
 
 Set aside, not data: `noise-floor-CHAMBER-NOT-READY`, `vertical-2a-ABORTED-chamber-not-ready`,
 `foam-out-NOISY-above-420Hz` (a loud noise started 1–2 min in; the tone gate rejected 77 of 95
@@ -124,7 +125,17 @@ tones on the upper half of the arc, and nothing bad entered the map).
    too** (`chaotic-carpet-3`, 1.324): the three score 1.317 / 1.318 / 1.324 and their maps differ
    pairwise by 0.12–0.19 dB (r = +0.99…+1.00). Figures: `chaotic-carpet-3-vs-wedges-day2.pdf`,
    `chaotic-3-vs-2-day2.pdf`; all three together: `chaotic-1-2-3-day2.pdf` (`build_chaotic_figure.py`).
-8. **What remains:** 250–400 Hz is still the worst band, 1.74 dB with the carpet on the floor.
+8. **Moving the speaker to the wall (new geometry, `wall-mount-a/-b`).** Repeat pair agrees to
+   0.026 dB (0.056 at 250–400 Hz, 0.006–0.011 above). Room error below 3 kHz **2.180 dB** against
+   1.324 in the old position: better from 1 kHz up (1–1.6 k 0.80, 1.6–3 k 0.92, 5–6.4 k 0.87 — the
+   best of any state there) but far worse at 250–400 Hz (**4.18**) and 400–630 Hz (2.06), with deep
+   single-capsule nulls (306 Hz at +54° −23.6 dB, 297 Hz at −18° −16.9 dB) — two nearly equal
+   coherent paths cancelling, i.e. a strong reflection that is not on the axis. Structure-borne
+   radiation from the wall mount is the other candidate; a decoupled mount would separate them.
+   The top-to-bottom tilt is gone. Level fell only 2.5 dB (6 dB expected from distance alone), but
+   the aim also changed (now facing the ring), so that does not check the distance. Figure:
+   `wall-mount-day2.pdf` (cell maps across a geometry change compare distance-from-flat only).
+9. **What remains:** 250–400 Hz is still the worst band, 1.74 dB with the carpet on the floor.
 
 ## Files
 
