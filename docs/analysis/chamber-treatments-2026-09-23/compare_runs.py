@@ -2,9 +2,10 @@
 import sys; sys.path.insert(0,'.')
 import numpy as np
 from calibrator.rig import read_map
-S='calibrator/sessions/2026-09-23/'
+S='calibrator/sessions/'
+def runpath(p): return S+(p if '/' in p else '2026-09-23/'+p)   # 'run' = 2026-09-23, 'YYYY-MM-DD/run' = any day
 def lv(p):
-    f,pos,L,_=read_map(S+p); f=np.asarray(f); L=np.asarray(L,float); o=np.argsort(pos)[::-1]; L=L[:,o]
+    f,pos,L,_=read_map(runpath(p)); f=np.asarray(f); L=np.asarray(L,float); o=np.argsort(pos)[::-1]; L=L[:,o]
     return f,[pos[i] for i in o],L-L.mean(1,keepdims=True)
 f,pos,R=lv(sys.argv[1])
 refs=[]

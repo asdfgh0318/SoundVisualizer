@@ -30,7 +30,7 @@ is still axisymmetric. The source was not moved all session.
 
 A treatment effect clearly above ~0.1 dB is real. Anything compared across days carries ~0.2 dB.
 
-## Runs (`calibrator/sessions/2026-09-23/`, gitignored; levels+meta mirrored to the data repo)
+## Runs (`calibrator/sessions/2026-09-23/` and `2026-09-24/`, gitignored; levels+meta mirrored to the data repo)
 
 | run | state | flatness 250–400 / 400–630 / 630–1k / 1–1.6k / 1.6–3k (dB) |
 |---|---|---|
@@ -43,6 +43,8 @@ A treatment effect clearly above ~0.1 dB is real. Anything compared across days 
 | `ring-unwrapped-2` | + more of the ring unwrapped | 2.04 / 1.67 / 1.36 / 0.87 / 0.96 |
 | `floor-carpet` | + thick Thinsulate carpet on the floor | **1.74 / 1.51 / 1.30 / 0.81** / 0.95 |
 | `ceiling-carpet` | the same carpet moved to the ceiling | 2.29 / 1.54 / 1.28 / 0.81 / 0.95 |
+| `2026-09-24/ceiling-carpet-day2` | next day, untouched (preset e3e76875: hub back on USB port 5) | 2.27 / 1.54 / 1.27 / 0.81 / 0.94 |
+| `2026-09-24/ceiling1-floor2` | + felt carpet ~2 cm on the floor, Thinsulate still on the ceiling | 2.08 / 1.65 / 1.45 / 1.06 / 0.96 |
 
 Set aside, not data: `noise-floor-CHAMBER-NOT-READY`, `vertical-2a-ABORTED-chamber-not-ready`,
 `foam-out-NOISY-above-420Hz` (a loud noise started 1–2 min in; the tone gate rejected 77 of 95
@@ -78,12 +80,21 @@ tones on the upper half of the arc, and nothing bad entered the map).
    as on the floor (−0.12 / −0.08 / −0.06 dB) but made 250–400 Hz **worse** (2.04 → 2.29 dB),
    opening a new hole near 270 Hz at −18°/−36°; overall 1.408 → 1.431 dB against 1.277 on the
    floor. Figure: `carpet-floor-vs-ceiling.pdf` (`build_carpet_figure.py`).
-7. **What remains:** 250–400 Hz is still the worst band, 1.74 dB with the carpet on the floor.
+7. **Day 2 (2026-09-24).** Overnight, untouched (`2026-09-24/ceiling-carpet-day2` vs
+   `ceiling-carpet`): the map moved 0.16 dB rms, spread evenly over the capsules, but flatness only
+   1.431 → 1.424. **Compare maps within a day; flatness holds across days to ~0.01 dB.** Adding a
+   **felt carpet (~2 cm) on the floor** with the Thinsulate still on the ceiling
+   (`2026-09-24/ceiling1-floor2`) changed the map the most of any treatment (1.10 dB rms) but made
+   it worse overall, 1.424 → 1.457: 250–400 Hz −0.20, and +0.11 / +0.18 / +0.25 dB at 400 Hz–1.6 kHz.
+   The Thinsulate on the floor alone (1.277) remains the best state. Figure: `felt-floor-day2.pdf`.
+8. **What remains:** 250–400 Hz is still the worst band, 1.74 dB with the carpet on the floor.
 
 ## Files
 
 - `tripod-unwrapped.pdf/.png` — the headline figure (built by `build_tripod_figure.py`)
 - `carpet-floor-vs-ceiling.pdf/.png` — no carpet, floor, ceiling side by side
+- `felt-floor-day2.pdf/.png` — felt on the floor, day 2
+- `grid-95.txt` — the exact 95 frequencies of every treatment run (pass to `--freqs`)
 - `floor-carpet.pdf/.png` — the carpet step (`build_step_figure.py <ref> <run> "<what>" <name>`)
 - `ring-unwrapping.pdf/.png` — the three ring states and both steps (built by `build_ring_figure.py`)
 - `vertical-2-repeat.pdf` — the untouched pair and the 2026-09-17 centred run for reference

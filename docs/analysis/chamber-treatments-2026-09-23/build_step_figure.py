@@ -2,10 +2,11 @@
 import sys; sys.path.insert(0,'.')
 import numpy as np, matplotlib; matplotlib.use('Agg'); import matplotlib.pyplot as plt
 from calibrator.rig import read_map
-S='calibrator/sessions/2026-09-23/'; OUT='docs/analysis/chamber-treatments-2026-09-23/'
+S='calibrator/sessions/'; OUT='docs/analysis/chamber-treatments-2026-09-23/'
+def runpath(p): return S+(p if '/' in p else '2026-09-23/'+p)
 ref,run,what,name=sys.argv[1:5]
 def lv(p):
-    f,pos,L,_=read_map(S+p); f=np.asarray(f); L=np.asarray(L,float); o=np.argsort(pos)[::-1]; L=L[:,o]
+    f,pos,L,_=read_map(runpath(p)); f=np.asarray(f); L=np.asarray(L,float); o=np.argsort(pos)[::-1]; L=L[:,o]
     return f,[pos[i] for i in o],L-L.mean(1,keepdims=True)
 f,pos,N=lv(run); g,_,R=lv(ref); R=R[[int(np.argmin(abs(g-x))) for x in f]]
 rms=lambda x: float(np.sqrt(np.mean(x**2))); lo=f<3000
@@ -34,5 +35,5 @@ for r,(t,M,v,cm) in enumerate([(f'before: {ref}   —   {rms(R[lo]):.3f} dB belo
 a.set_xlabel('Hz (3–5 kHz omitted: the sphere is not axisymmetric there). +90° = top, −90° = bottom')
 tot=rms(N[lo])-rms(R[lo])
 fig.suptitle(f'{what}: room error below 3 kHz {rms(R[lo]):.3f} → {rms(N[lo]):.3f} dB ({tot:+.3f})',x=.01,y=.975,ha='left',fontsize=12,fontweight='bold')
-fig.text(.01,.945,'2026-09-23 · arc vertical · sphere 20 cm back along the axis · 95 tones · 11 calibrated capsules',fontsize=8.5,color='#4b5563')
+fig.text(.01,.945,f'{ref} → {run} · arc vertical · sphere 20 cm back along the axis · 95 tones · 11 calibrated capsules',fontsize=8.5,color='#4b5563')
 fig.savefig(OUT+name+'.pdf'); fig.savefig(OUT+name+'.png'); print(OUT+name+'.pdf')
