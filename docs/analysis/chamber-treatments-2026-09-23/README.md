@@ -53,6 +53,7 @@ A treatment effect clearly above ~0.1 dB is real. Anything compared across days 
 | `2026-09-24/chaotic-carpet-2` | a second, different chaotic arrangement | 1.71 / 1.46 / 1.48 / 0.91 / 0.98 |
 | `2026-09-24/chaotic-carpet-3` | a third chaotic arrangement | 1.76 / 1.45 / 1.48 / 0.89 / 0.98 |
 | `2026-09-24/wall-direct-a`, `-b` | sphere on the wall itself, further out (~2.5 m by level, unconfirmed) | 2.12 / **3.58** / 2.13 / 1.54 / 1.13 |
+| `2026-09-24/felt-foil-free-inverted` | the foil-free felt flipped over | 3.38 / 2.40 / 1.62 / 0.95 / 0.95 (5–6.4 kHz 1.17) |
 | `2026-09-24/felt-foil-removed` | felt stays on the floor, **foil backing stripped off** | 3.47 / 2.55 / 1.85 / 1.31 / 1.10 (5–6.4 kHz 1.43) |
 | `2026-09-24/felt-foil-in` | felt turned FOIL SIDE INTO the chamber (it has a foil backing, until now always facing away) | **4.32** / 2.86 / 2.37 / 2.01 / 1.81 (5–6.4 kHz **1.71**) |
 | `2026-09-24/ceiling-felt-to-floor` | the ceiling felt laid on the floor (second felt layer on the floor) | 3.69 / 2.64 / **2.53 / 1.75 / 1.76** (5–6.4 kHz 1.12) |
@@ -235,7 +236,11 @@ tones on the upper half of the arc, and nothing bad entered the map).
    Adam's reading: the foil sealed the Thinsulate underneath, and without it sound reaches the
    absorber. It is still behind the run with one foil-backed felt (2.107) at 1–3 kHz, but the raised
    carpet has been handled between every one of these runs, which alone moves 1–3 kHz by ~0.5 dB.
-   Figure: `felt-foil-removed-day2.pdf`.
+   Figure: `felt-foil-removed-day2.pdf`. **Flipping the foil-free felt** (`felt-foil-free-inverted`)
+   improved every band (2.159 → **2.008**, 1–1.6 kHz 1.31 → 0.95), the best score since the wedges came
+   out. But the map moved 0.85 dB — more than turning over a uniform sheet should cause — so part of
+   it is the carpet being rearranged underneath; the side the foil was glued to may also differ.
+   Figure: `felt-foil-free-inverted-day2.pdf`.
    **USB hub resets happened twice today** (16:08 and 18:09): the hubs reset and some capsules came
    back delivering full-scale noise. `capture_rig` now refuses to start on such a stream
    (`rig.assert_streams_ok`, a 0.5 s silence check at −40 dBFS); fix by re-enumerating the capsule.
