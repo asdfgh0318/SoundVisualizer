@@ -107,7 +107,8 @@ tones on the upper half of the arc, and nothing bad entered the map).
    **A carpet on the flat foam recovers ~63 % of that loss but does not replace the wedges**
    (`carpet-added`): 2.054 → 1.642 dB, against 1.400 with the wedges and 1.277 with wedges +
    Thinsulate; 250–400 Hz 3.29 → 2.60. The top-to-bottom tilt stays (−0.51 dB top, +0.52 bottom),
-   so the floor reflection is still strong. Figure: `carpet-on-flat-foam-day2.pdf`.
+   so the floor reflection is still strong. Figure: `carpet-on-flat-foam-day2.pdf`; against wedges
+   only: `carpet-vs-wedges-day2.pdf` (worse at 250 Hz–1 kHz, equal 1–3 kHz, better 5–6.4 kHz).
 8. **What remains:** 250–400 Hz is still the worst band, 1.74 dB with the carpet on the floor.
 
 ## Files
