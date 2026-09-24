@@ -47,6 +47,7 @@ A treatment effect clearly above ~0.1 dB is real. Anything compared across days 
 | `2026-09-24/ceiling1-floor2` | + felt carpet ~2 cm on the floor, Thinsulate still on the ceiling | 2.08 / 1.65 / 1.45 / 1.06 / 0.96 |
 | `2026-09-24/felt-floor-only` | Thinsulate off the ceiling, felt left on the floor | 2.06 / 1.77 / 1.57 / 1.12 / 0.98 |
 | `2026-09-24/bare-day2` | all carpets removed = same state as `ring-unwrapped-2` | 2.00 / 1.67 / 1.36 / 0.87 / 0.97 |
+| `2026-09-24/floor-no-wedges` | + absorbing wedges taken off the floor, flat foam base left | **3.29 / 2.17 / 1.84 / 1.32 / 1.26** |
 
 Set aside, not data: `noise-floor-CHAMBER-NOT-READY`, `vertical-2a-ABORTED-chamber-not-ready`,
 `foam-out-NOISY-above-420Hz` (a loud noise started 1–2 min in; the tone gate rejected 77 of 95
@@ -96,6 +97,12 @@ tones on the upper half of the arc, and nothing bad entered the map).
    With every carpet removed (`bare-day2`) the room returns to **1.400 dB against 1.408 for the
    same state the day before** — every band within 0.04 dB. The room-error score reproduces across
    days, so yesterday's 1.277 for the Thinsulate floor stands as a valid comparison.
+   **The floor wedges are the most important treatment in the room.** Taking them off, leaving the
+   flat foam base (`floor-no-wedges`), took room error from 1.400 to **2.054 dB** — worse in every
+   band below 3 kHz, 250–400 Hz from 2.00 to 3.29 — and tilted the arc: the bottom capsule reads
+   +0.47 dB and the top −0.31 dB relative to the mean, the signature of a stronger floor reflection
+   reaching the capsules nearest the floor. Only 5–6.4 kHz improved (1.14 → 0.98). Figure:
+   `floor-no-wedges-day2.pdf`.
 8. **What remains:** 250–400 Hz is still the worst band, 1.74 dB with the carpet on the floor.
 
 ## Files
