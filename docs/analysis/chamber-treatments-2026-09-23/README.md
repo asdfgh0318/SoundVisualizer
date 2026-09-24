@@ -53,6 +53,7 @@ A treatment effect clearly above ~0.1 dB is real. Anything compared across days 
 | `2026-09-24/chaotic-carpet-2` | a second, different chaotic arrangement | 1.71 / 1.46 / 1.48 / 0.91 / 0.98 |
 | `2026-09-24/chaotic-carpet-3` | a third chaotic arrangement | 1.76 / 1.45 / 1.48 / 0.89 / 0.98 |
 | `2026-09-24/wall-direct-a`, `-b` | sphere on the wall itself, further out (~2.5 m by level, unconfirmed) | 2.12 / **3.58** / 2.13 / 1.54 / 1.13 |
+| `2026-09-24/felt-foil-in` | felt turned FOIL SIDE INTO the chamber (it has a foil backing, until now always facing away) | **4.32** / 2.86 / 2.37 / 2.01 / 1.81 (5–6.4 kHz **1.71**) |
 | `2026-09-24/ceiling-felt-to-floor` | the ceiling felt laid on the floor (second felt layer on the floor) | 3.69 / 2.64 / **2.53 / 1.75 / 1.76** (5–6.4 kHz 1.12) |
 | `2026-09-24/ceiling-felt-removed` | the ceiling felt taken down (carpet still raised, felt still on the floor) | 3.68 / 2.67 / 1.55 / **0.71 / 0.72** (5–6.4 kHz 0.88) |
 | `2026-09-24/shield-removed` | the felt shield taken out again (carpet stays raised) | 3.07 / 2.64 / 1.91 / 1.06 / 0.97 (5–6.4 kHz 0.96) |
@@ -222,7 +223,12 @@ tones on the upper half of the arc, and nothing bad entered the map).
    **Laying that felt on the floor instead** (`ceiling-felt-to-floor`) is the third time felt on the
    floor has damaged the mid and high bands: 630 Hz–1 kHz 1.55 → 2.53, 1–1.6 kHz 0.71 → 1.75,
    1.6–3 kHz 0.72 → 1.76, total 2.107 → 2.517; 250–630 Hz unchanged. Figure:
-   `ceiling-felt-to-floor-day2.pdf`.
+   `ceiling-felt-to-floor-day2.pdf`. **The felt has a foil backing.** Turned foil side inward
+   (`felt-foil-in`) it is worse again: 2.517 → **2.753**, most at 250–400 Hz (3.69 → 4.32) and 5–6.4 kHz
+   (1.12 → 1.71) — with the foil outward the felt had been absorbing the top band. Plausible reading
+   of all the felt results: 2 cm of felt on a foil sheet absorbs only where a quarter wavelength fits
+   in the felt (above ~4 kHz) and is a reflector below that, foil up or down. Figure:
+   `felt-foil-in-day2.pdf`.
    **USB hub resets happened twice today** (16:08 and 18:09): the hubs reset and some capsules came
    back delivering full-scale noise. `capture_rig` now refuses to start on such a stream
    (`rig.assert_streams_ok`, a 0.5 s silence check at −40 dBFS); fix by re-enumerating the capsule.
