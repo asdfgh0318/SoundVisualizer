@@ -53,7 +53,7 @@ A treatment effect clearly above ~0.1 dB is real. Anything compared across days 
 | `2026-09-24/chaotic-carpet-2` | a second, different chaotic arrangement | 1.71 / 1.46 / 1.48 / 0.91 / 0.98 |
 | `2026-09-24/chaotic-carpet-3` | a third chaotic arrangement | 1.76 / 1.45 / 1.48 / 0.89 / 0.98 |
 | `2026-09-24/wall-direct-a`, `-b` | sphere on the wall itself, further out (~2.5 m by level, unconfirmed) | 2.12 / **3.58** / 2.13 / 1.54 / 1.13 |
-| `2026-09-24/wall-direct-absorber` | + felt and foam behind the speaker, against the wall | 2.23 / 3.63 / 1.99 / 1.40 / 1.16 (quarter-octave peak still 555 Hz) |
+| `2026-09-24/wall-direct-absorber` | + felt and foam behind the speaker, against the wall | 1.89 / **4.04** / 1.85 / 1.47 / 1.16 (quarter-octave peak still 555 Hz) |
 | `2026-09-24/wall-mount-decoupled` | same, Thinsulate between speaker and wall | 3.97 / 2.05 / 1.52 / 0.80 / 0.94 |
 | `2026-09-24/wall-mount-a`, `-b` | **new geometry**: sphere on the wall reinforcement ~1.5 m out along the axis, facing the ring; tripod and clutter removed; chaotic carpet unchanged | **4.18** / 2.06 / 1.49 / **0.80 / 0.92** |
 
