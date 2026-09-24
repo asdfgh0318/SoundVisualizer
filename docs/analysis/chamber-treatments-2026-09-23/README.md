@@ -166,11 +166,14 @@ tones on the upper half of the arc, and nothing bad entered the map).
    sitting below the ring centre (≈15 cm would give 3.1 dB) and/or aimed slightly down. With that
    tilt fitted out the score is 1.241 (old mount, treated the same: 1.105). Level −0.3 dB vs the old
    mount. Figure: `center-new-day2.pdf`. **Levelling the sphere** (`center-leveled`) took the tilt below
-   0.5 dB under 3 kHz (1.2 dB at 5–6.4 kHz) and the score from 1.786 to **1.443**. From 1 kHz up this is
-   the cleanest state measured (1–1.6 kHz 0.84, 1.6–3 kHz 0.83, 5–6.4 kHz 0.82); below 630 Hz it is worse
+   0.5 dB under 3 kHz (1.2 dB at 5–6.4 kHz) and the score from 1.786 to **1.443**. It is the best state
+   measured at 1.6–3 kHz (0.83) and 5–6.4 kHz (0.82) and ties the best at 630 Hz–1.6 kHz (1.26 / 0.84
+   against 1.30 / 0.81 for Thinsulate-on-wedges and 0.80 on the wall reinforcement); below 630 Hz it is worse
    than the old tripod on the same floor (2.20 / 1.81 against 1.76 / 1.45). The remaining per-capsule
    pattern is a shallow U (0° −0.33 dB, ends +0.16 / +0.51), consistent with the sphere sitting a few
-   cm off-centre horizontally, away from the 0° capsule. Figure: `center-leveled-day2.pdf`.
+   cm off-centre horizontally, away from the 0° capsule. Figure: `center-leveled-day2.pdf`; against the
+   previous cleanest (`floor-carpet`, 1.277): `center-leveled-vs-best-day2.pdf` — 428 cells better,
+   467 worse; it loses at 250–630 Hz (+0.46 / +0.31) and wins at 1.6–3 kHz (−0.12) and 5–6.4 kHz (−0.26).
 9. **What remains:** 250–400 Hz is still the worst band, 1.74 dB with the carpet on the floor.
 
 ## Files
