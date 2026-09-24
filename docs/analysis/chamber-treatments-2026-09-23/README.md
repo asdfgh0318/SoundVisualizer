@@ -53,6 +53,7 @@ A treatment effect clearly above ~0.1 dB is real. Anything compared across days 
 | `2026-09-24/chaotic-carpet-2` | a second, different chaotic arrangement | 1.71 / 1.46 / 1.48 / 0.91 / 0.98 |
 | `2026-09-24/chaotic-carpet-3` | a third chaotic arrangement | 1.76 / 1.45 / 1.48 / 0.89 / 0.98 |
 | `2026-09-24/wall-direct-a`, `-b` | sphere on the wall itself, further out (~2.5 m by level, unconfirmed) | 2.12 / **3.58** / 2.13 / 1.54 / 1.13 |
+| `2026-09-24/ceiling-felt-removed` | the ceiling felt taken down (carpet still raised, felt still on the floor) | 3.68 / 2.67 / 1.55 / **0.71 / 0.72** (5–6.4 kHz 0.88) |
 | `2026-09-24/shield-removed` | the felt shield taken out again (carpet stays raised) | 3.07 / 2.64 / 1.91 / 1.06 / 0.97 (5–6.4 kHz 0.96) |
 | `2026-09-24/carpet-raised-2` | carpet raised further + felt shield under some electronics (two changes at once) | 3.07 / 2.59 / 1.96 / 1.06 / 0.96 (5–6.4 kHz 1.03) |
 | `2026-09-24/carpet-raised` | carpet less even and lifted on spacers (gap height not stated) | 3.04 / 2.59 / 1.92 / 1.08 / 0.95 (5–6.4 kHz 0.93) |
@@ -211,7 +212,12 @@ tones on the upper half of the arc, and nothing bad entered the map).
    again (`shield-removed`) separates the two: **the shield alone** moved the map 0.42 dB, most at −18°
    and −36° (0.75 / 0.58 dB — the capsules nearest the electronics), with score 2.027 → 2.028; **the
    extra carpet height alone** moved it 0.31 dB, score 2.011 → 2.028. Neither changes room error.
-   Figure: `shield-removed-day2.pdf`.
+   Figure: `shield-removed-day2.pdf`. **Taking the ceiling felt down again** (`ceiling-felt-removed`)
+   did not simply undo putting it up: the change correlates only −0.60 with the earlier one (slope
+   −0.43), and the score moved 2.028 → 2.107 rather than back by 0.46. Now the felt's absence hurts
+   250–400 Hz (3.07 → 3.68) but *helps* 630 Hz–3 kHz (1.91 → 1.55, 1.06 → 0.71, 0.97 → 0.72 — the best
+   1–3 kHz values measured). The carpet was raised in between, so the ceiling felt's effect depends
+   on the floor: it is not a fixed, additive improvement. Figure: `ceiling-felt-removed-day2.pdf`.
    **USB hub resets happened twice today** (16:08 and 18:09): the hubs reset and some capsules came
    back delivering full-scale noise. `capture_rig` now refuses to start on such a stream
    (`rig.assert_streams_ok`, a 0.5 s silence check at −40 dBFS); fix by re-enumerating the capsule.
