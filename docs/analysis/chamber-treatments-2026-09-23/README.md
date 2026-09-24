@@ -53,6 +53,7 @@ A treatment effect clearly above ~0.1 dB is real. Anything compared across days 
 | `2026-09-24/chaotic-carpet-2` | a second, different chaotic arrangement | 1.71 / 1.46 / 1.48 / 0.91 / 0.98 |
 | `2026-09-24/chaotic-carpet-3` | a third chaotic arrangement | 1.76 / 1.45 / 1.48 / 0.89 / 0.98 |
 | `2026-09-24/wall-direct-a`, `-b` | sphere on the wall itself, further out (~2.5 m by level, unconfirmed) | 2.12 / **3.58** / 2.13 / 1.54 / 1.13 |
+| `2026-09-24/ceiling-felt-to-floor` | the ceiling felt laid on the floor (second felt layer on the floor) | 3.69 / 2.64 / **2.53 / 1.75 / 1.76** (5–6.4 kHz 1.12) |
 | `2026-09-24/ceiling-felt-removed` | the ceiling felt taken down (carpet still raised, felt still on the floor) | 3.68 / 2.67 / 1.55 / **0.71 / 0.72** (5–6.4 kHz 0.88) |
 | `2026-09-24/shield-removed` | the felt shield taken out again (carpet stays raised) | 3.07 / 2.64 / 1.91 / 1.06 / 0.97 (5–6.4 kHz 0.96) |
 | `2026-09-24/carpet-raised-2` | carpet raised further + felt shield under some electronics (two changes at once) | 3.07 / 2.59 / 1.96 / 1.06 / 0.96 (5–6.4 kHz 1.03) |
@@ -218,6 +219,10 @@ tones on the upper half of the arc, and nothing bad entered the map).
    250–400 Hz (3.07 → 3.68) but *helps* 630 Hz–3 kHz (1.91 → 1.55, 1.06 → 0.71, 0.97 → 0.72 — the best
    1–3 kHz values measured). The carpet was raised in between, so the ceiling felt's effect depends
    on the floor: it is not a fixed, additive improvement. Figure: `ceiling-felt-removed-day2.pdf`.
+   **Laying that felt on the floor instead** (`ceiling-felt-to-floor`) is the third time felt on the
+   floor has damaged the mid and high bands: 630 Hz–1 kHz 1.55 → 2.53, 1–1.6 kHz 0.71 → 1.75,
+   1.6–3 kHz 0.72 → 1.76, total 2.107 → 2.517; 250–630 Hz unchanged. Figure:
+   `ceiling-felt-to-floor-day2.pdf`.
    **USB hub resets happened twice today** (16:08 and 18:09): the hubs reset and some capsules came
    back delivering full-scale noise. `capture_rig` now refuses to start on such a stream
    (`rig.assert_streams_ok`, a 0.5 s silence check at −40 dBFS); fix by re-enumerating the capsule.
