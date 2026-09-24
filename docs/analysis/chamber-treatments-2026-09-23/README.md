@@ -49,6 +49,7 @@ A treatment effect clearly above ~0.1 dB is real. Anything compared across days 
 | `2026-09-24/bare-day2` | all carpets removed = same state as `ring-unwrapped-2` | 2.00 / 1.67 / 1.36 / 0.87 / 0.97 |
 | `2026-09-24/floor-no-wedges` | + absorbing wedges taken off the floor, flat foam base left | **3.29 / 2.17 / 1.84 / 1.32 / 1.26** |
 | `2026-09-24/carpet-added` | wedges still off, a carpet laid on the flat foam (material not stated) | 2.60 / 1.74 / 1.61 / 0.94 / 0.98 |
+| `2026-09-24/chaotic-carpet` | the carpet made "chaotic" (uneven) instead of flat; wedges presumed still off — both unconfirmed | **1.73 / 1.45** / 1.48 / 0.90 / 0.97 |
 
 Set aside, not data: `noise-floor-CHAMBER-NOT-READY`, `vertical-2a-ABORTED-chamber-not-ready`,
 `foam-out-NOISY-above-420Hz` (a loud noise started 1–2 min in; the tone gate rejected 77 of 95
@@ -109,6 +110,12 @@ tones on the upper half of the arc, and nothing bad entered the map).
    Thinsulate; 250–400 Hz 3.29 → 2.60. The top-to-bottom tilt stays (−0.51 dB top, +0.52 bottom),
    so the floor reflection is still strong. Figure: `carpet-on-flat-foam-day2.pdf`; against wedges
    only: `carpet-vs-wedges-day2.pdf` (worse at 250 Hz–1 kHz, equal 1–3 kHz, better 5–6.4 kHz).
+   **Making the carpet chaotic instead of flat** (`chaotic-carpet`, state unconfirmed) took room
+   error from 1.642 to **1.317 dB — better than the wedges alone (1.400)** and the best result
+   without the Thinsulate-on-wedges combination. It gives the lowest 250–400 Hz (1.73) and 400–630 Hz
+   (1.45) of any state, but is worse than the wedges at 630 Hz–1 kHz (1.48 vs 1.36) and keeps the
+   top-to-bottom tilt (−0.64 .. +0.53 dB). Figures: `chaotic-vs-flat-carpet-day2.pdf`,
+   `chaotic-carpet-vs-wedges-day2.pdf`.
 8. **What remains:** 250–400 Hz is still the worst band, 1.74 dB with the carpet on the floor.
 
 ## Files
