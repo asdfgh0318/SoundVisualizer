@@ -178,7 +178,8 @@ tones on the upper half of the arc, and nothing bad entered the map).
    **An even carpet undoes the floor** (`floor-even-carpet`): 1.443 → **2.540 dB**, 250–400 Hz 2.20 → 4.86
    and 400–630 Hz 1.81 → 2.72, while 1–3 kHz reach their best yet (0.77 / 0.79). The same lesson as the
    flat-vs-heaped carpet test: laid flat, the carpet is a mirror for the low end. Figure:
-   `floor-even-carpet-day2.pdf`.
+   `floor-even-carpet-day2.pdf`; every floor state side by side: `floor-states-compare.pdf`
+   (`build_compare_figure.py`).
    **USB hub resets happened twice today** (16:08 and 18:09): the hubs reset and some capsules came
    back delivering full-scale noise. `capture_rig` now refuses to start on such a stream
    (`rig.assert_streams_ok`, a 0.5 s silence check at −40 dBFS); fix by re-enumerating the capsule.
