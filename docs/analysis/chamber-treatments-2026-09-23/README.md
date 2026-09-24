@@ -45,6 +45,7 @@ A treatment effect clearly above ~0.1 dB is real. Anything compared across days 
 | `ceiling-carpet` | the same carpet moved to the ceiling | 2.29 / 1.54 / 1.28 / 0.81 / 0.95 |
 | `2026-09-24/ceiling-carpet-day2` | next day, untouched (preset e3e76875: hub back on USB port 5) | 2.27 / 1.54 / 1.27 / 0.81 / 0.94 |
 | `2026-09-24/ceiling1-floor2` | + felt carpet ~2 cm on the floor, Thinsulate still on the ceiling | 2.08 / 1.65 / 1.45 / 1.06 / 0.96 |
+| `2026-09-24/felt-floor-only` | Thinsulate off the ceiling, felt left on the floor | 2.06 / 1.77 / 1.57 / 1.12 / 0.98 |
 
 Set aside, not data: `noise-floor-CHAMBER-NOT-READY`, `vertical-2a-ABORTED-chamber-not-ready`,
 `foam-out-NOISY-above-420Hz` (a loud noise started 1–2 min in; the tone gate rejected 77 of 95
@@ -87,6 +88,10 @@ tones on the upper half of the arc, and nothing bad entered the map).
    (`2026-09-24/ceiling1-floor2`) changed the map the most of any treatment (1.10 dB rms) but made
    it worse overall, 1.424 → 1.457: 250–400 Hz −0.20, and +0.11 / +0.18 / +0.25 dB at 400 Hz–1.6 kHz.
    The Thinsulate on the floor alone (1.277) remains the best state. Figure: `felt-floor-day2.pdf`.
+   Taking the Thinsulate off the ceiling and leaving only the felt (`felt-floor-only`) gives the
+   **worst state measured, 1.512 dB** — worse than the bare room (1.408) in every band from
+   400 Hz to 3 kHz. **Felt on the floor harms 400 Hz–1.6 kHz; the Thinsulate on the ceiling had
+   been masking part of that.** Figure: `felt-floor-only-day2.pdf`.
 8. **What remains:** 250–400 Hz is still the worst band, 1.74 dB with the carpet on the floor.
 
 ## Files
