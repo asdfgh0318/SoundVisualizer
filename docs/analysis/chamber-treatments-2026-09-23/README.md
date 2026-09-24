@@ -123,7 +123,7 @@ tones on the upper half of the arc, and nothing bad entered the map).
    `chaotic-carpet-2-vs-wedges-day2.pdf`, `chaotic-2-vs-1-day2.pdf`. **A third arrangement agrees
    too** (`chaotic-carpet-3`, 1.324): the three score 1.317 / 1.318 / 1.324 and their maps differ
    pairwise by 0.12–0.19 dB (r = +0.99…+1.00). Figures: `chaotic-carpet-3-vs-wedges-day2.pdf`,
-   `chaotic-3-vs-2-day2.pdf`.
+   `chaotic-3-vs-2-day2.pdf`; all three together: `chaotic-1-2-3-day2.pdf` (`build_chaotic_figure.py`).
 8. **What remains:** 250–400 Hz is still the worst band, 1.74 dB with the carpet on the floor.
 
 ## Files
