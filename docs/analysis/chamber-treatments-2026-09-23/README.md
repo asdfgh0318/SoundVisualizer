@@ -53,6 +53,7 @@ A treatment effect clearly above ~0.1 dB is real. Anything compared across days 
 | `2026-09-24/chaotic-carpet-2` | a second, different chaotic arrangement | 1.71 / 1.46 / 1.48 / 0.91 / 0.98 |
 | `2026-09-24/chaotic-carpet-3` | a third chaotic arrangement | 1.76 / 1.45 / 1.48 / 0.89 / 0.98 |
 | `2026-09-24/wall-direct-a`, `-b` | sphere on the wall itself, further out (~2.5 m by level, unconfirmed) | 2.12 / **3.58** / 2.13 / 1.54 / 1.13 |
+| `2026-09-24/metal-rod` | + a metal rod placed in the chamber (position, size not stated) | 3.69 / 3.09 / 2.26 / 1.74 / 1.43 (5–6.4 kHz 1.31) |
 | `2026-09-24/carpet-plus-felt` | + the felt added to the even thick carpet | 3.69 / 3.12 / 2.27 / 1.73 / 1.42 |
 | `2026-09-24/floor-even-carpet` | floor cleaned up, thick carpet laid mostly evenly (was heaped) | **4.86 / 2.72** / 1.61 / **0.77 / 0.79** |
 | `2026-09-24/center-leveled` | the same, sphere levelled | 2.20 / 1.81 / 1.26 / **0.84 / 0.83** |
@@ -183,7 +184,11 @@ tones on the upper half of the arc, and nothing bad entered the map).
    (`build_compare_figure.py`). **Adding the felt** (`carpet-plus-felt`) trades bands instead of fixing
    them: 250–400 Hz 4.86 → 3.69, but 400 Hz–3 kHz all worse (2.72 → 3.12, 1.61 → 2.27, 0.77 → 1.73,
    0.79 → 1.42); total 2.540 → 2.509. Felt hurts 400 Hz–1.6 kHz here exactly as it did on the
-   wedges. Figure: `carpet-plus-felt-day2.pdf`.
+   wedges. Figure: `carpet-plus-felt-day2.pdf`. **A metal rod** (`metal-rod`) changes the map in
+   proportion to frequency — 0.12 dB at 250–400 Hz, 0.31 at 1.6–3 kHz, 0.79 at 5–6.4 kHz — spread
+   evenly over the capsules; the score below 3 kHz is unchanged (2.509 → 2.506) and 5–6.4 kHz gets
+   worse (1.07 → 1.31). A thin hard object is invisible at long wavelengths and scatters at short
+   ones. Figure: `metal-rod-day2.pdf`.
    **USB hub resets happened twice today** (16:08 and 18:09): the hubs reset and some capsules came
    back delivering full-scale noise. `capture_rig` now refuses to start on such a stream
    (`rig.assert_streams_ok`, a 0.5 s silence check at −40 dBFS); fix by re-enumerating the capsule.
