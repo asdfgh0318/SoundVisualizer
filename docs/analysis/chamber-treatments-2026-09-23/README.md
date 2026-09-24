@@ -53,6 +53,7 @@ A treatment effect clearly above ~0.1 dB is real. Anything compared across days 
 | `2026-09-24/chaotic-carpet-2` | a second, different chaotic arrangement | 1.71 / 1.46 / 1.48 / 0.91 / 0.98 |
 | `2026-09-24/chaotic-carpet-3` | a third chaotic arrangement | 1.76 / 1.45 / 1.48 / 0.89 / 0.98 |
 | `2026-09-24/wall-direct-a`, `-b` | sphere on the wall itself, further out (~2.5 m by level, unconfirmed) | 2.12 / **3.58** / 2.13 / 1.54 / 1.13 |
+| `2026-09-24/rod-removed` | the same with the metal rod taken out | 3.06 / 2.66 / 1.95 / 1.15 / 1.04 (5–6.4 kHz 1.10) |
 | `2026-09-24/felt-ceiling` | + a second piece of felt on the ceiling (floor felt stays), rod still in | 3.05 / 2.66 / 1.96 / 1.14 / 1.03 |
 | `2026-09-24/metal-rod` | + a metal rod placed in the chamber (position, size not stated) | 3.69 / 3.09 / 2.26 / 1.74 / 1.43 (5–6.4 kHz 1.31) |
 | `2026-09-24/carpet-plus-felt` | + the felt added to the even thick carpet | 3.69 / 3.12 / 2.27 / 1.73 / 1.42 |
@@ -194,7 +195,10 @@ tones on the upper half of the arc, and nothing bad entered the map).
    3 kHz: 250–400 Hz 3.69 → 3.05, 1–1.6 kHz 1.74 → 1.14, total 2.506 → **2.051**; 5–6.4 kHz slightly
    worse (1.31 → 1.42). Unlike the Thinsulate on the ceiling on day 1, which hurt 250–400 Hz. It was
    a second piece (the floor felt stayed), so the gain is the ceiling felt alone. Figure:
-   `felt-ceiling-day2.pdf`.
+   `felt-ceiling-day2.pdf`. **Taking the rod out again** (`rod-removed`) confirms the rod result:
+   5–6.4 kHz returns 1.42 → 1.10, below 1 kHz the map moves only 0.03–0.05 dB (handling level), and
+   at 5–6.4 kHz the removal undoes the insertion (r = −0.87 between the two changes). Score below
+   3 kHz unchanged (2.051 → 2.054). Figure: `rod-removed-day2.pdf`.
    **USB hub resets happened twice today** (16:08 and 18:09): the hubs reset and some capsules came
    back delivering full-scale noise. `capture_rig` now refuses to start on such a stream
    (`rig.assert_streams_ok`, a 0.5 s silence check at −40 dBFS); fix by re-enumerating the capsule.
