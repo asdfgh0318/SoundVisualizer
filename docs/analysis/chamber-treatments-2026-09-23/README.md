@@ -53,6 +53,7 @@ A treatment effect clearly above ~0.1 dB is real. Anything compared across days 
 | `2026-09-24/chaotic-carpet-2` | a second, different chaotic arrangement | 1.71 / 1.46 / 1.48 / 0.91 / 0.98 |
 | `2026-09-24/chaotic-carpet-3` | a third chaotic arrangement | 1.76 / 1.45 / 1.48 / 0.89 / 0.98 |
 | `2026-09-24/wall-direct-a`, `-b` | sphere on the wall itself, further out (~2.5 m by level, unconfirmed) | 2.12 / **3.58** / 2.13 / 1.54 / 1.13 |
+| `2026-09-24/ring-bare` | + the rest of the Thinsulate wrap removed from the ring | 1.79 / 4.04 / 1.84 / 1.46 / 1.20 |
 | `2026-09-24/wall-direct-absorber` | + felt and foam behind the speaker, against the wall | 1.89 / **4.04** / 1.85 / 1.47 / 1.16 (quarter-octave peak still 555 Hz) |
 | `2026-09-24/wall-mount-decoupled` | same, Thinsulate between speaker and wall | 3.97 / 2.05 / 1.52 / 0.80 / 0.94 |
 | `2026-09-24/wall-mount-a`, `-b` | **new geometry**: sphere on the wall reinforcement ~1.5 m out along the axis, facing the ring; tripod and clutter removed; chaotic carpet unchanged | **4.18** / 2.06 / 1.49 / **0.80 / 0.92** |
@@ -152,7 +153,10 @@ tones on the upper half of the arc, and nothing bad entered the map).
    2.219). The map moved 1.67 dB and the level rose 0.44 dB, so the speaker was probably nudged while
    the absorber went in. The wall directly behind is therefore not what makes the peak — consistent
    with an on-axis reflection reaching every capsule equally and cancelling in the map. Figure:
-   `wall-direct-absorber-day2.pdf`.
+   `wall-direct-absorber-day2.pdf`. **Stripping the rest of the ring's wrap** (`ring-bare`) moved the map
+   0.36 dB, spread over every capsule with no clamp-like offset (all ≤ 0.08 dB), but left the score
+   unchanged (2.219 → 2.205): 250–400 Hz −0.10, 1.6–3 kHz +0.04, 5–6.4 kHz +0.09. As on day 1, the
+   ring wrap is worth a little only at the high end. Figure: `ring-bare-day2.pdf`.
 9. **What remains:** 250–400 Hz is still the worst band, 1.74 dB with the carpet on the floor.
 
 ## Files
