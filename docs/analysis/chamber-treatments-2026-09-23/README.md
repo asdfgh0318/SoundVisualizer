@@ -53,6 +53,7 @@ A treatment effect clearly above ~0.1 dB is real. Anything compared across days 
 | `2026-09-24/chaotic-carpet-2` | a second, different chaotic arrangement | 1.71 / 1.46 / 1.48 / 0.91 / 0.98 |
 | `2026-09-24/chaotic-carpet-3` | a third chaotic arrangement | 1.76 / 1.45 / 1.48 / 0.89 / 0.98 |
 | `2026-09-24/wall-direct-a`, `-b` | sphere on the wall itself, further out (~2.5 m by level, unconfirmed) | 2.12 / **3.58** / 2.13 / 1.54 / 1.13 |
+| `2026-09-24/floor-even-carpet` | floor cleaned up, thick carpet laid mostly evenly (was heaped) | **4.86 / 2.72** / 1.61 / **0.77 / 0.79** |
 | `2026-09-24/center-leveled` | the same, sphere levelled | 2.20 / 1.81 / 1.26 / **0.84 / 0.83** |
 | `2026-09-24/center-new-a`, `-b` | **sphere back at the ring centre on a new tripod mount**, ring bare | 2.21 / 1.97 / 1.80 / 1.39 / 1.57 |
 | `2026-09-24/ring-bare` | + the rest of the Thinsulate wrap removed from the ring | 1.79 / 4.04 / 1.84 / 1.46 / 1.20 |
@@ -174,6 +175,13 @@ tones on the upper half of the arc, and nothing bad entered the map).
    cm off-centre horizontally, away from the 0° capsule. Figure: `center-leveled-day2.pdf`; against the
    previous cleanest (`floor-carpet`, 1.277): `center-leveled-vs-best-day2.pdf` — 428 cells better,
    467 worse; it loses at 250–630 Hz (+0.46 / +0.31) and wins at 1.6–3 kHz (−0.12) and 5–6.4 kHz (−0.26).
+   **An even carpet undoes the floor** (`floor-even-carpet`): 1.443 → **2.540 dB**, 250–400 Hz 2.20 → 4.86
+   and 400–630 Hz 1.81 → 2.72, while 1–3 kHz reach their best yet (0.77 / 0.79). The same lesson as the
+   flat-vs-heaped carpet test: laid flat, the carpet is a mirror for the low end. Figure:
+   `floor-even-carpet-day2.pdf`.
+   **USB hub resets happened twice today** (16:08 and 18:09): the hubs reset and some capsules came
+   back delivering full-scale noise. `capture_rig` now refuses to start on such a stream
+   (`rig.assert_streams_ok`, a 0.5 s silence check at −40 dBFS); fix by re-enumerating the capsule.
 9. **What remains:** 250–400 Hz is still the worst band, 1.74 dB with the carpet on the floor.
 
 ## Files

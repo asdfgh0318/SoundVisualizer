@@ -139,6 +139,35 @@ def assert_arc_ok(arc: list[ArcMic]) -> None:
                               + " | ".join(problems))
 
 
+BROKEN_STREAM_DBFS = -40.0
+
+
+def assert_streams_ok(arc: list[ArcMic], seconds: float = 0.5) -> None:
+    """Refuse to start when a capsule's USB audio stream has gone bad.
+
+    When a hub browns out the kernel resets it, and a UMIK-2 can come back delivering
+    full-scale noise (~-5 dBFS rms in a silent room, peaks at 0 dBFS) instead of audio.
+    Its mixer still reads unity, so `assert_arc_ok` passes, and every tone then fails
+    the SNR gate on that capsule. Seen twice on 2026-09-24 (16:08, 18:09). A quiet room
+    reads about -57 dBFS here, so -40 leaves a wide margin either way. Fix: re-enumerate
+    the capsule (sysfs `authorized` 0 -> 1) or replug it, then run again.
+    """
+    res = capture_simultaneous(
+        [MicCaptureSpec(serial=m.serial, device_index=m.index, sample_rate=SR) for m in arc],
+        seconds + _LEAD_S)
+    bad = []
+    for m, r in zip(arc, res, strict=True):
+        x = np.asarray(r.audio, dtype=np.float64).reshape(-1)[round(_LEAD_S * SR):]
+        level = 20 * np.log10(np.sqrt(np.mean(x ** 2)) + 1e-12) if x.size else 0.0
+        if level > BROKEN_STREAM_DBFS:
+            bad.append(f"{m.position_deg:+.0f}° {m.serial} ({m.card_id}) {level:.1f} dBFS")
+    if bad:
+        raise CalibratorError(
+            f"{len(bad)} of {len(arc)} capsules deliver full-scale noise in silence — broken USB "
+            f"stream after a hub reset: " + " | ".join(bad)
+            + ". Re-enumerate them (echo 0/1 > /sys/bus/usb/devices/<port>/authorized) or replug.")
+
+
 def load_arc(preset: str | Path) -> list[ArcMic]:
     """Resolve a Setup preset against the devices PortAudio can see right now.
 
@@ -359,6 +388,7 @@ def capture_rig(
     for THAT capsule only and the rest are kept — with eleven microphones, treating
     one bad channel as fatal for the frequency would throw away ten good readings.
     """
+    assert_streams_ok(arc)
     base = Path(out_dir)
     out = base / label
     k = 2

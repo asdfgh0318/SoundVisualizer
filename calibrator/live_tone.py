@@ -119,7 +119,7 @@ def main() -> int:
                 lo_hold[m.serial] = min(lo_hold[m.serial], d)
                 hi_hold[m.serial] = max(hi_hold[m.serial], d)
                 half = 15
-                pos = int(round(np.clip(d, -BAR_DB, BAR_DB) / BAR_DB * half))
+                pos = round(float(np.clip(d, -BAR_DB, BAR_DB)) / BAR_DB * half)
                 bar = [" "] * (2 * half + 1)
                 bar[half] = "|"
                 for j in range(min(half, half + pos), max(half, half + pos) + 1):
@@ -131,7 +131,7 @@ def main() -> int:
                              f"{col}{''.join(bar)}\033[0m  {snr:5.0f}   "
                              f"{lo_hold[m.serial]:+5.1f} / {hi_hold[m.serial]:+5.1f}{warn}\033[K")
             lines.append("\033[K")
-            lines.append("+90° = top, −90° = bottom.  Yellow = more than 6 dB below the arc mean, blue = more than 3 dB above.\033[K")
+            lines.append("+90° = top, -90° = bottom.  Yellow = more than 6 dB below the arc mean, blue = more than 3 dB above.\033[K")
             sys.stdout.write("\n".join(lines) + "\033[J")
             sys.stdout.flush()
             time.sleep(REFRESH_S)
@@ -139,8 +139,10 @@ def main() -> int:
         pass
     finally:
         for st in streams:
-            st.stop(); st.close()
-        out.stop(); out.close()
+            st.stop()
+            st.close()
+        out.stop()
+        out.close()
         print("\nstopped: tone off, meters closed")
     return 0
 
