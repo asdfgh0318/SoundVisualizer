@@ -53,6 +53,7 @@ A treatment effect clearly above ~0.1 dB is real. Anything compared across days 
 | `2026-09-24/chaotic-carpet-2` | a second, different chaotic arrangement | 1.71 / 1.46 / 1.48 / 0.91 / 0.98 |
 | `2026-09-24/chaotic-carpet-3` | a third chaotic arrangement | 1.76 / 1.45 / 1.48 / 0.89 / 0.98 |
 | `2026-09-24/wall-direct-a`, `-b` | sphere on the wall itself, further out (~2.5 m by level, unconfirmed) | 2.12 / **3.58** / 2.13 / 1.54 / 1.13 |
+| `2026-09-24/center-new-a`, `-b` | **sphere back at the ring centre on a new tripod mount**, ring bare | 2.21 / 1.97 / 1.80 / 1.39 / 1.57 |
 | `2026-09-24/ring-bare` | + the rest of the Thinsulate wrap removed from the ring | 1.79 / 4.04 / 1.84 / 1.46 / 1.20 |
 | `2026-09-24/wall-direct-absorber` | + felt and foam behind the speaker, against the wall | 1.89 / **4.04** / 1.85 / 1.47 / 1.16 (quarter-octave peak still 555 Hz) |
 | `2026-09-24/wall-mount-decoupled` | same, Thinsulate between speaker and wall | 3.97 / 2.05 / 1.52 / 0.80 / 0.94 |
@@ -157,6 +158,13 @@ tones on the upper half of the arc, and nothing bad entered the map).
    0.36 dB, spread over every capsule with no clamp-like offset (all ≤ 0.08 dB), but left the score
    unchanged (2.219 → 2.205): 250–400 Hz −0.10, 1.6–3 kHz +0.04, 5–6.4 kHz +0.09. As on day 1, the
    ring wrap is worth a little only at the high end. Figure: `ring-bare-day2.pdf`.
+   **Back at the ring centre on a new tripod mount** (`center-new-a/-b`, repeat 0.015 dB): 1.786 dB —
+   better than any wall position (~2.2), worse than the old in-ring mount (1.324). The wall-position
+   peaks are gone, but the arc is **tilted top to bottom by 3.2 dB** (bottom louder), growing with
+   frequency (1.6 dB at 250–400 Hz, 3.2 at 0.6–3 kHz, 4.5 at 5–6.4 kHz): the sphere is probably
+   sitting below the ring centre (≈15 cm would give 3.1 dB) and/or aimed slightly down. With that
+   tilt fitted out the score is 1.241 (old mount, treated the same: 1.105). Level −0.3 dB vs the old
+   mount. Figure: `center-new-day2.pdf`.
 9. **What remains:** 250–400 Hz is still the worst band, 1.74 dB with the carpet on the floor.
 
 ## Files
