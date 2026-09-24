@@ -53,6 +53,7 @@ A treatment effect clearly above ~0.1 dB is real. Anything compared across days 
 | `2026-09-24/chaotic-carpet-2` | a second, different chaotic arrangement | 1.71 / 1.46 / 1.48 / 0.91 / 0.98 |
 | `2026-09-24/chaotic-carpet-3` | a third chaotic arrangement | 1.76 / 1.45 / 1.48 / 0.89 / 0.98 |
 | `2026-09-24/wall-direct-a`, `-b` | sphere on the wall itself, further out (~2.5 m by level, unconfirmed) | 2.12 / **3.58** / 2.13 / 1.54 / 1.13 |
+| `2026-09-24/carpet-plus-felt` | + the felt added to the even thick carpet | 3.69 / 3.12 / 2.27 / 1.73 / 1.42 |
 | `2026-09-24/floor-even-carpet` | floor cleaned up, thick carpet laid mostly evenly (was heaped) | **4.86 / 2.72** / 1.61 / **0.77 / 0.79** |
 | `2026-09-24/center-leveled` | the same, sphere levelled | 2.20 / 1.81 / 1.26 / **0.84 / 0.83** |
 | `2026-09-24/center-new-a`, `-b` | **sphere back at the ring centre on a new tripod mount**, ring bare | 2.21 / 1.97 / 1.80 / 1.39 / 1.57 |
@@ -179,7 +180,10 @@ tones on the upper half of the arc, and nothing bad entered the map).
    and 400–630 Hz 1.81 → 2.72, while 1–3 kHz reach their best yet (0.77 / 0.79). The same lesson as the
    flat-vs-heaped carpet test: laid flat, the carpet is a mirror for the low end. Figure:
    `floor-even-carpet-day2.pdf`; every floor state side by side: `floor-states-compare.pdf`
-   (`build_compare_figure.py`).
+   (`build_compare_figure.py`). **Adding the felt** (`carpet-plus-felt`) trades bands instead of fixing
+   them: 250–400 Hz 4.86 → 3.69, but 400 Hz–3 kHz all worse (2.72 → 3.12, 1.61 → 2.27, 0.77 → 1.73,
+   0.79 → 1.42); total 2.540 → 2.509. Felt hurts 400 Hz–1.6 kHz here exactly as it did on the
+   wedges. Figure: `carpet-plus-felt-day2.pdf`.
    **USB hub resets happened twice today** (16:08 and 18:09): the hubs reset and some capsules came
    back delivering full-scale noise. `capture_rig` now refuses to start on such a stream
    (`rig.assert_streams_ok`, a 0.5 s silence check at −40 dBFS); fix by re-enumerating the capsule.
