@@ -53,6 +53,7 @@ A treatment effect clearly above ~0.1 dB is real. Anything compared across days 
 | `2026-09-24/chaotic-carpet-2` | a second, different chaotic arrangement | 1.71 / 1.46 / 1.48 / 0.91 / 0.98 |
 | `2026-09-24/chaotic-carpet-3` | a third chaotic arrangement | 1.76 / 1.45 / 1.48 / 0.89 / 0.98 |
 | `2026-09-24/wall-direct-a`, `-b` | sphere on the wall itself, further out (~2.5 m by level, unconfirmed) | 2.12 / **3.58** / 2.13 / 1.54 / 1.13 |
+| `2026-09-24/wall-direct-absorber` | + felt and foam behind the speaker, against the wall | 2.23 / 3.63 / 1.99 / 1.40 / 1.16 (quarter-octave peak still 555 Hz) |
 | `2026-09-24/wall-mount-decoupled` | same, Thinsulate between speaker and wall | 3.97 / 2.05 / 1.52 / 0.80 / 0.94 |
 | `2026-09-24/wall-mount-a`, `-b` | **new geometry**: sphere on the wall reinforcement ~1.5 m out along the axis, facing the ring; tripod and clutter removed; chaotic carpet unchanged | **4.18** / 2.06 / 1.49 / **0.80 / 0.92** |
 
@@ -146,7 +147,12 @@ tones on the upper half of the arc, and nothing bad entered the map).
    (3.97 → 2.12) but the damage moves up — 400–630 Hz 3.58, 630 Hz–1 kHz 2.13, 1–1.6 kHz 1.54 — and the
    total is unchanged (2.170 vs 2.109). Level fell 3.9 dB, which puts the sphere roughly 1 m further out
    (distance not stated). Each position outside the ring swaps which band is ruined; none approaches
-   the in-ring 1.32. Figure: `wall-direct-day2.pdf`.
+   the in-ring 1.32. Figure: `wall-direct-day2.pdf`. **Felt and foam behind the speaker did not touch
+   the 555 Hz peak** (`wall-direct-absorber`: 4.11 → 4.19 dB in that quarter-octave; total 2.170 →
+   2.219). The map moved 1.67 dB and the level rose 0.44 dB, so the speaker was probably nudged while
+   the absorber went in. The wall directly behind is therefore not what makes the peak — consistent
+   with an on-axis reflection reaching every capsule equally and cancelling in the map. Figure:
+   `wall-direct-absorber-day2.pdf`.
 9. **What remains:** 250–400 Hz is still the worst band, 1.74 dB with the carpet on the floor.
 
 ## Files
