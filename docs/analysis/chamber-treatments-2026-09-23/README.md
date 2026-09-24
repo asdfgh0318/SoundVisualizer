@@ -53,6 +53,7 @@ A treatment effect clearly above ~0.1 dB is real. Anything compared across days 
 | `2026-09-24/chaotic-carpet-2` | a second, different chaotic arrangement | 1.71 / 1.46 / 1.48 / 0.91 / 0.98 |
 | `2026-09-24/chaotic-carpet-3` | a third chaotic arrangement | 1.76 / 1.45 / 1.48 / 0.89 / 0.98 |
 | `2026-09-24/wall-direct-a`, `-b` | sphere on the wall itself, further out (~2.5 m by level, unconfirmed) | 2.12 / **3.58** / 2.13 / 1.54 / 1.13 |
+| `2026-09-24/shield-removed` | the felt shield taken out again (carpet stays raised) | 3.07 / 2.64 / 1.91 / 1.06 / 0.97 (5–6.4 kHz 0.96) |
 | `2026-09-24/carpet-raised-2` | carpet raised further + felt shield under some electronics (two changes at once) | 3.07 / 2.59 / 1.96 / 1.06 / 0.96 (5–6.4 kHz 1.03) |
 | `2026-09-24/carpet-raised` | carpet less even and lifted on spacers (gap height not stated) | 3.04 / 2.59 / 1.92 / 1.08 / 0.95 (5–6.4 kHz 0.93) |
 | `2026-09-24/rod-removed` | the same with the metal rod taken out | 3.06 / 2.66 / 1.95 / 1.15 / 1.04 (5–6.4 kHz 1.10) |
@@ -206,7 +207,11 @@ tones on the upper half of the arc, and nothing bad entered the map).
    5–6.4 kHz 1.10 → 0.93) — but left 250–400 Hz where it was (3.06 → 3.04). Figure:
    `carpet-raised-day2.pdf`. Raising it further and adding a felt shield under the electronics
    (`carpet-raised-2`) moved the map 0.48 dB but not the score (2.011 → 2.027; every band within
-   ±0.04 below 3 kHz, 5–6.4 kHz 0.93 → 1.03). Figure: `carpet-raised-2-day2.pdf`.
+   ±0.04 below 3 kHz, 5–6.4 kHz 0.93 → 1.03). Figure: `carpet-raised-2-day2.pdf`. Removing the shield
+   again (`shield-removed`) separates the two: **the shield alone** moved the map 0.42 dB, most at −18°
+   and −36° (0.75 / 0.58 dB — the capsules nearest the electronics), with score 2.027 → 2.028; **the
+   extra carpet height alone** moved it 0.31 dB, score 2.011 → 2.028. Neither changes room error.
+   Figure: `shield-removed-day2.pdf`.
    **USB hub resets happened twice today** (16:08 and 18:09): the hubs reset and some capsules came
    back delivering full-scale noise. `capture_rig` now refuses to start on such a stream
    (`rig.assert_streams_ok`, a 0.5 s silence check at −40 dBFS); fix by re-enumerating the capsule.
