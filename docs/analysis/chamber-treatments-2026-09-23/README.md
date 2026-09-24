@@ -95,7 +95,7 @@ tones on the upper half of the arc, and nothing bad entered the map).
 - `carpet-floor-vs-ceiling.pdf/.png` — no carpet, floor, ceiling side by side
 - `felt-floor-day2.pdf/.png` — felt on the floor, day 2
 - `grid-95.txt` — the exact 95 frequencies of every treatment run (pass to `--freqs`)
-- `floor-carpet.pdf/.png` — the carpet step (`build_step_figure.py <ref> <run> "<what>" <name>`)
+- `floor-carpet.pdf/.png` — the carpet step (`build_step_figure.py <ref> <run> "<what>" <name>`; its last panel colours each cell by whether it moved toward flat (blue, better) or away (orange, worse), with a per-capsule net in the margin)
 - `ring-unwrapping.pdf/.png` — the three ring states and both steps (built by `build_ring_figure.py`)
 - `vertical-2-repeat.pdf` — the untouched pair and the 2026-09-17 centred run for reference
 - `foam-1-vs-baseline.pdf`, `foam-2-vs-baseline.pdf`, `foam-out-vs-baseline.pdf` — map, map, difference
