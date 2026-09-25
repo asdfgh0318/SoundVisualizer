@@ -53,6 +53,7 @@ A treatment effect clearly above ~0.1 dB is real. Anything compared across days 
 | `2026-09-24/chaotic-carpet-2` | a second, different chaotic arrangement | 1.71 / 1.46 / 1.48 / 0.91 / 0.98 |
 | `2026-09-24/chaotic-carpet-3` | a third chaotic arrangement | 1.76 / 1.45 / 1.48 / 0.89 / 0.98 |
 | `2026-09-24/wall-direct-a`, `-b` | sphere on the wall itself, further out (~2.5 m by level, unconfirmed) | 2.12 / **3.58** / 2.13 / 1.54 / 1.13 |
+| `2026-09-25/screen-1-layer` | + a one-layer folding screen (parawan); position, material not stated | 1.52 / 2.00 / 1.57 / 1.16 / 1.76 (5–6.4 kHz 2.39) |
 | `2026-09-25/corner-stuffed` | + the corner near the capsule hubs stuffed | 1.86 / 1.98 / 1.34 / 0.87 / 1.03 (5–6.4 kHz 0.87) |
 | `2026-09-25/material-roll` | curtain replaced by a roll of material | 1.60 / 2.01 / 1.40 / 0.87 / 1.03 (5–6.4 kHz 1.10) |
 | `2026-09-25/curtain` | + curtain on the wall the speaker fires toward (sphere confirmed unmoved) | 1.98 / 1.85 / 1.57 / 1.36 / 2.01 (5–6.4 kHz 2.31) |
@@ -125,6 +126,10 @@ tones on the upper half of the arc, and nothing bad entered the map).
    **Stuffing the corner near the capsule hubs** (`corner-stuffed`): map moved 0.43 dB, level unchanged
    above 400 Hz (so the boost above stays); 250–400 Hz worse (1.60 → 1.86), 5–6.4 kHz better
    (1.10 → 0.87), total 1.403 → 1.445. Figure: `corner-stuffed-day3.pdf`.
+   **One-layer folding screen** (`screen-1-layer`): map moved 1.21 dB, most on the lower half of the arc
+   (−18° to −90°, 1.3–1.8 dB); 250–400 Hz better (1.86 → 1.52) but 630 Hz–3 kHz worse and 5–6.4 kHz much
+   worse (0.87 → 2.39); total 1.445 → 1.626. Level +0.44 dB at 5–6.4 kHz on top of the earlier
+   boost. Figure: `screen-1-layer-day3.pdf`.
 
 1. **The roll changed the room without improving it.** 0.34 dB at 250–630 Hz, falling to 0.05 dB
    at 1.6–3 kHz; flatness unchanged. Removing the core made no difference (r = +0.92, slope 0.95
