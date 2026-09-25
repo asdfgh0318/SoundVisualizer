@@ -53,6 +53,7 @@ A treatment effect clearly above ~0.1 dB is real. Anything compared across days 
 | `2026-09-24/chaotic-carpet-2` | a second, different chaotic arrangement | 1.71 / 1.46 / 1.48 / 0.91 / 0.98 |
 | `2026-09-24/chaotic-carpet-3` | a third chaotic arrangement | 1.76 / 1.45 / 1.48 / 0.89 / 0.98 |
 | `2026-09-24/wall-direct-a`, `-b` | sphere on the wall itself, further out (~2.5 m by level, unconfirmed) | 2.12 / **3.58** / 2.13 / 1.54 / 1.13 |
+| `2026-09-25/carpet-removed` | thick carpet removed from the floor | **2.63** / 1.91 / 1.75 / 1.01 / 1.15 — geometry moved again |
 | `2026-09-25/cleanup-6` | clean-up 6: carpet rearranged | 1.69 / 1.97 / 1.55 / 0.92 / 1.00 — shift still present |
 | `2026-09-25/cleanup-5` | clean-up 5: the rest of that junk removed again | 1.67 / 1.95 / 1.54 / 0.90 / 1.00 — **not back: something else moved** |
 | `2026-09-25/cleanup-4` | clean-up 4: the blue curtain taken out of that junk | 1.80 / 1.71 / 1.51 / 1.11 / 1.16 — **still too far** |
@@ -171,7 +172,12 @@ tones on the upper half of the arc, and nothing bad entered the map).
    signature of the sphere (or the arc) shifted sideways toward the 0° capsule during clean-up 3 — a
    geometry change, not the junk. Figure: `cleanup-5-vs-accepted-day3.pdf`. Rearranging the carpet
    (`cleanup-6`) changes nothing of that: 1.443, level still +0.65 dB, 0°-vs-ends still +1.29 dB against
-   `cleanup-2` — the carpet is not the cause. Figure: `cleanup-6-day3.pdf`.
+   `cleanup-2` — the carpet is not the cause. Figure: `cleanup-6-day3.pdf`. **Taking the carpet out**
+   (`carpet-removed`): 1.443 → **1.740**, 250–400 Hz 1.69 → 2.63. But the level fell ~1.1 dB below 1.6 kHz,
+   the top-bottom tilt flipped (−0.98 → +0.28, bottom now louder) and the 0°-vs-ends pattern reversed
+   (+1.29 → −0.76) — the sphere's position changed again. **Working hypothesis: the speaker's tripod
+   stands on the floor stack**, so every carpet change moves the source; that would also explain the
+   shift at clean-up 3. Figure: `carpet-removed-day3.pdf`.
 
 1. **The roll changed the room without improving it.** 0.34 dB at 250–630 Hz, falling to 0.05 dB
    at 1.6–3 kHz; flatness unchanged. Removing the core made no difference (r = +0.92, slope 0.95
