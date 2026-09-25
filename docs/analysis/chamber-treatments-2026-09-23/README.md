@@ -53,7 +53,7 @@ A treatment effect clearly above ~0.1 dB is real. Anything compared across days 
 | `2026-09-24/chaotic-carpet-2` | a second, different chaotic arrangement | 1.71 / 1.46 / 1.48 / 0.91 / 0.98 |
 | `2026-09-24/chaotic-carpet-3` | a third chaotic arrangement | 1.76 / 1.45 / 1.48 / 0.89 / 0.98 |
 | `2026-09-24/wall-direct-a`, `-b` | sphere on the wall itself, further out (~2.5 m by level, unconfirmed) | 2.12 / **3.58** / 2.13 / 1.54 / 1.13 |
-| `2026-09-25/curtain` | + curtain on the wall the speaker fires toward — **sphere aim disturbed, see finding** | 1.98 / 1.85 / 1.57 / 1.36 / 2.01 (5–6.4 kHz 2.31) |
+| `2026-09-25/curtain` | + curtain on the wall the speaker fires toward (sphere confirmed unmoved) | 1.98 / 1.85 / 1.57 / 1.36 / 2.01 (5–6.4 kHz 2.31) |
 | `2026-09-25/in-plane-a`, `-b` | speaker moved on into the ring plane, on the axis | 1.94 / 1.87 / 1.39 / 0.98 / 1.10 |
 | `2026-09-25/closer-a`, `-b` | **speaker moved ~20 cm closer to the ring**, still on the axis | **1.99 / 1.28 / 1.29** / 0.86 / 0.97 |
 | `2026-09-25/blue-carpet` | + a blue absorbing carpet on top of the floor stack-up, ~0.5 cm, no backing | 3.22 / 2.49 / 1.53 / 0.83 / 1.00 (5–6.4 kHz 1.11) |
@@ -108,9 +108,11 @@ tones on the upper half of the arc, and nothing bad entered the map).
    the sphere's main lobe. **Best position so far: ~10 cm off the ring plane.** Figures:
    `in-plane-day3.pdf`, `speaker-distance-day3.pdf`.
    **Curtain on the wall the speaker faces** (`curtain`): room error 1.473 → 1.783, worst at 1.6–3 kHz
-   (1.10 → 2.01) and 5–6.4 kHz (1.04 → 2.31). **Not a curtain result:** the overall level rose 0.92 dB,
-   rising with frequency to +4.25 dB at 5–6.4 kHz, which a curtain cannot do — the sphere's aim turned
-   toward the capsules while the curtain went up. Needs a rerun with the sphere re-checked. Figure:
+   (1.10 → 2.01) and 5–6.4 kHz (1.04 → 2.31). The overall level rose 0.92 dB, rising with frequency to +4.25 dB at
+   5–6.4 kHz. I first read that as the sphere's aim having changed; **Adam confirms the sphere did not
+   move**, so the curtain itself did it: hung on an absorbing wall straight in the speaker's main beam,
+   it replaced absorption with a strong reflection back toward the arc, strongest where the wall had
+   absorbed best. A reflective covering over an absorber is the foil lesson again. Figure:
    `curtain-day3.pdf`.
 
 1. **The roll changed the room without improving it.** 0.34 dB at 250–630 Hz, falling to 0.05 dB
