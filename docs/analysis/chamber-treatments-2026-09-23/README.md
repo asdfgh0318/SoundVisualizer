@@ -53,6 +53,7 @@ A treatment effect clearly above ~0.1 dB is real. Anything compared across days 
 | `2026-09-24/chaotic-carpet-2` | a second, different chaotic arrangement | 1.71 / 1.46 / 1.48 / 0.91 / 0.98 |
 | `2026-09-24/chaotic-carpet-3` | a third chaotic arrangement | 1.76 / 1.45 / 1.48 / 0.89 / 0.98 |
 | `2026-09-24/wall-direct-a`, `-b` | sphere on the wall itself, further out (~2.5 m by level, unconfirmed) | 2.12 / **3.58** / 2.13 / 1.54 / 1.13 |
+| `2026-09-25/corner-stuffed` | + the corner near the capsule hubs stuffed | 1.86 / 1.98 / 1.34 / 0.87 / 1.03 (5–6.4 kHz 0.87) |
 | `2026-09-25/material-roll` | curtain replaced by a roll of material | 1.60 / 2.01 / 1.40 / 0.87 / 1.03 (5–6.4 kHz 1.10) |
 | `2026-09-25/curtain` | + curtain on the wall the speaker fires toward (sphere confirmed unmoved) | 1.98 / 1.85 / 1.57 / 1.36 / 2.01 (5–6.4 kHz 2.31) |
 | `2026-09-25/in-plane-a`, `-b` | speaker moved on into the ring plane, on the axis | 1.94 / 1.87 / 1.39 / 0.98 / 1.10 |
@@ -121,6 +122,9 @@ tones on the upper half of the arc, and nothing bad entered the map).
    to 0.1 dB — so the boost is not the curtain. Something changed between 14:08 (`in-plane-b`) and 14:18
    (`curtain`) and stayed changed; unexplained so far (sphere reported unmoved). Curtain vs roll compares
    fairly; neither compares cleanly with the bare-wall pair. Figure: `material-roll-day3.pdf`.
+   **Stuffing the corner near the capsule hubs** (`corner-stuffed`): map moved 0.43 dB, level unchanged
+   above 400 Hz (so the boost above stays); 250–400 Hz worse (1.60 → 1.86), 5–6.4 kHz better
+   (1.10 → 0.87), total 1.403 → 1.445. Figure: `corner-stuffed-day3.pdf`.
 
 1. **The roll changed the room without improving it.** 0.34 dB at 250–630 Hz, falling to 0.05 dB
    at 1.6–3 kHz; flatness unchanged. Removing the core made no difference (r = +0.92, slope 0.95
