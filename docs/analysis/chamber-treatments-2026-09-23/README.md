@@ -53,6 +53,7 @@ A treatment effect clearly above ~0.1 dB is real. Anything compared across days 
 | `2026-09-24/chaotic-carpet-2` | a second, different chaotic arrangement | 1.71 / 1.46 / 1.48 / 0.91 / 0.98 |
 | `2026-09-24/chaotic-carpet-3` | a third chaotic arrangement | 1.76 / 1.45 / 1.48 / 0.89 / 0.98 |
 | `2026-09-24/wall-direct-a`, `-b` | sphere on the wall itself, further out (~2.5 m by level, unconfirmed) | 2.12 / **3.58** / 2.13 / 1.54 / 1.13 |
+| `2026-09-25/cleanup-4` | clean-up 4: the blue curtain taken out of that junk | 1.80 / 1.71 / 1.51 / 1.11 / 1.16 — **still too far** |
 | `2026-09-25/cleanup-3` | clean-up 3: some junk put back, arranged less randomly | 1.92 / 1.79 / 1.61 / 1.21 / 1.14 — **undo it** |
 | `2026-09-25/cleanup-2` | clean-up 2: more junk removed (what not stated) | 1.61 / 1.72 / 1.40 / 0.79 / 0.98 — **acceptable, watch** |
 | `2026-09-25/cleanup-1` | clean-up 1: loose felt sheets removed from the carpet | 1.56 / 1.62 / 1.43 / 0.81 / 1.03 — **safe** |
@@ -158,7 +159,10 @@ tones on the upper half of the arc, and nothing bad entered the map).
    better. Level unchanged. **Acceptable, but a real change.** Figure: `cleanup-2-day3.pdf`. Clean-up 3,
    some of that junk put back more tidily (`cleanup-3`): map moved 1.43 dB, score 1.314 → **1.531** (+0.23
    against `backed-5cm`), worse in every band below 3 kHz, most at the bottom of the arc (−72°/−90° 1.8 dB)
-   — **undo it**. Figure: `cleanup-3-vs-accepted-day3.pdf`.
+   — **undo it**. Figure: `cleanup-3-vs-accepted-day3.pdf`. Clean-up 4, the blue curtain taken out of that
+   junk (`cleanup-4`): 1.531 → 1.458, about a third of the damage recovered; the map is still 1.32 dB from
+   `backed-5cm` and the level still +0.6 dB above it, so the rest of the returned items are doing the
+   remaining two thirds. Figure: `cleanup-4-day3.pdf`.
 
 1. **The roll changed the room without improving it.** 0.34 dB at 250–630 Hz, falling to 0.05 dB
    at 1.6–3 kHz; flatness unchanged. Removing the core made no difference (r = +0.92, slope 0.95
