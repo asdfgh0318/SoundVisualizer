@@ -53,7 +53,7 @@ A treatment effect clearly above ~0.1 dB is real. Anything compared across days 
 | `2026-09-24/chaotic-carpet-2` | a second, different chaotic arrangement | 1.71 / 1.46 / 1.48 / 0.91 / 0.98 |
 | `2026-09-24/chaotic-carpet-3` | a third chaotic arrangement | 1.76 / 1.45 / 1.48 / 0.89 / 0.98 |
 | `2026-09-24/wall-direct-a`, `-b` | sphere on the wall itself, further out (~2.5 m by level, unconfirmed) | 2.12 / **3.58** / 2.13 / 1.54 / 1.13 |
-| `2026-09-25/closer-a`, `-b` | **speaker moved closer to the ring** (distance not stated) | **1.99 / 1.28 / 1.29** / 0.86 / 0.97 |
+| `2026-09-25/closer-a`, `-b` | **speaker moved ~20 cm closer to the ring**, still on the axis | **1.99 / 1.28 / 1.29** / 0.86 / 0.97 |
 | `2026-09-25/blue-carpet` | + a blue absorbing carpet on top of the floor stack-up, ~0.5 cm, no backing | 3.22 / 2.49 / 1.53 / 0.83 / 1.00 (5–6.4 kHz 1.11) |
 | `2026-09-25/day3-a`, `-b` | day 3, nothing changed since `floor-raised-3` (hub back on USB port 4: preset 1d9a5e2f) | 3.33 / 2.57 / 1.57 / 0.80 / 0.87 |
 | `2026-09-24/floor-raised-3` | floor layer raised further (height not stated) | 3.32 / 2.56 / 1.57 / 0.80 / 0.86 (5–6.4 kHz 1.02) |
