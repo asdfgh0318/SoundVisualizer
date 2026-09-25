@@ -53,6 +53,7 @@ A treatment effect clearly above ~0.1 dB is real. Anything compared across days 
 | `2026-09-24/chaotic-carpet-2` | a second, different chaotic arrangement | 1.71 / 1.46 / 1.48 / 0.91 / 0.98 |
 | `2026-09-24/chaotic-carpet-3` | a third chaotic arrangement | 1.76 / 1.45 / 1.48 / 0.89 / 0.98 |
 | `2026-09-24/wall-direct-a`, `-b` | sphere on the wall itself, further out (~2.5 m by level, unconfirmed) | 2.12 / **3.58** / 2.13 / 1.54 / 1.13 |
+| `2026-09-25/backed-5cm` | speaker backed off 5 cm from the ring plane | 1.57 / **1.61** / 1.44 / **0.81** / 1.03 (5–6.4 kHz 1.06) |
 | `2026-09-25/carpet-only` | felt removed; only the raised thick carpet remains (floor only, or whole chamber: not stated) | 1.69 / 1.90 / 1.37 / 0.93 / 1.00 (5–6.4 kHz 1.00) |
 | `2026-09-25/felt-wall` | screen taken down, felt placed on a wall (which wall not stated) | 1.58 / 1.78 / 1.47 / 1.10 / 1.14 (5–6.4 kHz 1.14) |
 | `2026-09-25/screen-1-layer` | + a one-layer folding screen (parawan); position, material not stated | 1.52 / 2.00 / 1.57 / 1.16 / 1.76 (5–6.4 kHz 2.39) |
@@ -141,6 +142,10 @@ tones on the upper half of the arc, and nothing bad entered the map).
    low-end gain with it (250–400 Hz 1.58 → 1.69). **The high-frequency boost is still there** (+4.17 dB
    at 5–6.4 kHz against the 14:03 bare-wall run), so whatever changed at ~14:10 was not the felt, the
    screen or the roll. Figure: `carpet-only-day3.pdf`.
+   **Backing the speaker off 5 cm** (`backed-5cm`): 1.393 → **1.303**, better at 250–630 Hz (1.69 → 1.57,
+   1.90 → 1.61) and 1–1.6 kHz (0.93 → 0.81). Level rises with frequency (+0.4 dB at 1–1.6 kHz, +0.9 at
+   5–6.4 kHz): backing off puts the capsules slightly inside the sphere's main lobe. The arc now tilts
+   the other way, top louder by 0.96 dB. Figure: `backed-5cm-day3.pdf`.
 
 1. **The roll changed the room without improving it.** 0.34 dB at 250–630 Hz, falling to 0.05 dB
    at 1.6–3 kHz; flatness unchanged. Removing the core made no difference (r = +0.92, slope 0.95
