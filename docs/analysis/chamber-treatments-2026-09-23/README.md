@@ -53,6 +53,7 @@ A treatment effect clearly above ~0.1 dB is real. Anything compared across days 
 | `2026-09-24/chaotic-carpet-2` | a second, different chaotic arrangement | 1.71 / 1.46 / 1.48 / 0.91 / 0.98 |
 | `2026-09-24/chaotic-carpet-3` | a third chaotic arrangement | 1.76 / 1.45 / 1.48 / 0.89 / 0.98 |
 | `2026-09-24/wall-direct-a`, `-b` | sphere on the wall itself, further out (~2.5 m by level, unconfirmed) | 2.12 / **3.58** / 2.13 / 1.54 / 1.13 |
+| `2026-09-25/cleanup-3` | clean-up 3: some junk put back, arranged less randomly | 1.92 / 1.79 / 1.61 / 1.21 / 1.14 — **undo it** |
 | `2026-09-25/cleanup-2` | clean-up 2: more junk removed (what not stated) | 1.61 / 1.72 / 1.40 / 0.79 / 0.98 — **acceptable, watch** |
 | `2026-09-25/cleanup-1` | clean-up 1: loose felt sheets removed from the carpet | 1.56 / 1.62 / 1.43 / 0.81 / 1.03 — **safe** |
 | `2026-09-25/backed-5cm` | speaker backed off 5 cm from the ring plane | 1.57 / **1.61** / 1.44 / **0.81** / 1.03 (5–6.4 kHz 1.06) |
@@ -154,7 +155,10 @@ tones on the upper half of the arc, and nothing bad entered the map).
    `cleanup-1-day3.pdf`. Clean-up 2, more junk removed (`cleanup-2`): map moved 0.35 dB (worst cell 1.60),
    growing toward the bottom of the arc (+90° 0.20 → −90° 0.52 dB); score 1.301 → 1.314 (+0.013; +0.011
    against `backed-5cm`), inside the 0.03 tolerance — 400–630 Hz 1.62 → 1.72 worse, 1.6–6.4 kHz slightly
-   better. Level unchanged. **Acceptable, but a real change.** Figure: `cleanup-2-day3.pdf`.
+   better. Level unchanged. **Acceptable, but a real change.** Figure: `cleanup-2-day3.pdf`. Clean-up 3,
+   some of that junk put back more tidily (`cleanup-3`): map moved 1.43 dB, score 1.314 → **1.531** (+0.23
+   against `backed-5cm`), worse in every band below 3 kHz, most at the bottom of the arc (−72°/−90° 1.8 dB)
+   — **undo it**. Figure: `cleanup-3-vs-accepted-day3.pdf`.
 
 1. **The roll changed the room without improving it.** 0.34 dB at 250–630 Hz, falling to 0.05 dB
    at 1.6–3 kHz; flatness unchanged. Removing the core made no difference (r = +0.92, slope 0.95
