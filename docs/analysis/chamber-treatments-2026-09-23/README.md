@@ -53,6 +53,7 @@ A treatment effect clearly above ~0.1 dB is real. Anything compared across days 
 | `2026-09-24/chaotic-carpet-2` | a second, different chaotic arrangement | 1.71 / 1.46 / 1.48 / 0.91 / 0.98 |
 | `2026-09-24/chaotic-carpet-3` | a third chaotic arrangement | 1.76 / 1.45 / 1.48 / 0.89 / 0.98 |
 | `2026-09-24/wall-direct-a`, `-b` | sphere on the wall itself, further out (~2.5 m by level, unconfirmed) | 2.12 / **3.58** / 2.13 / 1.54 / 1.13 |
+| `2026-09-25/cleanup-2` | clean-up 2: more junk removed (what not stated) | 1.61 / 1.72 / 1.40 / 0.79 / 0.98 — **acceptable, watch** |
 | `2026-09-25/cleanup-1` | clean-up 1: loose felt sheets removed from the carpet | 1.56 / 1.62 / 1.43 / 0.81 / 1.03 — **safe** |
 | `2026-09-25/backed-5cm` | speaker backed off 5 cm from the ring plane | 1.57 / **1.61** / 1.44 / **0.81** / 1.03 (5–6.4 kHz 1.06) |
 | `2026-09-25/carpet-only` | felt removed; only the raised thick carpet remains (floor only, or whole chamber: not stated) | 1.69 / 1.90 / 1.37 / 0.93 / 1.00 (5–6.4 kHz 1.00) |
@@ -150,7 +151,10 @@ tones on the upper half of the arc, and nothing bad entered the map).
    **`backed-5cm` is the accepted state (Adam, 2026-09-25); what follows is clean-up, judged by staying
    within ~0.03 dB of its score.** Clean-up 1, loose felt sheets off the carpet (`cleanup-1`): map moved
    0.065 dB (worst cell 0.30), score 1.303 → 1.301, level unchanged — **safe**. Figure:
-   `cleanup-1-day3.pdf`.
+   `cleanup-1-day3.pdf`. Clean-up 2, more junk removed (`cleanup-2`): map moved 0.35 dB (worst cell 1.60),
+   growing toward the bottom of the arc (+90° 0.20 → −90° 0.52 dB); score 1.301 → 1.314 (+0.013; +0.011
+   against `backed-5cm`), inside the 0.03 tolerance — 400–630 Hz 1.62 → 1.72 worse, 1.6–6.4 kHz slightly
+   better. Level unchanged. **Acceptable, but a real change.** Figure: `cleanup-2-day3.pdf`.
 
 1. **The roll changed the room without improving it.** 0.34 dB at 250–630 Hz, falling to 0.05 dB
    at 1.6–3 kHz; flatness unchanged. Removing the core made no difference (r = +0.92, slope 0.95
