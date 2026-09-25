@@ -53,6 +53,7 @@ A treatment effect clearly above ~0.1 dB is real. Anything compared across days 
 | `2026-09-24/chaotic-carpet-2` | a second, different chaotic arrangement | 1.71 / 1.46 / 1.48 / 0.91 / 0.98 |
 | `2026-09-24/chaotic-carpet-3` | a third chaotic arrangement | 1.76 / 1.45 / 1.48 / 0.89 / 0.98 |
 | `2026-09-24/wall-direct-a`, `-b` | sphere on the wall itself, further out (~2.5 m by level, unconfirmed) | 2.12 / **3.58** / 2.13 / 1.54 / 1.13 |
+| `2026-09-25/blue-carpet` | + a blue absorbing carpet added to the floor stack-up (position, thickness, backing not stated) | 3.22 / 2.49 / 1.53 / 0.83 / 1.00 (5–6.4 kHz 1.11) |
 | `2026-09-25/day3-a`, `-b` | day 3, nothing changed since `floor-raised-3` (hub back on USB port 4: preset 1d9a5e2f) | 3.33 / 2.57 / 1.57 / 0.80 / 0.87 |
 | `2026-09-24/floor-raised-3` | floor layer raised further (height not stated) | 3.32 / 2.56 / 1.57 / 0.80 / 0.86 (5–6.4 kHz 1.02) |
 | `2026-09-24/felt-bare` | the glue layer left by the foil also removed: bare felt | 3.39 / 2.53 / 1.55 / **0.74** / 0.84 (5–6.4 kHz 1.03) |
@@ -88,6 +89,9 @@ tones on the upper half of the arc, and nothing bad entered the map).
    within 0.00 dB, and the room-error score reproduced to **0.005 dB** (1.992 → 1.997 / 1.996) with every
    band within 0.02 dB. Across three days the pattern holds: within a session ~0.01 dB, overnight
    ~0.1–0.2 dB on the map and ~0.01 dB on the score.
+   **Blue absorbing carpet** added to the floor stack (`blue-carpet`): map moved 0.53 dB; small gain at
+   250–630 Hz (3.33 → 3.22, 2.57 → 2.49), small loss at 1.6–3 kHz (0.87 → 1.00); total 1.996 → 1.961.
+   Figure: `blue-carpet-day3.pdf`.
 
 1. **The roll changed the room without improving it.** 0.34 dB at 250–630 Hz, falling to 0.05 dB
    at 1.6–3 kHz; flatness unchanged. Removing the core made no difference (r = +0.92, slope 0.95
