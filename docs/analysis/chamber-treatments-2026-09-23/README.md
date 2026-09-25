@@ -53,6 +53,7 @@ A treatment effect clearly above ~0.1 dB is real. Anything compared across days 
 | `2026-09-24/chaotic-carpet-2` | a second, different chaotic arrangement | 1.71 / 1.46 / 1.48 / 0.91 / 0.98 |
 | `2026-09-24/chaotic-carpet-3` | a third chaotic arrangement | 1.76 / 1.45 / 1.48 / 0.89 / 0.98 |
 | `2026-09-24/wall-direct-a`, `-b` | sphere on the wall itself, further out (~2.5 m by level, unconfirmed) | 2.12 / **3.58** / 2.13 / 1.54 / 1.13 |
+| `2026-09-25/thin-carpet-raised` | + thin carpet on the floor lifted on standoffs | 2.67 / 2.09 / 1.72 / 1.01 / 1.11 |
 | `2026-09-25/wall-thinsulate` | wall insulation removed + the faced wall filled with Thinsulate (two changes) | 3.03 / 2.20 / 1.86 / 1.16 / 1.19 |
 | `2026-09-25/carpet-square` | carpet back as a square frame along the walls | 2.72 / 2.08 / 1.69 / 0.96 / 1.12 |
 | `2026-09-25/carpet-removed` | thick carpet removed from the floor | **2.63** / 1.91 / 1.75 / 1.01 / 1.15 — geometry moved again |
@@ -187,6 +188,11 @@ tones on the upper half of the arc, and nothing bad entered the map).
    and the faced wall filled with Thinsulate** (`wall-thinsulate`): 1.779 → **1.955**, worse in every band
    below 3 kHz (250–400 Hz 3.03). Source held still (level within 0.04 dB above 400 Hz, tilt unchanged).
    Two changes together, so which one hurt cannot be separated. Figure: `wall-thinsulate-day3.pdf`.
+   **Thin carpet on standoffs** (`thin-carpet-raised`; the +54° capsule had been unplugged at 17:56 and
+   was replugged into the same port — its offset moved only −0.05 dB, so the replug did not matter):
+   1.955 → 1.778, better in every band below 3 kHz (250–400 Hz 3.03 → 2.67); source held still (level
+   within 0.06 dB above 400 Hz, tilt unchanged). Still far from the accepted 1.303. Figure:
+   `thin-carpet-raised-day3.pdf`.
 
 1. **The roll changed the room without improving it.** 0.34 dB at 250–630 Hz, falling to 0.05 dB
    at 1.6–3 kHz; flatness unchanged. Removing the core made no difference (r = +0.92, slope 0.95
