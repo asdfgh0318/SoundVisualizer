@@ -53,6 +53,7 @@ A treatment effect clearly above ~0.1 dB is real. Anything compared across days 
 | `2026-09-24/chaotic-carpet-2` | a second, different chaotic arrangement | 1.71 / 1.46 / 1.48 / 0.91 / 0.98 |
 | `2026-09-24/chaotic-carpet-3` | a third chaotic arrangement | 1.76 / 1.45 / 1.48 / 0.89 / 0.98 |
 | `2026-09-24/wall-direct-a`, `-b` | sphere on the wall itself, further out (~2.5 m by level, unconfirmed) | 2.12 / **3.58** / 2.13 / 1.54 / 1.13 |
+| `2026-09-25/thicker-carpet-raised` | an even thicker carpet on the standoffs | 2.09 / 1.69 / 1.69 / 0.89 / 0.96 |
 | `2026-09-25/thick-carpet-raised` | the same standoffs with a thicker carpet | 2.19 / 1.93 / 1.63 / 0.94 / 1.05 |
 | `2026-09-25/thin-carpet-raised` | + thin carpet on the floor lifted on standoffs | 2.67 / 2.09 / 1.72 / 1.01 / 1.11 |
 | `2026-09-25/wall-thinsulate` | wall insulation removed + the faced wall filled with Thinsulate (two changes) | 3.03 / 2.20 / 1.86 / 1.16 / 1.19 |
@@ -196,7 +197,10 @@ tones on the upper half of the arc, and nothing bad entered the map).
    `thin-carpet-raised-day3.pdf`. **A thicker carpet on the same standoffs** (`thick-carpet-raised`):
    1.778 → **1.579**, every band below 3 kHz better, most at 250–400 Hz (2.67 → 2.19); source still (level
    within 0.06 dB, tilt +0.67 → +0.90). Thickness in the middle of the floor is what the low end
-   responds to. Still 0.28 dB behind the accepted 1.303. Figure: `thick-carpet-raised-day3.pdf`.
+   responds to. Still 0.28 dB behind the accepted 1.303. Figure: `thick-carpet-raised-day3.pdf`. **Even
+   thicker** (`thicker-carpet-raised`): 1.579 → **1.497**, better at 250–630 Hz and 1–3 kHz (400–630 Hz
+   1.93 → 1.69), 630 Hz–1 kHz flat; source still (level within 0.15 dB, tilt +0.85). Diminishing returns:
+   thin → thick gained 0.20 dB, thick → thicker 0.08. Figure: `thicker-carpet-raised-day3.pdf`.
 
 1. **The roll changed the room without improving it.** 0.34 dB at 250–630 Hz, falling to 0.05 dB
    at 1.6–3 kHz; flatness unchanged. Removing the core made no difference (r = +0.92, slope 0.95
