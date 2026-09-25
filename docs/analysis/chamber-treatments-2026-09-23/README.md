@@ -53,6 +53,7 @@ A treatment effect clearly above ~0.1 dB is real. Anything compared across days 
 | `2026-09-24/chaotic-carpet-2` | a second, different chaotic arrangement | 1.71 / 1.46 / 1.48 / 0.91 / 0.98 |
 | `2026-09-24/chaotic-carpet-3` | a third chaotic arrangement | 1.76 / 1.45 / 1.48 / 0.89 / 0.98 |
 | `2026-09-24/wall-direct-a`, `-b` | sphere on the wall itself, further out (~2.5 m by level, unconfirmed) | 2.12 / **3.58** / 2.13 / 1.54 / 1.13 |
+| `2026-09-25/carpet-reordered` | same layers, the one added at the bottom moved to the top | **1.99 / 1.52 / 1.47 / 0.85 / 0.96** |
 | `2026-09-25/full-carpet-raised` | the full carpet on the standoffs | 2.31 / **1.60** / 1.68 / 0.90 / 1.01 |
 | `2026-09-25/thicker-carpet-raised` | an even thicker carpet on the standoffs | 2.09 / 1.69 / 1.69 / 0.89 / 0.96 |
 | `2026-09-25/thick-carpet-raised` | the same standoffs with a thicker carpet | 2.19 / 1.93 / 1.63 / 0.94 / 1.05 |
@@ -205,7 +206,12 @@ tones on the upper half of the arc, and nothing bad entered the map).
    carpet** (`full-carpet-raised`): 1.497 → 1.541 — a trade, not a gain: 400–630 Hz 1.69 → 1.60 (back at the
    accepted state) but 250–400 Hz 2.09 → 2.31. Carpet thickness has stopped paying; the remaining
    0.24 dB gap to 1.303 sits in 250–400 Hz and 630 Hz–1 kHz. Figures: `full-carpet-raised-day3.pdf`,
-   `full-carpet-vs-accepted-day3.pdf`.
+   `full-carpet-vs-accepted-day3.pdf`. **Same layers, reordered** — the bottom layer moved to the top
+   (`carpet-reordered`): 1.541 → **1.387**, better in every band below 3 kHz (250–400 Hz 2.31 → 1.99,
+   630 Hz–1 kHz 1.68 → 1.47); 484 cells better, 390 worse. The level rose 0.65 dB at 250–400 Hz only, so
+   this is the floor's low-frequency behaviour changing, not the source. **The order of the layers
+   matters, not only their total thickness.** 0.08 dB from the accepted 1.303. Figure:
+   `carpet-reordered-day3.pdf`.
 
 1. **The roll changed the room without improving it.** 0.34 dB at 250–630 Hz, falling to 0.05 dB
    at 1.6–3 kHz; flatness unchanged. Removing the core made no difference (r = +0.92, slope 0.95
