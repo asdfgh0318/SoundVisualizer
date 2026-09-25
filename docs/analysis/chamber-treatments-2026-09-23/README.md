@@ -53,6 +53,7 @@ A treatment effect clearly above ~0.1 dB is real. Anything compared across days 
 | `2026-09-24/chaotic-carpet-2` | a second, different chaotic arrangement | 1.71 / 1.46 / 1.48 / 0.91 / 0.98 |
 | `2026-09-24/chaotic-carpet-3` | a third chaotic arrangement | 1.76 / 1.45 / 1.48 / 0.89 / 0.98 |
 | `2026-09-24/wall-direct-a`, `-b` | sphere on the wall itself, further out (~2.5 m by level, unconfirmed) | 2.12 / **3.58** / 2.13 / 1.54 / 1.13 |
+| `2026-09-25/wall-thinsulate` | wall insulation removed + the faced wall filled with Thinsulate (two changes) | 3.03 / 2.20 / 1.86 / 1.16 / 1.19 |
 | `2026-09-25/carpet-square` | carpet back as a square frame along the walls | 2.72 / 2.08 / 1.69 / 0.96 / 1.12 |
 | `2026-09-25/carpet-removed` | thick carpet removed from the floor | **2.63** / 1.91 / 1.75 / 1.01 / 1.15 — geometry moved again |
 | `2026-09-25/cleanup-6` | clean-up 6: carpet rearranged | 1.69 / 1.97 / 1.55 / 0.92 / 1.00 — shift still present |
@@ -182,7 +183,10 @@ tones on the upper half of the arc, and nothing bad entered the map).
    (`carpet-square`): 1.779, no better than no carpet (1.740); 250–400 Hz 2.72. The source held still this
    time (level within 0.1 dB above 400 Hz, tilt +0.28 → +0.65), so the comparison is fair: **the carpet
    only helps where it covers the middle of the floor**, under the arc and the source — the floor's
-   first-reflection zone — not along the walls. Figure: `carpet-square-day3.pdf`.
+   first-reflection zone — not along the walls. Figure: `carpet-square-day3.pdf`. **Wall insulation removed
+   and the faced wall filled with Thinsulate** (`wall-thinsulate`): 1.779 → **1.955**, worse in every band
+   below 3 kHz (250–400 Hz 3.03). Source held still (level within 0.04 dB above 400 Hz, tilt unchanged).
+   Two changes together, so which one hurt cannot be separated. Figure: `wall-thinsulate-day3.pdf`.
 
 1. **The roll changed the room without improving it.** 0.34 dB at 250–630 Hz, falling to 0.05 dB
    at 1.6–3 kHz; flatness unchanged. Removing the core made no difference (r = +0.92, slope 0.95
