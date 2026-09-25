@@ -53,6 +53,7 @@ A treatment effect clearly above ~0.1 dB is real. Anything compared across days 
 | `2026-09-24/chaotic-carpet-2` | a second, different chaotic arrangement | 1.71 / 1.46 / 1.48 / 0.91 / 0.98 |
 | `2026-09-24/chaotic-carpet-3` | a third chaotic arrangement | 1.76 / 1.45 / 1.48 / 0.89 / 0.98 |
 | `2026-09-24/wall-direct-a`, `-b` | sphere on the wall itself, further out (~2.5 m by level, unconfirmed) | 2.12 / **3.58** / 2.13 / 1.54 / 1.13 |
+| `2026-09-25/in-plane-a`, `-b` | speaker moved on into the ring plane, on the axis | 1.94 / 1.87 / 1.39 / 0.98 / 1.10 |
 | `2026-09-25/closer-a`, `-b` | **speaker moved ~20 cm closer to the ring**, still on the axis | **1.99 / 1.28 / 1.29** / 0.86 / 0.97 |
 | `2026-09-25/blue-carpet` | + a blue absorbing carpet on top of the floor stack-up, ~0.5 cm, no backing | 3.22 / 2.49 / 1.53 / 0.83 / 1.00 (5–6.4 kHz 1.11) |
 | `2026-09-25/day3-a`, `-b` | day 3, nothing changed since `floor-raised-3` (hub back on USB port 4: preset 1d9a5e2f) | 3.33 / 2.57 / 1.57 / 0.80 / 0.87 |
@@ -99,6 +100,12 @@ tones on the upper half of the arc, and nothing bad entered the map).
    top-to-bottom tilt remains (+0.59 dB, bottom louder); fitted out, the score would be 1.183.
    Within 0.03 dB of the best state (1.277) without the wedges. Figures: `closer-day3.pdf`,
    `closer-vs-best-day3.pdf`.
+   **Moving it on into the ring plane** (`in-plane-a/-b`, repeat 0.010 dB) went too far: 1.311 →
+   **1.473**, with 400–630 Hz 1.28 → 1.87 and 1–3 kHz slightly worse; only 250–400 Hz held (1.94). The
+   tilt is gone (−0.12 dB) but the arc now reads low at both ends (+90° −0.22, −90° −0.34 dB) and the
+   level fell 0.35 dB although the sphere came closer — every capsule now sits at 90° to the aim, off
+   the sphere's main lobe. **Best position so far: ~10 cm off the ring plane.** Figures:
+   `in-plane-day3.pdf`, `speaker-distance-day3.pdf`.
 
 1. **The roll changed the room without improving it.** 0.34 dB at 250–630 Hz, falling to 0.05 dB
    at 1.6–3 kHz; flatness unchanged. Removing the core made no difference (r = +0.92, slope 0.95
