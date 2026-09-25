@@ -53,6 +53,7 @@ A treatment effect clearly above ~0.1 dB is real. Anything compared across days 
 | `2026-09-24/chaotic-carpet-2` | a second, different chaotic arrangement | 1.71 / 1.46 / 1.48 / 0.91 / 0.98 |
 | `2026-09-24/chaotic-carpet-3` | a third chaotic arrangement | 1.76 / 1.45 / 1.48 / 0.89 / 0.98 |
 | `2026-09-24/wall-direct-a`, `-b` | sphere on the wall itself, further out (~2.5 m by level, unconfirmed) | 2.12 / **3.58** / 2.13 / 1.54 / 1.13 |
+| `2026-09-25/carpet-only` | felt removed; only the raised thick carpet remains (floor only, or whole chamber: not stated) | 1.69 / 1.90 / 1.37 / 0.93 / 1.00 (5–6.4 kHz 1.00) |
 | `2026-09-25/felt-wall` | screen taken down, felt placed on a wall (which wall not stated) | 1.58 / 1.78 / 1.47 / 1.10 / 1.14 (5–6.4 kHz 1.14) |
 | `2026-09-25/screen-1-layer` | + a one-layer folding screen (parawan); position, material not stated | 1.52 / 2.00 / 1.57 / 1.16 / 1.76 (5–6.4 kHz 2.39) |
 | `2026-09-25/corner-stuffed` | + the corner near the capsule hubs stuffed | 1.86 / 1.98 / 1.34 / 0.87 / 1.03 (5–6.4 kHz 0.87) |
@@ -135,6 +136,11 @@ tones on the upper half of the arc, and nothing bad entered the map).
    250–630 Hz better (1.86 → 1.58, 1.98 → 1.78), 630 Hz–6.4 kHz worse (1.34 → 1.47, 0.87 → 1.10, 1.03 → 1.14,
    0.87 → 1.14); total 1.445 → 1.409. The screen's damage is fully gone, and the level matches
    `corner-stuffed` to 0.1 dB. Figure: `felt-wall-day3.pdf`.
+   **Felt removed, only the raised thick carpet left** (`carpet-only`): 1.409 → **1.393**, the best score
+   today; the felt's high-band cost is gone (1–1.6 kHz 1.10 → 0.93, 5–6.4 kHz 1.14 → 1.00) and part of its
+   low-end gain with it (250–400 Hz 1.58 → 1.69). **The high-frequency boost is still there** (+4.17 dB
+   at 5–6.4 kHz against the 14:03 bare-wall run), so whatever changed at ~14:10 was not the felt, the
+   screen or the roll. Figure: `carpet-only-day3.pdf`.
 
 1. **The roll changed the room without improving it.** 0.34 dB at 250–630 Hz, falling to 0.05 dB
    at 1.6–3 kHz; flatness unchanged. Removing the core made no difference (r = +0.92, slope 0.95
