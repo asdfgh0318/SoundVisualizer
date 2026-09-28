@@ -58,6 +58,9 @@
   .nr td { font-size:6.8pt; padding:1.8pt 4pt; }
   .nr td:first-child { width:40%; font-weight:500; }
   @media (max-width:640px) { header, .two { display:block; } .headmeta { text-align:left; margin-top:6pt; white-space:normal; } }
+  .src-list td { font-size:6.9pt; padding:1.9pt 4pt; }
+  .src-list td:first-child { width:33%; font-weight:500; font-size:6.9pt; }
+  .src-list tr.grp td { font-family:var(--mono); font-size:6.4pt; letter-spacing:.1em; text-transform:uppercase; color:var(--accent); padding-top:6pt; border-bottom:.8pt solid var(--accent); font-weight:500; }
 </style>
 </head>
 <body>
@@ -292,6 +295,121 @@ The airframe rules are the cheap ones and the best measured. Duct and lining rul
 <tr><td>Callicoat 2016, composite skins for UAV transmission loss</td><td>SHAREOK handle 11244/48787</td><td>body-skin transmission loss, relevant to the parcel box</td></tr>
 </tbody></table>
 <p class="tag">Full lists: the "Not retrieved" sections of the four EXTRACTS files (the duct file alone lists 20 rows) and <code>SCREENING-BROAD.md</code> (133 screened, 63 relevant, 34 fetched). The OneDrive is not mounted on this laptop, so anything held only there needs syncing first.</p>
+
+
+<h2 class="pb"><span class="n">09</span>Appendix: every paper used, and what was taken from it</h2>
+<p>101 sources. One line per paper, in the terms used above; the tag is the evidence type. PDFs, text dumps and the verbatim quotes behind each line are in <code>papers/SoundVisualizer/design-rules/</code> (or <code>arc-validation/</code> and <code>chamber-problems/</code> for five held earlier).</p>
+<table class="src-list">
+<thead><tr><th>Paper</th><th>What we took from it</th></tr></thead>
+<tbody>
+<tr class="grp"><td colspan="2">Vehicle layout, arms, spacing, ground</td></tr>
+<tr><td>Zawodny &amp; Boyd 2017, AHS Forum 73 (NASA)</td><td>Rotor-over-arm clearance: largest drop moving the arm 0.1&rarr;0.2&nbsp;R below the tip (~8&nbsp;dB, ~10&nbsp;dBA tonal); &asymp;&nbsp;isolated rotor by 0.4&ndash;0.5&nbsp;R; conical arm ~6&nbsp;dB louder than a rod; arm acts as a small ground plane (+thrust). [E]</td></tr>
+<tr><td>Zawodny, Pettingill &amp; Thurman 2022, Inter-Noise (NASA NTRS)</td><td>Full quadcopter: rotors raised 32/64&nbsp;mm (0.17/0.33&nbsp;R) above the airframe cut 4&ndash;8&nbsp;dBA in forward flight; source is the front-rotor wake shed over its strut junction; hover inconclusive; standoffs add vibration tones. [E]</td></tr>
+<tr><td>Zawodny, Christian &amp; Cabell (undated), NASA sUAS summary</td><td>Rotors under the arms 8.1&nbsp;dB louder than over them (Phantom-like, simulation); shrinking rotor&ndash;arm gap raises higher BPF harmonics. [S/E]</td></tr>
+<tr><td>Lee &amp; Lee 2020, Phys. Fluids (KAIST manuscript)</td><td>Side-by-side tip gap: thrust &minus;7.9&nbsp;% at 0.2&nbsp;D, &minus;5.9&nbsp;% at 0.3&nbsp;D; interaction gone by 0.75&ndash;1.0&nbsp;D; louder at 0.2&nbsp;D. No arms in the sweep. Phantom 2 geometry (&asymp;&nbsp;0.46&nbsp;D gap). [S]</td></tr>
+<tr><td>Intaratep et al. 2016, AIAA 2016-2873</td><td>Rotor count: broadband +3&nbsp;dB for 1&rarr;2 rotors, +6&ndash;8&nbsp;dB for 2&rarr;4 on a Phantom II; tips pass close to each other and to arms; a smaller prop on the same frame adds only 3&ndash;5&nbsp;dB. [E]</td></tr>
+<tr><td>Pettingill, Zawodny &amp; Thurman 2022, AIAA (NASA)</td><td>SUI Endurance geometry (510&nbsp;mm hub-to-hub, R&nbsp;190.5&nbsp;mm &rarr; &asymp;&nbsp;0.34&nbsp;D gap); tripped/rough blades lost 9.0/7.4&nbsp;% thrust but were 7.3/5.7&nbsp;dB quieter. [E]</td></tr>
+<tr><td>Wang et al. 2019, Drones</td><td>Only the rig geometry (27&nbsp;mm rotor&ndash;arm gap, above vs below) and its literature notes; its own results text was too garbled to quote. [&mdash;]</td></tr>
+<tr><td>Hirono, Robertson &amp; Torija 2024, J. Sound Vib.</td><td>Coaxial axial gap z/D&nbsp;0.2&ndash;0.4 quietest; best z/D&nbsp;0.4 with 4 blades (OASPL) or 0.3 with 5 (sound power); below 0.2&nbsp;D more blades are louder; cites a 0.1&nbsp;D optimum for a 14-in rotor. [E]</td></tr>
+<tr><td>McKay, Kingan &amp; Go 2019, Acoustics 2019</td><td>15-in contra-rotating pair at 17 vs 48&nbsp;mm spacing: the rig and headline configurations. [E]</td></tr>
+<tr><td>McKay, Kingan, Go &amp; Jung 2021, Appl. Acoust.</td><td>Contra-rotating spacing 15&ndash;70&nbsp;mm: 17&nbsp;mm significantly louder than 48&nbsp;mm; OASPL falls with spacing; broadband flat 79&ndash;82&nbsp;dB. [E]</td></tr>
+<tr><td>Turhan, Rezgui &amp; Azarpeyvand 2025, Drones</td><td>Phase sync of two 9-in props: &minus;19&nbsp;dB first BPF at 90&deg; (2 blades), &minus;15&nbsp;dB at 36&deg; (5 blades); in-phase worst; spacing hardly matters once synced (s/D&nbsp;1.01&ndash;1.05). [E]</td></tr>
+<tr><td>Hanson et al. 2023, J. Sound Vib.</td><td>Ground effect when rotor &le;&nbsp;1&nbsp;D above ground; ~6&nbsp;dB more OASPL in the reflection zone; 1&ndash;2&nbsp;dB extra in extreme IGE. [E]</td></tr>
+<tr><td>Jawahar et al. 2025, Sci. Rep.</td><td>Solid ground +3&nbsp;dBA at L/R&nbsp;=&nbsp;1; porous ground removes about 2&nbsp;dBA of it. [E]</td></tr>
+<tr><td>Huang 2025, Univ. Bristol</td><td>Rotor height relative to an upstream building changes broadband noise; a siting rule, not vehicle geometry. [E]</td></tr>
+<tr class="grp"><td colspan="2">Propellers and blades</td></tr>
+<tr><td>Candeloro, Ragni &amp; Pagliaroli 2022, Fluids (review)</td><td>Regime of small rotors (D&nbsp;&le;&nbsp;300&nbsp;mm, Mtip&nbsp;~0.3, Re&nbsp;10<sup>4</sup>&ndash;10<sup>5</sup>); serration limits; LE serrations +thrust &minus;4&nbsp;dB; tape trip; porous edges; bio-inspired blades; drones 5.6&nbsp;dB lower SEL rated as annoying as road vehicles. [R]</td></tr>
+<tr><td>Sun et al. 2023, Drones (blade twist)</td><td>Twisted blade: +9.3&nbsp;% figure of merit and up to &minus;4.3&nbsp;dB OASPL at the same thrust; untwisted adds 2&ndash;10&nbsp;kHz broadband. [E+S]</td></tr>
+<tr><td>Serr&eacute;, Fournier &amp; Moschetta 2019, Int. J. Micro Air Veh.</td><td>Design for efficiency, then drop rpm; optimised MAV rotor 10&nbsp;dB(A) quieter and 4&nbsp;W less power; 3 blades recommended; radius and blade-count limits. [E+S]</td></tr>
+<tr><td>Baskaran et al. 2024, J. Sound Vib.</td><td>Blade count: more blades quieter at constant thrust, louder broadband at constant tip speed. [E]</td></tr>
+<tr><td>Gojon, Jardin &amp; Parisot-Dupuis 2021, JASA</td><td>Iso-thrust 2&rarr;5 blades: &minus;10&nbsp;dB in the disc plane, flat at &plusmn;60&deg;. [E]</td></tr>
+<tr><td>Jordan, Deters &amp; Narsipur 2020, AIAA</td><td>Same harmonics at same rpm; higher-solidity blade quieter at equal thrust only because it spins slower. [E]</td></tr>
+<tr><td>Sinibaldi &amp; Marino 2013, Appl. Acoust.</td><td>Optimised thin blade &gt;&nbsp;10&nbsp;dB quieter at low thrust, advantage gone at higher thrust as the blade vibrates; a counter-example to tip speed alone. [E]</td></tr>
+<tr><td>Cabell, McSwain &amp; Grosveld 2016, Noise-Con</td><td>Multicopter tip Mach &lt;&nbsp;0.3 vs 0.6&ndash;0.7 for helicopters. [E]</td></tr>
+<tr><td>Mukherjee et al. 2025, JASA</td><td>Small-rotor chords are acoustically non-compact above ~1&nbsp;kHz; standard self-noise model under-predicts. [S]</td></tr>
+<tr><td>Pettingill &amp; Zawodny 2026, NASA/TM-20250003316</td><td>Tripping: &minus;3 to &minus;11&nbsp;% thrust; broadband &minus;8.87/&minus;3.87&nbsp;dB; up to &minus;21&nbsp;dB at 6.1&nbsp;kHz; tripping the outer 50&nbsp;% of span suffices; noise scaling with tip Mach. [E]</td></tr>
+<tr><td>Candeloro et al. 2020, J. Phys. Conf. Ser.</td><td>TE serration limits h*&nbsp;&gt;&nbsp;0.25, angle &lt;&nbsp;45&deg;, St&nbsp;&gt;&nbsp;1; tooth count irrelevant; benefit strongest in the rotor plane; tonal drop may be thrust loss. [E]</td></tr>
+<tr><td>Li et al. 2018, Acoustics 2018</td><td>CNC serrations: &minus;7.5&nbsp;dB hover, &minus;12&nbsp;dB forward; ~5&nbsp;% lift loss in forward flight. [E]</td></tr>
+<tr><td>Santamaria et al. 2026, J. Sound Vib.</td><td>Printed cut-in serrations raise noise (blunt root, St&nbsp;0.12); add-on ones cut it; up to 9.5&nbsp;% FM cost; print route shifts tones; 2&ndash;4&nbsp;% sample-to-sample scatter. [E]</td></tr>
+<tr><td>Noda et al. 2018, J. Robot. Mechatron.</td><td>TE plate at 0.8&nbsp;R lets rpm drop 5400&rarr;4800; quieter mainly through lower rpm. [E+S]</td></tr>
+<tr><td>Noda et al. 2022, Front. Aerosp. Eng.</td><td>Plain TE plate &gt;&nbsp;3&nbsp;dB louder, +25&nbsp;% drag; serrated Gurney flap optimum 3&nbsp;mm / 1&nbsp;mm gap, 3&ndash;6&nbsp;cm from the tip. [E+S]</td></tr>
+<tr><td>Kim 2016, UC Irvine MS thesis</td><td>Uneven spacing: &minus;5&nbsp;dB A-weighted tonal near the disc, +4&nbsp;dB below 50&deg;; energy to 0.5&nbsp;BPF; clustered pairs &minus;8.5&nbsp;% thrust, extra broadband unless axially separated. [E]</td></tr>
+<tr><td>Meister, Van Renterghem &amp; Pieren 2026, Acta Acustica</td><td>Commercial 5-in toroidal: no noise or efficiency advantage, up to 10&nbsp;dB louder than a high-pitch prop. [E]</td></tr>
+<tr><td>Vijay et al. 2025, arXiv</td><td>Low-rigour toroidal/uneven tests: qualitative only; toroidal + counterweight 31&nbsp;% less thrust. [E/S]</td></tr>
+<tr><td>Sun et al. 2023, IJERPH (loop propeller)</td><td>Joined-tip loop blade: &minus;4.7&nbsp;dB isolated, &minus;3.5&nbsp;dB installed, lower loudness/tonality, higher sharpness, slight FM loss. [E]</td></tr>
+<tr><td>Merino-Mart&iacute;nez, Ben-Gida &amp; Snellen 2024, ICSV30</td><td>Optimised propeller: &lt;&nbsp;1.8&nbsp;dB level change but &minus;20&nbsp;% annoyance, &minus;3.6&nbsp;sone, &minus;0.47&nbsp;acum sharpness. [E]</td></tr>
+<tr><td>Popister, Goia &amp; Ciudin 2025, Polymers</td><td>Print settings change roughness, but roughness did not map cleanly to noise. [E]</td></tr>
+<tr><td>Malkki et al. 2024, Acoustics Australia</td><td>At equal rpm a 3-blade prop gave up to 38&nbsp;% more thrust with lower first BPF tones. [E]</td></tr>
+<tr><td>Pandey 2021, TU Delft MSc thesis</td><td>Laminar separation bubble spans 15&ndash;40&nbsp;% chord in the small-propeller Reynolds band. [R]</td></tr>
+<tr class="grp"><td colspan="2">Ducts and shrouds</td></tr>
+<tr><td>Pereira 2008, Univ. Maryland PhD</td><td>16&nbsp;cm rotor, 17 shrouds: +94&nbsp;% thrust or &minus;62&nbsp;% power; 10&deg;/50&nbsp;% diffuser; lip radius and tip gap; historical studies (Hubbard, Parlett, Taylor, Mort, Black, Dyer, Martin &amp; Tung); struts 5.5&nbsp;%&nbsp;D<sub>t</sub> further away &minus;10&nbsp;dB; stators +11&ndash;26&nbsp;% thrust; a bigger open rotor may beat a smaller shrouded one. [E/R]</td></tr>
+<tr><td>Chew, Gan &amp; Hesse 2021, AIAA SciTech</td><td>5-in shrouded prop: tip gaps 0.6&nbsp;% and 1.1&nbsp;% of R similar, sudden drop at 3.6&nbsp;%. [S]</td></tr>
+<tr><td>Dayhoum et al. 2025, Appl. Sci.</td><td>Tip gap 3.04&rarr;1.71&nbsp;%&nbsp;R +17.85&nbsp;% efficiency, &rarr;5.17&nbsp;% &minus;18.1&nbsp;%; lip radius 3&ndash;15&nbsp;% of D; diffuser length second-order. [S]</td></tr>
+<tr><td>Dayhoum et al. 2025, Actuators</td><td>3&nbsp;%&nbsp;R tip gap chosen as a safety margin against blade strike, not an optimum. [S]</td></tr>
+<tr><td>Ma'arof et al. 2023, J. Adv. Res. Appl. Sci. Eng. Technol.</td><td>Diffuser length showed no correlation with thrust; tip gap most consistent driver. [S]</td></tr>
+<tr><td>Li, Yonezawa &amp; Liu 2021, Drones</td><td>Per-prop shrouds +24.0&nbsp;% FM vs whole-frame +9.7&nbsp;%; best tip gap 1&nbsp;mm on R&nbsp;121&nbsp;mm; straight (0&deg;) diffuser best; no acoustics. [S]</td></tr>
+<tr><td>Zawodny et al. 2025, NASA/TM-20250009190</td><td>10-in ducted prop: 1.27&nbsp;mm tip gap, prop at 45&nbsp;% of chord, duct thickness &ge;&nbsp;10&nbsp;% D, area ratio 1.15; +4.6&nbsp;% rpm needed to match thrust. [E]</td></tr>
+<tr><td>Zhang &amp; Barakos 2020, Aeronaut. J. (review)</td><td>Inlet separation, not tip gap, drives duct broadband; attached duct ~half, separated ~twice the open prop's noise; critical lip radius disputed (6 vs 12.5&nbsp;%). [R]</td></tr>
+<tr><td>Kuantama &amp; Tarca 2017, MATEC Web Conf.</td><td>16-in ducted prop with 10&nbsp;mm gap more efficient than open at the same rpm. [S]</td></tr>
+<tr><td>Malgoezar et al. 2019, Int. J. Aeroacoust.</td><td>30&nbsp;cm duct, static: louder everywhere (up to +12&nbsp;dB); with 10&nbsp;m/s inflow quieter; compare at equal thrust. [E]</td></tr>
+<tr><td>Simon et al. 2022, Inter-Noise (NASA)</td><td>Best tone attenuation with the propeller centred axially; too-small lip raises broadband. [E]</td></tr>
+<tr><td>Koppelberg, Weintraub &amp; Jeschke 2022, CEAS Aeronaut. J.</td><td>In a subsonic ducted fan the rotor-alone tone is cut off; axial rotor&ndash;stator gap sets the tones; up to 20&nbsp;dB sound-power potential vs free propellers. [S]</td></tr>
+<tr><td>Miljkovi&cacute; 2018, MIPRO (review)</td><td>Ducted props often, not always, quieter; thicker lining needs a wider duct. [R]</td></tr>
+<tr class="grp"><td colspan="2">Linings and materials</td></tr>
+<tr><td>Sutliff &amp; Jones 2009, J. Aircraft</td><td>Over-the-rotor foam-metal liner: up to 5&nbsp;dB vs 3&nbsp;dB for an inlet liner; tighter tip gap helps; liner strengthens the tip vortex. [E]</td></tr>
+<tr><td>Pallej&agrave;-Cabr&eacute; et al. 2025, Forum Acusticum</td><td>Tip liner on a propeller duct: &minus;4&nbsp;dB in-duct broadband; far field &minus;6&nbsp;dB at BPF but +9&nbsp;dB at 2&times;BPF. [E]</td></tr>
+<tr><td>Wu et al. 2025, Appl. Acoust.</td><td>23&nbsp;mm Helmholtz metamaterial: &minus;6.9/&minus;10.8/&minus;9.0/&minus;4.5&nbsp;dB(A) on four fan harmonics, &minus;2.6&nbsp;% mass flow; one unit is not enough. [E]</td></tr>
+<tr><td>Killeen et al. 2023, Appl. Acoust.</td><td>15&nbsp;mm liner in a server fan under real flow: &minus;3&nbsp;dBA at the 620&nbsp;Hz blade tone. [E]</td></tr>
+<tr><td>Jim&eacute;nez et al. 2017, Sci. Rep.</td><td>Graded 9-resonator panel: near-perfect absorption 300&ndash;1000&nbsp;Hz at 11&nbsp;cm. [E]</td></tr>
+<tr><td>Min, Lou &amp; Zhao 2025, Sci. Rep.</td><td>Coiled cavities behind an MPP: mean &alpha;&nbsp;0.91 over 400&ndash;1600&nbsp;Hz under 65&nbsp;mm. [E]</td></tr>
+<tr><td>Dong et al. 2020, arXiv / Phys. Rev. Appl.</td><td>Ventilated barrier blocks &gt;&nbsp;90&nbsp;% over 650&ndash;2000&nbsp;Hz at 53&nbsp;mm while passing air. [E]</td></tr>
+<tr><td>Jamois et al. 2025, Acta Acustica</td><td>Printed duct liners: which face points in shifts the peak; seam leaks cost 10&nbsp;dB; two detuned networks widen the band. [E]</td></tr>
+<tr><td>Chojnacki et al. 2025, Sci. Rep.</td><td>FDM-printed coiled resonator hit 540&nbsp;Hz vs 542&nbsp;Hz predicted; print defects matter more than filament. [E]</td></tr>
+<tr><td>Chen 2023, Univ. Bristol</td><td>Longer, narrower resonator necks lower the absorption frequency; printed samples 5&ndash;12&nbsp;% off the model. [E+S]</td></tr>
+<tr><td>Ulrich &amp; Arenas 2020, Sustainability</td><td>0.6&nbsp;g/m&sup2; nanofibre membrane on a perforated panel absorbs &gt;&nbsp;70&nbsp;% at 300&ndash;400&nbsp;Hz with 34&nbsp;mm air gap. [E]</td></tr>
+<tr class="grp"><td colspan="2">Team reviews (ours)</td></tr>
+<tr><td>Koszałka, ducting strategies review</td><td>Per-prop shrouds beat whole-drone ducts aerodynamically; ducts reshape rather than reduce noise; no study measures both on one airframe. [T]</td></tr>
+<tr><td>Koszałka, shroud comparison report</td><td>Pereira and Li summaries; coaxial shroud A/B studies (Reboul &amp; Gallo, Vouros), both computational. [T]</td></tr>
+<tr><td>Koszałka, on-drone liner materials review</td><td>Causality floor; quarter-wave numbers; melamine vs PET; compressed batts; Thinsulate vendor curves read high; cork and rubber &gt;&nbsp;1&nbsp;kHz only. [T]</td></tr>
+<tr><td>Koszałka, metamaterials for swept-BPF duct liners</td><td>BPF of a 6-in rotor sweeps ~200&ndash;670&nbsp;Hz; no thin, wide-band, flow-tested liner exists; FDM process rules. [T]</td></tr>
+<tr><td>Koszałka, metamaterials primer</td><td>Corrected causality numbers (10.55&nbsp;cm, 3.1&nbsp;mm margin); server-fan liners are at drone-shroud scale. [T]</td></tr>
+<tr><td>Koszałka, shroud liner design brief</td><td>Liner cavity depths per prop size (6-in: 60&nbsp;mm at 330&nbsp;Hz). One wrong citation found (Akl &rarr; Chojnacki). [T]</td></tr>
+<tr><td>fan_noise_treatments_sota (ours)</td><td>A duct is a mode filter; axial-gap rules of thumb are folklore; tip liners must be buried in grooves (0.75 vs 2.75&ndash;8.75&nbsp;% efficiency loss). [T]</td></tr>
+<tr class="grp"><td colspan="2">Web sweep (open access)</td></tr>
+<tr><td>Aziz &amp; Shi 2024, Aerospace</td><td>Coaxial octocopter loudest (93&nbsp;dB, +5&nbsp;dB over single-plane). [S]</td></tr>
+<tr><td>Tinney et al. 2025, Forum Acusticum</td><td>Stacked co-rotating rotors: index angle and spacing cut the first BPF harmonics up to 4&nbsp;dB below the disc. [E]</td></tr>
+<tr><td>Pagliaroli et al. 2025, Forum Acusticum</td><td>Side-by-side co-rotating phase shift mainly lowers the second harmonic. [E]</td></tr>
+<tr><td>Del Duchetto et al. 2025, Aerospace</td><td>Inflow does not move the phase optimum; ~10&nbsp;dB less at higher inflow. [E]</td></tr>
+<tr><td>Chai, Li &amp; Yao 2025, Aerosp. Res. Commun.</td><td>Quarter-period offset: up to &minus;5&nbsp;dB(A) beneath two rotors. [S]</td></tr>
+<tr><td>Roger &amp; Moreau 2020, Acoustics</td><td>Installation and forward flight outweigh steady blade loading. [S]</td></tr>
+<tr><td>Zhou, Wang &amp; Wang 2024, J. Fluid Mech.</td><td>A body ahead of the rotor imprints humps at BPF multiples. [S]</td></tr>
+<tr><td>Morton et al. 2012, AIAA</td><td>Rotor partly in a wall boundary layer shows haystacking. [E]</td></tr>
+<tr><td>Zhong et al. 2023, J. Fluid Mech.</td><td>Periodic rpm/vibration errors add tones; random ones raise broadband. [S]</td></tr>
+<tr><td>Russo et al. 2023, Aerospace</td><td>Motor dominates at 1140&ndash;1500&nbsp;rpm, propeller above ~1860&nbsp;rpm. [E]</td></tr>
+<tr><td>Moshkov et al. 2021, J. Phys. Conf. Ser.</td><td>Two-stroke engine dominates a shrouded-pusher UAV. [E]</td></tr>
+<tr><td>Dombrovschi et al. 2024, Acoustics</td><td>Hybrid turboshaft drone: &gt;&nbsp;90&nbsp;dBA at 1.5&nbsp;m from the engine itself. [E]</td></tr>
+<tr><td>Yao et al. 2022, Aerospace</td><td>Joined dual-blade tips: +4&ndash;8&nbsp;% thrust; tip vortices drive broadband. [S]</td></tr>
+<tr><td>Vu et al. 2024, Int. J. Aviat. Sci. Technol.</td><td>Toroidal loop curvature is a first-order noise knob. [S]</td></tr>
+<tr><td>Wei et al. 2024, Drones (toroidal)</td><td>Toroidal prop &minus;5.2/&minus;19.6&nbsp;dB(A) radial/axial at equal thrust; conflicts with Meister. [E+S]</td></tr>
+<tr><td>Chen et al. 2025, Aerospace</td><td>Resin-printed 254&nbsp;mm prop quieter than wood and aluminium copies. [E]</td></tr>
+<tr><td>Fruncillo, Luchini &amp; Giannetti 2025, Forum Acusticum</td><td>Blade sweep beats uneven spacing as a noise lever. [S]</td></tr>
+<tr><td>Zhao et al. 2023, J. Phys. Conf. Ser.</td><td>LE trip: &minus;5&nbsp;dBA isolated, only &minus;1.5&nbsp;dBA on the full drone. [E]</td></tr>
+<tr><td>Shen et al. 2025, Sustainability</td><td>Serration + finlet blade beats serrations alone. [E]</td></tr>
+<tr><td>Khalaf &amp; Kennedy 2025, Drones</td><td>Winglets + serrations: +9.7&nbsp;% thrust, &minus;2.7&nbsp;dB LF broadband, up to &minus;9.1&nbsp;dB on some tones. [E]</td></tr>
+<tr><td>Wei et al. 2024, Nat. Commun.</td><td>Owl serration + cicada geometry: &minus;5.5&nbsp;dB vs a benchmark blade. [E+S]</td></tr>
+<tr><td>Ingraham, Gray &amp; Lopes 2019, AIAA</td><td>Joint aero-acoustic optimisation: &minus;5&nbsp;dB for 1&nbsp;% efficiency (X-57 propeller). [S]</td></tr>
+<tr><td>Rizzi et al. 2026, NASA/TP (UAM noise update)</td><td>Anhedral tips increase vortex miss distance and cut blade-vortex interaction. [R]</td></tr>
+<tr><td>Rizzi 2016, NASA (Inter-Noise)</td><td>Perception-influenced design: auralise and test during design, not at certification. [&mdash;]</td></tr>
+<tr><td>Woodcock et al. 2025, Front. Acoust.</td><td>Medical-delivery framing lowered annoyance for the same sound. [E]</td></tr>
+<tr><td>Hui et al. 2021, IJERPH</td><td>Annoyance tracks SPL and loudness; hover and flyby ratings correlate. [E]</td></tr>
+<tr><td>Torija &amp; Nicholls 2022, IJERPH</td><td>Annoyance driven by perceived noise level and sharpness. [E]</td></tr>
+<tr><td>Sch&auml;ffer et al. 2021, IJERPH (review)</td><td>Drones more annoying than road or aircraft at equal exposure. [R]</td></tr>
+<tr><td>Schlittenlacher &amp; Wales 2023, Noise-Con</td><td>1&nbsp;ms bursts need 6&ndash;8&nbsp;dB less than 20&nbsp;ms bursts to annoy equally. [E]</td></tr>
+<tr><td>Merino-Mart&iacute;nez &amp; Quaroni 2025, Forum Acusticum</td><td>Inflow turbulence raises loudness and annoyance while SPL barely moves. [E]</td></tr>
+<tr><td>Baars, Bullard &amp; Mohamed 2021, AIAA</td><td>BPF-to-broadband modulation matters for perception; measurable with one mic. [E]</td></tr>
+<tr><td>Cussen, Garruccio &amp; Kennedy 2022, Acoustics</td><td>ISO&nbsp;3744 sound power predicted flyovers within &plusmn;2.1&nbsp;dB. [E]</td></tr>
+<tr><td>Ramos-Romero et al. 2022, IJERPH</td><td>WHO sleep limits &rarr; minimum drone-to-fa&ccedil;ade distance. [S]</td></tr>
+</tbody></table>
 
 <div class="foot">
 <b>Method.</b> On 2026-09-28, four threads extracted rules into <code>papers/SoundVisualizer/design-rules/</code>:
