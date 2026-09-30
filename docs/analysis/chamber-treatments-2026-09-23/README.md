@@ -12,6 +12,7 @@ axisymmetric source every capsule should read the same, so lower is better.
 worse (0.01–0.03 dB per band), so the net effect is confined to the high band.
 Figure: `tripod-unwrapped.pdf`.
 
+**Accepted state, final (Adam, 2026-09-30): `2026-09-25/carpet-reordered`** (supersedes `backed-5cm`).
 **Day-3 summary (2026-09-30): `SUMMARY-day3.pdf` / `.md`** — top 5 setups with the room-error coefficient, one A4 waterfall page each against the best (`cleanup-1`), and a band-by-band ISO-3745-analogue verdict on which frequencies to avoid. Rebuild: `.venv/bin/python docs/analysis/chamber-treatments-2026-09-23/build_summary.py`.
 
 ## Geometry

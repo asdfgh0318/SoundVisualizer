@@ -15,11 +15,11 @@ BEST = '2026-09-25/cleanup-1'
 # (short name, run, what it is — only what README.md states)
 SETUPS = [
     ('last config', '2026-09-25/carpet-reordered',
-     'Last configuration of day 3 (19:20): the full carpet on standoffs, layer order changed (bottom layer moved to the top).'),
+     'ACCEPTED (Adam, 2026-09-30) and the last configuration of day 3 (19:20): the full carpet on standoffs, layer order changed (bottom layer moved to the top).'),
     ('cleanup-1', '2026-09-25/cleanup-1',
-     'BEST. The accepted state (speaker backed off 5 cm from the ring plane, raised thick carpet) with the loose felt sheets removed.'),
+     'BEST by score. The backed-5cm state with the loose felt sheets removed.'),
     ('backed-5cm', '2026-09-25/backed-5cm',
-     'The accepted state: speaker backed off 5 cm from the ring plane, raised thick carpet.'),
+     'Accepted on 2026-09-25, superseded by the last config: speaker backed off 5 cm from the ring plane, raised thick carpet.'),
     ('closer', '2026-09-25/closer-a',
      'Speaker moved ~20 cm closer to the ring, still on the axis; morning floor stack of day 3 (after the blue absorbing carpet was added). Repeat `closer-b` agrees to 0.006 dB.'),
     ('cleanup-2', '2026-09-25/cleanup-2',
@@ -217,7 +217,7 @@ html_doc = f'''<!doctype html><html><head><meta charset="utf-8"><title>Chamber s
 <h1>Chamber findings — day 3, top 5 setups</h1>
 <p class="tag">2026-09-25 (+ rerun 2026-09-30) · 95 tones 257 Hz–6.35 kHz, 3–5 kHz omitted · 11 calibrated capsules · sphere on the axis, arc vertical</p>
 <div class="box"><b>Coefficient</b> = room error below 3 kHz: rms over all tones and capsules of each capsule's level relative to the arc mean, dB, lower is flatter.
-Repeat floor 0.01 dB, handling ~0.04 dB, so <b>the top four are tied</b> (span {spread4:.3f} dB). The last config is {score['last config']-score[best_name]:.3f} dB behind, <b>but that is the source, not the carpet</b>: fitting out each map's top-to-bottom slope†, it scores {score_t['last config']:.3f} against {score_t[best_name]:.3f} for cleanup-1.
+Repeat floor 0.01 dB, handling ~0.04 dB, so <b>the top four are tied</b> (span {spread4:.3f} dB). The accepted last config is {score['last config']-score[best_name]:.3f} dB behind the best, <b>but that is the source, not the carpet</b>: fitting out each map's top-to-bottom slope†, it scores {score_t['last config']:.3f} against {score_t[best_name]:.3f} for cleanup-1.
 Today's rerun of the last config scored {rr:.3f} ({rr-score['last config']:+.3f}): consistent with the chamber still being in that state at 15:48.</div>
 <table><thead><tr><th>Setup</th><th>Room error<br>&lt;3 kHz</th><th>vs best</th><th>Tilt<br>removed†</th><th>250–400</th><th>400–630</th><th>630–1k</th><th>1–1.6k</th><th>1.6–3k</th><th>Qualified<br>from*</th><th>Bands<br>failed*</th></tr></thead><tbody>{rows}</tbody></table>
 <p class="tag">†Per tone, the best-fit line in sin(elevation) across the eleven capsules is subtracted before scoring; this removes a tilted or shifted source, not a room effect. *ISO 3745 analogue on band levels, section 2. "Qualified from" = the lowest one-third-octave band from which no band up to 2.5 kHz is clearly over the limit (the way METU and others state a cut-off); * = that band is marginal. "Bands failed" is out of 11.</p>
@@ -236,6 +236,7 @@ Today's rerun of the last config scored {rr:.3f} ({rr-score['last config']:+.3f}
 <ul>
 <li><b>Avoid:</b> {", ".join(str(x) for x in avoid)} Hz. <b>Clean in all five:</b> {", ".join(str(x) for x in holds)} Hz. <b>Borderline</b> (no clear failure, but at least one setup within the scatter of the limit): {", ".join(str(x) for x in border)} Hz. <b>Depends on the setup:</b> {", ".join(str(x) for x in dep)} Hz ({dep_txt}).</li>
 <li><b>Pure tones are not qualified anywhere.</b> No band has all cells inside the limit; the median is {min(tone_med.values()):.0f}–{max(tone_med[fc] for fc in TOB if ntones[fc] > 3):.0f} %, lowest at {worst_tone} Hz.</li>
+<li><b>The accepted state alone</b> (last config): clearly over the limit at {", ".join(str(fc) for fc in TOB if verdict('last config', fc) == 'fail')} Hz, marginal at {", ".join(str(fc) for fc in TOB if verdict('last config', fc) == 'marg')} Hz, clean elsewhere; band level qualified from {cutoff('last config')} Hz.</li>
 <li><b>Never usable:</b> 3–5 kHz (the sphere's rocking mode, a source fault). <b>Indicative only:</b> 5–6.4 kHz. <b>Not measured:</b> below 257 Hz, where blade tones sat at 216 and 238 Hz (and 258 Hz) in the September runs, and the 250 Hz band has only {ntones[250]} tones.</li>
 </ul>
 <p><b>Limits of this rule.</b> Deviation from the arc mean cannot see an error shared by all eleven positions, such as a uniform reflection. Band verdicts hinge on the single worst of eleven capsules. The tolerance table belongs to a traverse test we never ran; treat the verdicts as a ranking of bands, not a certificate.</p>
@@ -258,6 +259,7 @@ for i, (n, run, what) in enumerate(SETUPS, 1):
 md += ['', *[f'- **{n}** — {what}' for n, _, what in SETUPS], '',
        '`*` = the cut-off band is marginal (within the day-to-day scatter of the limit).', '',
        f'**The last config\'s deficit is the source, not the carpet:** with each map\'s top-to-bottom tilt fitted out it scores {score_t["last config"]:.3f} vs {score_t[best_name]:.3f} for cleanup-1. The source moved at cleanup-3 (level {SRC["cleanup-3"][0]-SRC["cleanup-1"][0]:+.2f} dB, 16:20) and at carpet-removed (tilt {SRC["cleanup-6"][1]:+.2f} → {SRC["carpet-removed"][1]:+.2f}, 17:23); it was not put back.', '',
+       f'The accepted state is setup 1. Alone, it is clearly over the limit at {", ".join(str(fc) for fc in TOB if verdict("last config", fc) == "fail")} Hz and marginal at {", ".join(str(fc) for fc in TOB if verdict("last config", fc) == "marg")} Hz; band level qualified from {cutoff("last config")} Hz.', '',
        f'Top four are tied (span {spread4:.3f} dB). Setup 1 is the last config of the day; the waterfall page for each is in `SUMMARY-day3.pdf` (A4), drawn against cleanup-1.', '',
        '## Bands (ISO 3745 analogue: ±1.5 dB to 630 Hz, ±1.0 dB from 800 Hz; reference = arc mean)', '',
        '| band | limit | tones | setups over the limit, of 5 | pure tones in limit, median | verdict |', '|---|---|---|---|---|---|']

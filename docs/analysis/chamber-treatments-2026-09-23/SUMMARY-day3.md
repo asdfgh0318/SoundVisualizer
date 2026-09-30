@@ -10,15 +10,17 @@ Coefficient = room error below 3 kHz (rms dB across the arc vs arc mean; lower =
 | 4 | closer | `2026-09-25/closer-a` | **1.311** | +0.011 | 1.183 | 1.99 | 1.28 | 1.29 | 0.86 | 0.97 | 315 Hz* | 1 |
 | 5 | cleanup-2 | `2026-09-25/cleanup-2` | **1.314** | +0.014 | 1.162 | 1.61 | 1.72 | 1.40 | 0.79 | 0.98 | 500 Hz | 2 |
 
-- **last config** — Last configuration of day 3 (19:20): the full carpet on standoffs, layer order changed (bottom layer moved to the top).
-- **cleanup-1** — BEST. The accepted state (speaker backed off 5 cm from the ring plane, raised thick carpet) with the loose felt sheets removed.
-- **backed-5cm** — The accepted state: speaker backed off 5 cm from the ring plane, raised thick carpet.
+- **last config** — ACCEPTED (Adam, 2026-09-30) and the last configuration of day 3 (19:20): the full carpet on standoffs, layer order changed (bottom layer moved to the top).
+- **cleanup-1** — BEST by score. The backed-5cm state with the loose felt sheets removed.
+- **backed-5cm** — Accepted on 2026-09-25, superseded by the last config: speaker backed off 5 cm from the ring plane, raised thick carpet.
 - **closer** — Speaker moved ~20 cm closer to the ring, still on the axis; morning floor stack of day 3 (after the blue absorbing carpet was added). Repeat `closer-b` agrees to 0.006 dB.
 - **cleanup-2** — The accepted state after more junk was removed (what, not stated).
 
 `*` = the cut-off band is marginal (within the day-to-day scatter of the limit).
 
 **The last config's deficit is the source, not the carpet:** with each map's top-to-bottom tilt fitted out it scores 1.165 vs 1.157 for cleanup-1. The source moved at cleanup-3 (level +0.63 dB, 16:20) and at carpet-removed (tilt +0.49 → -0.31, 17:23); it was not put back.
+
+The accepted state is setup 1. Alone, it is clearly over the limit at 250, 500, 800, 1600 Hz and marginal at 630, 1250 Hz; band level qualified from 2000 Hz.
 
 Top four are tied (span 0.014 dB). Setup 1 is the last config of the day; the waterfall page for each is in `SUMMARY-day3.pdf` (A4), drawn against cleanup-1.
 
