@@ -1,0 +1,89 @@
+<!doctype html><html><head><meta charset="utf-8"><title>Baseline story 2026-09-30</title><style>@page{size:A4;margin:12mm 13mm} body{font-family:"IBM Plex Sans","DejaVu Sans",Arial,sans-serif;font-size:8.3pt;line-height:1.3;color:#10171b;margin:0}
+    h1{font-size:18pt;margin:0 0 2pt;letter-spacing:-.02em} h2{font-size:11pt;margin:10pt 0 3pt;padding-top:5pt;border-top:.7pt solid #c6d0d5} h2 .n{font-family:monospace;font-size:7pt;color:#74828a;margin-right:5pt}
+    p{margin:0 0 4pt} ul{margin:0 0 4pt;padding-left:4.5mm} li{margin:0 0 2.4pt} table{border-collapse:collapse;width:100%;margin:3pt 0 6pt;font-size:7.6pt}
+    th{font-size:6.6pt;text-transform:uppercase;letter-spacing:.05em;color:#46545c;text-align:left;padding:3pt;border-bottom:1pt solid #10171b;vertical-align:bottom}
+    td{padding:2.6pt 3pt;border-bottom:.5pt solid #e0e6e9;vertical-align:top} td.num{font-family:"DejaVu Sans Mono",monospace;font-size:7.1pt;white-space:nowrap}
+    .tag{font-family:"DejaVu Sans Mono",monospace;font-size:6.4pt;color:#74828a} .pb{break-before:page} img{width:100%;display:block;margin:2pt auto 4pt}
+    .box{background:#f1f4f6;border-left:2pt solid #17566e;padding:4pt 4mm;margin:4pt 0 6pt} .yes{color:#2f6b3a;font-weight:700}.no{color:#96382a;font-weight:700}.mid{color:#8f5c0d;font-weight:700}
+    td.verdict{white-space:nowrap} .cap{font-size:7pt;color:#46545c;margin:0 0 6pt}</style></head><body>
+<h1>Did we get better? The story up to the fresh baseline</h1>
+<p class="tag">SoundVisualizer · 2026-09-30 · prop data from the Pi (5 bases, 324 measurements) · loudspeaker data from the chamber campaign · every number computed by build_report.py</p>
+<h2 style="border:0;margin-top:4pt"><span class="n">00</span>The answer</h2>
+<table><thead><tr><th>Layer of the work</th><th>Did it get better?</th><th>Evidence</th></tr></thead><tbody>
+<tr><td><b>Microphone corrections</b><br><span class="tag">16 Sep</span></td><td class="verdict"><span class="yes">YES</span></td><td>On the <i>same captures</i>, the polar of today's baseline is 70 % smoother with the corrected files than the factory ones (roughness 3.3 → 1.0 dB). The two old baselines gain 14 % and 15 %. Bench: spread across the 11 capsules 4.01 → 0.02 dB.</td></tr>
+<tr><td><b>Room optimisation</b><br><span class="tag">23–25 Sep</span></td><td class="verdict"><span class="no">NO, net</span></td><td>Loudspeaker room error: untouched start <b>1.380</b>, accepted state <b>1.387</b> (rerun today 1.399). With the source tilt fitted out: 1.221 → 1.165 (-5 %). The best state we ever measured, 1.277 (wedges + carpet, day 1), was taken apart. 400–630 Hz improved (1.67 → 1.52), 630–1000 Hz got worse (1.27 → 1.47).</td></tr>
+<tr><td><b>Fresh prop baseline</b><br><span class="tag">30 Sep 17:22</span></td><td class="verdict"><span class="mid">VALID, not comparable to July/Aug</span></td><td>Same operating point as the September flat-arc runs (11.7 V, 5.8 A, BPF 237.5 vs 238.3 Hz). The July and August "baselines" ran at 6.6 and 7.6 V with the opposite thrust sign, so they cannot be the "before".</td></tr>
+<tr><td><b>Room quality measured with props</b></td><td class="verdict"><span class="mid">CANNOT TELL YET</span></td><td>September's test was a <i>flat</i> arc, where every position must read the same. Today's arc is vertical, where the polar is real. To show a prop-level gain we need one flat-arc run in the accepted state.</td></tr>
+</tbody></table>
+<img src="fig-1-timeline.png">
+<p class="cap">Real time, 2026. Each lane is one kind of work; bars span days, dots are single sessions. The fresh baseline (blue, bottom) is the first prop run after the microphone corrections and the room work.</p>
+<div class="box"><b>Today in clock time (local):</b> 15:43–15:48 loudspeaker rerun of the accepted state · <b>17:22</b> baseline, vertical arc, 5 motor speeds, 11 capsules, 2 idle steps repeated · <b>18:44</b> felt-duct · 18:49 felt-duct2 · 18:53 felt-duct23 · <b>19:01</b> felt-plastic-coomp. Each run takes 14 s.</div>
+
+<h2 class="pb"><span class="n">01</span>The room, in clock time</h2>
+<img src="fig-2-room.png" style="width:88%">
+<p class="cap">Loudspeaker room error for all 73 runs of the chamber campaign. Grey line: the same with each map's top-to-bottom tilt fitted out.</p>
+<ul>
+<li>The campaign reached 1.277 on day 1 (marker 2, wedges + carpet) and then went through a long excursion on day 2, when the wedges came off and the speaker went to the wall (markers 3–5). By the evening of day 3 it was back at 1.387, the score it started from.</li>
+<li>On day 3 the source moved twice (markers 8 and 9) and was never put back; the final state is judged with a different source position from the start. Fitting the tilt out is the fairest single number, and it says -5 %.</li>
+<li>Today's rerun (marker 11) reproduces the final state to 0.013 dB after five days.</li>
+</ul>
+
+<h2><span class="n">02</span>Is the fresh baseline comparable with anything?</h2>
+<table><thead><tr><th>Baseline</th><th>V</th><th>I (A)</th><th>Thrust (N)</th><th>BPF at PWM 1900</th><th>Note</th></tr></thead><tbody><tr><td>24 Jul  vertical</td><td class='num'>6.60</td><td class='num'>8.20</td><td class='num'>+3.86</td><td class='num'>not reliable</td><td>supply sagging; thrust sign opposite</td></tr><tr><td>28 Aug  vertical</td><td class='num'>7.58</td><td class='num'>9.14</td><td class='num'>+4.20</td><td class='num'>not reliable</td><td>supply sagging; thrust sign opposite</td></tr><tr><td>2 Sep  flat, prop15</td><td class='num'>11.73</td><td class='num'>5.84</td><td class='num'>-3.40</td><td class='num'>238.1 Hz</td><td>the September campaign</td></tr><tr><td>2 Sep  flat, prop17</td><td class='num'>11.73</td><td class='num'>5.82</td><td class='num'>-3.39</td><td class='num'>238.2 Hz</td><td></td></tr><tr><td><b>30 Sep  vertical, fresh</b></td><td class='num'>11.72</td><td class='num'>5.82</td><td class='num'>-3.38</td><td class='num'>237.5 Hz</td><td><b>same operating point as September</b></td></tr></tbody></table>
+<p class="cap">Median telemetry and the blade-passage frequency read from the audio at PWM 1900. The detector gives an erratic, non-monotonic BPF for the two old baselines, so none is shown.</p>
+<p><b>Cross-check with September.</b> The 0° capsule of today's vertical arc sits at the same polar angle to the prop axis as every position of the flat arc, so its levels should match September's mean.</p>
+<table><thead><tr><th>Level at PWM 1900</th><th>Sept flat, mean</th><th>Sept flat, range (4 runs)</th><th>Today, 0° capsule</th><th>Today, mean over elevation</th></tr></thead><tbody><tr><td>1× BPF</td><td class='num'>51.5</td><td class='num'>51.2–52.0</td><td class='num'>51.9</td><td class='num'>51.5</td></tr><tr><td>2× BPF</td><td class='num'>49.4</td><td class='num'>48.7–50.4</td><td class='num'>42.6</td><td class='num'>46.0</td></tr><tr><td>3× BPF</td><td class='num'>63.0</td><td class='num'>62.9–63.2</td><td class='num'>61.4</td><td class='num'>62.7</td></tr><tr><td>4× BPF</td><td class='num'>51.8</td><td class='num'>51.4–52.2</td><td class='num'>45.3</td><td class='num'>45.2</td></tr></tbody></table>
+<p class="cap">Blade-passage harmonics, dB SPL, corrected calibration.</p>
+<ul>
+<li><b>1× and 3× BPF match</b> (within 0.4 and 1.6 dB), and 3× BPF (712 Hz) dominates both, 10–12 dB above the fundamental. It is a property of this source, not new.</li>
+<li><b>2× and 4× BPF are 6–8 dB lower today</b> at the 0° capsule (42.6 vs 49.4, 45.3 vs 51.8). Those two frequencies (475 and 950 Hz) sit in the 400 and 800 Hz bands that fail the room test. The room changed and so did the arrangement, so this cannot be attributed; it is the kind of change tones show when the room moves.</li>
+<li>Broadband at the 0° capsule lies inside September's spread of four runs (1 kHz: 35.9 vs 32.6–36.0 dB; 3.2 kHz: 44.7 vs 43.1–45.4 dB).</li>
+</ul>
+
+<h2 class="pb"><span class="n">03</span>The microphone corrections, tested on the same captures</h2>
+<img src="fig-3-mic.png">
+<p class="cap">Roughness = rms second difference of the tone-notched broadband level across the 11 elevations, averaged over the 250 Hz–8 kHz bands at PWM 1900. A true polar is smooth; a capsule error is a kink. Right: today's 794 Hz and 3.2 kHz polars with each file set.</p>
+<ul>
+<li>The test needs no matching operating point, because only the calibration file changes. Every baseline improves, today's most (3.3 → 1.0 dB).</li>
+<li>The old baselines stay rough (5.0 and 3.8 dB) after the correction. That roughness is not the microphones; it comes with the 6.6–7.6 V operating point and whatever else differed then.</li>
+<li>The corrections are on the Pi (same checksums as the repo), so today's captures were read with them by the server as well.</li>
+</ul>
+
+<h2><span class="n">04</span>Patterns in the fresh baseline</h2>
+<img src="fig-4a-polar-broadband.png">
+<p class="cap">Polar plots use the project's clock-face convention: +90° up, 0° right, −90° down; the measured right half is mirrored.</p>
+<ul>
+<li><b>The bottom of the arc is louder than the top</b> from 500 Hz to 2 kHz, by 2.9–2.6 dB, and by 1.2–1.7 dB above that. At 315 Hz it reverses (top louder by 2.0 dB).</li>
+<li>Part of that may be the room rather than the prop: with the loudspeaker, the accepted state has a bottom-louder tilt of about 1.3 dB top to bottom at 400 Hz–3 kHz.</li>
+<li><b>The shape of the polar depends on motor speed, except at 1.3–2 kHz.</b> Between PWM 1800 and 2000 it is stable there (correlation 0.96 or better, shape change 0.6 dB at most). In the other bands the shape changes by 0.8–2.2 dB rms. Level still rises at every angle.</li>
+</ul>
+<img src="fig-4b-polar-tones.png">
+<p class="cap">Harmonics grow faster with speed than broadband does, so each panel has its own radial scale.</p>
+
+<h2 class="pb"><span class="n">05</span>Waterfalls</h2>
+<img src="fig-5-waterfall.png">
+<ul>
+<li>Left: the same tone stack, in the same places, at every elevation; the capsules agree on the spectrum's shape. Right: the tones track motor speed, and at PWM 1200 and 1500 there is no blade tone (idle and spool-up), with a steady ~2 kHz motor whine at idle.</li>
+<li>Bottom: what differs between capsules is localised. The warm block at ~1.5 kHz on the bottom capsules (−54° to −90°) and the pair of columns at 3.2 kHz with opposite signs at top and bottom are fixed-frequency structures, the kind a reflection or a capsule position produces, not a smooth directivity.</li>
+</ul>
+
+<h2 class="pb"><span class="n">06</span>The four felt-duct runs against the baseline</h2>
+<img src="fig-6-duct.png">
+<ul>
+<li>At equal thrust every variant is <b>10–13 dB louder</b> than the open prop across 250 Hz–8 kHz, with a peak of +18 to +20 dB at 1.6 kHz and a minimum (+4 to +7 dB) near 500 Hz. The effect is nearly uniform with elevation (within ±2 dB).</li>
+<li>Thrust at the same PWM is 16–19 % lower for three variants and 31–34 % lower for the first one. The blade-passing frequency does not move.</li>
+<li>The 1× BPF tone is unchanged (within 4 dB) while 4× BPF rises by 15–19 dB at PWM 1900.</li>
+<li>This agrees in sign with Malgoezar et al. 2019 (static duct louder everywhere, up to +12 dB) but is larger. It is also not a level artefact: at idle (PWM 1200) the ducted captures are not louder than the baseline at high frequency.</li>
+<li><b>Repeat floor.</b> felt-duct2 and felt-duct23 draw the same current and thrust (to 0.3 %) yet differ by 2.2 dB rms (PWM 1800 and 1900: 2.2) and 1.0 dB (PWM 2000) in the band levels, and by 3.3–4.4 dB in the tones. If they are the same state, that is this rig's repeat floor; the duct effect is five times larger. One idle capture (felt-duct23, PWM 1200) carries a noise burst 30+ dB above the others and is not used.</li>
+</ul>
+
+<h2 class="pb"><span class="n">07</span>What we can and cannot say</h2>
+<ul>
+<li><b>Can:</b> the corrected microphones make the polar smoother; today's baseline is a valid fresh reference at the September operating point; a felt duct is much louder than the open prop at equal thrust in a static test.</li>
+<li><b>Cannot:</b> show that the room is better for props. The loudspeaker headline did not move, the source moved during the campaign, and the only prop test that measures room quality is the flat-arc one.</li>
+<li><b>Repeat floor unknown for the open prop.</b> The only repeats at spinning speeds are the two duct runs above; the repeated 1200 and 1500 steps of the baseline are idle noise and say nothing.</li>
+<li>The July and August baselines are not evidence for or against anything about the room.</li>
+</ul>
+<div class="box"><b>Next, in order of value:</b> (1) one flat-arc prop run in the accepted state, same protocol as prop15–18 (5 PWM steps), then the same error-map fit as in September: that answers "better than before" directly. (2) Repeat one spinning step of the baseline three times, to get a real repeat floor. (3) Say what the four felt-duct runs are (names as typed: felt-duct, felt-duct2, felt-duct23, felt-plastic-coomp) and whether duct2 and duct23 are meant to be identical. (4) Extend the loudspeaker grid below 257 Hz: the blade tone is at 215–258 Hz and sits below what the room test covers.</div>
+<p class="tag">Sources: prop captures on the Pi (~/SoundVisualizer/data, 5 bases) and the measurement repo; loudspeaker sessions calibrator/sessions/2026-09-23…30; calibration files data/calibrations and factory-originals-2026-09-16. Evidence for the duct comparison: Malgoezar et al. 2019, Int. J. Aeroacoustics 18, p. 9 (papers/SoundVisualizer/design-rules/EXTRACTS-DUCT-LINING.md).</p>
+</body></html>
