@@ -2,13 +2,13 @@
 
 Coefficient = room error below 3 kHz (rms dB across the arc vs arc mean; lower = flatter). Repeat 0.01 dB, handling ~0.04 dB. Rerun of the last config on 2026-09-30: 1.399.
 
-| # | setup | run | room error | vs best | 250–400 | 400–630 | 630–1000 | 1000–1600 | 1600–3000 | qualified from | bands failed /11 |
-|---|---|---|---|---|---|---|---|---|---|---|---|
-| 1 | last config | `2026-09-25/carpet-reordered` | **1.387** | +0.086 | 1.99 | 1.52 | 1.47 | 0.85 | 0.96 | 2000 Hz | 4 |
-| 2 | cleanup-1 | `2026-09-25/cleanup-1` | **1.301** | — | 1.56 | 1.62 | 1.43 | 0.81 | 1.03 | 1000 Hz* | 3 |
-| 3 | backed-5cm | `2026-09-25/backed-5cm` | **1.303** | +0.002 | 1.57 | 1.61 | 1.44 | 0.81 | 1.03 | 1000 Hz* | 3 |
-| 4 | closer | `2026-09-25/closer-a` | **1.311** | +0.011 | 1.99 | 1.28 | 1.29 | 0.86 | 0.97 | 315 Hz* | 1 |
-| 5 | cleanup-2 | `2026-09-25/cleanup-2` | **1.314** | +0.014 | 1.61 | 1.72 | 1.40 | 0.79 | 0.98 | 500 Hz | 2 |
+| # | setup | run | room error | vs best | tilt removed | 250–400 | 400–630 | 630–1000 | 1000–1600 | 1600–3000 | qualified from | bands failed /11 |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| 1 | last config | `2026-09-25/carpet-reordered` | **1.387** | +0.086 | 1.165 | 1.99 | 1.52 | 1.47 | 0.85 | 0.96 | 2000 Hz | 4 |
+| 2 | cleanup-1 | `2026-09-25/cleanup-1` | **1.301** | — | 1.157 | 1.56 | 1.62 | 1.43 | 0.81 | 1.03 | 1000 Hz* | 3 |
+| 3 | backed-5cm | `2026-09-25/backed-5cm` | **1.303** | +0.002 | 1.157 | 1.57 | 1.61 | 1.44 | 0.81 | 1.03 | 1000 Hz* | 3 |
+| 4 | closer | `2026-09-25/closer-a` | **1.311** | +0.011 | 1.183 | 1.99 | 1.28 | 1.29 | 0.86 | 0.97 | 315 Hz* | 1 |
+| 5 | cleanup-2 | `2026-09-25/cleanup-2` | **1.314** | +0.014 | 1.162 | 1.61 | 1.72 | 1.40 | 0.79 | 0.98 | 500 Hz | 2 |
 
 - **last config** — Last configuration of day 3 (19:20): the full carpet on standoffs, layer order changed (bottom layer moved to the top).
 - **cleanup-1** — BEST. The accepted state (speaker backed off 5 cm from the ring plane, raised thick carpet) with the loose felt sheets removed.
@@ -17,6 +17,8 @@ Coefficient = room error below 3 kHz (rms dB across the arc vs arc mean; lower =
 - **cleanup-2** — The accepted state after more junk was removed (what, not stated).
 
 `*` = the cut-off band is marginal (within the day-to-day scatter of the limit).
+
+**The last config's deficit is the source, not the carpet:** with each map's top-to-bottom tilt fitted out it scores 1.165 vs 1.157 for cleanup-1. The source moved at cleanup-3 (level +0.63 dB, 16:20) and at carpet-removed (tilt +0.49 → -0.31, 17:23); it was not put back.
 
 Top four are tied (span 0.014 dB). Setup 1 is the last config of the day; the waterfall page for each is in `SUMMARY-day3.pdf` (A4), drawn against cleanup-1.
 

@@ -50,6 +50,15 @@ rerun = load(RERUN)
 # ---- coefficient: room error below 3 kHz, total and per band
 score = {n: rms(D[f < 3000]) for n, (f, D, _) in data.items()}
 perband = {n: [rms(D[(f >= a) & (f < b)]) for a, b in BANDS6] for n, (f, D, _) in data.items()}
+def tilt_removed(D, pos):                      # remove each tone's best-fit top-to-bottom slope (linear in sin(elevation))
+    s = np.sin(np.radians(np.asarray(pos, float))); s = s - s.mean()
+    return D - np.outer((D @ s) / (s @ s), s)
+def src(run):                                   # mean level <3 kHz (dB SPL) and mean tilt 400 Hz-3 kHz (+ = top louder)
+    f, pos, L, _ = read_map(S + run); f = np.asarray(f); L = np.asarray(L, float)
+    D = L - L.mean(1, keepdims=True); s = np.sin(np.radians(np.asarray(pos, float))); s = s - s.mean(); m = (f >= 400) & (f < 3000)
+    return float(L[f < 3000].mean()), float(np.mean((D[m] @ s) / (s @ s)))
+score_t = {n: rms(tilt_removed(D, pos)[f < 3000]) for n, (f, D, pos) in data.items()}
+SRC = {k: src('2026-09-25/' + k) for k in ['cleanup-1', 'cleanup-2', 'cleanup-3', 'cleanup-6', 'carpet-removed', 'carpet-reordered']}
 best_name = min(score, key=score.get)
 assert best_name == 'cleanup-1', best_name
 
@@ -167,9 +176,9 @@ for n, run, what in SETUPS:
     d = score[n] - score[best_name]
     co = cutoff(n); co_txt = f'{co} Hz' + ('*' if verdict(n, co) == 'marg' else '')
     rows += (f'<tr><td><b>{E(n)}</b><br><span class="tag">{E(run)}</span></td><td class="num big">{score[n]:.3f}</td>'
-             f'<td class="num">{"—" if n == best_name else f"{d:+.3f}"}</td>{pb}'
+             f'<td class="num">{"—" if n == best_name else f"{d:+.3f}"}</td><td class="num">{score_t[n]:.3f}</td>{pb}'
              f'<td class="num">{co_txt}</td><td class="num">{fails_by_setup[n]}</td></tr>'
-             f'<tr class="desc"><td colspan="10">{E(what)}</td></tr>')
+             f'<tr class="desc"><td colspan="11">{E(what)}</td></tr>')
 tiers = ''
 for fc in TOB:
     tiers += (f'<tr><td class="num">{fc} Hz</td><td class="num">±{tol(fc):g}</td><td class="num">{ntones[fc]}</td>'
@@ -208,13 +217,14 @@ html_doc = f'''<!doctype html><html><head><meta charset="utf-8"><title>Chamber s
 <h1>Chamber findings — day 3, top 5 setups</h1>
 <p class="tag">2026-09-25 (+ rerun 2026-09-30) · 95 tones 257 Hz–6.35 kHz, 3–5 kHz omitted · 11 calibrated capsules · sphere on the axis, arc vertical</p>
 <div class="box"><b>Coefficient</b> = room error below 3 kHz: rms over all tones and capsules of each capsule's level relative to the arc mean, dB, lower is flatter.
-Repeat floor 0.01 dB, handling ~0.04 dB, so <b>the top four are tied</b> (span {spread4:.3f} dB). The last config is {score['last config']-score[best_name]:.3f} dB behind: a real difference.
+Repeat floor 0.01 dB, handling ~0.04 dB, so <b>the top four are tied</b> (span {spread4:.3f} dB). The last config is {score['last config']-score[best_name]:.3f} dB behind, <b>but that is the source, not the carpet</b>: fitting out each map's top-to-bottom slope†, it scores {score_t['last config']:.3f} against {score_t[best_name]:.3f} for cleanup-1.
 Today's rerun of the last config scored {rr:.3f} ({rr-score['last config']:+.3f}): consistent with the chamber still being in that state at 15:48.</div>
-<table><thead><tr><th>Setup</th><th>Room error<br>&lt;3 kHz</th><th>vs best</th><th>250–400</th><th>400–630</th><th>630–1k</th><th>1–1.6k</th><th>1.6–3k</th><th>Qualified<br>from*</th><th>Bands<br>failed*</th></tr></thead><tbody>{rows}</tbody></table>
-<p class="tag">*ISO 3745 analogue on band levels, section 2. "Qualified from" = the lowest one-third-octave band from which no band up to 2.5 kHz is clearly over the limit (the way METU and others state a cut-off); * = that band is marginal. "Bands failed" is out of 11.</p>
+<table><thead><tr><th>Setup</th><th>Room error<br>&lt;3 kHz</th><th>vs best</th><th>Tilt<br>removed†</th><th>250–400</th><th>400–630</th><th>630–1k</th><th>1–1.6k</th><th>1.6–3k</th><th>Qualified<br>from*</th><th>Bands<br>failed*</th></tr></thead><tbody>{rows}</tbody></table>
+<p class="tag">†Per tone, the best-fit line in sin(elevation) across the eleven capsules is subtracted before scoring; this removes a tilted or shifted source, not a room effect. *ISO 3745 analogue on band levels, section 2. "Qualified from" = the lowest one-third-octave band from which no band up to 2.5 kHz is clearly over the limit (the way METU and others state a cut-off); * = that band is marginal. "Bands failed" is out of 11.</p>
 <ul>
 <li>The single coefficient ranks cleanup-1 first, but it hides <i>where</i> the error is. Bands clearly over the limit, of 11: {fails_txt}. Closer and cleanup-2 are the cleanest by that count although they score 0.01 dB behind.</li>
 <li>Worst band: {worst_txt}. Best band: {best_txt}.</li>
+<li><b>The source moved between cleanup-1 and the last config, in two steps.</b> At cleanup-3 (16:20, some junk put back) the mean level rose {SRC['cleanup-3'][0]-SRC['cleanup-1'][0]:+.2f} dB and never came back (cleanup-6: {SRC['cleanup-6'][0]-SRC['cleanup-1'][0]:+.2f}). At carpet-removed (17:23) the level fell to {SRC['carpet-removed'][0]-SRC['cleanup-1'][0]:+.2f} dB and the tilt at 400 Hz–3 kHz flipped from top-louder ({SRC['cleanup-6'][1]:+.2f} dB per unit sin(el) at cleanup-6; cleanup-1 {SRC['cleanup-1'][1]:+.2f}) to bottom-louder ({SRC['carpet-removed'][1]:+.2f}); the last config sits at {SRC['carpet-reordered'][1]:+.2f}. The likely cause is the tripod standing on the floor stack (README, day 3): the sphere itself was not measured.</li>
 <li>Different floors: closer was measured on the morning stack of day 3, the rest on later stacks. Across days the map drifts 0.1–0.2 dB even when the score does not.</li>
 </ul>
 <h2 class="pb" style="border:0;margin-top:0">2. Which frequencies to avoid</h2>
@@ -240,13 +250,14 @@ subprocess.run(['pdfunite', OUT + '_summary.pdf'] + pages + [OUT + 'SUMMARY-day3
 md = ['# Chamber findings, day 3 — top 5 setups', '',
       'Coefficient = room error below 3 kHz (rms dB across the arc vs arc mean; lower = flatter). Repeat 0.01 dB, handling ~0.04 dB. '
       f'Rerun of the last config on 2026-09-30: {rr:.3f}.', '',
-      '| # | setup | run | room error | vs best | ' + ' | '.join(f'{a}–{b}' for a, b in BANDS6) + ' | qualified from | bands failed /11 |',
-      '|---|---|---|---|---|' + '---|' * (len(BANDS6) + 2)]
+      '| # | setup | run | room error | vs best | tilt removed | ' + ' | '.join(f'{a}–{b}' for a, b in BANDS6) + ' | qualified from | bands failed /11 |',
+      '|---|---|---|---|---|---|' + '---|' * (len(BANDS6) + 2)]
 for i, (n, run, what) in enumerate(SETUPS, 1):
-    md.append(f'| {i} | {n} | `{run}` | **{score[n]:.3f}** | {"—" if n == best_name else f"{score[n]-score[best_name]:+.3f}"} | '
+    md.append(f'| {i} | {n} | `{run}` | **{score[n]:.3f}** | {"—" if n == best_name else f"{score[n]-score[best_name]:+.3f}"} | {score_t[n]:.3f} | '
               + ' | '.join(f'{v:.2f}' for v in perband[n]) + f" | {cutoff(n)} Hz{'*' if verdict(n, cutoff(n)) == 'marg' else ''} | {fails_by_setup[n]} |")
 md += ['', *[f'- **{n}** — {what}' for n, _, what in SETUPS], '',
        '`*` = the cut-off band is marginal (within the day-to-day scatter of the limit).', '',
+       f'**The last config\'s deficit is the source, not the carpet:** with each map\'s top-to-bottom tilt fitted out it scores {score_t["last config"]:.3f} vs {score_t[best_name]:.3f} for cleanup-1. The source moved at cleanup-3 (level {SRC["cleanup-3"][0]-SRC["cleanup-1"][0]:+.2f} dB, 16:20) and at carpet-removed (tilt {SRC["cleanup-6"][1]:+.2f} → {SRC["carpet-removed"][1]:+.2f}, 17:23); it was not put back.', '',
        f'Top four are tied (span {spread4:.3f} dB). Setup 1 is the last config of the day; the waterfall page for each is in `SUMMARY-day3.pdf` (A4), drawn against cleanup-1.', '',
        '## Bands (ISO 3745 analogue: ±1.5 dB to 630 Hz, ±1.0 dB from 800 Hz; reference = arc mean)', '',
        '| band | limit | tones | setups over the limit, of 5 | pure tones in limit, median | verdict |', '|---|---|---|---|---|---|']
