@@ -188,6 +188,8 @@ def page3():
 if __name__ == '__main__':
     print(f'source check carpet vs floor: level {C["level"] - F["level"]:+.2f} dB, tilt {C["tilt"] - F["tilt"]:+.2f}; repeat: {C2["level"] - F["level"]:+.2f}, {C2["tilt"] - F["tilt"]:+.2f}')
     PS = polar_stats(); PS['axis'] = axis_check(); fig_polar()
+    import json
+    json.dump({f'{k[0]}@{k[1]}' if isinstance(k, tuple) else k: v for k, v in PS.items()}, open(HERE + '/polar-stats.json', 'w'), indent=1)
     for kk, v in PS.items():
         if kk != 'axis': print(kk, {a: round(b, 1) for a, b in v.items()})
     subprocess.run([sys.executable, STEP, FLOOR, CARPET, 'Carpet vs the empty floor (wedges off) · same afternoon, source not moved', 'floor-vs-carpet'], cwd=ROOT, check=True, stdout=subprocess.DEVNULL)

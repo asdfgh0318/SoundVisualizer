@@ -62,7 +62,10 @@ for d in ['2026-09-23', '2026-09-24', '2026-09-25', '2026-09-30']:
             pass
 runs.sort(key=lambda r: r[0]); RUN = {r[1]: r for r in runs}
 N['room'] = {k: dict(score=RUN[v][2], tilt_removed=RUN[v][3], bands=RUN[v][4]) for k, v in
-             dict(start='2026-09-23/vertical-2a', best='2026-09-23/floor-carpet', accepted='2026-09-25/carpet-reordered', rerun='2026-09-30/carpet-reordered-rerun').items()}
+             dict(start='2026-09-23/vertical-2a', best='2026-09-23/floor-carpet', accepted='2026-09-25/carpet-reordered', rerun='2026-09-30/carpet-reordered-rerun',
+                  floor='2026-09-24/floor-no-wedges', carpet='2026-09-24/chaotic-carpet', carpet2='2026-09-24/chaotic-carpet-2', carpet3='2026-09-24/chaotic-carpet-3').items()}
+_ps = os.path.join(HERE, '..', 'chamber-final-2026-10-01', 'polar-stats.json')
+POLAR = json.load(open(_ps)) if os.path.exists(_ps) else None
 
 # ------------------------------------------------------------------------------------------------ F1 timeline in real time
 def fig_timeline():
@@ -109,7 +112,6 @@ def fig_room():
         rr = byday[d]; tt = [mdates.date2num(r[0]) for r in rr]
         ax.plot(tt, [r[3] for r in rr], '-', color=GREY, lw=1, label='tilt fitted out')
         ax.plot(tt, [r[2] for r in rr], '-o', color=INK, lw=1, ms=3, label='room error')
-        ax.axhline(s0, color=ORANGE, lw=.8, ls=':')
         for r in rr:
             if r[1] in num:
                 ax.annotate(str(num[r[1]]), (mdates.date2num(r[0]), r[2]), xytext=(0, 9), textcoords='offset points', fontsize=6, ha='center', va='center', fontweight='bold',
@@ -124,7 +126,7 @@ def fig_room():
     half_ = (len(key) + 1) // 2
     fig.text(.01, -.03, '   '.join(f'{num[r]} {txt}' for r, txt in key[:half_]), fontsize=6.3, ha='left', va='top', color=INK)
     fig.text(.01, -.08, '   '.join(f'{num[r]} {txt}' for r, txt in key[half_:]), fontsize=6.3, ha='left', va='top', color=INK)
-    fig.suptitle('Room error per run on the clock of each day (dotted line: the untouched start)', x=.01, ha='left', fontsize=8.5, fontweight='bold', y=1.0)
+    fig.suptitle('Room error per run on the clock of each day (days are not chained)', x=.01, ha='left', fontsize=8.5, fontweight='bold', y=1.0)
     fig.savefig(HERE + '/fig-2-room.png'); plt.close(fig)
 
 # ------------------------------------------------------------------------------------------------ F3 mic corrections
@@ -278,6 +280,12 @@ def numbers():
 # ------------------------------------------------------------------------------------------------ report
 def build_html():
     R = N['room']; S0, SB, SA, SR = R['start'], R['best'], R['accepted'], R['rerun']
+    if POLAR:
+        a, s_, u = POLAR['today@2000'], POLAR['sept@2000'], POLAR['aug@2000']
+        POLAR_TXT = (f"Arc in the rotor plane (Adam), so the polar should be a circle. Against the 31 Aug runs it is rounder: worst capsule {a['worst']:.1f} dB off the mean instead of {u['worst']:.1f} dB. "
+                     f"Against the 2 Sep runs at the same voltage, current and thrust it is not: {a['med']:.0f} % of cells within ±1.3 dB against a median of {s_['med']:.0f} % ({s_['lo']:.0f}–{s_['hi']:.0f}). Detail: CHAMBER-FINAL.pdf, page 2.")
+    else:
+        POLAR_TXT = 'See CHAMBER-FINAL.pdf, page 2.'
     NCAP = sum(len(glob.glob(base(n) + '/measurements/*')) for n in [BASE] + list(DUCTS.values()))
     rf = N['rough']; ch = lambda k: (rf[k][1] / rf[k][0] - 1) * 100
     op = N['op']; hs = np.array(N['harm_sep']); ht = N['harm_today']; h0 = N['harm_today_0deg']
@@ -307,27 +315,26 @@ def build_html():
 <h2 style="border:0;margin-top:4pt"><span class="n">00</span>The answer</h2>
 <table><thead><tr><th>Layer of the work</th><th>Did it get better?</th><th>Evidence</th></tr></thead><tbody>
 <tr><td><b>Microphone corrections</b><br><span class="tag">16 Sep</span></td><td class="verdict"><span class="yes">YES</span></td><td>On the <i>same captures</i>, the polar of today's baseline is {abs(ch('30 Sep')):.0f} % smoother with the corrected files than the factory ones (roughness {rf['30 Sep'][0]:.1f} → {rf['30 Sep'][1]:.1f} dB). The two old baselines gain {abs(ch('24 Jul')):.0f} % and {abs(ch('28 Aug')):.0f} %. Bench: spread across the 11 capsules 4.01 → 0.02 dB.</td></tr>
-<tr><td><b>Room optimisation</b><br><span class="tag">23–25 Sep</span></td><td class="verdict"><span class="no">NO, net</span></td><td>Loudspeaker room error: untouched start <b>{S0['score']:.3f}</b>, accepted state <b>{SA['score']:.3f}</b> (rerun today {SR['score']:.3f}). With the source tilt fitted out: {S0['tilt_removed']:.3f} → {SA['tilt_removed']:.3f} ({(SA['tilt_removed'] / S0['tilt_removed'] - 1) * 100:+.0f} %). The best state we ever measured, {SB['score']:.3f} (wedges + carpet, day 1), was taken apart. 400–630 Hz improved ({S0['bands'][1]:.2f} → {SA['bands'][1]:.2f}), 630–1000 Hz got worse ({S0['bands'][2]:.2f} → {SA['bands'][2]:.2f}).</td></tr>
+<tr><td><b>Room optimisation</b><br><span class="tag">24 Sep, from the stripped floor</span></td><td class="verdict"><span class="yes">YES, in the one valid block</span></td><td>The source is known to have stayed in one position only from the moment the floor was stripped on 24 Sep (14:10), so only that block is compared and nothing is chained across days. Empty floor <b>{R['floor']['score']:.3f}</b> → carpet <b>{R['carpet']['score']:.3f}</b> ({(R['carpet']['score'] / R['floor']['score'] - 1) * 100:+.0f} %); three carpet arrangements {R['carpet']['score']:.3f} / {R['carpet2']['score']:.3f} / {R['carpet3']['score']:.3f}. The accepted state ({SA['score']:.3f}, 25 Sep) was measured with the source in another position and cannot be set against it.</td></tr>
 <tr><td><b>Fresh prop baseline</b><br><span class="tag">30 Sep 17:22</span></td><td class="verdict"><span class="mid">VALID, not comparable to July/Aug</span></td><td>Same operating point as the September flat-arc runs (11.7 V, 5.8 A, BPF {N['f0'][1900]:.1f} vs {np.mean(N['f0_sep']):.1f} Hz). The July and August "baselines" ran at 6.6 and 7.6 V with the opposite thrust sign, so they cannot be the "before".</td></tr>
-<tr><td><b>Room quality measured with props</b></td><td class="verdict"><span class="mid">CANNOT TELL YET</span></td><td>September's test was a <i>flat</i> arc, where every position must read the same. Today's arc is vertical, where the polar is real. To show a prop-level gain we need one flat-arc run in the accepted state.</td></tr>
+<tr><td><b>Room quality measured with props</b><br><span class="tag">prop plane</span></td><td class="verdict"><span class="mid">YES vs 31 Aug, NO vs 2 Sep</span></td><td>{POLAR_TXT}</td></tr>
 </tbody></table>
 <img src="fig-1-timeline.png">
 <p class="cap">Real time, 2026. Each lane is one kind of work; bars span days, dots are single sessions. The fresh baseline (blue, bottom) is the first prop run after the microphone corrections and the room work.</p>
-<div class="box"><b>Today in clock time (local):</b> 15:43–15:48 loudspeaker rerun of the accepted state · <b>17:22</b> baseline, vertical arc, 5 motor speeds, 11 capsules, 2 idle steps repeated · <b>18:44</b> felt-duct · 18:49 felt-duct2 · 18:53 felt-duct23 · <b>19:01</b> felt-plastic-coomp. Each run takes 14 s.</div>
+<div class="box"><b>Today in clock time (local):</b> 15:43–15:48 loudspeaker rerun of the accepted state · <b>17:22</b> baseline (arc in the prop plane), 5 motor speeds, 11 capsules, 2 idle steps repeated · <b>18:44</b> felt-duct · 18:49 felt-duct2 · 18:53 felt-duct23 · <b>19:01</b> felt-plastic-coomp. Each run takes 14 s.</div>
 
 <h2 class="pb"><span class="n">01</span>The room, in clock time</h2>
 <img src="fig-2-room.png" style="width:88%">
 <p class="cap">Loudspeaker room error for all 73 runs of the chamber campaign. Grey line: the same with each map's top-to-bottom tilt fitted out.</p>
 <ul>
-<li>The campaign reached {SB['score']:.3f} on day 1 (marker 2, wedges + carpet) and then went through a long excursion on day 2, when the wedges came off and the speaker went to the wall (markers 3–5). By the evening of day 3 it was back at {SA['score']:.3f}, the score it started from.</li>
-<li>On day 3 the source moved twice (markers 8 and 9) and was never put back; the final state is judged with a different source position from the start. Fitting the tilt out is the fairest single number, and it says {(SA['tilt_removed'] / S0['tilt_removed'] - 1) * 100:+.0f} %.</li>
-<li>Today's rerun (marker 11) reproduces the final state to {abs(SR['score'] - SA['score']):.3f} dB after five days.</li>
+<li><b>24 Sep, from the stripped floor (14:10)</b> the source stays in one position: empty floor {R['floor']['score']:.3f}, carpet {R['carpet']['score']:.3f}; later that afternoon the speaker went to the wall, which ends the comparison.</li>
+<li>Before that moment, and from 25 Sep on, the source position is not known to be constant, so runs there are not chained into a trend. On 25 Sep the source moved twice (markers 8 and 9). Marker 11, the rerun five days later, repeats the final state to {abs(SR['score'] - SA['score']):.3f} dB.</li>
 </ul>
 
 <h2><span class="n">02</span>Is the fresh baseline comparable with anything?</h2>
 <table><thead><tr><th>Baseline</th><th>V</th><th>I (A)</th><th>Thrust (N)</th><th>BPF at PWM 1900</th><th>Note</th></tr></thead><tbody>{opt}</tbody></table>
 <p class="cap">Median telemetry and the blade-passage frequency read from the audio at PWM 1900. The detector gives an erratic, non-monotonic BPF for the two old baselines, so none is shown.</p>
-<p><b>Cross-check with September.</b> The 0° capsule of today's vertical arc sits at the same polar angle to the prop axis as every position of the flat arc, so its levels should match September's mean.</p>
+<p><b>Cross-check with September.</b> Every capsule of today's arc sits at the same polar angle to the prop axis as every position of the flat arc (a prop-plane measurement, Adam), so its levels should match September's mean; the 0° capsule is shown beside the mean over the arc.</p>
 <table><thead><tr><th>Level at PWM 1900</th><th>Sept flat, mean</th><th>Sept flat, range (4 runs)</th><th>Today, 0° capsule</th><th>Today, mean over elevation</th></tr></thead><tbody>{ht_rows}</tbody></table>
 <p class="cap">Blade-passage harmonics, dB SPL, corrected calibration.</p>
 <ul>
@@ -349,7 +356,7 @@ def build_html():
 <img src="fig-4a-polar-broadband.png">
 <p class="cap">Polar plots use the project's clock-face convention: +90° up, 0° right, −90° down; the measured right half is mirrored.</p>
 <ul>
-<li><b>The bottom of the arc is louder than the top</b> from 500 Hz to 2 kHz, by {abs(tb['500']):.1f}–{abs(tb['1000']):.1f} dB, and by 1.2–1.7 dB above that. At 315 Hz it reverses (top louder by {tb['315']:.1f} dB).</li>
+<li><b>The bottom of the arc is louder than the top</b> (in the prop plane every position should read the same, so this is asymmetry, not directivity) from 500 Hz to 2 kHz, by {abs(tb['500']):.1f}–{abs(tb['1000']):.1f} dB, and by 1.2–1.7 dB above that. At 315 Hz it reverses (top louder by {tb['315']:.1f} dB).</li>
 <li>Part of that may be the room rather than the prop: with the loudspeaker, the accepted state has a bottom-louder tilt of about {abs(tiltslope) * 2:.1f} dB top to bottom at 400 Hz–3 kHz.</li>
 <li><b>The shape of the polar depends on motor speed, except at 1.3–2 kHz.</b> Between PWM 1800 and 2000 it is stable there (correlation {min(v[0] for k, v in N['shape'].items() if k in ('1260', '1587', '2000')):.2f} or better, shape change {max(v[1] for k, v in N['shape'].items() if k in ('1260', '1587', '2000')):.1f} dB at most). In the other bands the shape changes by {min(v[1] for k, v in N['shape'].items() if k not in ('1260', '1587', '2000')):.1f}–{max(v[1] for k, v in N['shape'].items() if k not in ('1260', '1587', '2000')):.1f} dB rms. Level still rises at every angle.</li>
 </ul>
@@ -376,11 +383,11 @@ def build_html():
 <h2 class="pb"><span class="n">07</span>What we can and cannot say</h2>
 <ul>
 <li><b>Can:</b> the corrected microphones make the polar smoother; today's baseline is a valid fresh reference at the September operating point; a felt duct is much louder than the open prop at equal thrust in a static test.</li>
-<li><b>Cannot:</b> show that the room is better for props. The loudspeaker headline did not move, the source moved during the campaign, and the only prop test that measures room quality is the flat-arc one.</li>
+<li><b>Cannot:</b> chain the room campaign across days (the source moved), or claim the prop polar is rounder than the 2 Sep runs: it is rounder than 31 Aug only.</li>
 <li><b>Repeat floor unknown for the open prop.</b> The only repeats at spinning speeds are the two duct runs above; the repeated 1200 and 1500 steps of the baseline are idle noise and say nothing.</li>
 <li>The July and August baselines are not evidence for or against anything about the room.</li>
 </ul>
-<div class="box"><b>Next, in order of value:</b> (1) one flat-arc prop run in the accepted state, same protocol as prop15–18 (5 PWM steps), then the same error-map fit as in September: that answers "better than before" directly. (2) Repeat one spinning step of the baseline three times, to get a real repeat floor. (3) Say what the four felt-duct runs are (names as typed: felt-duct, felt-duct2, felt-duct23, felt-plastic-coomp) and whether duct2 and duct23 are meant to be identical. (4) Extend the loudspeaker grid below 257 Hz: the blade tone is at 215–258 Hz and sits below what the room test covers.</div>
+<div class="box"><b>Next, in order of value:</b> (1) Repeat one spinning step of the baseline three times, to get a real repeat floor for the open prop. (2) One capture with the propeller turning the other way, to split stand-induced from room-induced asymmetry. (3) Say what the four felt-duct runs are (names as typed: felt-duct, felt-duct2, felt-duct23, felt-plastic-coomp) and whether duct2 and duct23 are meant to be identical. (4) Extend the loudspeaker grid below 257 Hz: the blade tone is at 215–258 Hz and sits below what the room test covers.</div>
 <p class="tag">Sources: prop captures on the Pi (~/SoundVisualizer/data, 5 bases) and the measurement repo; loudspeaker sessions calibrator/sessions/2026-09-23…30; calibration files data/calibrations and factory-originals-2026-09-16. Evidence for the duct comparison: Malgoezar et al. 2019, Int. J. Aeroacoustics 18, p. 9 (papers/SoundVisualizer/design-rules/EXTRACTS-DUCT-LINING.md).</p>
 </body></html>"""
     open(HERE + '/_report.html', 'w').write(H)
