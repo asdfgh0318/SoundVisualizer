@@ -77,7 +77,7 @@ def a4(src, dst):
 def chromium(htmlfile, pdf):
     subprocess.run(['/snap/bin/chromium', '--headless', '--disable-gpu', '--no-pdf-header-footer', f'--print-to-pdf={pdf}', 'file://' + htmlfile], check=True, stderr=subprocess.DEVNULL)
 
-CSS = '''@page{size:A4;margin:11mm 13mm} body{font-family:"IBM Plex Sans","DejaVu Sans",Arial,sans-serif;font-size:8.3pt;line-height:1.28;color:#10171b;margin:0}
+CSS = '''@page{size:A4;margin:9mm 13mm} body{font-family:"IBM Plex Sans","DejaVu Sans",Arial,sans-serif;font-size:7.9pt;line-height:1.24;color:#10171b;margin:0}
 h1{font-size:15pt;margin:0 0 1pt;letter-spacing:-.02em} h2{font-size:10pt;margin:7pt 0 3pt;padding-top:4pt;border-top:.7pt solid #c6d0d5} p{margin:0 0 3.5pt} ul{margin:0 0 3pt;padding-left:4.5mm} li{margin:0 0 2pt}
 table{border-collapse:collapse;width:100%;margin:2pt 0 5pt;font-size:7.4pt} th{font-size:6.4pt;text-transform:uppercase;letter-spacing:.05em;color:#46545c;text-align:left;padding:2.5pt 3pt;border-bottom:1pt solid #10171b;vertical-align:bottom}
 td{padding:2pt 3pt;border-bottom:.5pt solid #e0e6e9;vertical-align:top} td.num,th.num{font-family:"DejaVu Sans Mono",monospace;font-size:7pt;white-space:nowrap;text-align:right}
@@ -120,12 +120,14 @@ def page3():
     card = ''.join(f"<tr><td>{n}</td><td class='{cl(i)}'>{sw[i]}</td><td class='{cl(i)}'>{s0[i]}</td><td class='{cl(i)}'><b>{sf[i]}</b></td></tr>" for i, n in enumerate(names))
     h = f'''<!doctype html><html><head><meta charset="utf-8"><title>Chamber final 3</title><style>{CSS}</style></head><body>
 <h1>Evaluation by the method of the chamber papers</h1>
+<p class="tag">SoundVisualizer · 2026-10-01 · 11 calibrated capsules on a 0.84 m arc · sphere on the axis · 95 tones, 257 Hz–6.35 kHz · page 1: waterfall comparison</p>
+<div class="box"><b>Final configuration</b> (carpet-reordered, accepted): room error <b>{A['score']:.3f} dB</b> vs <b>{W['score']:.3f}</b> for the worst bare room ({(A['score'] / W['score'] - 1) * 100:+.0f} %) and {T0['score']:.3f} for the untouched start. Qualified (band level) from the <b>{cutoff(A)} Hz</b> band up; {count(A, 'fail')} of 11 bands over the limit, {count(A, 'marg')} marginal. <b>Pure tones qualified in no band.</b> Re-measured 2026-09-30: {RR['score']:.3f}.</div>
 <h2 style="border:0;margin-top:3pt">The method</h2>
-<p>Chambers are qualified one one-third-octave band at a time. Each band's measured level is compared with the free-field ideal and must stay inside a tolerance; the chamber is then reported as qualified between two bands, and its cut-off is the lowest band above which everything passes. Noise and pure tones are reported separately.</p>
+<p>Chambers are qualified one one-third-octave band at a time against the free-field ideal; the chamber is reported as qualified between two bands, its cut-off the lowest band above which everything passes, and noise and pure tones are reported separately.</p>
 <div class="q">"TABLE I. Maximum allowable difference in anechoic rooms between measured and theoretical free-field levels per ISO 3745 and ANSI S12.35." <span>Cunefare et al. 2003, J. Acoust. Soc. Am. 113(2), p. 882 — ±1.5 dB up to 630 Hz, ±1.0 dB from 800 to 5000 Hz</span></div>
 <div class="q">"semi-anechoic chamber is qualified with ISO 3745 on the 1/3 frequency band between 160 Hz- 4000 Hz. Cut-off frequency of the chamber is 160 Hz." <span>Kayhan 2008, METU thesis, p. 63</span></div>
 <div class="q">"The chamber could satisfy the ISO tolerances when using random noise but failed to qualify when using pure tones." <span>Nash 2019, Proc. 23rd ICA, p. 1343</span></div>
-<p><b>Our adaptation.</b> The standard moves a microphone away from the source and compares the decay with 1/r. We have eleven fixed positions around an axisymmetric source, so the reference is the arc mean. <b>Band level:</b> each capsule's mean over the {A['ntones'][630]}–{A['ntones'][1000]} tones in the band (noise-like use); the worst capsule must be inside the limit. <b>Pure tones:</b> the share of single tone × capsule cells inside the limit. A band within ±{MARG:.2f} dB of its limit is marginal: that is how far the statistic moved between the final configuration and its rerun five days later.</p>
+<p><b>Our adaptation.</b> The standard compares a traversed microphone with 1/r; we have eleven fixed positions around an axisymmetric source, so the reference is the arc mean. <b>Band level:</b> each capsule's mean over the {A['ntones'][630]}–{A['ntones'][1000]} tones in the band; the worst capsule must be inside the limit. <b>Pure tones:</b> the share of single tone × capsule cells inside the limit. Within ±{MARG:.2f} dB of a limit is marginal: how far the statistic moved between the final configuration and its rerun five days later.</p>
 <h2>Result, band by band (worst capsule, dB)</h2>
 <table><thead><tr><th class="num">Band</th><th class="num">Limit</th><th class="num">Tones</th><th class="num">Worst bare room</th><th class="num">tones in limit</th><th class="num">Final configuration</th><th class="num">tones in limit</th></tr></thead><tbody>{rows}</tbody></table>
 <p class="tag">The cut-off is set by the highest failing band, so one band can move it; read it together with the lists. Shading: blue = inside the limit, yellow = marginal, orange = over. Worst bare room = {WORST.split('/')[1]}: the wedges off, the flat foam base left — the nearest measured state to an empty room.</p>
@@ -139,16 +141,15 @@ def page3():
 </ul>
 <h2>What the method cannot say</h2>
 <ul>
-<li>Deviation from the arc mean is blind to an error shared by all eleven positions (a uniform reflection). The ISO traverse has not been run here, so this is a ranking of bands, not a qualification certificate.</li>
-<li>The grid starts at 257 Hz and the blade tone sits at 215–258 Hz; the 250 Hz band has only {A['ntones'][250]} tones. 3–5 kHz is excluded (the sphere's rocking mode); 5–6.4 kHz is indicative.</li>
-<li>The final configuration's source sits in a different position from the start's (the tilt flipped on 25 Sep); with the tilt fitted out its score is lower than the start's. The scorecard compares whole setups, not individual treatments.</li>
+<li>Deviation from the arc mean is blind to an error shared by all eleven positions; the ISO traverse has not been run here, so this ranks bands, it does not certify.</li>
+<li>The grid starts at 257 Hz, above the 215–258 Hz blade tone, and the 250 Hz band has only {A['ntones'][250]} tones; 3–5 kHz is excluded (sphere), 5–6.4 kHz indicative. The scorecard compares whole setups: the source sits in a different position than at the start (tilt flipped on 25 Sep).</li>
 </ul></body></html>'''
     open(HERE + '/_p3.html', 'w').write(h); chromium(HERE + '/_p3.html', HERE + '/_p3.pdf')
 
 if __name__ == '__main__':
-    fig_final(); page1()
     subprocess.run([sys.executable, STEP, WORST, FINAL, 'Final configuration vs the empty floor (wedges off)', 'final-vs-worst'], cwd=ROOT, check=True, stdout=subprocess.DEVNULL)
     a4(ROOT + '/docs/analysis/chamber-treatments-2026-09-23/final-vs-worst.pdf', HERE + '/_p2.pdf'); page3()
-    subprocess.run(['pdfunite', HERE + '/_p1.pdf', HERE + '/_p2.pdf', HERE + '/_p3.pdf', HERE + '/CHAMBER-FINAL.pdf'], check=True)
-    for x in ('_p1.html', '_p3.html', '_p1.pdf', '_p2.pdf', '_p3.pdf'): os.remove(HERE + '/' + x)
+    subprocess.run(['pdfunite', HERE + '/_p2.pdf', HERE + '/_p3.pdf', HERE + '/CHAMBER-FINAL.pdf'], check=True)
+    for x in ('_p3.html', '_p2.pdf', '_p3.pdf'): os.remove(HERE + '/' + x)
+    for g in ('final-vs-worst.pdf', 'final-vs-worst.png'): os.remove(ROOT + '/docs/analysis/chamber-treatments-2026-09-23/' + g)
     print('final', A['score'], cutoff(A), count(A, 'fail'), count(A, 'marg'), round(A['tone_all']), '| worst', W['score'], cutoff(W), count(W, 'fail'), count(W, 'marg'), round(W['tone_all']), '| start', T0['score'], cutoff(T0), '| MARG', MARG)
