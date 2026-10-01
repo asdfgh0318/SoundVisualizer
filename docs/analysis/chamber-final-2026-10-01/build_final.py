@@ -101,6 +101,14 @@ def srcstep(st):                                     # level change vs the empty
     for k, (a, b) in {'mid': (1000, 3000), 'hf': (5000, 6400)}.items():
         v = d[(f >= a) & (f < b)].mean(0); r[k] = (float(v.mean()), float(v.std()))
     return r
+def hfmlf(run):                                       # arc-wide level at 5-6.4 kHz minus level at 257-400 Hz, dB
+    st = stats(run); f, L = st['f'], st['L']; return float(L[(f >= 5000) & (f < 6400)].mean() - L[(f >= 257) & (f < 400)].mean())
+def flips():
+    pairs = [('2026-09-23/foam-2', '2026-09-23/foam-out'), ('2026-09-23/ceiling-carpet', '2026-09-24/ceiling-carpet-day2'), ('2026-09-24/ceiling1-floor2', '2026-09-24/felt-floor-only'),
+             ('2026-09-24/chaotic-carpet-2', '2026-09-24/chaotic-carpet-3'), ('2026-09-25/in-plane-b', '2026-09-25/curtain')]
+    return [hfmlf(b) - hfmlf(a) for a, b in pairs]
+def mapchange(a, b):                                  # change of the arc-relative map below 3 kHz, dB rms
+    x, y = stats(a), stats(b); lo = x['f'] < 3000; return rms((y['D'] - x['D'])[lo])
 def roomonly():                                       # same-source, room-only changes that afternoon: largest mean change in any band, and capsule spread at 1-3 kHz
     A_ = stats('2026-09-24/carpet-added'); worst = 0.0; spread = []
     for a, b in ((F, A_), (F, C), (C, C2)):
@@ -160,7 +168,7 @@ def page2(PS):
     open(HERE + '/_p2.html', 'w').write(h); chromium('_p2')
 
 def page3():
-    B3, CL = stats('2026-09-25/blue-carpet'), stats('2026-09-25/closer-a'); s3 = srcstep(C3); RO = roomonly()
+    B3, CL = stats('2026-09-25/blue-carpet'), stats('2026-09-25/closer-a'); s3 = srcstep(C3); RO = roomonly(); FL = flips(); MC = mapchange(CARPET2, CARPET3)
     h = f"""<!doctype html><html><head><meta charset="utf-8"><title>Semi-anechoic solutions</title><style>{CSS}</style></head><body>
 <h1>Semi-anechoic room solutions that apply to this chamber</h1>
 <p class="tag">What fails (accepted configuration, evaluated on its own): clearly over the ISO limit at {lst(X, 'fail')} Hz, marginal at {lst(X, 'marg')} Hz; the blade tone sits at 215–258 Hz and its third harmonic at 713 Hz. Nearest reflectors measured: extra path 0.68 m at −72° and 1.49 m at +36°/+54°, i.e. 1.98 and 4.34 ms. Source: chamber-fighting-guide.pdf §03, 29 facilities.</p>
@@ -182,13 +190,12 @@ def page3():
 <li>Speed ladder to average the tones.</li>
 <li>Treat only the surfaces the sweep names (about 10 cm of foam at 630–1000 Hz).</li>
 </ol>
-<div class="q">"there is correlation between the results from the loudspeaker and engine but not in every frequency bands especially not in the regions of 200 and 250 Hz." <span>Mehrgou 2012, KTH TRITA-AVE 2012:42, p. 34 — the reason step 3 ends with a propeller comparison</span></div>
 <div class="q">"TABLE I. Maximum allowable difference in anechoic rooms between measured and theoretical free-field levels per ISO 3745 and ANSI S12.35." <span>Cunefare et al. 2003, J. Acoust. Soc. Am. 113(2), p. 882</span></div>
 <h2>Where the accepted configuration stands, and what the method cannot say</h2>
 <ul>
 <li>Evaluated on its own (25 Sep): room error {X['score']:.3f} dB, qualified from the {cutoff(X)} Hz band, {X['tone_all']:.0f} % of tone cells inside the limit. Published small rotor chambers report cut-offs of 63–275 Hz (29 facilities; METU's semi-anechoic room, 160 Hz, Kayhan 2008 p. 63); ours is {cutoff(X) / 275:.0f}–{cutoff(X) / 63:.0f} times higher, by a test easier in one respect (the arc mean, not the ideal, is the reference) and harder in another (the worst of eleven capsules).</li>
 <li>Deviation from the arc mean is blind to an error shared by all eleven positions; the ISO traverse has not been run, so this ranks bands and does not certify. The anechoic table is used because the floor under the arc is absorbing.</li>
-<li><b>Open, unexplained:</b> in the third carpet arrangement (14:52–14:58, 24 Sep; neighbours <code>chaotic-carpet-2</code> before, <code>wall-mount-a</code> 34 min after) every capsule's level rose by the same amount, growing with frequency: +{s3['mid'][0]:.1f} dB at 1–3 kHz, +{s3['hf'][0]:.1f} dB at 5–6.4 kHz, none at 257–400 Hz. No tilt, so the sphere was not re-aimed. Room-only changes that afternoon (carpet laid, made chaotic, re-arranged) moved the mean level by at most {RO[0]:.2f} dB in any band, so redistributed absorber is not the cause. The same shape recurs on 25 Sep between <code>in-plane-b</code> and <code>curtain</code> (+4.4 dB at 5–6.4 kHz again), when the sphere was reported unmoved. Candidates: a change in the source's output, or something reflective in the beam. Test: a 5 kHz tone on <code>live_tone</code> with an absorber held in the beam. It cancels in the arc-relative score.</li>
+<li><b>Open, unexplained: a two-state switch in the source chain.</b> The arc-wide balance of 5–6.4 kHz against 257–400 Hz sits on two levels and flips by the same amount between neighbouring runs: <code>foam-2</code>→<code>foam-out</code> {FL[0]:+.1f}, <code>ceiling-carpet</code>→<code>ceiling-carpet-day2</code> (next morning) {FL[1]:+.1f}, <code>ceiling1-floor2</code>→<code>felt-floor-only</code> {FL[2]:+.1f}, <code>chaotic-carpet-2</code>→<code>-3</code> {FL[3]:+.1f}, <code>in-plane-b</code>→<code>curtain</code> {FL[4]:+.1f} dB. Speaker device and amplitude were unchanged at the same-day flips. Not a source move (a 5 cm move changes the map by 0.80 dB; the 24 Sep flip by {MC:.2f}), not redistributed absorber (room-only changes that afternoon moved the mean level by at most {RO[0]:.2f} dB), not a gain or supply-voltage change (that would shift every frequency alike; 257–400 Hz does not move). It cancels in the arc-relative score. To check: the speaker cable's position near the sphere, connectors, the amplifier and its supply; test with 300 Hz and 5 kHz tones on <code>live_tone</code> while handling each.</li>
 <li>Only same-day pairs with an unmoved source are compared. The grid starts at 257 Hz, above the blade tone; 3–5 kHz is excluded (sphere), 5–6.4 kHz indicative.</li>
 </ul></body></html>"""
     open(HERE + '/_p3.html', 'w').write(h); chromium('_p3')
