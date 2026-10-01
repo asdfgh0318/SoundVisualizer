@@ -101,6 +101,14 @@ def srcstep(st):                                     # level change vs the empty
     for k, (a, b) in {'mid': (1000, 3000), 'hf': (5000, 6400)}.items():
         v = d[(f >= a) & (f < b)].mean(0); r[k] = (float(v.mean()), float(v.std()))
     return r
+def roomonly():                                       # same-source, room-only changes that afternoon: largest mean change in any band, and capsule spread at 1-3 kHz
+    A_ = stats('2026-09-24/carpet-added'); worst = 0.0; spread = []
+    for a, b in ((F, A_), (F, C), (C, C2)):
+        d = b['L'] - a['L']; f = a['f']
+        for lo, hi in ((257, 400), (400, 630), (630, 1000), (1000, 1600), (1600, 3000), (5000, 6400)):
+            v = d[(f >= lo) & (f < hi)].mean(0); worst = max(worst, abs(float(v.mean())))
+        v = d[(f >= 1000) & (f < 3000)].mean(0); spread.append(float(v.std()))
+    return worst, max(spread)
 def a4(src, dst):
     subprocess.run(['gs', '-q', '-dNOPAUSE', '-dBATCH', '-sDEVICE=pdfwrite', '-sPAPERSIZE=a4', '-dFIXEDMEDIA', '-dPDFFitPage', f'-sOutputFile={dst}', src], check=True)
 
@@ -152,7 +160,7 @@ def page2(PS):
     open(HERE + '/_p2.html', 'w').write(h); chromium('_p2')
 
 def page3():
-    B3, CL = stats('2026-09-25/blue-carpet'), stats('2026-09-25/closer-a'); s3 = srcstep(C3)
+    B3, CL = stats('2026-09-25/blue-carpet'), stats('2026-09-25/closer-a'); s3 = srcstep(C3); RO = roomonly()
     h = f"""<!doctype html><html><head><meta charset="utf-8"><title>Semi-anechoic solutions</title><style>{CSS}</style></head><body>
 <h1>Semi-anechoic room solutions that apply to this chamber</h1>
 <p class="tag">What fails (accepted configuration, evaluated on its own): clearly over the ISO limit at {lst(X, 'fail')} Hz, marginal at {lst(X, 'marg')} Hz; the blade tone sits at 215–258 Hz and its third harmonic at 713 Hz. Nearest reflectors measured: extra path 0.68 m at −72° and 1.49 m at +36°/+54°, i.e. 1.98 and 4.34 ms. Source: chamber-fighting-guide.pdf §03, 29 facilities.</p>
@@ -180,7 +188,7 @@ def page3():
 <ul>
 <li>Evaluated on its own (25 Sep): room error {X['score']:.3f} dB, qualified from the {cutoff(X)} Hz band, {X['tone_all']:.0f} % of tone cells inside the limit. Published small rotor chambers report cut-offs of 63–275 Hz (29 facilities; METU's semi-anechoic room, 160 Hz, Kayhan 2008 p. 63); ours is {cutoff(X) / 275:.0f}–{cutoff(X) / 63:.0f} times higher, by a test easier in one respect (the arc mean, not the ideal, is the reference) and harder in another (the worst of eleven capsules).</li>
 <li>Deviation from the arc mean is blind to an error shared by all eleven positions; the ISO traverse has not been run, so this ranks bands and does not certify. The anechoic table is used because the floor under the arc is absorbing.</li>
-<li><b>Open, unexplained:</b> in the third carpet arrangement (14:52–14:58, 24 Sep; neighbours <code>chaotic-carpet-2</code> before, <code>wall-mount-a</code> 34 min after) every capsule's level rose by the same amount, growing with frequency: +{s3['mid'][0]:.1f} dB at 1–3 kHz, +{s3['hf'][0]:.1f} dB at 5–6.4 kHz, none at 257–400 Hz (spread across capsules {max(s3['mid'][1], s3['hf'][1]):.2f} dB). No tilt, so the sphere was not re-aimed. The same shape recurs on 25 Sep between <code>in-plane-b</code> and <code>curtain</code> (+4.4 dB at 5–6.4 kHz again), when the sphere was reported unmoved. Known axial moves of the source give different shapes (20 cm closer: +1.7 dB at low frequency, −0.9 at high). Candidates: a change in the source's output, or something reflective in the beam. Test: a 5 kHz tone on <code>live_tone</code> while an absorber is held in the beam path. It cancels in the arc-relative score.</li>
+<li><b>Open, unexplained:</b> in the third carpet arrangement (14:52–14:58, 24 Sep; neighbours <code>chaotic-carpet-2</code> before, <code>wall-mount-a</code> 34 min after) every capsule's level rose by the same amount, growing with frequency: +{s3['mid'][0]:.1f} dB at 1–3 kHz, +{s3['hf'][0]:.1f} dB at 5–6.4 kHz, none at 257–400 Hz. No tilt, so the sphere was not re-aimed. Room-only changes that afternoon (carpet laid, made chaotic, re-arranged) moved the mean level by at most {RO[0]:.2f} dB in any band, so redistributed absorber is not the cause. The same shape recurs on 25 Sep between <code>in-plane-b</code> and <code>curtain</code> (+4.4 dB at 5–6.4 kHz again), when the sphere was reported unmoved. Candidates: a change in the source's output, or something reflective in the beam. Test: a 5 kHz tone on <code>live_tone</code> with an absorber held in the beam. It cancels in the arc-relative score.</li>
 <li>Only same-day pairs with an unmoved source are compared. The grid starts at 257 Hz, above the blade tone; 3–5 kHz is excluded (sphere), 5–6.4 kHz indicative.</li>
 </ul></body></html>"""
     open(HERE + '/_p3.html', 'w').write(h); chromium('_p3')
