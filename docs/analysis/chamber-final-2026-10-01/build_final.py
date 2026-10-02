@@ -88,15 +88,15 @@ def fig_polar():
     fig, axs = plt.subplots(1, 2, figsize=(7.0, 3.6), subplot_kw=dict(projection='polar'), gridspec_kw=dict(wspace=.12))
     for ax, other, ttl, col in ((axs[0], 'aug', 'vs 31 Aug · 7.35 V, 13.8 A (your screenshot)', '#e0679c'), (axs[1], 'sept', 'vs 2 Sep · 11.65 V, 7.3 A (same operating point)', '#c05621')):
         for key, c, lw in (('today', '#2b6cb0', 1.6), (other, col, 1.3)):
-            el = cur[key]['elev']; v = dv[key] + 6; th = np.radians(np.r_[el, 180 - el[::-1]]); r = np.r_[v, v[::-1]]
+            el = cur[key]['elev']; v = dv[key] + 8; th = np.radians(np.r_[el, 180 - el[::-1]]); r = np.r_[v, v[::-1]]
             ax.plot(np.r_[th, th[0]], np.r_[r, r[0]], color=c, lw=lw, marker='o', ms=2.6)
-        ax.set_rlim(0, 12); ax.set_rticks([2, 6, 10]); ax.set_yticklabels(['−4', '0', '+4 dB']); ax.set_rlabel_position(22); ax.tick_params(axis='y', labelsize=5.5)
+        ax.set_rlim(0, 16); ax.set_rticks([4, 8, 12]); ax.set_yticklabels(['−4', '0', '+4 dB']); ax.set_rlabel_position(22); ax.tick_params(axis='y', labelsize=5.5)
         ax.set_thetagrids([90, 0, 270], ['+90°', '0°', '−90°'], fontsize=6); ax.grid(alpha=.3); ax.set_title(ttl, fontsize=7, pad=11)
         ax.text(0.5, -.17, f'rms spread: 30 Sep {np.std(dv["today"]):.2f} dB · other {np.std(dv[other]):.2f} dB\npeak-to-peak: {np.ptp(dv["today"]):.1f} dB · {np.ptp(dv[other]):.1f} dB', ha='center', fontsize=6.3, transform=ax.transAxes)
     from matplotlib.lines import Line2D
     fig.legend([Line2D([0], [0], color='#2b6cb0', lw=1.6), Line2D([0], [0], color='#e0679c', lw=1.3), Line2D([0], [0], color='#c05621', lw=1.3)],
                ['30 Sep, PWM 2000', '31 Aug horizontal, PWM 2000', '2 Sep prop9 (median-spread run), PWM 2000'], fontsize=6.3, frameon=False, loc='lower center', ncol=3, bbox_to_anchor=(.5, -.1))
-    fig.suptitle('Tone-notched broadband 315 Hz–1 kHz, relative to each curve\'s own mean, zoomed to ±6 dB (on the full 0–80 dB SPL scale all three are near-round)', fontsize=6.6, y=1.04)
+    fig.suptitle('Tone-notched broadband 315 Hz–1 kHz, relative to each curve\'s own mean, zoomed to ±8 dB (on the full 0–80 dB SPL scale all three are near-round)', fontsize=6.6, y=1.04)
     fig.savefig(HERE + '/fig-polar.png', dpi=200, bbox_inches='tight'); plt.close(fig)
 
 def srcstep(st):                                     # level change vs the empty floor, per capsule, in two bands
