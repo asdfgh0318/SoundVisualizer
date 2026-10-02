@@ -89,7 +89,7 @@ def fig_polar():
         for key, c, lw in (('today', '#2b6cb0', 1.6), (other, col, 1.3)):
             el = cur[key]['elev']; v = lev[key]; th = np.radians(np.r_[el, 180 - el[::-1]]); r = np.r_[v, v[::-1]]
             ax.plot(np.r_[th, th[0]], np.r_[r, r[0]], color=c, lw=lw, marker='o', ms=2.6)
-        ax.set_rlim(lo, hi); ax.set_rticks(np.arange(lo + 2, hi, 4)); ax.tick_params(axis='y', labelsize=5.5); ax.set_thetagrids([90, 0, 270], ['+90°', '0°', '−90°'], fontsize=6); ax.grid(alpha=.3)
+        ax.set_rlim(0, 80); ax.set_rticks([20, 40, 60, 80]); ax.set_yticklabels(['20', '40', '60', '80 dB SPL']); ax.set_rlabel_position(22); ax.tick_params(axis='y', labelsize=5.5); ax.set_thetagrids([90, 0, 270], ['+90°', '0°', '−90°'], fontsize=6); ax.grid(alpha=.3)
         ax.set_title(ttl, fontsize=7, pad=11)
         ax.text(0.5, -.12, f'spread (rms about the mean): today {spread(lev["today"]):.2f} dB · other {spread(lev[other]):.2f} dB', ha='center', fontsize=6.5, transform=ax.transAxes)
     from matplotlib.lines import Line2D
