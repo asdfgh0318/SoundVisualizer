@@ -2,7 +2,7 @@
 
     .venv/bin/python docs/analysis/chamber-final-2026-10-01/build_final.py
 
-Only runs from one day with the source not moved are compared (Adam's rule: results of different days are not compared):
+Only runs from one day with the source not moved are compared (Adam's rule: results of different days are not compared). Page 1 and the page-2 table: 2026-09-25/day3-a (worst of day 3) vs carpet-reordered (final), same day but the source was moved in between and the page says so. The clean unmoved-source pair is cited in the page-2 caveat:
   FLOOR  = 2026-09-24/floor-no-wedges   the empty floor, wedges off (14:10)
   CARPET = 2026-09-24/chaotic-carpet    carpet laid on that floor (14:37); chaotic-carpet-2 (14:48) is its repeat
 The accepted configuration (2026-09-25/carpet-reordered) is evaluated on its own, never against another day.
@@ -41,7 +41,8 @@ def stats(run):
     return dict(f=f, D=D, L=L, score=rms(D[lo]), bm=bm, tr=tr, tone_all=float(100 * cells.mean()), ntones={fc: int(sel(f, fc).sum()) for fc in TOB},
                 level=float(L[lo].mean()), tilt=float(np.mean((D[m] @ s) / (s @ s))), bands=[rms(D[(f >= a) & (f < b)]) for a, b in [(250, 400), (400, 630), (630, 1000), (1000, 1600), (1600, 3000)]])
 CARPET3 = '2026-09-24/chaotic-carpet-3'
-F, C, C2, C3, X = stats(FLOOR), stats(CARPET), stats(CARPET2), stats(CARPET3), stats(FINAL)
+DAY3A = '2026-09-25/day3-a'
+F, C, C2, C3, X, G = stats(FLOOR), stats(CARPET), stats(CARPET2), stats(CARPET3), stats(FINAL), stats(DAY3A)
 REPEATS = [('2026-09-23/vertical-2a', '2026-09-23/vertical-2b'), ('2026-09-24/wall-mount-a', '2026-09-24/wall-mount-b'), ('2026-09-24/wall-direct-a', '2026-09-24/wall-direct-b'),
            ('2026-09-24/center-new-a', '2026-09-24/center-new-b'), ('2026-09-25/closer-a', '2026-09-25/closer-b')]       # same state measured twice, same day
 _r = [(stats(a), stats(b)) for a, b in REPEATS]
@@ -135,25 +136,25 @@ def chromium(name):
 
 def page2(PS):
     rows = ''.join(f"<tr><td class='num'>{fc} Hz</td><td class='num'>±{tol(fc):g}</td><td class='num'>{F['ntones'][fc]}</td>"
-                   f"<td class='num {verdict(F, fc)}'>{F['bm'][fc]:.2f}</td><td class='num'>{F['tr'][fc]:.0f} %</td>"
-                   f"<td class='num {verdict(C, fc)}'>{C['bm'][fc]:.2f}</td><td class='num'>{C['tr'][fc]:.0f} %</td></tr>" for fc in TOB)
+                   f"<td class='num {verdict(G, fc)}'>{G['bm'][fc]:.2f}</td><td class='num'>{G['tr'][fc]:.0f} %</td>"
+                   f"<td class='num {verdict(X, fc)}'>{X['bm'][fc]:.2f}</td><td class='num'>{X['tr'][fc]:.0f} %</td></tr>" for fc in TOB)
     sc = lambda st: [f"{st['score']:.3f}", f"{cutoff(st)} Hz" if cutoff(st) else 'none', f"{count(st, 'fail')}: {lst(st, 'fail')} Hz", f"{count(st, 'marg')}: {lst(st, 'marg')} Hz", f"{st['tone_all']:.0f} %"]
-    sf, sc_ = sc(F), sc(C)
+    sf, sc_ = sc(G), sc(X)
     names = ['Room error below 3 kHz (dB)', 'Band-level qualified from', 'Bands clearly over the limit (of 11)', 'Bands marginal', 'Pure-tone cells inside the limit']
     cl = lambda i: 'lst' if i in (2, 3) else 'num'
     card = ''.join(f"<tr><td>{n}</td><td class='{cl(i)}'>{sf[i]}</td><td class='{cl(i)}'><b>{sc_[i]}</b></td></tr>" for i, n in enumerate(names))
     s3 = srcstep(C3)
-    srcchk = f"tilt change vs the empty floor {C['tilt'] - F['tilt']:+.2f} / {C2['tilt'] - F['tilt']:+.2f} / {C3['tilt'] - F['tilt']:+.2f} dB per unit sin(el) for the three carpet arrangements"
+    MCg = mapchange(DAY3A, FINAL)
     T, Sp, Au = PS['today', 2000], PS['sept', 2000], PS['aug', 2000]
     T9, Sp9, Au9 = PS['today', 1900], PS['sept', 1900], PS['aug', 1900]; AX = PS['axis']
     h = f"""<!doctype html><html><head><meta charset="utf-8"><title>Chamber evaluation</title><style>{CSS}</style></head><body>
 <h1>Evaluation and the prop-plane check</h1>
-<p class="tag">SoundVisualizer · 2026-10-01 · 11 calibrated capsules on a 0.84 m arc · 95 tones, 257 Hz–6.35 kHz · page 1: waterfall, 24 Sep afternoon, from the stripped floor on the source is in one position ({srcchk})</p>
+<p class="tag">SoundVisualizer · 2026-10-01 · 11 calibrated capsules on a 0.84 m arc · 95 tones, 257 Hz–6.35 kHz · page 1: waterfall, 25 Sep, <code>day3-a</code> (13:17, worst of the day) → <code>carpet-reordered</code> (19:15, final)</p>
 <h2 style="border:0;margin-top:2pt">The method</h2>
 <p>Chambers are qualified one one-third-octave band at a time against the free-field ideal: reported as qualified between two bands, the cut-off the lowest band above which everything passes, noise and pure tones separately. Limits: ±1.5 dB to 630 Hz, ±1.0 dB from 800 Hz (Cunefare et al. 2003, J. Acoust. Soc. Am. 113(2), p. 882, quoted on page 3). <b>Our adaptation:</b> eleven fixed positions around an axisymmetric source, so the reference is the arc mean; <b>band level</b> = each capsule's mean over the {F['ntones'][630]}–{F['ntones'][1000]} tones in the band, worst capsule against the limit; <b>pure tones</b> = share of single tone × capsule cells inside. Within ±{MARG:.2f} dB of a limit is marginal (the largest difference between two same-day runs of one unchanged state, {len(REPEATS)} pairs).</p>
-<table><thead><tr><th class="num">Band</th><th class="num">Limit</th><th class="num">Tones</th><th class="num">Empty floor</th><th class="num">tones in limit</th><th class="num">Carpet on it</th><th class="num">tones in limit</th></tr></thead><tbody>{rows}</tbody></table>
-<table><thead><tr><th>Measure</th><th class="num">Empty floor</th><th class="num">Carpet on it</th></tr></thead><tbody>{card}</tbody></table>
-<p class="tag">Blue = inside, yellow = marginal, orange = over. The cut-off is set by the highest failing band, so read it with the lists. Three carpet arrangements, 14:37 / 14:48 / 14:57: room error {C['score']:.3f} / {C2['score']:.3f} / {C3['score']:.3f}; the table shows the first.</p>
+<table><thead><tr><th class="num">Band</th><th class="num">Limit</th><th class="num">Tones</th><th class="num">Day 3 start</th><th class="num">tones in limit</th><th class="num">Final</th><th class="num">tones in limit</th></tr></thead><tbody>{rows}</tbody></table>
+<table><thead><tr><th>Measure</th><th class="num">Day 3 start</th><th class="num">Final</th></tr></thead><tbody>{card}</tbody></table>
+<p class="tag">Blue = inside, yellow = marginal, orange = over. The cut-off is set by the highest failing band, so read it with the lists. <b>Caveat:</b> the source was deliberately moved between these two runs (20 cm closer at 13:44, into the ring plane at 14:03) and the arc-relative map changed by {MCg:.2f} dB rms, against 0.14 dB for a re-arranged carpet and 0.80 dB for a 5 cm move; so the improvement is the day's treatments <i>and</i> source positions together, not treatments alone. The only pair with a source known to be unmoved is 24 Sep, floor without wedges {F['score']:.3f} → carpet {C['score']:.3f} (three carpet arrangements {C['score']:.3f} / {C2['score']:.3f} / {C3['score']:.3f}), tilt change {C['tilt'] - F['tilt']:+.2f} dB per unit sin(el).</p>
 <h2>The prop-plane check: is the polar rounder than before?</h2>
 <img src="fig-polar.png">
 <table><thead><tr><th>Tone-notched broadband, 315 Hz–8 kHz, cells within ±1.3 dB of the polar mean</th><th class="num">Runs</th><th class="num">PWM 2000: median (range)</th><th class="num">worst cell</th><th class="num">PWM 1900: median (range)</th></tr></thead><tbody>
@@ -202,12 +203,15 @@ def page3():
 
 if __name__ == '__main__':
     print(f'source check carpet vs floor: level {C["level"] - F["level"]:+.2f} dB, tilt {C["tilt"] - F["tilt"]:+.2f}; repeat: {C2["level"] - F["level"]:+.2f}, {C2["tilt"] - F["tilt"]:+.2f}')
-    PS = polar_stats(); PS['axis'] = axis_check(); fig_polar()
     import json
-    json.dump({f'{k[0]}@{k[1]}' if isinstance(k, tuple) else k: v for k, v in PS.items()}, open(HERE + '/polar-stats.json', 'w'), indent=1)
+    try:
+        PS = polar_stats(); PS['axis'] = axis_check(); fig_polar()
+        json.dump({f'{k[0]}@{k[1]}' if isinstance(k, tuple) else k: v for k, v in PS.items()}, open(HERE + '/polar-stats.json', 'w'), indent=1)
+    except SystemExit:                  # 30 Sep bases not on this machine: reuse the saved polar figure and statistics
+        PS = {(k.split('@')[0], int(k.split('@')[1])) if '@' in k else k: v for k, v in json.load(open(HERE + '/polar-stats.json')).items()}
     for kk, v in PS.items():
         if kk != 'axis': print(kk, {a: round(b, 1) for a, b in v.items()})
-    subprocess.run([sys.executable, STEP, FLOOR, CARPET, 'Carpet vs the empty floor (wedges off) · same afternoon, source not moved', 'floor-vs-carpet'], cwd=ROOT, check=True, stdout=subprocess.DEVNULL)
+    subprocess.run([sys.executable, STEP, DAY3A, FINAL, 'Start of day 3 (worst run) vs the final configuration · same day, source moved in between (see page 2)', 'floor-vs-carpet'], cwd=ROOT, check=True, stdout=subprocess.DEVNULL)
     D = ROOT + '/docs/analysis/chamber-treatments-2026-09-23/'
     a4(D + 'floor-vs-carpet.pdf', HERE + '/_p1.pdf'); page2(PS); page3()
     subprocess.run(['pdfunite', HERE + '/_p1.pdf', HERE + '/_p2.pdf', HERE + '/_p3.pdf', HERE + '/CHAMBER-FINAL.pdf'], check=True)
