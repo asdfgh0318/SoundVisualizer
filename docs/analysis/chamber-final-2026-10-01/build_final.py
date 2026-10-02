@@ -164,7 +164,7 @@ def page2(PS):
 <tr><td>2 Sep, same operating point (11.65 V, 7.3 A, −4.0 N)</td><td class="num">{Sp['n']}</td><td class="num">{Sp['med']:.0f} % ({Sp['lo']:.0f}–{Sp['hi']:.0f})</td><td class="num">{Sp['worst']:.1f} dB</td><td class="num">{Sp9['med']:.0f} % ({Sp9['lo']:.0f}–{Sp9['hi']:.0f})</td></tr>
 <tr><td>31 Aug (7.35 V, 13.8 A, +6 N: other operating point)</td><td class="num">{Au['n']}</td><td class="num">{Au['med']:.0f} % ({Au['lo']:.0f}–{Au['hi']:.0f})</td><td class="num">{Au['worst']:.1f} dB</td><td class="num">{Au9['med']:.0f} % ({Au9['lo']:.0f}–{Au9['hi']:.0f})</td></tr></tbody></table>
 <ul>
-<li><b>Rounder than 31 Aug where it counts</b>: worst capsule {T['worst']:.1f} dB off the mean instead of {Au['worst']:.1f} dB; the 31 Aug runs go down to {Au['lo']:.0f} % of cells in tolerance. That run is the one in the screenshot.</li>
+<li><b>Rounder than 31 Aug where it counts</b>: worst capsule {T['worst']:.1f} dB off the mean instead of {Au['worst']:.1f} dB; the 31 Aug runs go down to {Au['lo']:.0f} % of cells in tolerance. That run is the one in the screenshot, whose total level (tones included) is equally spread, 1.39 vs 1.41 dB; the gain is in the broadband.</li>
 <li><b>Not rounder than 2 Sep</b> (same voltage, current, thrust): {T['med']:.0f} % against a median of {Sp['med']:.0f} % ({Sp['lo']:.0f}–{Sp['hi']:.0f}), inside the scatter of the 2 Sep runs.</li>
 <li><b>Prop-plane measurement</b>: ends of the arc read louder than the centre at 2 and 4 kHz by {AX['2 kHz'][0]:+.1f} and {AX['4 kHz'][0]:+.1f} dB today, and by {AX['2 kHz'][1]:+.1f} and {AX['4 kHz'][1]:+.1f} dB (median) in the flat-arc runs where the true difference is zero: position-fixed error, not directivity.</li>
 </ul></body></html>"""
