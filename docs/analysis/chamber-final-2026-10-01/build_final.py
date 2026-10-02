@@ -85,7 +85,7 @@ def bbl(g, lo=4, hi=10):                              # tone-notched broadband 3
 def fig_polar():
     cur = {'today': last_at(TODAY, 2000), 'aug': last_at(AUG[0], 2000), 'sept': last_at('2004__6in__unset__dp1-baseline-horizontal-prop9', 2000)}
     dv = {k: bbl(v) - bbl(v).mean() for k, v in cur.items()}
-    fig, axs = plt.subplots(1, 2, figsize=(7.2, 3.45), subplot_kw=dict(projection='polar'), gridspec_kw=dict(wspace=.28))
+    fig, axs = plt.subplots(1, 2, figsize=(7.0, 3.6), subplot_kw=dict(projection='polar'), gridspec_kw=dict(wspace=.12))
     for ax, other, ttl, col in ((axs[0], 'aug', 'vs 31 Aug · 7.35 V, 13.8 A (your screenshot)', '#e0679c'), (axs[1], 'sept', 'vs 2 Sep · 11.65 V, 7.3 A (same operating point)', '#c05621')):
         for key, c, lw in (('today', '#2b6cb0', 1.6), (other, col, 1.3)):
             el = cur[key]['elev']; v = dv[key] + 6; th = np.radians(np.r_[el, 180 - el[::-1]]); r = np.r_[v, v[::-1]]
@@ -95,7 +95,7 @@ def fig_polar():
         ax.text(0.5, -.17, f'rms spread: 30 Sep {np.std(dv["today"]):.2f} dB · other {np.std(dv[other]):.2f} dB\npeak-to-peak: {np.ptp(dv["today"]):.1f} dB · {np.ptp(dv[other]):.1f} dB', ha='center', fontsize=6.3, transform=ax.transAxes)
     from matplotlib.lines import Line2D
     fig.legend([Line2D([0], [0], color='#2b6cb0', lw=1.6), Line2D([0], [0], color='#e0679c', lw=1.3), Line2D([0], [0], color='#c05621', lw=1.3)],
-               ['30 Sep, PWM 2000', '31 Aug horizontal, PWM 2000', '2 Sep prop9 (median-spread run), PWM 2000'], fontsize=6.3, frameon=False, loc='lower center', ncol=3, bbox_to_anchor=(.5, -.12))
+               ['30 Sep, PWM 2000', '31 Aug horizontal, PWM 2000', '2 Sep prop9 (median-spread run), PWM 2000'], fontsize=6.3, frameon=False, loc='lower center', ncol=3, bbox_to_anchor=(.5, -.1))
     fig.suptitle('Tone-notched broadband 315 Hz–1 kHz, relative to each curve\'s own mean, zoomed to ±6 dB (on the full 0–80 dB SPL scale all three are near-round)', fontsize=6.6, y=1.04)
     fig.savefig(HERE + '/fig-polar.png', dpi=200, bbox_inches='tight'); plt.close(fig)
 
@@ -126,9 +126,9 @@ def a4(src, dst):
 CSS = '''@page{size:A4;margin:9mm 13mm} body{font-family:"IBM Plex Sans","DejaVu Sans",Arial,sans-serif;font-size:7.9pt;line-height:1.24;color:#10171b;margin:0}
 h1{font-size:15pt;margin:0 0 1pt;letter-spacing:-.02em} h2{font-size:10pt;margin:7pt 0 3pt;padding-top:4pt;border-top:.7pt solid #c6d0d5} p{margin:0 0 3.5pt} ul{margin:0 0 3pt;padding-left:4.5mm} li{margin:0 0 2pt}
 table{border-collapse:collapse;width:100%;margin:2pt 0 5pt;font-size:7.4pt} th{font-size:6.4pt;text-transform:uppercase;letter-spacing:.05em;color:#46545c;text-align:left;padding:2.5pt 3pt;border-bottom:1pt solid #10171b;vertical-align:bottom}
-td{padding:2pt 3pt;border-bottom:.5pt solid #e0e6e9;vertical-align:top} td.num,th.num{font-family:"DejaVu Sans Mono",monospace;font-size:7pt;white-space:nowrap;text-align:right}
+td{padding:1.2pt 3pt;border-bottom:.5pt solid #e0e6e9;vertical-align:top} td.num,th.num{font-family:"DejaVu Sans Mono",monospace;font-size:7pt;white-space:nowrap;text-align:right}
 td.lst{font-family:"DejaVu Sans Mono",monospace;font-size:6.6pt;text-align:right;white-space:normal;width:26%}
-img{width:100%;max-height:6.3cm;object-fit:contain;display:block;margin:2pt auto}
+img{width:100%;max-height:8.2cm;object-fit:contain;display:block;margin:2pt auto}
 .tag{font-family:"DejaVu Sans Mono",monospace;font-size:6.3pt;color:#74828a} .box{background:#f1f4f6;border-left:2pt solid #17566e;padding:4pt 4mm;margin:4pt 0 5pt}
 .q{border-left:1.5pt solid #17566e;padding:1pt 0 1pt 3mm;margin:2pt 0;font-size:7.4pt} .q span{display:block;font-family:"DejaVu Sans Mono",monospace;font-size:6pt;color:#74828a}
 .pass{background:#cfe0f3}.marg{background:#f3e6b3}.fail{background:#f0c4a8}'''
@@ -153,20 +153,20 @@ def page2(PS):
 <h1>Evaluation and the prop-plane check</h1>
 <p class="tag">SoundVisualizer · 2026-10-01 · 11 calibrated capsules on a 0.84 m arc · 95 tones, 257 Hz–6.35 kHz · page 1: waterfall, 25 Sep, <code>day3-a</code> (13:17, worst of the day) → <code>carpet-reordered</code> (19:15, final)</p>
 <h2 style="border:0;margin-top:2pt">The method</h2>
-<p>Chambers are qualified one one-third-octave band at a time against the free-field ideal: reported as qualified between two bands, the cut-off the lowest band above which everything passes, noise and pure tones separately. Limits: ±1.5 dB to 630 Hz, ±1.0 dB from 800 Hz (Cunefare et al. 2003, J. Acoust. Soc. Am. 113(2), p. 882, quoted on page 3). <b>Our adaptation:</b> eleven fixed positions around an axisymmetric source, so the reference is the arc mean; <b>band level</b> = each capsule's mean over the {F['ntones'][630]}–{F['ntones'][1000]} tones in the band, worst capsule against the limit; <b>pure tones</b> = share of single tone × capsule cells inside. Within ±{MARG:.2f} dB of a limit is marginal (the largest difference between two same-day runs of one unchanged state, {len(REPEATS)} pairs).</p>
+<p>Chambers are qualified one one-third-octave band at a time against the free-field ideal; the cut-off is the lowest band above which everything passes, noise and pure tones separately. Limits: ±1.5 dB to 630 Hz, ±1.0 dB from 800 Hz (Cunefare et al. 2003, J. Acoust. Soc. Am. 113(2), p. 882, page 3). <b>Our adaptation:</b> eleven fixed positions around an axisymmetric source, so the reference is the arc mean; <b>band level</b> = each capsule's mean over the {F['ntones'][630]}–{F['ntones'][1000]} tones in the band, worst capsule against the limit; <b>pure tones</b> = share of tone × capsule cells inside. Within ±{MARG:.2f} dB of a limit is marginal (the largest difference between two same-day runs of one unchanged state, {len(REPEATS)} pairs).</p>
 <table><thead><tr><th class="num">Band</th><th class="num">Limit</th><th class="num">Tones</th><th class="num">Day 3 start</th><th class="num">tones in limit</th><th class="num">Final</th><th class="num">tones in limit</th></tr></thead><tbody>{rows}</tbody></table>
 <table><thead><tr><th>Measure</th><th class="num">Day 3 start</th><th class="num">Final</th></tr></thead><tbody>{card}</tbody></table>
-<p class="tag">Blue = inside, yellow = marginal, orange = over. The cut-off is set by the highest failing band, so read it with the lists. <b>Caveat:</b> the source was deliberately moved between these two runs (20 cm closer at 13:44, into the ring plane at 14:03) and the arc-relative map changed by {MCg:.2f} dB rms, against 0.14 dB for a re-arranged carpet and 0.80 dB for a 5 cm move; so the improvement is the day's treatments <i>and</i> source positions together, not treatments alone. The only pair with a source known to be unmoved is 24 Sep, floor without wedges {F['score']:.3f} → carpet {C['score']:.3f} (three carpet arrangements {C['score']:.3f} / {C2['score']:.3f} / {C3['score']:.3f}), tilt change {C['tilt'] - F['tilt']:+.2f} dB per unit sin(el).</p>
+<p class="tag">Blue = inside, yellow = marginal, orange = over. The cut-off is set by the highest failing band, so read it with the lists. <b>Caveat:</b> the source was moved between these runs (20 cm closer at 13:44, into the ring plane at 14:03): the map changed by {MCg:.2f} dB rms, against 0.14 for a re-arranged carpet and 0.80 for a 5 cm move, so the gain is treatments and source positions together. The one pair with an unmoved source is 24 Sep, empty floor {F['score']:.3f} → carpet {C['score']:.3f} (three arrangements {C['score']:.3f} / {C2['score']:.3f} / {C3['score']:.3f}).</p>
 <h2>The prop-plane check: is the polar rounder than before?</h2>
 <img src="fig-polar.png">
 <table><thead><tr><th>Tone-notched broadband, 315 Hz–8 kHz, cells within ±1.3 dB of the polar mean</th><th class="num">Runs</th><th class="num">PWM 2000: median (range)</th><th class="num">worst cell</th><th class="num">PWM 1900: median (range)</th></tr></thead><tbody>
 <tr><td><b>30 Sep, today</b></td><td class="num">1</td><td class="num"><b>{T['med']:.0f} %</b></td><td class="num">{T['worst']:.1f} dB</td><td class="num">{T9['med']:.0f} %</td></tr>
 <tr><td>2 Sep, same operating point (11.65 V, 7.3 A, −4.0 N)</td><td class="num">{Sp['n']}</td><td class="num">{Sp['med']:.0f} % ({Sp['lo']:.0f}–{Sp['hi']:.0f})</td><td class="num">{Sp['worst']:.1f} dB</td><td class="num">{Sp9['med']:.0f} % ({Sp9['lo']:.0f}–{Sp9['hi']:.0f})</td></tr>
-<tr><td>31 Aug (7.35 V, 13.8 A, +6 N: a different operating point)</td><td class="num">{Au['n']}</td><td class="num">{Au['med']:.0f} % ({Au['lo']:.0f}–{Au['hi']:.0f})</td><td class="num">{Au['worst']:.1f} dB</td><td class="num">{Au9['med']:.0f} % ({Au9['lo']:.0f}–{Au9['hi']:.0f})</td></tr></tbody></table>
+<tr><td>31 Aug (7.35 V, 13.8 A, +6 N: other operating point)</td><td class="num">{Au['n']}</td><td class="num">{Au['med']:.0f} % ({Au['lo']:.0f}–{Au['hi']:.0f})</td><td class="num">{Au['worst']:.1f} dB</td><td class="num">{Au9['med']:.0f} % ({Au9['lo']:.0f}–{Au9['hi']:.0f})</td></tr></tbody></table>
 <ul>
-<li><b>Against 31 Aug the polar is clearly rounder where it counts</b>: the worst capsule is {T['worst']:.1f} dB off the mean instead of {Au['worst']:.1f} dB, and the 31 Aug runs range down to {Au['lo']:.0f} % of cells in tolerance. That run is the one in the screenshot.</li>
-<li><b>Against 2 Sep, which had the same voltage, current and thrust, it is not rounder</b>: {T['med']:.0f} % against a median of {Sp['med']:.0f} % ({Sp['lo']:.0f}–{Sp['hi']:.0f}), inside the scatter of the 2 Sep runs. Between 31 Aug and 2 Sep the supply went from 7.35 to 11.65 V.</li>
-<li><b>It is a prop-plane measurement.</b> The ends of the arc read louder than its centre at 2 and 4 kHz by {AX['2 kHz'][0]:+.1f} and {AX['4 kHz'][0]:+.1f} dB today; the flat-arc runs, where the true difference is zero, show the same ({AX['2 kHz'][1]:+.1f} and {AX['4 kHz'][1]:+.1f} dB median). So that structure is position-fixed error, not directivity.</li>
+<li><b>Rounder than 31 Aug where it counts</b>: worst capsule {T['worst']:.1f} dB off the mean instead of {Au['worst']:.1f} dB; the 31 Aug runs go down to {Au['lo']:.0f} % of cells in tolerance. That run is the one in the screenshot.</li>
+<li><b>Not rounder than 2 Sep</b> (same voltage, current, thrust): {T['med']:.0f} % against a median of {Sp['med']:.0f} % ({Sp['lo']:.0f}–{Sp['hi']:.0f}), inside the scatter of the 2 Sep runs.</li>
+<li><b>Prop-plane measurement</b>: ends of the arc read louder than the centre at 2 and 4 kHz by {AX['2 kHz'][0]:+.1f} and {AX['4 kHz'][0]:+.1f} dB today, and by {AX['2 kHz'][1]:+.1f} and {AX['4 kHz'][1]:+.1f} dB (median) in the flat-arc runs where the true difference is zero: position-fixed error, not directivity.</li>
 </ul></body></html>"""
     open(HERE + '/_p2.html', 'w').write(h); chromium('_p2')
 
