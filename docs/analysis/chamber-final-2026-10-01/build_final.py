@@ -197,7 +197,7 @@ def page3():
 <li>Evaluated on its own (25 Sep): room error {X['score']:.3f} dB, qualified from the {cutoff(X)} Hz band, {X['tone_all']:.0f} % of tone cells inside the limit. Published small rotor chambers report cut-offs of 63–275 Hz (29 facilities; METU's semi-anechoic room, 160 Hz, Kayhan 2008 p. 63); ours is {cutoff(X) / 275:.0f}–{cutoff(X) / 63:.0f} times higher, by a test easier in one respect (the arc mean, not the ideal, is the reference) and harder in another (the worst of eleven capsules).</li>
 <li>Deviation from the arc mean is blind to an error shared by all eleven positions; the ISO traverse has not been run, so this ranks bands and does not certify. The anechoic table is used because the floor under the arc is absorbing.</li>
 <li><b>Open, unexplained: a two-state switch in the source chain.</b> The arc-wide balance of 5–6.4 kHz against 257–400 Hz sits on two levels and flips by the same amount between neighbouring runs: <code>foam-2</code>→<code>foam-out</code> {FL[0]:+.1f}, <code>ceiling-carpet</code>→<code>ceiling-carpet-day2</code> (next morning) {FL[1]:+.1f}, <code>ceiling1-floor2</code>→<code>felt-floor-only</code> {FL[2]:+.1f}, <code>chaotic-carpet-2</code>→<code>-3</code> {FL[3]:+.1f}, <code>in-plane-b</code>→<code>curtain</code> {FL[4]:+.1f} dB. Speaker device and amplitude were unchanged at the same-day flips. Not a source move (a 5 cm move changes the map by 0.80 dB; the 24 Sep flip by {MC:.2f}), not redistributed absorber (room-only changes that afternoon moved the mean level by at most {RO[0]:.2f} dB), not a gain or supply-voltage change (that would shift every frequency alike; 257–400 Hz does not move). It cancels in the arc-relative score. To check: the speaker cable's position near the sphere, connectors, the amplifier and its supply; test with 300 Hz and 5 kHz tones on <code>live_tone</code> while handling each.</li>
-<li>Only same-day pairs with an unmoved source are compared. The grid starts at 257 Hz, above the blade tone; 3–5 kHz is excluded (sphere), 5–6.4 kHz indicative.</li>
+<li>Only same-day pairs are compared. Page 1's pair had the source moved in between (page 2 says by how much); the only pair with an unmoved source is the 24 Sep floor-to-carpet one. The grid starts at 257 Hz, above the blade tone; 3–5 kHz is excluded (sphere), 5–6.4 kHz indicative.</li>
 </ul></body></html>"""
     open(HERE + '/_p3.html', 'w').write(h); chromium('_p3')
 
@@ -211,7 +211,7 @@ if __name__ == '__main__':
         PS = {(k.split('@')[0], int(k.split('@')[1])) if '@' in k else k: v for k, v in json.load(open(HERE + '/polar-stats.json')).items()}
     for kk, v in PS.items():
         if kk != 'axis': print(kk, {a: round(b, 1) for a, b in v.items()})
-    subprocess.run([sys.executable, STEP, DAY3A, FINAL, 'Start of day 3 (worst run) vs the final configuration · same day, source moved in between (see page 2)', 'floor-vs-carpet'], cwd=ROOT, check=True, stdout=subprocess.DEVNULL)
+    subprocess.run([sys.executable, STEP, DAY3A, FINAL, 'Day 3 start (worst) vs final · source moved in between', 'floor-vs-carpet'], cwd=ROOT, check=True, stdout=subprocess.DEVNULL)
     D = ROOT + '/docs/analysis/chamber-treatments-2026-09-23/'
     a4(D + 'floor-vs-carpet.pdf', HERE + '/_p1.pdf'); page2(PS); page3()
     subprocess.run(['pdfunite', HERE + '/_p1.pdf', HERE + '/_p2.pdf', HERE + '/_p3.pdf', HERE + '/CHAMBER-FINAL.pdf'], check=True)
