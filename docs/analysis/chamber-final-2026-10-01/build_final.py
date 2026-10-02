@@ -80,21 +80,23 @@ def ends_centre(g, bi):                                  # ends (|pos| >= 72) mi
 def axis_check():
     t0 = last_at(TODAY, 2000); fl = [last_at(f'2004__6in__unset__dp1-baseline-horizontal-prop{k}', 2000) for k in (9, 10, 12, 13, 14, 15, 16, 17)]
     return {n: (ends_centre(t0, i), float(np.median([ends_centre(g, i) for g in fl]))) for i, n in ((12, '2 kHz'), (15, '4 kHz'))}
+def bbl(g, lo=4, hi=10):                              # tone-notched broadband 315 Hz-1 kHz (bands 4..9), dB per capsule
+    B = g['B'][:, lo:hi]; B = B[:, ~np.isnan(B).any(0)]; return 10 * np.log10((10 ** (B / 10)).sum(1))
 def fig_polar():
     cur = {'today': last_at(TODAY, 2000), 'aug': last_at(AUG[0], 2000), 'sept': last_at('2004__6in__unset__dp1-baseline-horizontal-prop9', 2000)}
-    lev = {k: totals(v) for k, v in cur.items()}; allv = np.concatenate(list(lev.values())); lo, hi = np.floor(allv.min()) - 2, np.ceil(allv.max()) + 1
+    dv = {k: bbl(v) - bbl(v).mean() for k, v in cur.items()}
     fig, axs = plt.subplots(1, 2, figsize=(7.2, 3.45), subplot_kw=dict(projection='polar'), gridspec_kw=dict(wspace=.28))
-    spread = lambda v: float(np.sqrt(np.mean((v - v.mean()) ** 2)))
     for ax, other, ttl, col in ((axs[0], 'aug', 'vs 31 Aug · 7.35 V, 13.8 A (your screenshot)', '#e0679c'), (axs[1], 'sept', 'vs 2 Sep · 11.65 V, 7.3 A (same operating point)', '#c05621')):
         for key, c, lw in (('today', '#2b6cb0', 1.6), (other, col, 1.3)):
-            el = cur[key]['elev']; v = lev[key]; th = np.radians(np.r_[el, 180 - el[::-1]]); r = np.r_[v, v[::-1]]
+            el = cur[key]['elev']; v = dv[key] + 6; th = np.radians(np.r_[el, 180 - el[::-1]]); r = np.r_[v, v[::-1]]
             ax.plot(np.r_[th, th[0]], np.r_[r, r[0]], color=c, lw=lw, marker='o', ms=2.6)
-        ax.set_rlim(0, 80); ax.set_rticks([20, 40, 60, 80]); ax.set_yticklabels(['20', '40', '60', '80 dB SPL']); ax.set_rlabel_position(22); ax.tick_params(axis='y', labelsize=5.5); ax.set_thetagrids([90, 0, 270], ['+90°', '0°', '−90°'], fontsize=6); ax.grid(alpha=.3)
-        ax.set_title(ttl, fontsize=7, pad=11)
-        ax.text(0.5, -.12, f'spread (rms about the mean): today {spread(lev["today"]):.2f} dB · other {spread(lev[other]):.2f} dB', ha='center', fontsize=6.5, transform=ax.transAxes)
+        ax.set_rlim(0, 12); ax.set_rticks([2, 6, 10]); ax.set_yticklabels(['−4', '0', '+4 dB']); ax.set_rlabel_position(22); ax.tick_params(axis='y', labelsize=5.5)
+        ax.set_thetagrids([90, 0, 270], ['+90°', '0°', '−90°'], fontsize=6); ax.grid(alpha=.3); ax.set_title(ttl, fontsize=7, pad=11)
+        ax.text(0.5, -.17, f'rms spread: 30 Sep {np.std(dv["today"]):.2f} dB · other {np.std(dv[other]):.2f} dB\npeak-to-peak: {np.ptp(dv["today"]):.1f} dB · {np.ptp(dv[other]):.1f} dB', ha='center', fontsize=6.3, transform=ax.transAxes)
     from matplotlib.lines import Line2D
     fig.legend([Line2D([0], [0], color='#2b6cb0', lw=1.6), Line2D([0], [0], color='#e0679c', lw=1.3), Line2D([0], [0], color='#c05621', lw=1.3)],
-               ['30 Sep, PWM 2000', '31 Aug horizontal, PWM 2000', '2 Sep prop9 (median-spread run), PWM 2000'], fontsize=6.3, frameon=False, loc='lower center', ncol=3, bbox_to_anchor=(.5, -.04))
+               ['30 Sep, PWM 2000', '31 Aug horizontal, PWM 2000', '2 Sep prop9 (median-spread run), PWM 2000'], fontsize=6.3, frameon=False, loc='lower center', ncol=3, bbox_to_anchor=(.5, -.12))
+    fig.suptitle('Tone-notched broadband 315 Hz–1 kHz, relative to each curve\'s own mean, zoomed to ±6 dB (on the full 0–80 dB SPL scale all three are near-round)', fontsize=6.6, y=1.04)
     fig.savefig(HERE + '/fig-polar.png', dpi=200, bbox_inches='tight'); plt.close(fig)
 
 def srcstep(st):                                     # level change vs the empty floor, per capsule, in two bands
