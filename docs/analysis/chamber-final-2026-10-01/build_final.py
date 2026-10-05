@@ -207,14 +207,14 @@ def page1():
 <h1>1 · The source and the microphones</h1>
 <p class="tag">SoundVisualizer · chamber report, 2026-10-05 · what the room is measured with, and how far the numbers can be trusted</p>
 <div class="ph"><div><img src="photo-chamber.jpg"><p class="cap"><b>The chamber in the final configuration</b> (<code>carpet-reordered</code>, photographed 5 Oct): the arc ring laid flat around the propeller rig at the hub, the speaker tripod on the left, batting on the floor and ceiling, wedges and lined pillars on the walls.</p></div>
-<div><img src="photo-source.jpg"><p class="cap"><b>The source</b>: the printed 1 l sphere with its 8 cm driver, mounted at the hub. Every position map in this report comes from it. It is axisymmetric below 3 kHz; an m = 1 rocking mode at 4.4 kHz (11.0 dB) is why 3–5 kHz is excluded.</p></div></div>
+<div><img src="photo-source.jpg"><p class="cap"><b>The source</b>: a printed 1 l sphere with an 8 cm driver, at the hub.</p></div></div>
 <h2>What we did with the microphones</h2>
 <ul>
 <li><b>Eleven UMIK-2 capsules on a 1.68 m ring</b>, all recording at once. The room is read as each capsule's level relative to the arc mean (room error), on a 95-tone grid, 257 Hz–6.35 kHz.</li>
 <li><b>Substitution calibration, 16 Sep:</b> every capsule measured against every other at one seat (55 pairs, repeatability 0.08 dB sd). <b>Seven of the eleven factory files were wrong by 0.6–3.6 dB</b>, clustered by serial prefix. The corrections went into each capsule's calibration curve; the spread across the eleven fell from <b>4.01 dB to 0.02 dB</b>. The datum is the four capsules whose files agree with measurement. Still open: the absolute level, which needs a 94 dB calibrator.</li>
 <li><b>Effect on the propeller data:</b> the 30 Sep prop-plane polar's roughness fell from 3.3 to 1.0 dB (−70 %) with the corrections applied to identical captures.</li>
 <li><b>Is it the rig or the room? (17 Sep)</b> Flipping the arc and then standing it vertical showed that about 0.2 dB of the position map is arc hardware; the rest is the room.</li>
-<li><b>Is it the source?</b> Rolling the driver inside a sphere that never moved changed the map by 0.20 dB rms below 3 kHz (86 tones), and by up to 11 dB at 3–5 kHz. Below 3 kHz the sphere is a valid source; the band above is masked.</li>
+<li><b>The source</b> is a valid axisymmetric radiator below 3 kHz (driver-rotation test); 3–5 kHz is excluded.</li>
 <li><b>Repeatability:</b> the same state measured twice gives 0.006–0.015 dB; handling an item in and out about 0.04 dB. That is the floor under every treatment comparison that follows.</li>
 </ul>
 <p class="tag">Numbers from the project notes (CLAUDE.md, calibrator sessions 2026-09-16 and 2026-09-17), which govern where this page and they differ.</p>
