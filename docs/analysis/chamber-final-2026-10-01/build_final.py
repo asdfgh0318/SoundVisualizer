@@ -85,20 +85,24 @@ def bbl(g, lo=4, hi=10):                              # tone-notched broadband 3
     B = g['B'][:, lo:hi]; B = B[:, ~np.isnan(B).any(0)]; return 10 * np.log10((10 ** (B / 10)).sum(1))
 def fig_polar():                                       # the app's Polar tab: total level in a band per capsule, mirrored to 360 deg, PWM 2000, dB SPL
     cur = {'today': last_at(TODAY, 2000), 'aug': last_at(AUG[0], 2000)}; FIG = {}
-    fig, axs = plt.subplots(1, 2, figsize=(7.4, 4.1), subplot_kw=dict(projection='polar'), gridspec_kw=dict(wspace=.22))
+    sep = [last_at(f'2004__6in__unset__dp1-baseline-horizontal-prop{k}', 2000) for k in (15, 16, 17)]       # 2 Sep, arc in the normal orientation, factory files as measured
+    fig, axs = plt.subplots(1, 2, figsize=(7.4, 4.3), subplot_kw=dict(projection='polar'), gridspec_kw=dict(wspace=.22))
+    sp = lambda v: float(np.sqrt(np.mean((v - v.mean()) ** 2)))
+    def draw(ax, g, lo, hi, **kw):
+        el = g['elev']; v = totals(g, lo, hi); th = np.radians(np.r_[el, 180 - el[::-1]]); r = np.r_[v, v[::-1]]
+        ax.plot(np.r_[th, th[0]], np.r_[r, r[0]], marker='o', **kw); return v
     for ax, (lo, hi, rmin, rmax) in zip(axs, ((20, 560, 30, 76), (100, 10000, 50, 80))):
-        lev = {k: totals(v, lo, hi) for k, v in cur.items()}
-        for key, c, lw, nm in (('aug', '#e0679c', 1.5, '31 Aug horizontal, before'), ('today', '#2b6cb0', 1.9, '30 Sep prop plane, after')):
-            el = cur[key]['elev']; v = lev[key]; th = np.radians(np.r_[el, 180 - el[::-1]]); r = np.r_[v, v[::-1]]
-            ax.plot(np.r_[th, th[0]], np.r_[r, r[0]], color=c, lw=lw, marker='o', ms=3, label=nm)
+        va = draw(ax, cur['aug'], lo, hi, color='#e0679c', lw=1.5, ms=3, label='31 Aug horizontal, factory files')
+        vs = [draw(ax, g, lo, hi, color='#c05621', lw=1.2, ms=2.5, alpha=.9, label='2 Sep prop15, 16, 17, factory files' if i == 0 else None) for i, g in enumerate(sep)]
+        vt = draw(ax, cur['today'], lo, hi, color='#2b6cb0', lw=2.0, ms=3, label='30 Sep prop plane, corrected files')
+        FIG[f'{lo}-{hi}'] = dict(sb=sp(va), sa=sp(vt), pb=float(np.ptp(va)), pa=float(np.ptp(vt)), ss=[sp(v) for v in vs], ps=[float(np.ptp(v)) for v in vs])
         ax.set_rlim(rmin, rmax); ticks = list(range(40, rmax, 10)) if rmax < 80 else [60, 80]
         ax.set_rticks(ticks); ax.set_yticklabels([f'{t:g}' for t in ticks]); ax.set_rlabel_position(22); ax.tick_params(axis='y', labelsize=6)
         ax.set_thetagrids([90, 45, 0, 315, 270, 225, 180, 135], ['+90°', '+45°', '0°', '−45°', '−90°', '−45°', '0°', '+45°'], fontsize=6); ax.grid(alpha=.3)
-        sp = lambda v: float(np.sqrt(np.mean((v - v.mean()) ** 2)))
-        FIG[f'{lo}-{hi}'] = dict(sb=sp(lev['aug']), sa=sp(lev['today']), pb=float(np.ptp(lev['aug'])), pa=float(np.ptp(lev['today'])))
         ax.set_title(f'{lo}–{hi} Hz, dB SPL (radial {rmin}–{rmax})', fontsize=7.5, pad=10)
-        ax.text(0.5, -.2, f'rms spread: before {sp(lev["aug"]):.2f} dB · after {sp(lev["today"]):.2f} dB\npeak-to-peak: before {np.ptp(lev["aug"]):.1f} dB · after {np.ptp(lev["today"]):.1f} dB', ha='center', fontsize=6.3, transform=ax.transAxes)
-    h, l = axs[0].get_legend_handles_labels(); fig.legend(h, l, fontsize=7, frameon=False, loc='lower center', ncol=2, bbox_to_anchor=(.5, -.1))
+        f = FIG[f'{lo}-{hi}']
+        ax.text(0.5, -.2, f'rms spread (peak-to-peak), dB\n31 Aug {f["sb"]:.2f} ({f["pb"]:.1f}) · 2 Sep {f["ss"][0]:.2f} / {f["ss"][1]:.2f} / {f["ss"][2]:.2f} · 30 Sep {f["sa"]:.2f} ({f["pa"]:.1f})', ha='center', fontsize=6, transform=ax.transAxes)
+    h, l = axs[0].get_legend_handles_labels(); fig.legend(h, l, fontsize=6.8, frameon=False, loc='lower center', ncol=3, bbox_to_anchor=(.5, -.1))
     fig.savefig(HERE + '/fig-polar.png', dpi=200, bbox_inches='tight'); plt.close(fig)
     return FIG
 
@@ -176,7 +180,7 @@ def page2(PS):
 <tr><td class="tag">for reference: 1–2 Sep re-read with today's corrections</td><td class="num">{Sc['n']}</td><td class="num">{Sc['med']:.1f} % ({Sc['lo']:.0f}–{Sc['hi']:.0f})</td><td class="num">{Sc['worst']:.1f} dB</td><td class="num">{PS['sept_c', 1900]['med']:.0f} % ({PS['sept_c', 1900]['lo']:.0f}–{PS['sept_c', 1900]['hi']:.0f})</td></tr></tbody></table>
 <ul>
 <li><b>As the app's Polar tab draws it</b> (total level in the band, PWM 2000, recomputed from the data). <b>Each capture is read with the calibration that existed when it was taken</b>: the factory files for 31 Aug and 1–2 Sep, the measured corrections for 30 Sep. The "before" curve is the 31 Aug horizontal baseline, an earlier baseline at another operating point (7.35 V against 11.7 V), not a controlled pair.</li>
-<li><b>20–560 Hz</b>, the low end with the blade tone at about 238 Hz: rms spread {F1['sb']:.2f} → {F1['sa']:.2f} dB, range {F1['pb']:.1f} → {F1['pa']:.1f} dB. <b>100–10000 Hz:</b> {F2['sb']:.2f} → {F2['sa']:.2f} dB, range {F2['pb']:.1f} → {F2['pa']:.1f} dB. The 30 Sep outline is the smoother one in both bands.</li>
+<li><b>20–560 Hz</b>, the low end with the blade tone at about 238 Hz: rms spread of the total level {F1['sa']:.2f} dB on 30 Sep, against {F1['sb']:.2f} dB on 31 Aug and {F1['ss'][0]:.2f} / {F1['ss'][1]:.2f} / {F1['ss'][2]:.2f} dB on 2 Sep (prop15 / 16 / 17), so 30 Sep is the smoothest. <b>100–10000 Hz:</b> {F2['sa']:.2f} dB on 30 Sep, {F2['sb']:.2f} dB on 31 Aug, {F2['ss'][0]:.2f} / {F2['ss'][1]:.2f} / {F2['ss'][2]:.2f} dB on 2 Sep: here the 2 Sep runs are slightly smoother than 30 Sep.</li>
 <li><b>Tone-notched broadband, 315 Hz–8 kHz</b> (table): 30 Sep has {T['med']:.0f} % of cells within ±1.3 dB, against a median of {Sp['med']:.0f} % for 1–2 Sep ({Sp['lo']:.0f}–{Sp['hi']:.0f}) and {Au['med']:.0f} % for 31 Aug ({Au['lo']:.0f}–{Au['hi']:.0f}); the worst capsule is {T['worst']:.1f} dB off the mean against {Sp['worst']:.1f} and {Au['worst']:.1f} dB. Part of this is the microphone correction: the same 1–2 Sep captures re-read with today's corrections give {Sc['med']:.0f} % ({Sc['lo']:.0f}–{Sc['hi']:.0f}), which is level with 30 Sep. The absolute change is real; most of it comes from the calibration, little from the room.</li>
 </ul></body></html>"""
     mk = '<h1 style="font-size:15pt;margin:8pt 0 2pt;padding-top:4pt;border-top:.7pt solid #c6d0d5">3 · Polars'
