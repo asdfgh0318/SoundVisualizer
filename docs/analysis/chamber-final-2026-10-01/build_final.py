@@ -82,21 +82,21 @@ def axis_check():
     return {n: (ends_centre(t0, i), float(np.median([ends_centre(g, i) for g in fl]))) for i, n in ((12, '2 kHz'), (15, '4 kHz'))}
 def bbl(g, lo=4, hi=10):                              # tone-notched broadband 315 Hz-1 kHz (bands 4..9), dB per capsule
     B = g['B'][:, lo:hi]; B = B[:, ~np.isnan(B).any(0)]; return 10 * np.log10((10 ** (B / 10)).sum(1))
-def fig_polar():
-    cur = {'today': last_at(TODAY, 2000), 'aug': last_at(AUG[0], 2000), 'sept': last_at('2004__6in__unset__dp1-baseline-horizontal-prop9', 2000)}
-    dv = {k: bbl(v) - bbl(v).mean() for k, v in cur.items()}
-    fig, axs = plt.subplots(1, 2, figsize=(7.0, 3.6), subplot_kw=dict(projection='polar'), gridspec_kw=dict(wspace=.12))
-    for ax, other, ttl, col in ((axs[0], 'aug', 'vs 31 Aug · 7.35 V, 13.8 A (your screenshot)', '#e0679c'), (axs[1], 'sept', 'vs 1–2 Sep · 11.65 V, 7.3 A (same operating point)', '#c05621')):
-        for key, c, lw in (('today', '#2b6cb0', 1.6), (other, col, 1.3)):
-            el = cur[key]['elev']; v = dv[key] + 8; th = np.radians(np.r_[el, 180 - el[::-1]]); r = np.r_[v, v[::-1]]
-            ax.plot(np.r_[th, th[0]], np.r_[r, r[0]], color=c, lw=lw, marker='o', ms=2.6)
-        ax.set_rlim(0, 16); ax.set_rticks([4, 8, 12]); ax.set_yticklabels(['−4', '0', '+4 dB']); ax.set_rlabel_position(22); ax.tick_params(axis='y', labelsize=5.5)
-        ax.set_thetagrids([90, 0, 270], ['+90°', '0°', '−90°'], fontsize=6); ax.grid(alpha=.3); ax.set_title(ttl, fontsize=7, pad=11)
-        ax.text(0.5, -.17, f'rms spread: 30 Sep {np.std(dv["today"]):.2f} dB · other {np.std(dv[other]):.2f} dB\npeak-to-peak: {np.ptp(dv["today"]):.1f} dB · {np.ptp(dv[other]):.1f} dB', ha='center', fontsize=6.3, transform=ax.transAxes)
-    from matplotlib.lines import Line2D
-    fig.legend([Line2D([0], [0], color='#2b6cb0', lw=1.6), Line2D([0], [0], color='#e0679c', lw=1.3), Line2D([0], [0], color='#c05621', lw=1.3)],
-               ['30 Sep, PWM 2000', '31 Aug horizontal, PWM 2000', '1–2 Sep set, prop9 shown (median spread)'], fontsize=6.3, frameon=False, loc='lower center', ncol=3, bbox_to_anchor=(.5, -.1))
-    fig.suptitle('Tone-notched broadband 315 Hz–1 kHz, relative to each curve\'s own mean, zoomed to ±8 dB (on the full 0–80 dB SPL scale all three are near-round)', fontsize=6.6, y=1.04)
+def fig_polar():                                       # the app's Polar tab: total level in a band per capsule, mirrored to 360 deg, PWM 2000, dB SPL
+    cur = {'today': last_at(TODAY, 2000), 'aug': last_at(AUG[0], 2000)}
+    fig, axs = plt.subplots(1, 2, figsize=(7.4, 4.1), subplot_kw=dict(projection='polar'), gridspec_kw=dict(wspace=.22))
+    for ax, (lo, hi, rmin) in zip(axs, ((20, 560, 0), (100, 10000, 50))):
+        lev = {k: totals(v, lo, hi) for k, v in cur.items()}
+        for key, c, lw, nm in (('aug', '#e0679c', 1.5, '31 Aug horizontal, before'), ('today', '#2b6cb0', 1.9, '30 Sep prop plane, after')):
+            el = cur[key]['elev']; v = lev[key]; th = np.radians(np.r_[el, 180 - el[::-1]]); r = np.r_[v, v[::-1]]
+            ax.plot(np.r_[th, th[0]], np.r_[r, r[0]], color=c, lw=lw, marker='o', ms=3, label=nm)
+        ax.set_rlim(rmin, 80); ticks = [t for t in range(0, 81, 20) if t >= rmin and t > rmin] + [80] if rmin else [20, 40, 60, 80]
+        ax.set_rticks(sorted(set(ticks))); ax.set_yticklabels([f'{t:g}' for t in sorted(set(ticks))]); ax.set_rlabel_position(22); ax.tick_params(axis='y', labelsize=6)
+        ax.set_thetagrids([90, 45, 0, 315, 270, 225, 180, 135], ['+90°', '+45°', '0°', '−45°', '−90°', '−45°', '0°', '+45°'], fontsize=6); ax.grid(alpha=.3)
+        sp = lambda v: float(np.sqrt(np.mean((v - v.mean()) ** 2)))
+        ax.set_title(f'{lo}–{hi} Hz, dB SPL (radial {rmin}–80)', fontsize=7.5, pad=10)
+        ax.text(0.5, -.2, f'rms spread: before {sp(lev["aug"]):.2f} dB · after {sp(lev["today"]):.2f} dB\npeak-to-peak: before {np.ptp(lev["aug"]):.1f} dB · after {np.ptp(lev["today"]):.1f} dB', ha='center', fontsize=6.3, transform=ax.transAxes)
+    h, l = axs[0].get_legend_handles_labels(); fig.legend(h, l, fontsize=7, frameon=False, loc='lower center', ncol=2, bbox_to_anchor=(.5, -.1))
     fig.savefig(HERE + '/fig-polar.png', dpi=200, bbox_inches='tight'); plt.close(fig)
 
 def srcstep(st):                                     # level change vs the empty floor, per capsule, in two bands
@@ -128,7 +128,7 @@ h1{font-size:15pt;margin:0 0 1pt;letter-spacing:-.02em} h2{font-size:10pt;margin
 table{border-collapse:collapse;width:100%;margin:2pt 0 5pt;font-size:7.4pt} th{font-size:6.4pt;text-transform:uppercase;letter-spacing:.05em;color:#46545c;text-align:left;padding:2.5pt 3pt;border-bottom:1pt solid #10171b;vertical-align:bottom}
 td{padding:1.2pt 3pt;border-bottom:.5pt solid #e0e6e9;vertical-align:top} td.num,th.num{font-family:"DejaVu Sans Mono",monospace;font-size:7pt;white-space:nowrap;text-align:right}
 td.lst{font-family:"DejaVu Sans Mono",monospace;font-size:6.6pt;text-align:right;white-space:normal;width:26%}
-img{width:100%;max-height:5.3cm;object-fit:contain;display:block;margin:2pt auto}
+img{width:100%;max-height:13cm;object-fit:contain;display:block;margin:2pt auto}
 .tag{font-family:"DejaVu Sans Mono",monospace;font-size:6.3pt;color:#74828a} .box{background:#f1f4f6;border-left:2pt solid #17566e;padding:4pt 4mm;margin:4pt 0 5pt}
 .q{border-left:1.5pt solid #17566e;padding:1pt 0 1pt 3mm;margin:2pt 0;font-size:7.4pt} .q span{display:block;font-family:"DejaVu Sans Mono",monospace;font-size:6pt;color:#74828a}
 .pass{background:#cfe0f3}.marg{background:#f3e6b3}.fail{background:#f0c4a8}'''
@@ -159,7 +159,7 @@ def page2(PS):
 <h1>2 · Main waterfalls and the day 3 evaluation</h1><p class="tag" style="margin:0 0 2pt">2.3 evaluation against the ISO anechoic tolerance values (an analogue, not a qualification)</p>
 <p class="tag">11 calibrated capsules on a 0.84 m arc · 95 tones, 257 Hz–6.35 kHz · runs: 25 Sep, <code>day3-a</code> (13:17) → <code>carpet-reordered</code> (19:15)</p>
 <h2 style="border:0;margin-top:2pt">The method</h2>
-<p><b>Where the method comes from.</b> <u>Taken from the standards:</u> each one-third-octave band judged on its own against the free-field ideal, tones and noise separately, the worst position against the limit, and the anechoic tolerances ±1.5 dB for 125–630 Hz and ±1.0 dB for 800–5000 Hz (ISO 5305:2024 Table 1, p. 8; the same values in Cunefare et al. 2003, J. Acoust. Soc. Am. 113(2), p. 882, quoted on page 5; ISO 3745:2012 and ISO 26101 are the two procedures, compared by Russo et al. 2018). <u>Ours, not the standards':</u> they move one microphone along a traverse and test the decay of level with distance, and only that test earns the words "qualified" or "in conformity" (ISO 26101-1 p. 3; ISO 3745 §5.1). We have eleven fixed capsules at one radius and test uniformity around an axisymmetric source, so the reference is the arc mean and the same values are applied to a different quantity. <b>Band level</b> = each capsule's mean over the {F['ntones'][630]}–{F['ntones'][1000]} tones in the band, worst capsule against the value; <b>pure tones</b> = share of tone × capsule cells inside; within ±{MARG:.2f} dB is marginal (largest difference between two same-day runs of one unchanged state, {len(REPEATS)} pairs). The room is treated and not qualified, so this is a figure of merit that ranks bands; it claims neither qualification nor conformity. Held: previews of ISO 3745:2012 (clauses 1–6.1.2, no annexes), ISO 26101-1 and ISO 5305.</p>
+<p><b>Where the method comes from.</b> <u>Taken from the standards:</u> each one-third-octave band judged on its own against the free-field ideal, tones and noise separately, the worst position against the limit, and the anechoic tolerances ±1.5 dB for 125–630 Hz and ±1.0 dB for 800–5000 Hz (ISO 5305:2024 Table 1, p. 8; the same values in Cunefare et al. 2003, J. Acoust. Soc. Am. 113(2), p. 882, quoted on page 6; ISO 3745:2012 and ISO 26101 are the two procedures, compared by Russo et al. 2018). <u>Ours, not the standards':</u> they move one microphone along a traverse and test the decay of level with distance, and only that test earns the words "qualified" or "in conformity" (ISO 26101-1 p. 3; ISO 3745 §5.1). We have eleven fixed capsules at one radius and test uniformity around an axisymmetric source, so the reference is the arc mean and the same values are applied to a different quantity. <b>Band level</b> = each capsule's mean over the {F['ntones'][630]}–{F['ntones'][1000]} tones in the band, worst capsule against the value; <b>pure tones</b> = share of tone × capsule cells inside; within ±{MARG:.2f} dB is marginal (largest difference between two same-day runs of one unchanged state, {len(REPEATS)} pairs). The room is treated and not qualified, so this is a figure of merit that ranks bands; it claims neither qualification nor conformity. Held: previews of ISO 3745:2012 (clauses 1–6.1.2, no annexes), ISO 26101-1 and ISO 5305.</p>
 <p class="box" style="margin:2pt 0 1pt;padding:2pt 4mm;font-size:7.2pt"><b>Cell = one tone × one microphone.</b> "Cells in limit" counts these, e.g. 250 Hz: 3 tones × 11 microphones = 33 cells, 12 inside ±1.5 dB = 36 %. The deviation columns show the worst microphone's band mean, as a share of the limit.</p>
 <table><thead><tr><th class="num">Band</th><th class="num">Limit</th><th class="num">Tones (× 11 capsules)</th><th class="num">Day 3 start</th><th class="num">cells in limit</th><th class="num">Final</th><th class="num">cells in limit</th></tr></thead><tbody>{rows}</tbody></table>
 <table><thead><tr><th>Measure</th><th class="num">Day 3 start</th><th class="num">Final</th></tr></thead><tbody>{card}</tbody></table>
@@ -171,11 +171,15 @@ def page2(PS):
 <tr><td>1–2 Sep, arc flat (11.65 V, 7.3 A, −4.0 N)</td><td class="num">{Sp['n']}</td><td class="num">{Sp['med']:.0f} % ({Sp['lo']:.0f}–{Sp['hi']:.0f})</td><td class="num">{Sp['worst']:.1f} dB</td><td class="num">{Sp9['med']:.0f} % ({Sp9['lo']:.0f}–{Sp9['hi']:.0f})</td></tr>
 <tr><td>31 Aug (7.35 V, 13.8 A, +6 N: other operating point)</td><td class="num">{Au['n']}</td><td class="num">{Au['med']:.0f} % ({Au['lo']:.0f}–{Au['hi']:.0f})</td><td class="num">{Au['worst']:.1f} dB</td><td class="num">{Au9['med']:.0f} % ({Au9['lo']:.0f}–{Au9['hi']:.0f})</td></tr></tbody></table>
 <ul>
-<li><b>Rounder than 31 Aug where it counts</b>: worst capsule {T['worst']:.1f} dB off the mean instead of {Au['worst']:.1f} dB; the 31 Aug runs go down to {Au['lo']:.0f} % of cells in tolerance. That run is the one in the screenshot, whose total level (tones included) is equally spread, 1.39 vs 1.41 dB; the gain is in the broadband.</li>
-<li><b>Not rounder than 1–2 Sep</b> (same voltage, current, thrust): {T['med']:.0f} % against a median of {Sp['med']:.0f} % ({Sp['lo']:.0f}–{Sp['hi']:.0f}), inside the scatter of those runs.</li>
-<li><b>Prop-plane measurement</b>: ends of the arc read louder than the centre at 2 and 4 kHz by {AX['2 kHz'][0]:+.1f} and {AX['4 kHz'][0]:+.1f} dB today, and by {AX['2 kHz'][1]:+.1f} and {AX['4 kHz'][1]:+.1f} dB (median) in the flat-arc runs where the true difference is zero: position-fixed error, not directivity.</li>
+<li><b>As the app's Polar tab draws it</b> (total level, PWM 2000, recomputed from the data). The "before" is the 31 Aug horizontal baseline, an earlier baseline at another operating point (7.35 V against 11.7 V), not a controlled pair. <b>20–560 Hz</b>, the low end with the blade tone at about 238 Hz: 30 Sep is a near-circle on the 0–80 dB scale (its 4.0 dB range is a bottom-louder trend), 31 Aug is wider (6.2 dB range). <b>100–10000 Hz:</b> 31 Aug is pinched 3–4 dB at ±36–54° and bulges at +90°; 30 Sep stays near a circle; the rms spreads are equal (1.41 and 1.39 dB).</li>
+<li><b>Tone-notched broadband, 315 Hz–8 kHz</b> (table; the arc ends read louder than the centre at 2 and 4 kHz in the flat-arc runs too, so that is position error, not directivity): worst capsule {T['worst']:.1f} dB off the mean on 30 Sep against {Au['worst']:.1f} dB on 31 Aug; the 31 Aug runs go down to {Au['lo']:.0f} % of cells in tolerance.</li>
+<li><b>Not rounder than 1–2 Sep</b> (same voltage, current, thrust): {T['med']:.0f} % against a median of {Sp['med']:.0f} % ({Sp['lo']:.0f}–{Sp['hi']:.0f}), inside the scatter of those runs, taken before the room work.</li>
+
 </ul></body></html>"""
-    open(HERE + '/_p2.html', 'w').write(h); chromium('_p2')
+    mk = '<h1 style="font-size:15pt;margin:8pt 0 2pt;padding-top:4pt;border-top:.7pt solid #c6d0d5">3 · Polars'
+    i = h.index(mk); head = h[:h.index('<body>') + 6]
+    open(HERE + '/_p2.html', 'w').write(h[:i] + '</body></html>'); chromium('_p2')
+    open(HERE + '/_p2b.html', 'w').write(head + h[i:].replace(mk, '<h1>3 · Polars', 1)); chromium('_p2b')
 
 def page3():
     B3, CL = stats('2026-09-25/blue-carpet'), stats('2026-09-25/closer-a'); s3 = srcstep(C3); RO = roomonly(); FL = flips(); MC = mapchange(CARPET2, CARPET3)
@@ -292,8 +296,8 @@ if __name__ == '__main__':
     subprocess.run([sys.executable, STEP, DAY3A, FINAL, 'Day 3 start (worst) vs final · source moved in between', 'floor-vs-carpet'], cwd=ROOT, check=True, stdout=subprocess.DEVNULL)
     D = ROOT + '/docs/analysis/chamber-treatments-2026-09-23/'
     import shutil; shutil.copy(D + 'floor-vs-carpet.png', HERE + '/_wf.png'); from PIL import Image, ImageChops; _im = Image.open(HERE + '/_wf.png').convert('RGB'); _im.crop(ImageChops.difference(_im, Image.new('RGB', _im.size, (255, 255, 255))).getbbox()).save(HERE + '/_wf.png'); pagewf('_wf.png'); page1(); page2(PS); page3()
-    subprocess.run(['pdfunite', HERE + '/_p0.pdf', HERE + '/_p1a.pdf', HERE + '/_p1.pdf', HERE + '/_p2.pdf', HERE + '/_p3.pdf', HERE + '/CHAMBER-FINAL.pdf'], check=True)
-    for x in ('_wf.png', '_p1a.pdf', '_p1a.html', '_p1.html', '_p0.pdf', '_p0.html', '_p1.pdf', '_p2.pdf', '_p3.pdf', '_p2.html', '_p3.html'): os.remove(HERE + '/' + x)
+    subprocess.run(['pdfunite', HERE + '/_p0.pdf', HERE + '/_p1a.pdf', HERE + '/_p1.pdf', HERE + '/_p2.pdf', HERE + '/_p2b.pdf', HERE + '/_p3.pdf', HERE + '/CHAMBER-FINAL.pdf'], check=True)
+    for x in ('_wf.png', '_p1a.pdf', '_p1a.html', '_p1.html', '_p0.pdf', '_p0.html', '_p1.pdf', '_p2.pdf', '_p2b.pdf', '_p2b.html', '_p3.pdf', '_p2.html', '_p3.html'): os.remove(HERE + '/' + x)
     for g in ('floor-vs-carpet.pdf', 'floor-vs-carpet.png'): os.remove(D + g)
     print('floor', round(F['score'], 3), cutoff(F), count(F, 'fail'), round(F['tone_all']), '| carpet', round(C['score'], 3), cutoff(C), count(C, 'fail'), count(C, 'marg'), round(C['tone_all']),
           '| final', round(X['score'], 3), cutoff(X), '| MARG', MARG)
