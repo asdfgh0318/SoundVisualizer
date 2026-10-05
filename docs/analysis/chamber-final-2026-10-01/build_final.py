@@ -60,7 +60,7 @@ count = lambda st, k: sum(verdict(st, fc) == k for fc in TOB)
 
 
 # ---- prop-plane roundness: the same statistic for today and for every earlier flat-arc run
-SEPT = [f'2004__6in__unset__dp1-baseline-horizontal-prop{k}' for k in range(8, 18)]          # 2 Sep, 11.65 V / 7.3 A / -4.0 N, the operating point of 30 Sep
+SEPT = [f'2004__6in__unset__dp1-baseline-horizontal-prop{k}' for k in range(8, 18)]          # 1-2 Sep (prop8-10 on 1 Sep 16:44-16:55, prop11-17 on 2 Sep), arc flat, 11.65 V / 7.3 A / -4.0 N, the operating point of 30 Sep
 AUG = [f'2004__6in__unset__dp1-baseline-horizontal-{k}' for k in ('2026-08-31', '2', '3', '5', '6')]      # 31 Aug, 7.35 V / 13.8 A / +6 N
 def totals(g, lo=100, hi=10000):
     f = g['f']; df = f[1] - f[0]; m = (f >= lo) & (f < hi); return 10 * np.log10((10 ** (g['mags'][:, m] / 10)).sum(1) * df)
@@ -86,7 +86,7 @@ def fig_polar():
     cur = {'today': last_at(TODAY, 2000), 'aug': last_at(AUG[0], 2000), 'sept': last_at('2004__6in__unset__dp1-baseline-horizontal-prop9', 2000)}
     dv = {k: bbl(v) - bbl(v).mean() for k, v in cur.items()}
     fig, axs = plt.subplots(1, 2, figsize=(7.0, 3.6), subplot_kw=dict(projection='polar'), gridspec_kw=dict(wspace=.12))
-    for ax, other, ttl, col in ((axs[0], 'aug', 'vs 31 Aug · 7.35 V, 13.8 A (your screenshot)', '#e0679c'), (axs[1], 'sept', 'vs 2 Sep · 11.65 V, 7.3 A (same operating point)', '#c05621')):
+    for ax, other, ttl, col in ((axs[0], 'aug', 'vs 31 Aug · 7.35 V, 13.8 A (your screenshot)', '#e0679c'), (axs[1], 'sept', 'vs 1–2 Sep · 11.65 V, 7.3 A (same operating point)', '#c05621')):
         for key, c, lw in (('today', '#2b6cb0', 1.6), (other, col, 1.3)):
             el = cur[key]['elev']; v = dv[key] + 8; th = np.radians(np.r_[el, 180 - el[::-1]]); r = np.r_[v, v[::-1]]
             ax.plot(np.r_[th, th[0]], np.r_[r, r[0]], color=c, lw=lw, marker='o', ms=2.6)
@@ -95,7 +95,7 @@ def fig_polar():
         ax.text(0.5, -.17, f'rms spread: 30 Sep {np.std(dv["today"]):.2f} dB · other {np.std(dv[other]):.2f} dB\npeak-to-peak: {np.ptp(dv["today"]):.1f} dB · {np.ptp(dv[other]):.1f} dB', ha='center', fontsize=6.3, transform=ax.transAxes)
     from matplotlib.lines import Line2D
     fig.legend([Line2D([0], [0], color='#2b6cb0', lw=1.6), Line2D([0], [0], color='#e0679c', lw=1.3), Line2D([0], [0], color='#c05621', lw=1.3)],
-               ['30 Sep, PWM 2000', '31 Aug horizontal, PWM 2000', '2 Sep prop9 (median-spread run), PWM 2000'], fontsize=6.3, frameon=False, loc='lower center', ncol=3, bbox_to_anchor=(.5, -.1))
+               ['30 Sep, PWM 2000', '31 Aug horizontal, PWM 2000', '1–2 Sep set, prop9 shown (median spread)'], fontsize=6.3, frameon=False, loc='lower center', ncol=3, bbox_to_anchor=(.5, -.1))
     fig.suptitle('Tone-notched broadband 315 Hz–1 kHz, relative to each curve\'s own mean, zoomed to ±8 dB (on the full 0–80 dB SPL scale all three are near-round)', fontsize=6.6, y=1.04)
     fig.savefig(HERE + '/fig-polar.png', dpi=200, bbox_inches='tight'); plt.close(fig)
 
@@ -168,11 +168,11 @@ def page2(PS):
 <img src="fig-polar.png">
 <table><thead><tr><th>Tone-notched broadband, 315 Hz–8 kHz, cells within ±1.3 dB of the polar mean</th><th class="num">Runs</th><th class="num">PWM 2000: median (range)</th><th class="num">worst cell</th><th class="num">PWM 1900: median (range)</th></tr></thead><tbody>
 <tr><td><b>30 Sep, today</b></td><td class="num">1</td><td class="num"><b>{T['med']:.0f} %</b></td><td class="num">{T['worst']:.1f} dB</td><td class="num">{T9['med']:.0f} %</td></tr>
-<tr><td>2 Sep, same operating point (11.65 V, 7.3 A, −4.0 N)</td><td class="num">{Sp['n']}</td><td class="num">{Sp['med']:.0f} % ({Sp['lo']:.0f}–{Sp['hi']:.0f})</td><td class="num">{Sp['worst']:.1f} dB</td><td class="num">{Sp9['med']:.0f} % ({Sp9['lo']:.0f}–{Sp9['hi']:.0f})</td></tr>
+<tr><td>1–2 Sep, arc flat (11.65 V, 7.3 A, −4.0 N)</td><td class="num">{Sp['n']}</td><td class="num">{Sp['med']:.0f} % ({Sp['lo']:.0f}–{Sp['hi']:.0f})</td><td class="num">{Sp['worst']:.1f} dB</td><td class="num">{Sp9['med']:.0f} % ({Sp9['lo']:.0f}–{Sp9['hi']:.0f})</td></tr>
 <tr><td>31 Aug (7.35 V, 13.8 A, +6 N: other operating point)</td><td class="num">{Au['n']}</td><td class="num">{Au['med']:.0f} % ({Au['lo']:.0f}–{Au['hi']:.0f})</td><td class="num">{Au['worst']:.1f} dB</td><td class="num">{Au9['med']:.0f} % ({Au9['lo']:.0f}–{Au9['hi']:.0f})</td></tr></tbody></table>
 <ul>
 <li><b>Rounder than 31 Aug where it counts</b>: worst capsule {T['worst']:.1f} dB off the mean instead of {Au['worst']:.1f} dB; the 31 Aug runs go down to {Au['lo']:.0f} % of cells in tolerance. That run is the one in the screenshot, whose total level (tones included) is equally spread, 1.39 vs 1.41 dB; the gain is in the broadband.</li>
-<li><b>Not rounder than 2 Sep</b> (same voltage, current, thrust): {T['med']:.0f} % against a median of {Sp['med']:.0f} % ({Sp['lo']:.0f}–{Sp['hi']:.0f}), inside the scatter of the 2 Sep runs.</li>
+<li><b>Not rounder than 1–2 Sep</b> (same voltage, current, thrust): {T['med']:.0f} % against a median of {Sp['med']:.0f} % ({Sp['lo']:.0f}–{Sp['hi']:.0f}), inside the scatter of those runs.</li>
 <li><b>Prop-plane measurement</b>: ends of the arc read louder than the centre at 2 and 4 kHz by {AX['2 kHz'][0]:+.1f} and {AX['4 kHz'][0]:+.1f} dB today, and by {AX['2 kHz'][1]:+.1f} and {AX['4 kHz'][1]:+.1f} dB (median) in the flat-arc runs where the true difference is zero: position-fixed error, not directivity.</li>
 </ul></body></html>"""
     open(HERE + '/_p2.html', 'w').write(h); chromium('_p2')
