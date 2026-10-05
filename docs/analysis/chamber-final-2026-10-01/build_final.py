@@ -66,13 +66,14 @@ def totals(g, lo=100, hi=10000):
     f = g['f']; df = f[1] - f[0]; m = (f >= lo) & (f < hi); return 10 * np.log10((10 ** (g['mags'][:, m] / 10)).sum(1) * df)
 def cells(g):                                           # tone-notched broadband 315 Hz-8 kHz, deviation of each capsule from the polar mean
     B = g['B'][:, 4:19]; B = B[:, ~np.isnan(B).any(0)]; d = B - B.mean(0); return float((abs(d) <= 1.3).mean() * 100), float(abs(d).max())
-def last_at(b, pw):
-    gs = [g for g in groups(base(b), CORR) if g['pwm'] == pw]; return gs[-1] if gs else None
+FACT = DATA + '/calibrations/factory-originals-2026-09-16'
+def last_at(b, pw, cal=None):                                     # a capture is read with the calibration that existed when it was taken: factory files before 16 Sep, the measured corrections after
+    gs = [g for g in groups(base(b), cal or (CORR if b == TODAY else FACT)) if g['pwm'] == pw]; return gs[-1] if gs else None
 def polar_stats():
     out = {}
-    for name, bs in (('today', [TODAY]), ('sept', SEPT), ('aug', AUG)):
+    for name, bs, cal in (('today', [TODAY], None), ('sept', SEPT, None), ('aug', AUG, None), ('sept_c', SEPT, CORR)):
         for pw in (2000, 1900):
-            rows = [cells(g) for g in (last_at(b, pw) for b in bs) if g is not None]
+            rows = [cells(g) for g in (last_at(b, pw, cal) for b in bs) if g is not None]
             a = np.array(rows); out[name, pw] = dict(n=len(a), med=float(np.median(a[:, 0])), lo=float(a[:, 0].min()), hi=float(a[:, 0].max()), worst=float(np.median(a[:, 1])))
     return out
 def ends_centre(g, bi):                                  # ends (|pos| >= 72) minus centre (|pos| <= 18), dB
@@ -83,7 +84,7 @@ def axis_check():
 def bbl(g, lo=4, hi=10):                              # tone-notched broadband 315 Hz-1 kHz (bands 4..9), dB per capsule
     B = g['B'][:, lo:hi]; B = B[:, ~np.isnan(B).any(0)]; return 10 * np.log10((10 ** (B / 10)).sum(1))
 def fig_polar():                                       # the app's Polar tab: total level in a band per capsule, mirrored to 360 deg, PWM 2000, dB SPL
-    cur = {'today': last_at(TODAY, 2000), 'aug': last_at(AUG[0], 2000)}
+    cur = {'today': last_at(TODAY, 2000), 'aug': last_at(AUG[0], 2000)}; FIG = {}
     fig, axs = plt.subplots(1, 2, figsize=(7.4, 4.1), subplot_kw=dict(projection='polar'), gridspec_kw=dict(wspace=.22))
     for ax, (lo, hi, rmin, rmax) in zip(axs, ((20, 560, 30, 76), (100, 10000, 50, 80))):
         lev = {k: totals(v, lo, hi) for k, v in cur.items()}
@@ -94,10 +95,12 @@ def fig_polar():                                       # the app's Polar tab: to
         ax.set_rticks(ticks); ax.set_yticklabels([f'{t:g}' for t in ticks]); ax.set_rlabel_position(22); ax.tick_params(axis='y', labelsize=6)
         ax.set_thetagrids([90, 45, 0, 315, 270, 225, 180, 135], ['+90°', '+45°', '0°', '−45°', '−90°', '−45°', '0°', '+45°'], fontsize=6); ax.grid(alpha=.3)
         sp = lambda v: float(np.sqrt(np.mean((v - v.mean()) ** 2)))
+        FIG[f'{lo}-{hi}'] = dict(sb=sp(lev['aug']), sa=sp(lev['today']), pb=float(np.ptp(lev['aug'])), pa=float(np.ptp(lev['today'])))
         ax.set_title(f'{lo}–{hi} Hz, dB SPL (radial {rmin}–{rmax})', fontsize=7.5, pad=10)
         ax.text(0.5, -.2, f'rms spread: before {sp(lev["aug"]):.2f} dB · after {sp(lev["today"]):.2f} dB\npeak-to-peak: before {np.ptp(lev["aug"]):.1f} dB · after {np.ptp(lev["today"]):.1f} dB', ha='center', fontsize=6.3, transform=ax.transAxes)
     h, l = axs[0].get_legend_handles_labels(); fig.legend(h, l, fontsize=7, frameon=False, loc='lower center', ncol=2, bbox_to_anchor=(.5, -.1))
     fig.savefig(HERE + '/fig-polar.png', dpi=200, bbox_inches='tight'); plt.close(fig)
+    return FIG
 
 def srcstep(st):                                     # level change vs the empty floor, per capsule, in two bands
     d = st['L'] - F['L']; f = st['f']; r = {}
@@ -153,7 +156,7 @@ def page2(PS):
     card = ''.join(f"<tr><td>{n}</td><td class='{cl(i)}'>{sf[i]}</td><td class='{cl(i)}'><b>{sc_[i]}</b></td></tr>" for i, n in enumerate(names))
     s3 = srcstep(C3)
     MCg = mapchange(DAY3A, FINAL)
-    T, Sp, Au = PS['today', 2000], PS['sept', 2000], PS['aug', 2000]
+    T, Sp, Au, Sc = PS['today', 2000], PS['sept', 2000], PS['aug', 2000], PS['sept_c', 2000]; F1, F2 = PS['fig']['20-560'], PS['fig']['100-10000']
     T9, Sp9, Au9 = PS['today', 1900], PS['sept', 1900], PS['aug', 1900]; AX = PS['axis']
     h = f"""<!doctype html><html><head><meta charset="utf-8"><title>Chamber evaluation</title><style>{CSS}</style></head><body>
 <h1>2 · Main waterfalls and the day 3 evaluation</h1><p class="tag" style="margin:0 0 2pt">2.3 evaluation against the ISO anechoic tolerance values (an analogue, not a qualification)</p>
@@ -167,14 +170,14 @@ def page2(PS):
 <h1 style="font-size:15pt;margin:8pt 0 2pt;padding-top:4pt;border-top:.7pt solid #c6d0d5">3 · Polars: is the prop-plane polar rounder than before?</h1>
 <img src="fig-polar.png">
 <table><thead><tr><th>Tone-notched broadband, 315 Hz–8 kHz, cells within ±1.3 dB of the polar mean</th><th class="num">Runs</th><th class="num">PWM 2000: median (range)</th><th class="num">worst cell</th><th class="num">PWM 1900: median (range)</th></tr></thead><tbody>
-<tr><td><b>30 Sep, today</b></td><td class="num">1</td><td class="num"><b>{T['med']:.0f} %</b></td><td class="num">{T['worst']:.1f} dB</td><td class="num">{T9['med']:.0f} %</td></tr>
-<tr><td>1–2 Sep, arc flat (11.65 V, 7.3 A, −4.0 N)</td><td class="num">{Sp['n']}</td><td class="num">{Sp['med']:.0f} % ({Sp['lo']:.0f}–{Sp['hi']:.0f})</td><td class="num">{Sp['worst']:.1f} dB</td><td class="num">{Sp9['med']:.0f} % ({Sp9['lo']:.0f}–{Sp9['hi']:.0f})</td></tr>
-<tr><td>31 Aug (7.35 V, 13.8 A, +6 N: other operating point)</td><td class="num">{Au['n']}</td><td class="num">{Au['med']:.0f} % ({Au['lo']:.0f}–{Au['hi']:.0f})</td><td class="num">{Au['worst']:.1f} dB</td><td class="num">{Au9['med']:.0f} % ({Au9['lo']:.0f}–{Au9['hi']:.0f})</td></tr></tbody></table>
+<tr><td><b>30 Sep, today</b></td><td class="num">1</td><td class="num"><b>{T['med']:.1f} %</b></td><td class="num">{T['worst']:.1f} dB</td><td class="num">{T9['med']:.0f} %</td></tr>
+<tr><td>1–2 Sep, arc flat (11.65 V, 7.3 A, −4.0 N), factory files as measured</td><td class="num">{Sp['n']}</td><td class="num">{Sp['med']:.1f} % ({Sp['lo']:.0f}–{Sp['hi']:.0f})</td><td class="num">{Sp['worst']:.1f} dB</td><td class="num">{PS['sept', 1900]['med']:.0f} % ({PS['sept', 1900]['lo']:.0f}–{PS['sept', 1900]['hi']:.0f})</td></tr>
+<tr><td>31 Aug (7.35 V, 13.8 A, +6 N: other operating point), factory files as measured</td><td class="num">{Au['n']}</td><td class="num">{Au['med']:.1f} % ({Au['lo']:.0f}–{Au['hi']:.0f})</td><td class="num">{Au['worst']:.1f} dB</td><td class="num">{PS['aug', 1900]['med']:.0f} % ({PS['aug', 1900]['lo']:.0f}–{PS['aug', 1900]['hi']:.0f})</td></tr>
+<tr><td class="tag">for reference: 1–2 Sep re-read with today's corrections</td><td class="num">{Sc['n']}</td><td class="num">{Sc['med']:.1f} % ({Sc['lo']:.0f}–{Sc['hi']:.0f})</td><td class="num">{Sc['worst']:.1f} dB</td><td class="num">{PS['sept_c', 1900]['med']:.0f} % ({PS['sept_c', 1900]['lo']:.0f}–{PS['sept_c', 1900]['hi']:.0f})</td></tr></tbody></table>
 <ul>
-<li><b>As the app's Polar tab draws it</b> (total level, PWM 2000, recomputed from the data). The "before" is the 31 Aug horizontal baseline, an earlier baseline at another operating point (7.35 V against 11.7 V), not a controlled pair. <b>20–560 Hz</b>, the low end with the blade tone at about 238 Hz: on a 30–76 dB scale 31 Aug (6.2 dB range) shows an irregular outline, while 30 Sep (4.0 dB range, a bottom-louder trend) stays smooth. <b>100–10000 Hz:</b> 31 Aug is pinched 3–4 dB at ±36–54° and bulges at +90°; 30 Sep stays near a circle; the rms spreads are equal (1.41 and 1.39 dB).</li>
-<li><b>Tone-notched broadband, 315 Hz–8 kHz</b> (table; the arc ends read louder than the centre at 2 and 4 kHz in the flat-arc runs too, so that is position error, not directivity): worst capsule {T['worst']:.1f} dB off the mean on 30 Sep against {Au['worst']:.1f} dB on 31 Aug; the 31 Aug runs go down to {Au['lo']:.0f} % of cells in tolerance.</li>
-<li><b>Not rounder than 1–2 Sep</b> (same voltage, current, thrust): {T['med']:.0f} % against a median of {Sp['med']:.0f} % ({Sp['lo']:.0f}–{Sp['hi']:.0f}), inside the scatter of those runs, taken before the room work.</li>
-
+<li><b>As the app's Polar tab draws it</b> (total level in the band, PWM 2000, recomputed from the data). <b>Each capture is read with the calibration that existed when it was taken</b>: the factory files for 31 Aug and 1–2 Sep, the measured corrections for 30 Sep. The "before" curve is the 31 Aug horizontal baseline, an earlier baseline at another operating point (7.35 V against 11.7 V), not a controlled pair.</li>
+<li><b>20–560 Hz</b>, the low end with the blade tone at about 238 Hz: rms spread {F1['sb']:.2f} → {F1['sa']:.2f} dB, range {F1['pb']:.1f} → {F1['pa']:.1f} dB. <b>100–10000 Hz:</b> {F2['sb']:.2f} → {F2['sa']:.2f} dB, range {F2['pb']:.1f} → {F2['pa']:.1f} dB. The 30 Sep outline is the smoother one in both bands.</li>
+<li><b>Tone-notched broadband, 315 Hz–8 kHz</b> (table): 30 Sep has {T['med']:.0f} % of cells within ±1.3 dB, against a median of {Sp['med']:.0f} % for 1–2 Sep ({Sp['lo']:.0f}–{Sp['hi']:.0f}) and {Au['med']:.0f} % for 31 Aug ({Au['lo']:.0f}–{Au['hi']:.0f}); the worst capsule is {T['worst']:.1f} dB off the mean against {Sp['worst']:.1f} and {Au['worst']:.1f} dB. Part of this is the microphone correction: the same 1–2 Sep captures re-read with today's corrections give {Sc['med']:.0f} % ({Sc['lo']:.0f}–{Sc['hi']:.0f}), which is level with 30 Sep. The absolute change is real; most of it comes from the calibration, little from the room.</li>
 </ul></body></html>"""
     mk = '<h1 style="font-size:15pt;margin:8pt 0 2pt;padding-top:4pt;border-top:.7pt solid #c6d0d5">3 · Polars'
     i = h.index(mk); head = h[:h.index('<body>') + 6]
@@ -287,12 +290,12 @@ if __name__ == '__main__':
     print(f'source check carpet vs floor: level {C["level"] - F["level"]:+.2f} dB, tilt {C["tilt"] - F["tilt"]:+.2f}; repeat: {C2["level"] - F["level"]:+.2f}, {C2["tilt"] - F["tilt"]:+.2f}')
     import json
     try:
-        PS = polar_stats(); PS['axis'] = axis_check(); fig_polar()
+        PS = polar_stats(); PS['axis'] = axis_check(); PS['fig'] = fig_polar()
         json.dump({f'{k[0]}@{k[1]}' if isinstance(k, tuple) else k: v for k, v in PS.items()}, open(HERE + '/polar-stats.json', 'w'), indent=1)
     except SystemExit:                  # 30 Sep bases not on this machine: reuse the saved polar figure and statistics
         PS = {(k.split('@')[0], int(k.split('@')[1])) if '@' in k else k: v for k, v in json.load(open(HERE + '/polar-stats.json')).items()}
     for kk, v in PS.items():
-        if kk != 'axis': print(kk, {a: round(b, 1) for a, b in v.items()})
+        if kk not in ('axis', 'fig'): print(kk, {a: round(b, 1) for a, b in v.items()})
     subprocess.run([sys.executable, STEP, DAY3A, FINAL, 'Day 3 start (worst) vs final · source moved in between', 'floor-vs-carpet'], cwd=ROOT, check=True, stdout=subprocess.DEVNULL)
     D = ROOT + '/docs/analysis/chamber-treatments-2026-09-23/'
     import shutil; shutil.copy(D + 'floor-vs-carpet.png', HERE + '/_wf.png'); from PIL import Image, ImageChops; _im = Image.open(HERE + '/_wf.png').convert('RGB'); _im.crop(ImageChops.difference(_im, Image.new('RGB', _im.size, (255, 255, 255))).getbbox()).save(HERE + '/_wf.png'); pagewf('_wf.png'); page1(); page2(PS); page3()
