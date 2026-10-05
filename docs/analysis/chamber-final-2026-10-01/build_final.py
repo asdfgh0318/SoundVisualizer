@@ -85,12 +85,12 @@ def bbl(g, lo=4, hi=10):                              # tone-notched broadband 3
 def fig_polar():                                       # the app's Polar tab: total level in a band per capsule, mirrored to 360 deg, PWM 2000, dB SPL
     cur = {'today': last_at(TODAY, 2000), 'aug': last_at(AUG[0], 2000)}
     fig, axs = plt.subplots(1, 2, figsize=(7.4, 4.1), subplot_kw=dict(projection='polar'), gridspec_kw=dict(wspace=.22))
-    for ax, (lo, hi, rmin, rmax) in zip(axs, ((20, 560, 50, 74), (100, 10000, 50, 80))):
+    for ax, (lo, hi, rmin, rmax) in zip(axs, ((20, 560, 30, 76), (100, 10000, 50, 80))):
         lev = {k: totals(v, lo, hi) for k, v in cur.items()}
         for key, c, lw, nm in (('aug', '#e0679c', 1.5, '31 Aug horizontal, before'), ('today', '#2b6cb0', 1.9, '30 Sep prop plane, after')):
             el = cur[key]['elev']; v = lev[key]; th = np.radians(np.r_[el, 180 - el[::-1]]); r = np.r_[v, v[::-1]]
             ax.plot(np.r_[th, th[0]], np.r_[r, r[0]], color=c, lw=lw, marker='o', ms=3, label=nm)
-        ax.set_rlim(rmin, rmax); ticks = list(range(60, rmax + 1, 10)) if rmax < 80 else [60, 80]
+        ax.set_rlim(rmin, rmax); ticks = list(range(40, rmax, 10)) if rmax < 80 else [60, 80]
         ax.set_rticks(ticks); ax.set_yticklabels([f'{t:g}' for t in ticks]); ax.set_rlabel_position(22); ax.tick_params(axis='y', labelsize=6)
         ax.set_thetagrids([90, 45, 0, 315, 270, 225, 180, 135], ['+90°', '+45°', '0°', '−45°', '−90°', '−45°', '0°', '+45°'], fontsize=6); ax.grid(alpha=.3)
         sp = lambda v: float(np.sqrt(np.mean((v - v.mean()) ** 2)))
@@ -171,7 +171,7 @@ def page2(PS):
 <tr><td>1–2 Sep, arc flat (11.65 V, 7.3 A, −4.0 N)</td><td class="num">{Sp['n']}</td><td class="num">{Sp['med']:.0f} % ({Sp['lo']:.0f}–{Sp['hi']:.0f})</td><td class="num">{Sp['worst']:.1f} dB</td><td class="num">{Sp9['med']:.0f} % ({Sp9['lo']:.0f}–{Sp9['hi']:.0f})</td></tr>
 <tr><td>31 Aug (7.35 V, 13.8 A, +6 N: other operating point)</td><td class="num">{Au['n']}</td><td class="num">{Au['med']:.0f} % ({Au['lo']:.0f}–{Au['hi']:.0f})</td><td class="num">{Au['worst']:.1f} dB</td><td class="num">{Au9['med']:.0f} % ({Au9['lo']:.0f}–{Au9['hi']:.0f})</td></tr></tbody></table>
 <ul>
-<li><b>As the app's Polar tab draws it</b> (total level, PWM 2000, recomputed from the data). The "before" is the 31 Aug horizontal baseline, an earlier baseline at another operating point (7.35 V against 11.7 V), not a controlled pair. <b>20–560 Hz</b>, the low end with the blade tone at about 238 Hz: on the zoomed 50–74 dB scale 31 Aug (6.2 dB range) shows an irregular outline, while 30 Sep (4.0 dB range, a bottom-louder trend) stays smooth. <b>100–10000 Hz:</b> 31 Aug is pinched 3–4 dB at ±36–54° and bulges at +90°; 30 Sep stays near a circle; the rms spreads are equal (1.41 and 1.39 dB).</li>
+<li><b>As the app's Polar tab draws it</b> (total level, PWM 2000, recomputed from the data). The "before" is the 31 Aug horizontal baseline, an earlier baseline at another operating point (7.35 V against 11.7 V), not a controlled pair. <b>20–560 Hz</b>, the low end with the blade tone at about 238 Hz: on a 30–76 dB scale 31 Aug (6.2 dB range) shows an irregular outline, while 30 Sep (4.0 dB range, a bottom-louder trend) stays smooth. <b>100–10000 Hz:</b> 31 Aug is pinched 3–4 dB at ±36–54° and bulges at +90°; 30 Sep stays near a circle; the rms spreads are equal (1.41 and 1.39 dB).</li>
 <li><b>Tone-notched broadband, 315 Hz–8 kHz</b> (table; the arc ends read louder than the centre at 2 and 4 kHz in the flat-arc runs too, so that is position error, not directivity): worst capsule {T['worst']:.1f} dB off the mean on 30 Sep against {Au['worst']:.1f} dB on 31 Aug; the 31 Aug runs go down to {Au['lo']:.0f} % of cells in tolerance.</li>
 <li><b>Not rounder than 1–2 Sep</b> (same voltage, current, thrust): {T['med']:.0f} % against a median of {Sp['med']:.0f} % ({Sp['lo']:.0f}–{Sp['hi']:.0f}), inside the scatter of those runs, taken before the room work.</li>
 
