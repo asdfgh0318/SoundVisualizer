@@ -153,7 +153,7 @@ def page2(PS):
 <h1>2 · Day 3 evaluation by the chamber-qualification method</h1>
 <p class="tag">SoundVisualizer · 2026-10-01 · 11 calibrated capsules on a 0.84 m arc · 95 tones, 257 Hz–6.35 kHz · chapter 2, previous page: waterfall, 25 Sep, <code>day3-a</code> (13:17, worst of the day) → <code>carpet-reordered</code> (19:15, final)</p>
 <h2 style="border:0;margin-top:2pt">The method</h2>
-<p>Chambers are qualified one one-third-octave band at a time against the free-field ideal; the cut-off is the lowest band above which everything passes, noise and pure tones separately. Limits: ±1.5 dB to 630 Hz, ±1.0 dB from 800 Hz (Cunefare et al. 2003, J. Acoust. Soc. Am. 113(2), p. 882, page 3). <b>Our adaptation:</b> eleven fixed positions around an axisymmetric source, so the reference is the arc mean; <b>band level</b> = each capsule's mean over the {F['ntones'][630]}–{F['ntones'][1000]} tones in the band, worst capsule against the limit; <b>pure tones</b> = share of tone × capsule cells inside. Within ±{MARG:.2f} dB of a limit is marginal (the largest difference between two same-day runs of one unchanged state, {len(REPEATS)} pairs).</p>
+<p>Chambers are qualified one one-third-octave band at a time against the free-field ideal; the cut-off is the lowest band above which everything passes, noise and pure tones separately. Limits: ±1.5 dB to 630 Hz, ±1.0 dB from 800 Hz (Cunefare et al. 2003, J. Acoust. Soc. Am. 113(2), p. 882, page 4). <b>Our adaptation:</b> eleven fixed positions around an axisymmetric source, so the reference is the arc mean; <b>band level</b> = each capsule's mean over the {F['ntones'][630]}–{F['ntones'][1000]} tones in the band, worst capsule against the limit; <b>pure tones</b> = share of tone × capsule cells inside. Within ±{MARG:.2f} dB of a limit is marginal (the largest difference between two same-day runs of one unchanged state, {len(REPEATS)} pairs).</p>
 <table><thead><tr><th class="num">Band</th><th class="num">Limit</th><th class="num">Tones</th><th class="num">Day 3 start</th><th class="num">tones in limit</th><th class="num">Final</th><th class="num">tones in limit</th></tr></thead><tbody>{rows}</tbody></table>
 <table><thead><tr><th>Measure</th><th class="num">Day 3 start</th><th class="num">Final</th></tr></thead><tbody>{card}</tbody></table>
 <p class="tag">Blue = inside, yellow = marginal, orange = over. The cut-off is set by the highest failing band, so read it with the lists. <b>Caveat:</b> the source was moved between these runs (20 cm closer at 13:44, into the ring plane at 14:03): the map changed by {MCg:.2f} dB rms, against 0.14 for a re-arranged carpet and 0.80 for a 5 cm move, so the gain is treatments and source positions together. The one pair with an unmoved source is 24 Sep, empty floor {F['score']:.3f} → carpet {C['score']:.3f} (three arrangements {C['score']:.3f} / {C2['score']:.3f} / {C3['score']:.3f}).</p>
@@ -254,10 +254,16 @@ def page1():
     open(HERE + '/_p0.html', 'w').write(h); chromium('_p0')
 
 def pagewf(png):
+    h = f"""<!doctype html><html><head><meta charset="utf-8"><title>Chamber</title><style>{CSS}
+.big{{display:block;width:100%;height:auto;max-height:none;margin:3pt 0 3pt}}</style></head><body>
+<h1>2 · The chamber, and the main waterfall</h1>
+<img class="big" src="photo-chamber.jpg">
+<p style="margin:0"><b>The chamber in the final configuration</b> (<code>carpet-reordered</code>, photographed 5 Oct): the arc ring laid flat around the propeller rig at the hub, the speaker tripod on the left, batting on the floor and ceiling, wedges and lined pillars on the walls. The waterfall on the next page compares the start of day 3 with this state.</p></body></html>"""
+    open(HERE + '/_p1a.html', 'w').write(h); chromium('_p1a')
     h = f"""<!doctype html><html><head><meta charset="utf-8"><title>Waterfall</title><style>{CSS}
-.top{{display:flex;gap:4mm;align-items:flex-start;margin:3pt 0 3pt}} .top img{{width:3.1cm;height:4.1cm;object-fit:cover;margin:0;flex:none}} .fig{{display:block;margin:0 auto;max-height:21.6cm;width:auto}}</style></head><body>
+.fig{{display:block;margin:0 auto;max-height:24.5cm;width:auto}}</style></head><body>
 <h1>2 · Main waterfall: day 3 start against the final state</h1>
-<div class="top"><img src="photo-chamber.jpg"><p style="margin:0">The chamber in the final configuration (<code>carpet-reordered</code>, photographed 5 Oct): the arc ring laid flat around the propeller rig at the hub, the speaker tripod on the left, batting on the floor and ceiling, wedges and lined pillars on the walls. Both runs below are from 25 Sep with the corrected microphones. The source was moved between them (page 3).</p></div>
+<p style="margin:0 0 3pt">Both runs are from 25 Sep with the corrected microphones. The source was moved between them (page 4).</p>
 <img class="fig" src="{png}"></body></html>"""
     open(HERE + '/_p1.html', 'w').write(h); chromium('_p1')
 
@@ -274,8 +280,8 @@ if __name__ == '__main__':
     subprocess.run([sys.executable, STEP, DAY3A, FINAL, 'Day 3 start (worst) vs final · source moved in between', 'floor-vs-carpet'], cwd=ROOT, check=True, stdout=subprocess.DEVNULL)
     D = ROOT + '/docs/analysis/chamber-treatments-2026-09-23/'
     import shutil; shutil.copy(D + 'floor-vs-carpet.png', HERE + '/_wf.png'); from PIL import Image, ImageChops; _im = Image.open(HERE + '/_wf.png').convert('RGB'); _im.crop(ImageChops.difference(_im, Image.new('RGB', _im.size, (255, 255, 255))).getbbox()).save(HERE + '/_wf.png'); pagewf('_wf.png'); page1(); page2(PS); page3()
-    subprocess.run(['pdfunite', HERE + '/_p0.pdf', HERE + '/_p1.pdf', HERE + '/_p2.pdf', HERE + '/_p3.pdf', HERE + '/CHAMBER-FINAL.pdf'], check=True)
-    for x in ('_wf.png', '_p1.html', '_p0.pdf', '_p0.html', '_p1.pdf', '_p2.pdf', '_p3.pdf', '_p2.html', '_p3.html'): os.remove(HERE + '/' + x)
+    subprocess.run(['pdfunite', HERE + '/_p0.pdf', HERE + '/_p1a.pdf', HERE + '/_p1.pdf', HERE + '/_p2.pdf', HERE + '/_p3.pdf', HERE + '/CHAMBER-FINAL.pdf'], check=True)
+    for x in ('_wf.png', '_p1a.pdf', '_p1a.html', '_p1.html', '_p0.pdf', '_p0.html', '_p1.pdf', '_p2.pdf', '_p3.pdf', '_p2.html', '_p3.html'): os.remove(HERE + '/' + x)
     for g in ('floor-vs-carpet.pdf', 'floor-vs-carpet.png'): os.remove(D + g)
     print('floor', round(F['score'], 3), cutoff(F), count(F, 'fail'), round(F['tone_all']), '| carpet', round(C['score'], 3), cutoff(C), count(C, 'fail'), count(C, 'marg'), round(C['tone_all']),
           '| final', round(X['score'], 3), cutoff(X), '| MARG', MARG)
