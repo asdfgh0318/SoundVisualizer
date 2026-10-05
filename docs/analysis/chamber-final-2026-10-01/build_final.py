@@ -128,7 +128,7 @@ h1{font-size:15pt;margin:0 0 1pt;letter-spacing:-.02em} h2{font-size:10pt;margin
 table{border-collapse:collapse;width:100%;margin:2pt 0 5pt;font-size:7.4pt} th{font-size:6.4pt;text-transform:uppercase;letter-spacing:.05em;color:#46545c;text-align:left;padding:2.5pt 3pt;border-bottom:1pt solid #10171b;vertical-align:bottom}
 td{padding:1.2pt 3pt;border-bottom:.5pt solid #e0e6e9;vertical-align:top} td.num,th.num{font-family:"DejaVu Sans Mono",monospace;font-size:7pt;white-space:nowrap;text-align:right}
 td.lst{font-family:"DejaVu Sans Mono",monospace;font-size:6.6pt;text-align:right;white-space:normal;width:26%}
-img{width:100%;max-height:6.6cm;object-fit:contain;display:block;margin:2pt auto}
+img{width:100%;max-height:5.9cm;object-fit:contain;display:block;margin:2pt auto}
 .tag{font-family:"DejaVu Sans Mono",monospace;font-size:6.3pt;color:#74828a} .box{background:#f1f4f6;border-left:2pt solid #17566e;padding:4pt 4mm;margin:4pt 0 5pt}
 .q{border-left:1.5pt solid #17566e;padding:1pt 0 1pt 3mm;margin:2pt 0;font-size:7.4pt} .q span{display:block;font-family:"DejaVu Sans Mono",monospace;font-size:6pt;color:#74828a}
 .pass{background:#cfe0f3}.marg{background:#f3e6b3}.fail{background:#f0c4a8}'''
@@ -136,10 +136,16 @@ img{width:100%;max-height:6.6cm;object-fit:contain;display:block;margin:2pt auto
 def chromium(name):
     subprocess.run(['/snap/bin/chromium', '--headless', '--disable-gpu', '--no-pdf-header-footer', f'--print-to-pdf={HERE}/{name}.pdf', f'file://{HERE}/{name}.html'], check=True, stderr=subprocess.DEVNULL)
 
+
+def grad(t):                                           # t: 0 = green, 1 = yellow, >=2 = red (continuous)
+    t = max(0.0, min(2.0, t)); a, b, c = (120, 190, 130), (245, 220, 110), (225, 100, 80)
+    lo, hi, u = (a, b, t) if t <= 1 else (b, c, t - 1)
+    return 'rgb(%d,%d,%d)' % tuple(round(x + (y - x) * u) for x, y in zip(lo, hi))
+
 def page2(PS):
     rows = ''.join(f"<tr><td class='num'>{fc} Hz</td><td class='num'>±{tol(fc):g}</td><td class='num'>{F['ntones'][fc]}</td>"
-                   f"<td class='num {verdict(G, fc)}'>{G['bm'][fc]:.2f}</td><td class='num'>{G['tr'][fc]:.0f} %</td>"
-                   f"<td class='num {verdict(X, fc)}'>{X['bm'][fc]:.2f}</td><td class='num'>{X['tr'][fc]:.0f} %</td></tr>" for fc in TOB)
+                   f"<td class='num' style='background:{grad(G['bm'][fc] / tol(fc))}'>{G['bm'][fc]:.2f}</td><td class='num' style='background:{grad((100 - G['tr'][fc]) / 50)}'>{G['tr'][fc]:.0f} %</td>"
+                   f"<td class='num' style='background:{grad(X['bm'][fc] / tol(fc))}'>{X['bm'][fc]:.2f}</td><td class='num' style='background:{grad((100 - X['tr'][fc]) / 50)}'>{X['tr'][fc]:.0f} %</td></tr>" for fc in TOB)
     sc = lambda st: [f"{st['score']:.3f}", f"{cutoff(st)} Hz" if cutoff(st) else 'none', f"{count(st, 'fail')}: {lst(st, 'fail')} Hz", f"{count(st, 'marg')}: {lst(st, 'marg')} Hz", f"{st['tone_all']:.0f} %"]
     sf, sc_ = sc(G), sc(X)
     names = ['Room error below 3 kHz (dB)', 'Within the tolerance values from (band)', 'Bands clearly over the limit (of 11)', 'Bands marginal', 'Pure-tone cells inside the limit']
@@ -156,7 +162,7 @@ def page2(PS):
 <p><b>Where the method comes from.</b> <u>Taken from the standards:</u> each one-third-octave band judged on its own against the free-field ideal, tones and noise separately, the worst position against the limit, and the anechoic tolerances ±1.5 dB for 125–630 Hz and ±1.0 dB for 800–5000 Hz (ISO 5305:2024 Table 1, p. 8; the same values in Cunefare et al. 2003, J. Acoust. Soc. Am. 113(2), p. 882, quoted on page 5; ISO 3745:2012 and ISO 26101 are the two procedures, compared by Russo et al. 2018). <u>Ours, not the standards':</u> they move one microphone along a traverse and test the decay of level with distance, and only that test earns the words "qualified" or "in conformity" (ISO 26101-1 p. 3; ISO 3745 §5.1). We have eleven fixed capsules at one radius and test uniformity around an axisymmetric source, so the reference is the arc mean and the same values are applied to a different quantity. <b>Band level</b> = each capsule's mean over the {F['ntones'][630]}–{F['ntones'][1000]} tones in the band, worst capsule against the value; <b>pure tones</b> = share of tone × capsule cells inside; within ±{MARG:.2f} dB is marginal (largest difference between two same-day runs of one unchanged state, {len(REPEATS)} pairs). The room is treated and not qualified, so this is a figure of merit that ranks bands; it claims neither qualification nor conformity. Held: previews of ISO 3745:2012 (clauses 1–6.1.2, no annexes), ISO 26101-1 and ISO 5305.</p>
 <table><thead><tr><th class="num">Band</th><th class="num">Limit</th><th class="num">Tones</th><th class="num">Day 3 start</th><th class="num">tones in limit</th><th class="num">Final</th><th class="num">tones in limit</th></tr></thead><tbody>{rows}</tbody></table>
 <table><thead><tr><th>Measure</th><th class="num">Day 3 start</th><th class="num">Final</th></tr></thead><tbody>{card}</tbody></table>
-<p class="tag">Blue = inside, yellow = marginal, orange = over. The cut-off is set by the highest failing band, so read it with the lists. <b>Caveat:</b> the source was moved between these runs (20 cm closer at 13:44, into the ring plane at 14:03): the map changed by {MCg:.2f} dB rms, against 0.14 for a re-arranged carpet and 0.80 for a 5 cm move, so the gain is treatments and source positions together. The one pair with an unmoved source is 24 Sep, empty floor {F['score']:.3f} → carpet {C['score']:.3f} (three arrangements {C['score']:.3f} / {C2['score']:.3f} / {C3['score']:.3f}).</p>
+<p class="tag">Colour = worst-capsule deviation as a share of the band's limit: green 0, yellow at the limit, red at twice the limit or more (tones in limit: green 100 %, yellow 50 %, red 0 %). The cut-off is set by the highest failing band, so read it with the lists. <b>Caveat:</b> the source was moved between these runs (20 cm closer at 13:44, into the ring plane at 14:03): the map changed by {MCg:.2f} dB rms, against 0.14 for a re-arranged carpet and 0.80 for a 5 cm move, so the gain is treatments and source positions together. The one pair with an unmoved source is 24 Sep, empty floor {F['score']:.3f} → carpet {C['score']:.3f} (three arrangements {C['score']:.3f} / {C2['score']:.3f} / {C3['score']:.3f}).</p>
 <h1 style="font-size:15pt;margin:8pt 0 2pt;padding-top:4pt;border-top:.7pt solid #c6d0d5">3 · Polars: is the prop-plane polar rounder than before?</h1>
 <img src="fig-polar.png">
 <table><thead><tr><th>Tone-notched broadband, 315 Hz–8 kHz, cells within ±1.3 dB of the polar mean</th><th class="num">Runs</th><th class="num">PWM 2000: median (range)</th><th class="num">worst cell</th><th class="num">PWM 1900: median (range)</th></tr></thead><tbody>
