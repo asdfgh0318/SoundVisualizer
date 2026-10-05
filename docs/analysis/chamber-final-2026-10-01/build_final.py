@@ -85,16 +85,16 @@ def bbl(g, lo=4, hi=10):                              # tone-notched broadband 3
 def fig_polar():                                       # the app's Polar tab: total level in a band per capsule, mirrored to 360 deg, PWM 2000, dB SPL
     cur = {'today': last_at(TODAY, 2000), 'aug': last_at(AUG[0], 2000)}
     fig, axs = plt.subplots(1, 2, figsize=(7.4, 4.1), subplot_kw=dict(projection='polar'), gridspec_kw=dict(wspace=.22))
-    for ax, (lo, hi, rmin) in zip(axs, ((20, 560, 0), (100, 10000, 50))):
+    for ax, (lo, hi, rmin, rmax) in zip(axs, ((20, 560, 50, 74), (100, 10000, 50, 80))):
         lev = {k: totals(v, lo, hi) for k, v in cur.items()}
         for key, c, lw, nm in (('aug', '#e0679c', 1.5, '31 Aug horizontal, before'), ('today', '#2b6cb0', 1.9, '30 Sep prop plane, after')):
             el = cur[key]['elev']; v = lev[key]; th = np.radians(np.r_[el, 180 - el[::-1]]); r = np.r_[v, v[::-1]]
             ax.plot(np.r_[th, th[0]], np.r_[r, r[0]], color=c, lw=lw, marker='o', ms=3, label=nm)
-        ax.set_rlim(rmin, 80); ticks = [t for t in range(0, 81, 20) if t >= rmin and t > rmin] + [80] if rmin else [20, 40, 60, 80]
-        ax.set_rticks(sorted(set(ticks))); ax.set_yticklabels([f'{t:g}' for t in sorted(set(ticks))]); ax.set_rlabel_position(22); ax.tick_params(axis='y', labelsize=6)
+        ax.set_rlim(rmin, rmax); ticks = list(range(60, rmax + 1, 10)) if rmax < 80 else [60, 80]
+        ax.set_rticks(ticks); ax.set_yticklabels([f'{t:g}' for t in ticks]); ax.set_rlabel_position(22); ax.tick_params(axis='y', labelsize=6)
         ax.set_thetagrids([90, 45, 0, 315, 270, 225, 180, 135], ['+90°', '+45°', '0°', '−45°', '−90°', '−45°', '0°', '+45°'], fontsize=6); ax.grid(alpha=.3)
         sp = lambda v: float(np.sqrt(np.mean((v - v.mean()) ** 2)))
-        ax.set_title(f'{lo}–{hi} Hz, dB SPL (radial {rmin}–80)', fontsize=7.5, pad=10)
+        ax.set_title(f'{lo}–{hi} Hz, dB SPL (radial {rmin}–{rmax})', fontsize=7.5, pad=10)
         ax.text(0.5, -.2, f'rms spread: before {sp(lev["aug"]):.2f} dB · after {sp(lev["today"]):.2f} dB\npeak-to-peak: before {np.ptp(lev["aug"]):.1f} dB · after {np.ptp(lev["today"]):.1f} dB', ha='center', fontsize=6.3, transform=ax.transAxes)
     h, l = axs[0].get_legend_handles_labels(); fig.legend(h, l, fontsize=7, frameon=False, loc='lower center', ncol=2, bbox_to_anchor=(.5, -.1))
     fig.savefig(HERE + '/fig-polar.png', dpi=200, bbox_inches='tight'); plt.close(fig)
@@ -171,7 +171,7 @@ def page2(PS):
 <tr><td>1–2 Sep, arc flat (11.65 V, 7.3 A, −4.0 N)</td><td class="num">{Sp['n']}</td><td class="num">{Sp['med']:.0f} % ({Sp['lo']:.0f}–{Sp['hi']:.0f})</td><td class="num">{Sp['worst']:.1f} dB</td><td class="num">{Sp9['med']:.0f} % ({Sp9['lo']:.0f}–{Sp9['hi']:.0f})</td></tr>
 <tr><td>31 Aug (7.35 V, 13.8 A, +6 N: other operating point)</td><td class="num">{Au['n']}</td><td class="num">{Au['med']:.0f} % ({Au['lo']:.0f}–{Au['hi']:.0f})</td><td class="num">{Au['worst']:.1f} dB</td><td class="num">{Au9['med']:.0f} % ({Au9['lo']:.0f}–{Au9['hi']:.0f})</td></tr></tbody></table>
 <ul>
-<li><b>As the app's Polar tab draws it</b> (total level, PWM 2000, recomputed from the data). The "before" is the 31 Aug horizontal baseline, an earlier baseline at another operating point (7.35 V against 11.7 V), not a controlled pair. <b>20–560 Hz</b>, the low end with the blade tone at about 238 Hz: 30 Sep is a near-circle on the 0–80 dB scale (its 4.0 dB range is a bottom-louder trend), 31 Aug is wider (6.2 dB range). <b>100–10000 Hz:</b> 31 Aug is pinched 3–4 dB at ±36–54° and bulges at +90°; 30 Sep stays near a circle; the rms spreads are equal (1.41 and 1.39 dB).</li>
+<li><b>As the app's Polar tab draws it</b> (total level, PWM 2000, recomputed from the data). The "before" is the 31 Aug horizontal baseline, an earlier baseline at another operating point (7.35 V against 11.7 V), not a controlled pair. <b>20–560 Hz</b>, the low end with the blade tone at about 238 Hz: on the zoomed 50–74 dB scale 31 Aug (6.2 dB range) shows an irregular outline, while 30 Sep (4.0 dB range, a bottom-louder trend) stays smooth. <b>100–10000 Hz:</b> 31 Aug is pinched 3–4 dB at ±36–54° and bulges at +90°; 30 Sep stays near a circle; the rms spreads are equal (1.41 and 1.39 dB).</li>
 <li><b>Tone-notched broadband, 315 Hz–8 kHz</b> (table; the arc ends read louder than the centre at 2 and 4 kHz in the flat-arc runs too, so that is position error, not directivity): worst capsule {T['worst']:.1f} dB off the mean on 30 Sep against {Au['worst']:.1f} dB on 31 Aug; the 31 Aug runs go down to {Au['lo']:.0f} % of cells in tolerance.</li>
 <li><b>Not rounder than 1–2 Sep</b> (same voltage, current, thrust): {T['med']:.0f} % against a median of {Sp['med']:.0f} % ({Sp['lo']:.0f}–{Sp['hi']:.0f}), inside the scatter of those runs, taken before the room work.</li>
 
