@@ -182,7 +182,15 @@ def page2(PS):
 <li><b>As the app's Polar tab draws it</b> (total level in the band, PWM 2000, recomputed from the data). <b>Each capture is read with the calibration that existed when it was taken</b>: the factory files for 31 Aug and 1–2 Sep, the measured corrections for 30 Sep. The "before" curve is the 31 Aug horizontal baseline, an earlier baseline at another operating point (7.35 V against 11.7 V), not a controlled pair.</li>
 <li><b>20–560 Hz</b>, the low end with the blade tone at about 238 Hz: rms spread of the total level {F1['sa']:.2f} dB on 30 Sep, against {F1['sb']:.2f} dB on 31 Aug and {F1['ss'][0]:.2f} / {F1['ss'][1]:.2f} / {F1['ss'][2]:.2f} dB on 2 Sep (prop15 / 16 / 17), so 30 Sep is the smoothest. <b>100–10000 Hz:</b> {F2['sa']:.2f} dB on 30 Sep, {F2['sb']:.2f} dB on 31 Aug, {F2['ss'][0]:.2f} / {F2['ss'][1]:.2f} / {F2['ss'][2]:.2f} dB on 2 Sep: here the 2 Sep runs are slightly smoother than 30 Sep.</li>
 <li><b>Tone-notched broadband, 315 Hz–8 kHz</b> (table): 30 Sep has {T['med']:.0f} % of cells within ±1.3 dB, against a median of {Sp['med']:.0f} % for 1–2 Sep ({Sp['lo']:.0f}–{Sp['hi']:.0f}) and {Au['med']:.0f} % for 31 Aug ({Au['lo']:.0f}–{Au['hi']:.0f}); the worst capsule is {T['worst']:.1f} dB off the mean against {Sp['worst']:.1f} and {Au['worst']:.1f} dB. Part of this is the microphone correction: the same 1–2 Sep captures re-read with today's corrections give {Sc['med']:.0f} % ({Sc['lo']:.0f}–{Sc['hi']:.0f}), which is level with 30 Sep. The absolute change is real; most of it comes from the calibration, little from the room.</li>
-</ul></body></html>"""
+</ul>
+<h2>Which captures carry the microphone corrections</h2>
+<table><thead><tr><th>Capture set</th><th>Date</th><th>Calibration it is read with</th></tr></thead><tbody>
+<tr><td>31 Aug horizontal baseline</td><td>31 Aug, before the corrections</td><td><b>factory files</b></td></tr>
+<tr><td>prop8–10</td><td>1 Sep, before the corrections</td><td><b>factory files</b></td></tr>
+<tr><td>prop11–17 (prop15–17 drawn)</td><td>2 Sep, before the corrections</td><td><b>factory files</b></td></tr>
+<tr><td>30 Sep prop-plane baseline</td><td>30 Sep, after the 16 Sep substitution calibration</td><td><b>measured corrections</b> (the only propeller capture that has them)</td></tr></tbody></table>
+<p class="tag">The corrections were measured on 16 Sep (page 1). The earlier captures are shown as they were taken; the reference row in the table above re-reads 1–2 Sep with the corrections to show how much of the gain is calibration.</p>
+</body></html>"""
     mk = '<h1 style="font-size:15pt;margin:8pt 0 2pt;padding-top:4pt;border-top:.7pt solid #c6d0d5">3 · Polars'
     i = h.index(mk); head = h[:h.index('<body>') + 6]
     open(HERE + '/_p2.html', 'w').write(h[:i] + '</body></html>'); chromium('_p2')
