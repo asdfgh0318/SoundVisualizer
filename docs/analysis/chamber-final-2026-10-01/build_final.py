@@ -206,7 +206,7 @@ def page1():
 .ph{{display:flex;gap:3mm;margin:3pt 0 2pt}} .ph div{{width:49.2%}} .ph img{{width:100%;height:auto;max-height:none;margin:0;display:block}} .cap{{font-size:7pt;color:#46545c;margin:1pt 0 0}}</style></head><body>
 <h1>1 · The source and the microphones</h1>
 <p class="tag">SoundVisualizer · chamber report, 2026-10-05 · what the room is measured with, and how far the numbers can be trusted</p>
-<div class="ph"><div><img src="photo-chamber.jpg"><p class="cap"><b>The chamber</b>, photographed 5 Oct (after the measurements in this report, so the absorber layout may differ from the 25 Sep state): the arc ring laid flat around the propeller rig at the hub, the speaker tripod on the left, batting on the floor and ceiling, wedges and lined pillars on the walls.</p></div>
+<div class="ph"><div><img src="photo-chamber.jpg"><p class="cap"><b>The chamber in the final configuration</b> (<code>carpet-reordered</code>, photographed 5 Oct): the arc ring laid flat around the propeller rig at the hub, the speaker tripod on the left, batting on the floor and ceiling, wedges and lined pillars on the walls.</p></div>
 <div><img src="photo-source.jpg"><p class="cap"><b>The source</b>: the printed 1 l sphere with its 8 cm driver, mounted at the hub. Every position map in this report comes from it. It is axisymmetric below 3 kHz; an m = 1 rocking mode at 4.4 kHz (11.0 dB) is why 3–5 kHz is excluded.</p></div></div>
 <h2>What we did with the microphones</h2>
 <ul>
