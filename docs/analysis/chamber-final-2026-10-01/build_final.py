@@ -128,7 +128,7 @@ h1{font-size:15pt;margin:0 0 1pt;letter-spacing:-.02em} h2{font-size:10pt;margin
 table{border-collapse:collapse;width:100%;margin:2pt 0 5pt;font-size:7.4pt} th{font-size:6.4pt;text-transform:uppercase;letter-spacing:.05em;color:#46545c;text-align:left;padding:2.5pt 3pt;border-bottom:1pt solid #10171b;vertical-align:bottom}
 td{padding:1.2pt 3pt;border-bottom:.5pt solid #e0e6e9;vertical-align:top} td.num,th.num{font-family:"DejaVu Sans Mono",monospace;font-size:7pt;white-space:nowrap;text-align:right}
 td.lst{font-family:"DejaVu Sans Mono",monospace;font-size:6.6pt;text-align:right;white-space:normal;width:26%}
-img{width:100%;max-height:8.2cm;object-fit:contain;display:block;margin:2pt auto}
+img{width:100%;max-height:7.2cm;object-fit:contain;display:block;margin:2pt auto}
 .tag{font-family:"DejaVu Sans Mono",monospace;font-size:6.3pt;color:#74828a} .box{background:#f1f4f6;border-left:2pt solid #17566e;padding:4pt 4mm;margin:4pt 0 5pt}
 .q{border-left:1.5pt solid #17566e;padding:1pt 0 1pt 3mm;margin:2pt 0;font-size:7.4pt} .q span{display:block;font-family:"DejaVu Sans Mono",monospace;font-size:6pt;color:#74828a}
 .pass{background:#cfe0f3}.marg{background:#f3e6b3}.fail{background:#f0c4a8}'''
@@ -150,14 +150,14 @@ def page2(PS):
     T, Sp, Au = PS['today', 2000], PS['sept', 2000], PS['aug', 2000]
     T9, Sp9, Au9 = PS['today', 1900], PS['sept', 1900], PS['aug', 1900]; AX = PS['axis']
     h = f"""<!doctype html><html><head><meta charset="utf-8"><title>Chamber evaluation</title><style>{CSS}</style></head><body>
-<h1>2 · Day 3 evaluation by the chamber-qualification method</h1>
+<h1>2 · Main waterfalls and the day 3 evaluation</h1><p class="tag" style="margin:0 0 2pt">2.3 evaluation by the chamber-qualification method</p>
 <p class="tag">SoundVisualizer · 2026-10-01 · 11 calibrated capsules on a 0.84 m arc · 95 tones, 257 Hz–6.35 kHz · chapter 2, previous page: waterfall, 25 Sep, <code>day3-a</code> (13:17, worst of the day) → <code>carpet-reordered</code> (19:15, final)</p>
 <h2 style="border:0;margin-top:2pt">The method</h2>
 <p>Chambers are qualified one one-third-octave band at a time against the free-field ideal; the cut-off is the lowest band above which everything passes, noise and pure tones separately. Limits: ±1.5 dB to 630 Hz, ±1.0 dB from 800 Hz (Cunefare et al. 2003, J. Acoust. Soc. Am. 113(2), p. 882, page 4). <b>Our adaptation:</b> eleven fixed positions around an axisymmetric source, so the reference is the arc mean; <b>band level</b> = each capsule's mean over the {F['ntones'][630]}–{F['ntones'][1000]} tones in the band, worst capsule against the limit; <b>pure tones</b> = share of tone × capsule cells inside. Within ±{MARG:.2f} dB of a limit is marginal (the largest difference between two same-day runs of one unchanged state, {len(REPEATS)} pairs).</p>
 <table><thead><tr><th class="num">Band</th><th class="num">Limit</th><th class="num">Tones</th><th class="num">Day 3 start</th><th class="num">tones in limit</th><th class="num">Final</th><th class="num">tones in limit</th></tr></thead><tbody>{rows}</tbody></table>
 <table><thead><tr><th>Measure</th><th class="num">Day 3 start</th><th class="num">Final</th></tr></thead><tbody>{card}</tbody></table>
 <p class="tag">Blue = inside, yellow = marginal, orange = over. The cut-off is set by the highest failing band, so read it with the lists. <b>Caveat:</b> the source was moved between these runs (20 cm closer at 13:44, into the ring plane at 14:03): the map changed by {MCg:.2f} dB rms, against 0.14 for a re-arranged carpet and 0.80 for a 5 cm move, so the gain is treatments and source positions together. The one pair with an unmoved source is 24 Sep, empty floor {F['score']:.3f} → carpet {C['score']:.3f} (three arrangements {C['score']:.3f} / {C2['score']:.3f} / {C3['score']:.3f}).</p>
-<h2>3 · Polars: is the prop-plane polar rounder than before?</h2>
+<h1 style="font-size:15pt;margin:8pt 0 2pt;padding-top:4pt;border-top:.7pt solid #c6d0d5">3 · Polars: is the prop-plane polar rounder than before?</h1>
 <img src="fig-polar.png">
 <table><thead><tr><th>Tone-notched broadband, 315 Hz–8 kHz, cells within ±1.3 dB of the polar mean</th><th class="num">Runs</th><th class="num">PWM 2000: median (range)</th><th class="num">worst cell</th><th class="num">PWM 1900: median (range)</th></tr></thead><tbody>
 <tr><td><b>30 Sep, today</b></td><td class="num">1</td><td class="num"><b>{T['med']:.0f} %</b></td><td class="num">{T['worst']:.1f} dB</td><td class="num">{T9['med']:.0f} %</td></tr>
@@ -256,13 +256,13 @@ def page1():
 def pagewf(png):
     h = f"""<!doctype html><html><head><meta charset="utf-8"><title>Chamber</title><style>{CSS}
 .big{{display:block;width:100%;height:auto;max-height:none;margin:3pt 0 3pt}}</style></head><body>
-<h1>2 · The chamber, and the main waterfall</h1>
+<h1>2 · Main waterfalls and the day 3 evaluation</h1><p class="tag" style="margin:0">2.1 the chamber</p>
 <img class="big" src="photo-chamber.jpg">
 <p style="margin:0"><b>The chamber in the final configuration</b> (<code>carpet-reordered</code>, photographed 5 Oct): the arc ring laid flat around the propeller rig at the hub, the speaker tripod on the left, batting on the floor and ceiling, wedges and lined pillars on the walls. The waterfall on the next page compares the start of day 3 with this state.</p></body></html>"""
     open(HERE + '/_p1a.html', 'w').write(h); chromium('_p1a')
     h = f"""<!doctype html><html><head><meta charset="utf-8"><title>Waterfall</title><style>{CSS}
 .fig{{display:block;margin:0 auto;max-height:24.5cm;width:auto}}</style></head><body>
-<h1>2 · Main waterfall: day 3 start against the final state</h1>
+<h1>2 · Main waterfalls and the day 3 evaluation</h1><p class="tag" style="margin:0 0 2pt">2.2 main waterfall: day 3 start against the final state</p>
 <p style="margin:0 0 3pt">Both runs are from 25 Sep with the corrected microphones. The source was moved between them (page 4).</p>
 <img class="fig" src="{png}"></body></html>"""
     open(HERE + '/_p1.html', 'w').write(h); chromium('_p1')
