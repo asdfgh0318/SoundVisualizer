@@ -150,14 +150,14 @@ def page2(PS):
     T, Sp, Au = PS['today', 2000], PS['sept', 2000], PS['aug', 2000]
     T9, Sp9, Au9 = PS['today', 1900], PS['sept', 1900], PS['aug', 1900]; AX = PS['axis']
     h = f"""<!doctype html><html><head><meta charset="utf-8"><title>Chamber evaluation</title><style>{CSS}</style></head><body>
-<h1>Evaluation and the prop-plane check</h1>
-<p class="tag">SoundVisualizer · 2026-10-01 · 11 calibrated capsules on a 0.84 m arc · 95 tones, 257 Hz–6.35 kHz · page 1: waterfall, 25 Sep, <code>day3-a</code> (13:17, worst of the day) → <code>carpet-reordered</code> (19:15, final)</p>
+<h1>2 · Day 3 evaluation by the chamber-qualification method</h1>
+<p class="tag">SoundVisualizer · 2026-10-01 · 11 calibrated capsules on a 0.84 m arc · 95 tones, 257 Hz–6.35 kHz · chapter 2, previous page: waterfall, 25 Sep, <code>day3-a</code> (13:17, worst of the day) → <code>carpet-reordered</code> (19:15, final)</p>
 <h2 style="border:0;margin-top:2pt">The method</h2>
 <p>Chambers are qualified one one-third-octave band at a time against the free-field ideal; the cut-off is the lowest band above which everything passes, noise and pure tones separately. Limits: ±1.5 dB to 630 Hz, ±1.0 dB from 800 Hz (Cunefare et al. 2003, J. Acoust. Soc. Am. 113(2), p. 882, page 3). <b>Our adaptation:</b> eleven fixed positions around an axisymmetric source, so the reference is the arc mean; <b>band level</b> = each capsule's mean over the {F['ntones'][630]}–{F['ntones'][1000]} tones in the band, worst capsule against the limit; <b>pure tones</b> = share of tone × capsule cells inside. Within ±{MARG:.2f} dB of a limit is marginal (the largest difference between two same-day runs of one unchanged state, {len(REPEATS)} pairs).</p>
 <table><thead><tr><th class="num">Band</th><th class="num">Limit</th><th class="num">Tones</th><th class="num">Day 3 start</th><th class="num">tones in limit</th><th class="num">Final</th><th class="num">tones in limit</th></tr></thead><tbody>{rows}</tbody></table>
 <table><thead><tr><th>Measure</th><th class="num">Day 3 start</th><th class="num">Final</th></tr></thead><tbody>{card}</tbody></table>
 <p class="tag">Blue = inside, yellow = marginal, orange = over. The cut-off is set by the highest failing band, so read it with the lists. <b>Caveat:</b> the source was moved between these runs (20 cm closer at 13:44, into the ring plane at 14:03): the map changed by {MCg:.2f} dB rms, against 0.14 for a re-arranged carpet and 0.80 for a 5 cm move, so the gain is treatments and source positions together. The one pair with an unmoved source is 24 Sep, empty floor {F['score']:.3f} → carpet {C['score']:.3f} (three arrangements {C['score']:.3f} / {C2['score']:.3f} / {C3['score']:.3f}).</p>
-<h2>The prop-plane check: is the polar rounder than before?</h2>
+<h2>3 · Polars: is the prop-plane polar rounder than before?</h2>
 <img src="fig-polar.png">
 <table><thead><tr><th>Tone-notched broadband, 315 Hz–8 kHz, cells within ±1.3 dB of the polar mean</th><th class="num">Runs</th><th class="num">PWM 2000: median (range)</th><th class="num">worst cell</th><th class="num">PWM 1900: median (range)</th></tr></thead><tbody>
 <tr><td><b>30 Sep, today</b></td><td class="num">1</td><td class="num"><b>{T['med']:.0f} %</b></td><td class="num">{T['worst']:.1f} dB</td><td class="num">{T9['med']:.0f} %</td></tr>
@@ -173,9 +173,7 @@ def page2(PS):
 def page3():
     B3, CL = stats('2026-09-25/blue-carpet'), stats('2026-09-25/closer-a'); s3 = srcstep(C3); RO = roomonly(); FL = flips(); MC = mapchange(CARPET2, CARPET3)
     h = f"""<!doctype html><html><head><meta charset="utf-8"><title>Semi-anechoic solutions</title><style>{CSS}</style></head><body>
-<h1>Semi-anechoic room solutions that apply to this chamber</h1>
-<div style="display:flex;gap:3mm;align-items:flex-start;margin:2pt 0 4pt"><img src="photo-chamber.jpg" style="width:3.3cm;height:4.4cm;object-fit:cover;margin:0"><img src="photo-source.jpg" style="width:3.3cm;height:4.4cm;object-fit:cover;margin:0">
-<p style="font-size:7.3pt;margin:0"><b>The chamber and the source.</b> <b>Left</b> (5 Oct, after the measurements above, so the absorber layout may differ from the 25 Sep state): the arc ring laid flat around the propeller rig at the hub, the speaker tripod on the left, white batting on the floor and the ceiling, absorber wedges and lined pillars on the walls. <b>Right:</b> the printed 1 l sphere with its 8 cm driver, the source used for every position map in this report. It is axisymmetric below 3 kHz; its m = 1 rocking mode at 4.4 kHz is why 3–5 kHz is excluded (rolling the driver 180° changes the map by 0.20 dB rms below 3 kHz and by up to 11 dB inside that band).</p></div>
+<h1>4 · Semi-anechoic room solutions that apply to this chamber</h1>
 <p class="tag">What fails (accepted configuration, evaluated on its own): clearly over the ISO limit at {lst(X, 'fail')} Hz, marginal at {lst(X, 'marg')} Hz; the blade tone sits at 215–258 Hz and its third harmonic at 713 Hz. Nearest reflectors measured: extra path 0.68 m at −72° and 1.49 m at +36°/+54°, i.e. 1.98 and 4.34 ms. Source: chamber-fighting-guide.pdf §03, 29 facilities.</p>
 <table><thead><tr><th>Solution</th><th>What the papers give</th><th>Applies to us?</th><th>What we already know</th></tr></thead><tbody>
 <tr><td><b>1. Move the geometry</b> (source, arc, reflector)</td><td>Sets the ceiling for everything else. Reaching 500 Hz needs every reflector ≥0.69 m of extra path, 250 Hz needs 1.37 m (gate ≥5 ms, Matelján, ARTA note 4).</td><td><b>Yes, first, free.</b> The 0.68 m surface is just short for 500 Hz.</td><td>Source position was the largest lever in our trials: moving the speaker about 20 cm closer took the room error from {B3['score']:.2f} to {CL['score']:.2f} dB within one afternoon (25 Sep).</td></tr>
@@ -202,6 +200,27 @@ def page3():
 </ul></body></html>"""
     open(HERE + '/_p3.html', 'w').write(h); chromium('_p3')
 
+
+def page1():
+    h = f"""<!doctype html><html><head><meta charset="utf-8"><title>Source and microphones</title><style>{CSS}
+.ph{{display:flex;gap:3mm;margin:3pt 0 2pt}} .ph div{{width:49.2%}} .ph img{{width:100%;height:auto;max-height:none;margin:0;display:block}} .cap{{font-size:7pt;color:#46545c;margin:1pt 0 0}}</style></head><body>
+<h1>1 · The source and the microphones</h1>
+<p class="tag">SoundVisualizer · chamber report, 2026-10-05 · what the room is measured with, and how far the numbers can be trusted</p>
+<div class="ph"><div><img src="photo-chamber.jpg"><p class="cap"><b>The chamber</b>, photographed 5 Oct (after the measurements in this report, so the absorber layout may differ from the 25 Sep state): the arc ring laid flat around the propeller rig at the hub, the speaker tripod on the left, batting on the floor and ceiling, wedges and lined pillars on the walls.</p></div>
+<div><img src="photo-source.jpg"><p class="cap"><b>The source</b>: the printed 1 l sphere with its 8 cm driver, mounted at the hub. Every position map in this report comes from it. It is axisymmetric below 3 kHz; an m = 1 rocking mode at 4.4 kHz (11.0 dB) is why 3–5 kHz is excluded.</p></div></div>
+<h2>What we did with the microphones</h2>
+<ul>
+<li><b>Eleven UMIK-2 capsules on a 1.68 m ring</b>, all recording at once. The room is read as each capsule's level relative to the arc mean (room error), on a 95-tone grid, 257 Hz–6.35 kHz.</li>
+<li><b>Substitution calibration, 16 Sep:</b> every capsule measured against every other at one seat (55 pairs, repeatability 0.08 dB sd). <b>Seven of the eleven factory files were wrong by 0.6–3.6 dB</b>, clustered by serial prefix. The corrections went into each capsule's calibration curve; the spread across the eleven fell from <b>4.01 dB to 0.02 dB</b>. The datum is the four capsules whose files agree with measurement. Still open: the absolute level, which needs a 94 dB calibrator.</li>
+<li><b>Effect on the propeller data:</b> the 30 Sep prop-plane polar's roughness fell from 3.3 to 1.0 dB (−70 %) with the corrections applied to identical captures.</li>
+<li><b>Is it the rig or the room? (17 Sep)</b> Flipping the arc and then standing it vertical showed that about 0.2 dB of the position map is arc hardware; the rest is the room.</li>
+<li><b>Is it the source?</b> Rolling the driver inside a sphere that never moved changed the map by 0.20 dB rms below 3 kHz (86 tones), and by up to 11 dB at 3–5 kHz. Below 3 kHz the sphere is a valid source; the band above is masked.</li>
+<li><b>Repeatability:</b> the same state measured twice gives 0.006–0.015 dB; handling an item in and out about 0.04 dB. That is the floor under every treatment comparison that follows.</li>
+</ul>
+<p class="tag">Numbers from the project notes (CLAUDE.md, calibrator sessions 2026-09-16 and 2026-09-17), which govern where this page and they differ.</p>
+</body></html>"""
+    open(HERE + '/_p0.html', 'w').write(h); chromium('_p0')
+
 if __name__ == '__main__':
     print(f'source check carpet vs floor: level {C["level"] - F["level"]:+.2f} dB, tilt {C["tilt"] - F["tilt"]:+.2f}; repeat: {C2["level"] - F["level"]:+.2f}, {C2["tilt"] - F["tilt"]:+.2f}')
     import json
@@ -212,11 +231,11 @@ if __name__ == '__main__':
         PS = {(k.split('@')[0], int(k.split('@')[1])) if '@' in k else k: v for k, v in json.load(open(HERE + '/polar-stats.json')).items()}
     for kk, v in PS.items():
         if kk != 'axis': print(kk, {a: round(b, 1) for a, b in v.items()})
-    subprocess.run([sys.executable, STEP, DAY3A, FINAL, 'Day 3 start (worst) vs final · source moved in between', 'floor-vs-carpet'], cwd=ROOT, check=True, stdout=subprocess.DEVNULL)
+    subprocess.run([sys.executable, STEP, DAY3A, FINAL, '2 · Waterfall, day 3 start (worst) vs final · source moved in between', 'floor-vs-carpet'], cwd=ROOT, check=True, stdout=subprocess.DEVNULL)
     D = ROOT + '/docs/analysis/chamber-treatments-2026-09-23/'
-    a4(D + 'floor-vs-carpet.pdf', HERE + '/_p1.pdf'); page2(PS); page3()
-    subprocess.run(['pdfunite', HERE + '/_p1.pdf', HERE + '/_p2.pdf', HERE + '/_p3.pdf', HERE + '/CHAMBER-FINAL.pdf'], check=True)
-    for x in ('_p1.pdf', '_p2.pdf', '_p3.pdf', '_p2.html', '_p3.html'): os.remove(HERE + '/' + x)
+    a4(D + 'floor-vs-carpet.pdf', HERE + '/_p1.pdf'); page1(); page2(PS); page3()
+    subprocess.run(['pdfunite', HERE + '/_p0.pdf', HERE + '/_p1.pdf', HERE + '/_p2.pdf', HERE + '/_p3.pdf', HERE + '/CHAMBER-FINAL.pdf'], check=True)
+    for x in ('_p0.pdf', '_p0.html', '_p1.pdf', '_p2.pdf', '_p3.pdf', '_p2.html', '_p3.html'): os.remove(HERE + '/' + x)
     for g in ('floor-vs-carpet.pdf', 'floor-vs-carpet.png'): os.remove(D + g)
     print('floor', round(F['score'], 3), cutoff(F), count(F, 'fail'), round(F['tone_all']), '| carpet', round(C['score'], 3), cutoff(C), count(C, 'fail'), count(C, 'marg'), round(C['tone_all']),
           '| final', round(X['score'], 3), cutoff(X), '| MARG', MARG)
