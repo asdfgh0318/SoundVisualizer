@@ -201,25 +201,65 @@ def page3():
     open(HERE + '/_p3.html', 'w').write(h); chromium('_p3')
 
 
+
+FO = os.path.expanduser('~/ŻYCIE/PRACA/SoundVisualizer-data/data/calibrations/factory-originals-2026-09-16')
+def mic_before_after(run):                              # same capture, factory calibration files vs the measured (16 Sep) corrections
+    from calibrator.rig import parse_umik_calibration
+    import json
+    rows = json.load(open(S + run + '/levels.json')); meta = json.load(open(S + run + '/meta.json'))
+    ser = {f"{m['position_deg']:+.0f}": m['serial'] for m in meta['arc']}
+    pos = sorted(float(k) for k in rows[0] if k != 'freq'); f = np.array([r['freq'] for r in rows]); B = np.full((len(f), len(pos)), np.nan)
+    for j, q in enumerate(pos):
+        k = f'{q:+.0f}'; c = parse_umik_calibration(open(f'{FO}/{ser[k]}.txt').read())
+        for i, r in enumerate(rows): B[i, j] = r[k]['level_dbfs'] - np.interp(f[i], c.freq_hz, c.gain_db) + 94 - c.sens_factor_db
+    f2, p2, A, _ = read_map(S + run)
+    nb, na = B - B.mean(1, keepdims=True), A - A.mean(1, keepdims=True); lo = f < 3000
+    return f, np.asarray(p2), nb[:, ::-1], na[:, ::-1], rms(nb[lo]), rms(na[lo]), float(np.ptp(B[lo].mean(0))), float(np.ptp(A[lo].mean(0)))
+
+def fig_mic():
+    from matplotlib.colors import LinearSegmentedColormap
+    runs = [(DAY3A, 'day3-a (start of day 3)'), (FINAL, 'carpet-reordered (final)')]; res = [mic_before_after(r) for r, _ in runs]
+    bw = LinearSegmentedColormap.from_list('bw', ['#c05621', '#f6d7c3', '#ffffff', '#cfe0f3', '#2b6cb0'])
+    fig, axs = plt.subplots(3, 2, figsize=(7.4, 6.4), gridspec_kw=dict(hspace=.5, wspace=.12))
+    f = res[0][0]; pos = res[0][1][::-1]; xx = np.arange(len(f) + 1); yy = np.arange(len(pos) + 1)
+    tk = [i for i, q in enumerate(f) if any(abs(q - z) / z < 0.02 for z in [257, 400, 630, 1000, 1600, 2500, 5000, 6000])]
+    for c, ((run, nm), (f, p, nb, na, eb, ea, sb, sa)) in enumerate(zip(runs, res)):
+        G = np.abs(nb) - np.abs(na)
+        for r, (M, ttl, cm, v) in enumerate(((nb, f'{nm}\nfactory files: {eb:.3f} dB below 3 kHz, span {sb:.1f} dB', 'RdBu_r', 12), (na, f'corrected: {ea:.3f} dB, span {sa:.1f} dB', 'RdBu_r', 12),
+                                           (G, 'closer to flat (blue) or further (orange)', bw, 3))):
+            a = axs[r, c]; a.pcolormesh(xx, yy, M.T, cmap=cm, vmin=-v, vmax=v); a.axvline(np.searchsorted(f, 4000), color='k', lw=1.2); a.invert_yaxis()
+            a.set_yticks(np.arange(len(pos)) + .5); a.set_yticklabels([f'{q:+.0f}°' for q in pos] if c == 0 else [], fontsize=5.5)
+            a.set_xticks([i + .5 for i in tk]); a.set_xticklabels([f'{f[i]:.0f}' for i in tk], fontsize=5.5); a.set_title(ttl, fontsize=6.4, loc='left')
+    fig.text(.5, .015, 'Hz (3–5 kHz omitted). Rows: level of each capsule relative to the arc mean (±12 dB); bottom row ±3 dB. Top of each map = +90°.', ha='center', fontsize=6)
+    fig.savefig(HERE + '/fig-mic.png', dpi=200, bbox_inches='tight'); plt.close(fig)
+    return res
+
 def page1():
-    h = f"""<!doctype html><html><head><meta charset="utf-8"><title>Source and microphones</title><style>{CSS}
-.ph{{display:flex;gap:3mm;margin:3pt 0 2pt}} .ph div{{width:49.2%}} .ph img{{width:100%;height:auto;max-height:none;margin:0;display:block}} .cap{{font-size:7pt;color:#46545c;margin:1pt 0 0}}</style></head><body>
-<h1>1 · The source and the microphones</h1>
-<p class="tag">SoundVisualizer · chamber report, 2026-10-05 · what the room is measured with, and how far the numbers can be trusted</p>
-<div class="ph"><div><img src="photo-chamber.jpg"><p class="cap"><b>The chamber in the final configuration</b> (<code>carpet-reordered</code>, photographed 5 Oct): the arc ring laid flat around the propeller rig at the hub, the speaker tripod on the left, batting on the floor and ceiling, wedges and lined pillars on the walls.</p></div>
-<div><img src="photo-source.jpg"><p class="cap"><b>The source</b>: a printed 1 l sphere with an 8 cm driver, at the hub.</p></div></div>
-<h2>What we did with the microphones</h2>
-<ul>
-<li><b>Eleven UMIK-2 capsules on a 1.68 m ring</b>, all recording at once. The room is read as each capsule's level relative to the arc mean (room error), on a 95-tone grid, 257 Hz–6.35 kHz.</li>
-<li><b>Substitution calibration, 16 Sep:</b> every capsule measured against every other at one seat (55 pairs, repeatability 0.08 dB sd). <b>Seven of the eleven factory files were wrong by 0.6–3.6 dB</b>, clustered by serial prefix. The corrections went into each capsule's calibration curve; the spread across the eleven fell from <b>4.01 dB to 0.02 dB</b>. The datum is the four capsules whose files agree with measurement. Still open: the absolute level, which needs a 94 dB calibrator.</li>
-<li><b>Effect on the propeller data:</b> the 30 Sep prop-plane polar's roughness fell from 3.3 to 1.0 dB (−70 %) with the corrections applied to identical captures.</li>
-<li><b>Is it the rig or the room? (17 Sep)</b> Flipping the arc and then standing it vertical showed that about 0.2 dB of the position map is arc hardware; the rest is the room.</li>
-<li><b>The source</b> is a valid axisymmetric radiator below 3 kHz (driver-rotation test); 3–5 kHz is excluded.</li>
-<li><b>Repeatability:</b> the same state measured twice gives 0.006–0.015 dB; handling an item in and out about 0.04 dB. That is the floor under every treatment comparison that follows.</li>
-</ul>
-<p class="tag">Numbers from the project notes (CLAUDE.md, calibrator sessions 2026-09-16 and 2026-09-17), which govern where this page and they differ.</p>
+    R = fig_mic()
+    h = f"""<!doctype html><html><head><meta charset="utf-8"><title>Microphones</title><style>{CSS}
+.top{{display:flex;gap:4mm;align-items:flex-start;margin:3pt 0 4pt}} .top img{{width:4.6cm;height:auto;max-height:none;margin:0;flex:none}} .cap{{font-size:6.8pt;color:#46545c;margin:1pt 0 0}} .fig{{width:100%;max-height:15cm;object-fit:contain}}</style></head><body>
+<h1>1 · What we did with the microphones: substitution calibration</h1>
+<p class="tag">SoundVisualizer · chamber report, 2026-10-05 · calibrator session 2026-09-16</p>
+<div class="top"><div><img src="photo-source.jpg"><p class="cap"><b>The source</b>: a printed 1 l sphere with an 8 cm driver, at the hub.</p></div>
+<div><p>Eleven UMIK-2 capsules sit on the 1.68 m ring. Their factory calibration files were never checked against each other, so on 16 Sep every capsule was measured against every other at one seat (55 pairs, 12 tones per octave). At one seat the source and the room are the same for both capsules, so their difference is the capsule.</p>
+<ul><li><b>Seven of the eleven factory files were wrong by 0.6–3.6 dB</b>, clustered by serial prefix.</li>
+<li>The corrections went into each capsule's calibration curve. The spread across the eleven, for the same sound, fell from <b>4.01 dB to 0.02 dB</b>. Repeatability of the method: 0.08 dB sd.</li>
+<li>The datum is the four capsules whose files agree with measurement. Still open: the absolute level, which needs a 94 dB calibrator.</li>
+<li>On the 30 Sep prop-plane polar the corrections cut the roughness from 3.3 to 1.0 dB.</li></ul></div></div>
+<h2>Before and after, on two captures from this report</h2>
+<img class="fig" src="fig-mic.png">
+<p>Same two captures, calibrated two ways: the factory files (top) and the measured corrections (middle); \u201cspan\u201d is the range of the capsules' mean levels. The factory files add a different offset to each capsule, which shows up as horizontal stripes across every frequency; the span of the capsules' mean levels is <b>{R[0][6]:.1f} → {R[0][7]:.1f} dB</b> at the start of day 3 and <b>{R[1][6]:.1f} → {R[1][7]:.1f} dB</b> in the final configuration. Room error below 3 kHz changes <b>{R[0][4]:.3f} → {R[0][5]:.3f} dB</b> and <b>{R[1][4]:.3f} → {R[1][5]:.3f} dB</b>. The change is a per-capsule offset, so it moves rows, not the frequency structure of the room; every room-error number elsewhere in this report uses the corrected files.</p>
+<p class="tag">Numbers from the project notes (CLAUDE.md, calibrator session 2026-09-16), which govern where this page and they differ.</p>
 </body></html>"""
     open(HERE + '/_p0.html', 'w').write(h); chromium('_p0')
+
+def pagewf(png):
+    h = f"""<!doctype html><html><head><meta charset="utf-8"><title>Waterfall</title><style>{CSS}
+.top{{display:flex;gap:4mm;align-items:flex-start;margin:3pt 0 3pt}} .top img{{width:3.1cm;height:4.1cm;object-fit:cover;margin:0;flex:none}} .fig{{display:block;margin:0 auto;max-height:21.6cm;width:auto}}</style></head><body>
+<h1>2 · Main waterfall: day 3 start against the final state</h1>
+<div class="top"><img src="photo-chamber.jpg"><p style="margin:0">The chamber in the final configuration (<code>carpet-reordered</code>, photographed 5 Oct): the arc ring laid flat around the propeller rig at the hub, the speaker tripod on the left, batting on the floor and ceiling, wedges and lined pillars on the walls. Both runs below are from 25 Sep with the corrected microphones. The source was moved between them (page 3).</p></div>
+<img class="fig" src="{png}"></body></html>"""
+    open(HERE + '/_p1.html', 'w').write(h); chromium('_p1')
 
 if __name__ == '__main__':
     print(f'source check carpet vs floor: level {C["level"] - F["level"]:+.2f} dB, tilt {C["tilt"] - F["tilt"]:+.2f}; repeat: {C2["level"] - F["level"]:+.2f}, {C2["tilt"] - F["tilt"]:+.2f}')
@@ -231,11 +271,11 @@ if __name__ == '__main__':
         PS = {(k.split('@')[0], int(k.split('@')[1])) if '@' in k else k: v for k, v in json.load(open(HERE + '/polar-stats.json')).items()}
     for kk, v in PS.items():
         if kk != 'axis': print(kk, {a: round(b, 1) for a, b in v.items()})
-    subprocess.run([sys.executable, STEP, DAY3A, FINAL, '2 · Waterfall, day 3 start (worst) vs final · source moved in between', 'floor-vs-carpet'], cwd=ROOT, check=True, stdout=subprocess.DEVNULL)
+    subprocess.run([sys.executable, STEP, DAY3A, FINAL, 'Day 3 start (worst) vs final · source moved in between', 'floor-vs-carpet'], cwd=ROOT, check=True, stdout=subprocess.DEVNULL)
     D = ROOT + '/docs/analysis/chamber-treatments-2026-09-23/'
-    a4(D + 'floor-vs-carpet.pdf', HERE + '/_p1.pdf'); page1(); page2(PS); page3()
+    import shutil; shutil.copy(D + 'floor-vs-carpet.png', HERE + '/_wf.png'); from PIL import Image, ImageChops; _im = Image.open(HERE + '/_wf.png').convert('RGB'); _im.crop(ImageChops.difference(_im, Image.new('RGB', _im.size, (255, 255, 255))).getbbox()).save(HERE + '/_wf.png'); pagewf('_wf.png'); page1(); page2(PS); page3()
     subprocess.run(['pdfunite', HERE + '/_p0.pdf', HERE + '/_p1.pdf', HERE + '/_p2.pdf', HERE + '/_p3.pdf', HERE + '/CHAMBER-FINAL.pdf'], check=True)
-    for x in ('_p0.pdf', '_p0.html', '_p1.pdf', '_p2.pdf', '_p3.pdf', '_p2.html', '_p3.html'): os.remove(HERE + '/' + x)
+    for x in ('_wf.png', '_p1.html', '_p0.pdf', '_p0.html', '_p1.pdf', '_p2.pdf', '_p3.pdf', '_p2.html', '_p3.html'): os.remove(HERE + '/' + x)
     for g in ('floor-vs-carpet.pdf', 'floor-vs-carpet.png'): os.remove(D + g)
     print('floor', round(F['score'], 3), cutoff(F), count(F, 'fail'), round(F['tone_all']), '| carpet', round(C['score'], 3), cutoff(C), count(C, 'fail'), count(C, 'marg'), round(C['tone_all']),
           '| final', round(X['score'], 3), cutoff(X), '| MARG', MARG)
