@@ -24,6 +24,51 @@ const INK = '1F2A44', RED = 'D6336C', BLUE = '2B6CB0', MUTED = '5B6578';
 }
 
 
+
+// Slide 2: what we did to fix it
+{
+  const s = pres.addSlide();
+  s.background = { color: 'FFFFFF' };
+  s.addText('THE FIX', { x: 0.6, y: 0.5, w: 6, h: 0.4, fontFace: 'Calibri', fontSize: 14, bold: true, color: BLUE, charSpacing: 3, margin: 0, isTextBox: true });
+  s.addText('What we did: every microphone, one loudspeaker', { x: 0.6, y: 0.9, w: 12.1, h: 0.8, fontFace: 'Cambria', fontSize: 32, bold: true, color: INK, margin: 0, valign: 'top', isTextBox: true });
+  // diagram: loudspeaker -> microphone, swap with the other capsules
+  s.addImage({ path: 'photo-source.jpg', x: 0.7, y: 2.25, w: 1.55, h: 1.75, sizing: { type: 'cover', w: 1.55, h: 1.75 }, altText: 'Our loudspeaker: a printed sphere with an 8 cm driver' });
+  s.addText('Our loudspeaker', { x: 0.45, y: 4.05, w: 2.05, h: 0.3, fontFace: 'Calibri', fontSize: 14, color: INK, align: 'center', margin: 0, isTextBox: true });
+  s.addText('stepped tones, 62 Hz to 16 kHz', { x: 2.2, y: 2.75, w: 2.6, h: 0.3, fontFace: 'Calibri', fontSize: 12, color: MUTED, align: 'center', margin: 0, isTextBox: true });
+  s.addShape(pres.shapes.LINE, { x: 2.4, y: 3.2, w: 2.2, h: 0, line: { color: RED, width: 2.5, dashType: 'dash', endArrowType: 'triangle' } });
+  s.addShape(pres.shapes.OVAL, { x: 4.7, y: 2.9, w: 0.55, h: 0.55, fill: { color: BLUE }, line: { color: BLUE, width: 0 } });
+  s.addShape(pres.shapes.RECTANGLE, { x: 4.92, y: 3.4, w: 0.11, h: 0.6, fill: { color: BLUE }, line: { color: BLUE, width: 0 } });
+  s.addText('UMIK-2 microphone', { x: 3.7, y: 4.1, w: 2.35, h: 0.3, fontFace: 'Calibri', fontSize: 14, color: INK, align: 'center', margin: 0, isTextBox: true });
+  s.addText('swap', { x: 5.35, y: 2.85, w: 0.8, h: 0.3, fontFace: 'Calibri', fontSize: 12, bold: true, color: INK, align: 'center', margin: 0, isTextBox: true });
+  s.addShape(pres.shapes.LINE, { x: 5.4, y: 3.2, w: 0.7, h: 0, line: { color: INK, width: 2, beginArrowType: 'triangle', endArrowType: 'triangle' } });
+  [2.45, 2.95, 3.45].forEach((yy) => s.addShape(pres.shapes.OVAL, { x: 6.3, y: yy, w: 0.42, h: 0.42, fill: { color: 'C9CFDA' }, line: { color: 'C9CFDA', width: 0 } }));
+  s.addText('all 11 in turn', { x: 6.1, y: 4.1, w: 1.3, h: 0.3, fontFace: 'Calibri', fontSize: 14, color: INK, align: 'center', margin: 0, isTextBox: true });
+  // settings
+  s.addText([
+    { text: '97 tones per microphone, 62 Hz to 16 kHz, 12 per octave (a stepped sweep)', options: { bullet: true, breakLine: true } },
+    { text: 'One tone at a time: 0.7 s to settle, then 2 s recorded (6 s below 250 Hz)', options: { bullet: true, breakLine: true } },
+    { text: 'Same position, same loudspeaker, same level for every microphone', options: { bullet: true, breakLine: true } },
+    { text: 'One microphone measured three times as the reference', options: { bullet: true } },
+  ], { x: 0.6, y: 4.85, w: 6.7, h: 1.95, fontFace: 'Calibri', fontSize: 14, color: INK, margin: 0, valign: 'top', paraSpaceAfter: 6, isTextBox: true });
+  // results
+  s.addText([
+    { text: '4.01', options: { color: RED } }, { text: ' → ', options: { color: MUTED } }, { text: '0.02 dB', options: { color: BLUE } },
+  ], { x: 7.9, y: 1.95, w: 4.9, h: 0.8, fontFace: 'Cambria', fontSize: 44, bold: true, margin: 0, isTextBox: true });
+  s.addText('spread across the eleven microphones for the same sound', { x: 7.9, y: 2.75, w: 4.9, h: 0.55, fontFace: 'Calibri', fontSize: 14, color: MUTED, margin: 0, valign: 'top', isTextBox: true });
+  s.addText('7 of 11 factory files were wrong by 0.6–3.6 dB', { x: 7.9, y: 3.3, w: 4.9, h: 0.35, fontFace: 'Calibri', fontSize: 14, bold: true, color: INK, margin: 0, isTextBox: true });
+  s.addText('Each factory file against the common reference, mean over frequency (dB): below 0 reads too quiet, above 0 too loud', { x: 7.9, y: 3.7, w: 4.9, h: 0.45, fontFace: 'Calibri', fontSize: 11, color: MUTED, margin: 0, valign: 'top', isTextBox: true });
+  s.addChart(pres.charts.BAR, [{ name: 'Mean offset (dB)', labels: ['810-8893', '810-8904', '810-8901', '810-8897', '810-8900', '811-1896', '811-2321', '810-8903', '811-2310', '811-1897', '811-1892'], values: [1.25, 0.85, 0.84, 0.76, 0.23, 0.00, -0.09, -0.14, -0.78, -1.39, -2.59] }], {
+    x: 7.8, y: 4.1, w: 5.0, h: 2.85, barDir: 'bar', chartColors: [BLUE], showLegend: false, showTitle: false,
+    catAxisLabelPos: 'low', catAxisLabelFrequency: 1, catAxisLabelFontSize: 10, catAxisLabelColor: INK, catAxisLabelFontFace: 'Calibri',
+    valAxisMinVal: -3, valAxisMaxVal: 2, valAxisMajorUnit: 1, valAxisLabelFontSize: 10, valAxisLabelColor: MUTED, valAxisLabelFontFace: 'Calibri',
+    valGridLine: { color: 'E3E7EE', size: 0.5 }, catGridLine: { style: 'none' }, barGapWidthPct: 40,
+    showValue: true, dataLabelFontSize: 10, dataLabelColor: INK, dataLabelFontFace: 'Calibri', dataLabelFormatCode: '0.0', dataLabelPosition: 'outEnd',
+  });
+  s.addText('Calibration session 16 Sep 2026, one microphone plugged in at a time, loudspeaker amplitude 0.03 of full scale.', { x: 0.6, y: 6.95, w: 11.3, h: 0.3, fontFace: 'Calibri', fontSize: 11, color: MUTED, margin: 0, isTextBox: true });
+  s.addText('2', { x: 12.2, y: 6.95, w: 0.5, h: 0.3, fontFace: 'Calibri', fontSize: 12, color: MUTED, align: 'right', margin: 0, isTextBox: true });
+  s.addNotes('Procedure (calibrator/session.py, 2026-09-16 session): each of the eleven UMIK-2 capsules was plugged in at the same mounting point in front of the loudspeaker and measured over 97 stepped tones, 62 Hz to 16 kHz (about 12 per octave), amplitude 0.03, 48 kHz sampling, 0.7 s settle and 2 s capture per tone (6 s below 250 Hz). Capsule 810-8904 was measured three full times (18:21, 18:30, 20:43) as the reference. The difference of each capsule from the reference was folded into its calibration curve; Sens Factors kept as in the factory files. The datum is the mean of four capsules whose factory files agree with measurement (810-8900, 810-8903, 811-1896, 811-2321). Bars: mean over frequency of how far each capsule read from that datum with its factory file (calibrator corrections csv). Spread 4.01 to 0.02 dB and 7 of 11 files wrong by 0.6-3.6 dB are from the project notes. Absolute level is not anchored: that needs a 94 dB calibrator.');
+}
+
 // Slide 2: the same polar with the 30 Sep measurement on top
 {
   const s = pres.addSlide();
