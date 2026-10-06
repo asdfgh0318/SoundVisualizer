@@ -14,7 +14,7 @@ with zipfile.ZipFile(src) as zin, zipfile.ZipFile(tmp, 'w', zipfile.ZIP_DEFLATED
         data = zin.read(it.filename)
         if re.fullmatch(r'ppt/slides/slide\d+\.xml', it.filename):
             x = data.decode('utf8'); x = re.sub(r'<a:p>.*?</a:p>', fix_par, x, flags=re.S)
-            if it.filename.endswith('slide3.xml'):
+            if '>Top<' in x:
                 i = x.index('>Top<'); j = x.rfind('<a:p>', 0, i); k = x.index('</a:pPr>', j) + len('</a:pPr>')
                 x = x[:j] + '<a:p>' + BUL + x[k:]
             data = x.encode('utf8')
