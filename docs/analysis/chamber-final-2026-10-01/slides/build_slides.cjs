@@ -33,23 +33,18 @@ const INK = '1F2A44', RED = 'D6336C', BLUE = '2B6CB0', MUTED = '5B6578';
   s.addText('What we did: every microphone, one loudspeaker', { x: 0.6, y: 0.9, w: 12.1, h: 0.8, fontFace: 'Cambria', fontSize: 32, bold: true, color: INK, margin: 0, valign: 'top', isTextBox: true });
   // diagram: loudspeaker -> microphone, swap with the other capsules
   s.addImage({ path: 'photo-source.jpg', x: 0.7, y: 2.25, w: 1.55, h: 1.75, sizing: { type: 'cover', w: 1.55, h: 1.75 }, altText: 'Our loudspeaker: a printed sphere with an 8 cm driver' });
-  // the microphone lies on its side, capsule end facing the loudspeaker
-  const mic = (x, y, k, tipColor) => {
-    s.addShape(pres.shapes.ROUNDED_RECTANGLE, { x: x + 0.28 * k, y: y + 0.06 * k, w: 2.1 * k, h: 0.26 * k, rectRadius: 0.05 * k, fill: { color: '4A5568' }, line: { color: '4A5568', width: 0 } });
-    s.addShape(pres.shapes.OVAL, { x: x, y: y, w: 0.34 * k, h: 0.38 * k, fill: { color: tipColor }, line: { color: tipColor, width: 0 } });
-  };
+  // the real UMIK-2 (miniDSP product photo), capsule end towards the loudspeaker
   s.addText('tones, 62 Hz–16 kHz', { x: 2.3, y: 2.7, w: 2.0, h: 0.3, fontFace: 'Calibri', fontSize: 12, color: MUTED, align: 'center', margin: 0, isTextBox: true });
-  s.addShape(pres.shapes.LINE, { x: 2.4, y: 3.05, w: 1.95, h: 0, line: { color: RED, width: 2.5, dashType: 'dash', endArrowType: 'triangle' } });
-  mic(4.45, 2.86, 1, BLUE);
-  s.addText('capsule faces the loudspeaker', { x: 4.2, y: 3.35, w: 2.6, h: 0.3, fontFace: 'Calibri', fontSize: 12, color: BLUE, bold: true, align: 'left', margin: 0, isTextBox: true });
-  s.addText('UMIK-2 microphone', { x: 4.45, y: 2.4, w: 2.6, h: 0.3, fontFace: 'Calibri', fontSize: 14, color: INK, margin: 0, isTextBox: true });
-  s.addShape(pres.shapes.LINE, { x: 5.2, y: 3.7, w: 0, h: 0.3, line: { color: INK, width: 2, beginArrowType: 'triangle', endArrowType: 'triangle' } });
-  s.addText('swap', { x: 5.3, y: 3.72, w: 0.8, h: 0.26, fontFace: 'Calibri', fontSize: 12, bold: true, color: INK, margin: 0, isTextBox: true });
-  [['1', 4.45], ['2', 5.35], ['11', 6.5]].forEach(([n, xx]) => {
-    mic(xx, 4.15, 0.3, '9AA5B8');
-    s.addText(n, { x: xx, y: 4.38, w: 0.75, h: 0.25, fontFace: 'Calibri', fontSize: 12, color: MUTED, align: 'center', margin: 0, isTextBox: true });
-  });
-  s.addText('…', { x: 6.1, y: 4.05, w: 0.4, h: 0.3, fontFace: 'Calibri', fontSize: 14, color: MUTED, align: 'center', margin: 0, isTextBox: true });
+  s.addShape(pres.shapes.LINE, { x: 2.4, y: 3.2, w: 1.95, h: 0, line: { color: RED, width: 2.5, dashType: 'dash', endArrowType: 'triangle' } });
+  s.addText('UMIK-2 microphone', { x: 4.45, y: 2.35, w: 2.6, h: 0.3, fontFace: 'Calibri', fontSize: 14, color: INK, margin: 0, isTextBox: true });
+  s.addImage({ path: 'umik2-photo.png', x: 4.45, y: 2.8, w: 2.75, h: 0.743, altText: 'UMIK-2 measurement microphone, capsule end on the left facing the loudspeaker' });
+  s.addText('capsule end faces the loudspeaker', { x: 4.45, y: 3.62, w: 2.9, h: 0.28, fontFace: 'Calibri', fontSize: 12, color: BLUE, bold: true, margin: 0, isTextBox: true });
+  // swap: the unit at the mounting point is exchanged, serial numbers shown
+  s.addText('swap, one unit at a time', { x: 4.45, y: 4.0, w: 2.9, h: 0.26, fontFace: 'Calibri', fontSize: 12, bold: true, color: INK, margin: 0, isTextBox: true });
+  const pill = (t, x) => s.addText(t, { x, y: 4.3, w: 0.92, h: 0.32, fontFace: 'Calibri', fontSize: 12, color: INK, align: 'center', valign: 'middle', margin: 0, shape: pres.shapes.ROUNDED_RECTANGLE, rectRadius: 0.1, fill: { color: 'EEF1F6' }, line: { color: 'C9CFDA', width: 0.75 } });
+  pill('810-8904', 4.45); pill('811-1896', 5.55); pill('811-1892', 6.65);
+  s.addText('⇄', { x: 5.37, y: 4.28, w: 0.2, h: 0.35, fontFace: 'Calibri', fontSize: 14, bold: true, color: INK, align: 'center', margin: 0, isTextBox: true });
+  s.addText('⇄', { x: 6.47, y: 4.28, w: 0.2, h: 0.35, fontFace: 'Calibri', fontSize: 14, bold: true, color: INK, align: 'center', margin: 0, isTextBox: true });
   s.addText('Our loudspeaker', { x: 0.45, y: 4.05, w: 2.05, h: 0.3, fontFace: 'Calibri', fontSize: 14, color: INK, align: 'center', margin: 0, isTextBox: true });
   // settings
   s.addText([
@@ -72,7 +67,7 @@ const INK = '1F2A44', RED = 'D6336C', BLUE = '2B6CB0', MUTED = '5B6578';
     valGridLine: { color: 'E3E7EE', size: 0.5 }, catGridLine: { style: 'none' }, barGapWidthPct: 40,
     showValue: true, dataLabelFontSize: 10, dataLabelColor: INK, dataLabelFontFace: 'Calibri', dataLabelFormatCode: '0.0', dataLabelPosition: 'outEnd',
   });
-  s.addText('Calibration session 16 Sep 2026, one microphone plugged in at a time, loudspeaker amplitude 0.03 of full scale.', { x: 0.6, y: 6.95, w: 11.3, h: 0.3, fontFace: 'Calibri', fontSize: 11, color: MUTED, margin: 0, isTextBox: true });
+  s.addText('Calibration session 16 Sep 2026, loudspeaker amplitude 0.03 of full scale. UMIK-2 photo: miniDSP product brief.', { x: 0.6, y: 6.95, w: 11.3, h: 0.3, fontFace: 'Calibri', fontSize: 11, color: MUTED, margin: 0, isTextBox: true });
   s.addText('2', { x: 12.2, y: 6.95, w: 0.5, h: 0.3, fontFace: 'Calibri', fontSize: 12, color: MUTED, align: 'right', margin: 0, isTextBox: true });
   s.addNotes('Procedure (calibrator/session.py, 2026-09-16 session): each of the eleven UMIK-2 capsules was plugged in at the same mounting point in front of the loudspeaker and measured over 97 stepped tones, 62 Hz to 16 kHz (about 12 per octave), amplitude 0.03, 48 kHz sampling, 0.7 s settle and 2 s capture per tone (6 s below 250 Hz). Capsule 810-8904 was measured three full times (18:21, 18:30, 20:43) as the reference. The difference of each capsule from the reference was folded into its calibration curve; Sens Factors kept as in the factory files. The datum is the mean of four capsules whose factory files agree with measurement (810-8900, 810-8903, 811-1896, 811-2321). Bars: mean over frequency of how far each capsule read from that datum with its factory file (calibrator corrections csv). Spread 4.01 to 0.02 dB and 7 of 11 files wrong by 0.6-3.6 dB are from the project notes. Absolute level is not anchored: that needs a 94 dB calibrator.');
 }
