@@ -12,7 +12,7 @@ for nm, base, col in SETS:
     g = bf.last_at(base, 2000, bf.CORR)
     data[nm] = (g['elev'], bf.totals(g, LO, HI), col)
 allv = np.concatenate([v for _, v, _ in data.values()]); print({k: (round(float(v.mean()), 1), round(float(np.ptp(v)), 1), round(float(v.min()), 1), round(float(v.max()), 1)) for k, (e, v, c) in data.items()})
-rmin = 69.0; rmax = 84.0          # the -90 deg outflow lobe (94-98 dB) runs off the scale on purpose, so the sides fill the plot
+rmin = 65.0; rmax = 90.0          # the -90 deg outflow lobe (94-98 dB) runs off the scale on purpose, so the sides fill the plot
 fig = plt.figure(figsize=(6.4, 6.4), dpi=220); ax = fig.add_subplot(111, projection='polar')
 for nm, (el, v, col) in data.items():
     th = np.radians(np.r_[el, 180 - el[::-1]]); r = np.r_[v, v[::-1]]
