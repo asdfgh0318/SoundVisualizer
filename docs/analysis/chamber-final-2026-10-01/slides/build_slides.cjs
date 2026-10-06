@@ -33,16 +33,24 @@ const INK = '1F2A44', RED = 'D6336C', BLUE = '2B6CB0', MUTED = '5B6578';
   s.addText('What we did: every microphone, one loudspeaker', { x: 0.6, y: 0.9, w: 12.1, h: 0.8, fontFace: 'Cambria', fontSize: 32, bold: true, color: INK, margin: 0, valign: 'top', isTextBox: true });
   // diagram: loudspeaker -> microphone, swap with the other capsules
   s.addImage({ path: 'photo-source.jpg', x: 0.7, y: 2.25, w: 1.55, h: 1.75, sizing: { type: 'cover', w: 1.55, h: 1.75 }, altText: 'Our loudspeaker: a printed sphere with an 8 cm driver' });
+  // the microphone lies on its side, capsule end facing the loudspeaker
+  const mic = (x, y, k, tipColor) => {
+    s.addShape(pres.shapes.ROUNDED_RECTANGLE, { x: x + 0.28 * k, y: y + 0.06 * k, w: 2.1 * k, h: 0.26 * k, rectRadius: 0.05 * k, fill: { color: '4A5568' }, line: { color: '4A5568', width: 0 } });
+    s.addShape(pres.shapes.OVAL, { x: x, y: y, w: 0.34 * k, h: 0.38 * k, fill: { color: tipColor }, line: { color: tipColor, width: 0 } });
+  };
+  s.addText('tones, 62 Hz–16 kHz', { x: 2.3, y: 2.7, w: 2.0, h: 0.3, fontFace: 'Calibri', fontSize: 12, color: MUTED, align: 'center', margin: 0, isTextBox: true });
+  s.addShape(pres.shapes.LINE, { x: 2.4, y: 3.05, w: 1.95, h: 0, line: { color: RED, width: 2.5, dashType: 'dash', endArrowType: 'triangle' } });
+  mic(4.45, 2.86, 1, BLUE);
+  s.addText('capsule faces the loudspeaker', { x: 4.2, y: 3.35, w: 2.6, h: 0.3, fontFace: 'Calibri', fontSize: 12, color: BLUE, bold: true, align: 'left', margin: 0, isTextBox: true });
+  s.addText('UMIK-2 microphone', { x: 4.45, y: 2.4, w: 2.6, h: 0.3, fontFace: 'Calibri', fontSize: 14, color: INK, margin: 0, isTextBox: true });
+  s.addShape(pres.shapes.LINE, { x: 5.2, y: 3.7, w: 0, h: 0.3, line: { color: INK, width: 2, beginArrowType: 'triangle', endArrowType: 'triangle' } });
+  s.addText('swap', { x: 5.3, y: 3.72, w: 0.8, h: 0.26, fontFace: 'Calibri', fontSize: 12, bold: true, color: INK, margin: 0, isTextBox: true });
+  [['1', 4.45], ['2', 5.35], ['11', 6.5]].forEach(([n, xx]) => {
+    mic(xx, 4.15, 0.3, '9AA5B8');
+    s.addText(n, { x: xx, y: 4.38, w: 0.75, h: 0.25, fontFace: 'Calibri', fontSize: 12, color: MUTED, align: 'center', margin: 0, isTextBox: true });
+  });
+  s.addText('…', { x: 6.1, y: 4.05, w: 0.4, h: 0.3, fontFace: 'Calibri', fontSize: 14, color: MUTED, align: 'center', margin: 0, isTextBox: true });
   s.addText('Our loudspeaker', { x: 0.45, y: 4.05, w: 2.05, h: 0.3, fontFace: 'Calibri', fontSize: 14, color: INK, align: 'center', margin: 0, isTextBox: true });
-  s.addText('stepped tones, 62 Hz to 16 kHz', { x: 2.2, y: 2.75, w: 2.6, h: 0.3, fontFace: 'Calibri', fontSize: 12, color: MUTED, align: 'center', margin: 0, isTextBox: true });
-  s.addShape(pres.shapes.LINE, { x: 2.4, y: 3.2, w: 2.2, h: 0, line: { color: RED, width: 2.5, dashType: 'dash', endArrowType: 'triangle' } });
-  s.addShape(pres.shapes.OVAL, { x: 4.7, y: 2.9, w: 0.55, h: 0.55, fill: { color: BLUE }, line: { color: BLUE, width: 0 } });
-  s.addShape(pres.shapes.RECTANGLE, { x: 4.92, y: 3.4, w: 0.11, h: 0.6, fill: { color: BLUE }, line: { color: BLUE, width: 0 } });
-  s.addText('UMIK-2 microphone', { x: 3.7, y: 4.1, w: 2.35, h: 0.3, fontFace: 'Calibri', fontSize: 14, color: INK, align: 'center', margin: 0, isTextBox: true });
-  s.addText('swap', { x: 5.35, y: 2.85, w: 0.8, h: 0.3, fontFace: 'Calibri', fontSize: 12, bold: true, color: INK, align: 'center', margin: 0, isTextBox: true });
-  s.addShape(pres.shapes.LINE, { x: 5.4, y: 3.2, w: 0.7, h: 0, line: { color: INK, width: 2, beginArrowType: 'triangle', endArrowType: 'triangle' } });
-  [2.45, 2.95, 3.45].forEach((yy) => s.addShape(pres.shapes.OVAL, { x: 6.3, y: yy, w: 0.42, h: 0.42, fill: { color: 'C9CFDA' }, line: { color: 'C9CFDA', width: 0 } }));
-  s.addText('all 11 in turn', { x: 6.1, y: 4.1, w: 1.3, h: 0.3, fontFace: 'Calibri', fontSize: 14, color: INK, align: 'center', margin: 0, isTextBox: true });
   // settings
   s.addText([
     { text: '97 tones per microphone, 62 Hz to 16 kHz, 12 per octave (a stepped sweep)', options: { bullet: true, breakLine: true } },
