@@ -77,7 +77,34 @@ const INK = '1F2A44', RED = 'D6336C', BLUE = '2B6CB0', MUTED = '5B6578';
   s.addNotes('Same figure as chapter 1 of the report, redrawn larger. The same two captures were calibrated two ways: with the factory files and with the corrections measured on 16 Sep. The span is the range of the capsules mean levels: 4.3 to 0.8 dB at the start of day 3, 4.1 to 1.0 dB in the final configuration. Room error below 3 kHz: 2.277 to 1.997 dB and 1.736 to 1.387 dB. The change is mainly a per-capsule offset, so it mainly moves whole rows.');
 }
 
-// Slide 4: the same polar with the 30 Sep measurement on top
+// Slide 4: the chamber treatments, day 3 start against the final state
+{
+  const s = pres.addSlide();
+  s.background = { color: 'FFFFFF' };
+  s.addImage({ path: 'fig-wf-slide.png', x: 0.35, y: 0.3, w: 7.61, h: 6.45, altText: 'Maps of each microphone against frequency: start of day 3, final state, and the change between them' });
+  s.addText('THE CHAMBER', { x: 8.95, y: 0.5, w: 3.9, h: 0.35, fontFace: 'Calibri', fontSize: 14, bold: true, color: BLUE, charSpacing: 3, margin: 0, isTextBox: true });
+  s.addText('The treatments flatten the low end', { x: 8.95, y: 0.85, w: 3.9, h: 1.2, fontFace: 'Cambria', fontSize: 28, bold: true, color: INK, margin: 0, valign: 'top', isTextBox: true });
+  s.addChart(pres.charts.BAR, [
+    { name: 'Start of day 3', labels: ['250–400', '400–630', '630–1k', '1k–1.6k', '1.6k–3k', '5k–6.4k'], values: [3.33, 2.57, 1.57, 0.8, 0.87, 1.04] },
+    { name: 'Final', labels: ['250–400', '400–630', '630–1k', '1k–1.6k', '1.6k–3k', '5k–6.4k'], values: [1.99, 1.52, 1.47, 0.85, 0.96, 1.17] },
+  ], {
+    x: 8.85, y: 2.05, w: 4.1, h: 2.75, barDir: 'col', barGrouping: 'clustered', chartColors: ['9AA5B8', '1F2A44'], showLegend: true, legendPos: 'b', legendFontSize: 11, legendColor: INK, legendFontFace: 'Calibri',
+    showTitle: true, title: 'Room error per band (dB, band in Hz)', titleFontSize: 12, titleColor: INK, titleFontFace: 'Calibri',
+    catAxisLabelFontSize: 10, catAxisLabelColor: INK, catAxisLabelFontFace: 'Calibri', valAxisLabelFontSize: 10, valAxisLabelColor: MUTED, valAxisLabelFontFace: 'Calibri', valAxisMinVal: 0, valAxisMaxVal: 4, valAxisMajorUnit: 1,
+    valGridLine: { color: 'E3E7EE', size: 0.5 }, catGridLine: { style: 'none' }, barGapWidthPct: 50,
+    showValue: true, dataLabelFontSize: 9, dataLabelColor: INK, dataLabelFontFace: 'Calibri', dataLabelFormatCode: '0.0', dataLabelPosition: 'outEnd',
+  });
+  s.addText([
+    { text: '2.00', options: { color: RED } }, { text: ' → ', options: { color: MUTED } }, { text: '1.39 dB', options: { color: BLUE } },
+  ], { x: 8.95, y: 4.85, w: 3.9, h: 0.65, fontFace: 'Cambria', fontSize: 34, bold: true, margin: 0, isTextBox: true });
+  s.addText('room error below 3 kHz', { x: 8.95, y: 5.5, w: 3.9, h: 0.3, fontFace: 'Calibri', fontSize: 12, color: MUTED, margin: 0, isTextBox: true });
+  s.addText('Below 630 Hz the error falls by 1.3 and 1.0 dB. Above 1 kHz it does not improve.', { x: 8.95, y: 5.85, w: 3.9, h: 0.95, fontFace: 'Calibri', fontSize: 14, color: INK, margin: 0, valign: 'top', isTextBox: true });
+  s.addText('25 Sep 2026. The loudspeaker was moved during the day and returned to about its starting point; the position was not documented.', { x: 0.6, y: 6.95, w: 11.3, h: 0.3, fontFace: 'Calibri', fontSize: 11, color: MUTED, margin: 0, isTextBox: true });
+  s.addText('4', { x: 12.2, y: 6.95, w: 0.5, h: 0.3, fontFace: 'Calibri', fontSize: 12, color: MUTED, align: 'right', margin: 0, isTextBox: true });
+  s.addNotes('Same pair as page 3 of the report (day3-a at 13:17, carpet-reordered at 19:15, both 25 Sep), read with the corrected microphone files. Room error is the rms deviation of the eleven microphones from their mean, per band. Start of day 3: 3.33, 2.57, 1.57, 0.80, 0.87, 1.04 dB; final: 1.99, 1.52, 1.47, 0.85, 0.96, 1.17 dB for the bands 250-400, 400-630, 630-1000, 1000-1600, 1600-3000 and 5000-6400 Hz. Caveat from the report: the loudspeaker was moved on purpose during the day (20 cm closer, into the ring plane, 5 cm back) and then returned to about its starting mounting point, which was not recorded. The tilt of the map changed from -0.41 to -0.63 and the mean level rose 1.16 dB, so the gain is the treatments plus a small unknown difference in source position, and part of it may be the louder direct sound. The clean pair with an unmoved source is 24 Sep: empty floor 2.054 to carpet 1.317 dB.');
+}
+
+// Slide 5: the same polar with the 30 Sep measurement on top
 {
   const s = pres.addSlide();
   s.background = { color: 'FFFFFF' };
@@ -94,7 +121,7 @@ const INK = '1F2A44', RED = 'D6336C', BLUE = '2B6CB0', MUTED = '5B6578';
   ], { x: 7.4, y: 5.5, w: 5.3, h: 0.8, fontFace: 'Cambria', fontSize: 48, bold: true, margin: 0, isTextBox: true });
   s.addText('between the loudest and quietest microphone', { x: 7.4, y: 6.3, w: 5.3, h: 0.5, fontFace: 'Calibri', fontSize: 14, color: MUTED, margin: 0, isTextBox: true });
   s.addText('20–560 Hz, motor at 2000 µs. The two runs had different operating points (7.35 V against 11.7 V), which is why the blue is lower.', { x: 0.6, y: 6.95, w: 12.1, h: 0.3, fontFace: 'Calibri', fontSize: 11, color: MUTED, margin: 0, isTextBox: true });
-  s.addText(String(4), { x: 12.2, y: 6.95, w: 0.5, h: 0.3, fontFace: 'Calibri', fontSize: 12, color: MUTED, align: 'right', margin: 0, isTextBox: true });
+  s.addText(String(5), { x: 12.2, y: 6.95, w: 0.5, h: 0.3, fontFace: 'Calibri', fontSize: 12, color: MUTED, align: 'right', margin: 0, isTextBox: true });
   s.addNotes('Blue: 30 Sep propeller measurement (11.7 V, 7.3 A, thrust -4 N), read with the 16 Sep microphone corrections. Rms spread about the mean 1.45 dB against 2.05 dB for 31 Aug; range 4.0 dB (55.5 to 59.6 dB SPL) against 6.7 dB. The blue is about 11 dB lower because the motor ran at a different operating point. The 4 dB range of the blue is a bottom-louder trend. Honest caveat: with the same calibration applied to the 1-2 Sep runs, those are about as round as 30 Sep, so most of the improvement against the earlier baselines comes from the microphone calibration, not the room.');
 }
 
