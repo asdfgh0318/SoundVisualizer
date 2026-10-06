@@ -192,7 +192,7 @@ def page2(PS):
 <tr><td>31 Aug horizontal baseline</td><td>31 Aug, before the corrections</td><td><b>factory files</b></td></tr>
 <tr><td>prop8–10</td><td>1 Sep, before the corrections</td><td><b>factory files</b></td></tr>
 <tr><td>prop11–17 (prop15–17 used for the spreads in the text)</td><td>2 Sep, before the corrections</td><td><b>factory files</b></td></tr>
-<tr><td>30 Sep propeller-plane baseline</td><td>30 Sep, after the 16 Sep substitution calibration</td><td><b>corrections</b> (the only propeller capture in this report that has them)</td></tr></tbody></table>
+<tr><td>30 Sep propeller-plane baseline</td><td>30 Sep, after the 16 Sep microphone calibration</td><td><b>corrections</b> (the only propeller capture in this report that has them)</td></tr></tbody></table>
 <p class="tag">The corrections were measured on 16 Sep (page 1). The earlier captures are shown as they were taken. The reference row of the table above re-reads 1–2 Sep with the corrections, to show how much of the gain comes from the calibration.</p>
 </body></html>"""
     mk = '<h1 style="font-size:15pt;margin:8pt 0 2pt;padding-top:4pt;border-top:.7pt solid #c6d0d5">3 · Polars'
@@ -280,12 +280,12 @@ def page1():
     R = fig_mic()
     h = f"""<!doctype html><html><head><meta charset="utf-8"><title>Microphones</title><style>{CSS}
 .top{{display:flex;gap:4mm;align-items:flex-start;margin:3pt 0 4pt}} .top img{{width:4.6cm;height:auto;max-height:none;margin:0;flex:none}} .cap{{font-size:6.8pt;color:#46545c;margin:1pt 0 0}} .fig{{width:100%;max-height:15cm;object-fit:contain}}</style></head><body>
-<h1>1 · Microphone calibration by substitution</h1>
-<p class="tag">SoundVisualizer · chamber report, 2026-10-05 · calibrator session 2026-09-16</p>
+<h1>1 · Microphone calibration</h1>
+<p class="tag">SoundVisualizer · chamber report, 2026-10-05 · calibrator session 2026-09-16 (97 tones per capsule, amplitude 0.03)</p>
 <div class="top"><div><img src="photo-source.jpg"><p class="cap"><b>The test loudspeaker</b>: a printed 1-litre sphere with an 8 cm driver, placed at the hub (the centre of the ring).</p></div>
-<div><p>Eleven UMIK-2 measurement microphones, called <i>capsules</i> in this report, sit on a ring of 1.68 m diameter (0.84 m radius). Each came with a factory calibration file, and these files had never been checked against each other. On 16 Sep every capsule was therefore compared with every other capsule in the same mounting point (55 pairs, 12 tones per octave). This is a substitution calibration. In one mounting point the loudspeaker and the room are the same for both capsules, so any difference between the two readings comes from the capsules.</p>
+<div><p>Eleven UMIK-2 measurement microphones, called <i>capsules</i> in this report, sit on a ring of 1.68 m diameter (0.84 m radius). Each came with a factory calibration file, and nobody had checked these files against each other. On 16 Sep we measured every capsule in turn, one at a time, at the same mounting point in front of our loudspeaker, over a stepped frequency sweep: 97 tones from 62 Hz to 16 kHz, 12 per octave. One capsule (810-8904) was measured three full times (18:21, 18:30 and 20:43) as the reference. The loudspeaker, the room and the mounting point were the same for every capsule, so a difference between two curves comes from the capsules.</p>
 <ul><li><b>Seven of the eleven factory files were wrong by 0.6–3.6 dB.</b> The errors are grouped by serial-number prefix.</li>
-<li>The measured differences were added to each capsule's calibration curve. The updated curves are called the <i>corrections</i>; the original curves are the <i>factory files</i>. For the same sound, the spread of the eleven readings fell from <b>4.01 dB to 0.02 dB</b>. Repeated measurements agreed to 0.08 dB (standard deviation).</li>
+<li>Each capsule's difference from the reference was added to its calibration curve. The updated curves are called the <i>corrections</i>; the original curves are the <i>factory files</i>. For the same sound, the spread of the eleven readings fell from <b>4.01 dB to 0.02 dB</b>. Repeated measurements agreed to 0.08 dB (standard deviation).</li>
 <li>The reference level is set by the four capsules whose factory files agree with the measurement. Still open: the absolute level, which needs a 94 dB sound calibrator.</li>
 <li>On the 30 Sep propeller-plane polar (chapter 3), the corrections reduced the roughness from 3.3 to 1.0 dB (a different statistic from the rms spread on page 5, defined in <code>docs/analysis/baseline-story-2026-09-30/REPORT.pdf</code>).</li></ul></div></div>
 <h2>Before and after, on two captures from this report</h2>
