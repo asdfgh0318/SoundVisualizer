@@ -60,21 +60,21 @@ const INK = '1F2A44', RED = 'D6336C', BLUE = '2B6CB0', MUTED = '5B6578';
 {
   const s = pres.addSlide();
   s.background = { color: 'FFFFFF' };
-  s.addImage({ path: 'fig-mic.png', x: 0.5, y: 0.45, w: 6.15, h: 6.2, altText: 'Maps of each microphone against frequency for two captures: factory files (top), corrected (middle), effect of the correction (bottom)' });
-  s.addText('THE RESULT', { x: 7.2, y: 0.9, w: 5.5, h: 0.4, fontFace: 'Calibri', fontSize: 14, bold: true, color: BLUE, charSpacing: 3, margin: 0, isTextBox: true });
-  s.addText('The correction removes the microphone offsets', { x: 7.2, y: 1.3, w: 5.5, h: 1.4, fontFace: 'Cambria', fontSize: 32, bold: true, color: INK, margin: 0, valign: 'top', isTextBox: true });
+  s.addImage({ path: 'fig-mic-slide.png', x: 0.35, y: 0.3, w: 8.2, h: 6.38, altText: 'Maps of each microphone against frequency for two captures: factory files (top), corrected (middle), effect of the correction (bottom)' });
+  s.addText('THE RESULT', { x: 8.95, y: 0.7, w: 3.9, h: 0.35, fontFace: 'Calibri', fontSize: 14, bold: true, color: BLUE, charSpacing: 3, margin: 0, isTextBox: true });
+  s.addText('The correction removes the microphone offsets', { x: 8.95, y: 1.05, w: 3.9, h: 1.7, fontFace: 'Cambria', fontSize: 28, bold: true, color: INK, margin: 0, valign: 'top', isTextBox: true });
   s.addText([
-    { text: 'Top row: read with the factory files. Middle row: read with the measured corrections. Bottom row: what the correction changed.', options: { bullet: true, breakLine: true } },
-    { text: 'Horizontal stripes across all frequencies are one microphone reading too loud or too quiet. They are gone in the middle row.', options: { bullet: true, breakLine: true } },
-    { text: 'The pattern of the room stays: the correction moves whole rows, not the frequency structure.', options: { bullet: true } },
-  ], { x: 7.2, y: 2.85, w: 5.5, h: 2.5, fontFace: 'Calibri', fontSize: 16, color: INK, margin: 0, valign: 'top', paraSpaceAfter: 10, isTextBox: true });
+    { text: 'Top: factory files. Middle: corrected. Bottom: what the correction changed.', options: { bullet: true, breakLine: true } },
+    { text: 'A stripe across all frequencies is one microphone reading too loud or too quiet. The middle row has none.', options: { bullet: true, breakLine: true } },
+    { text: 'The room pattern stays: whole rows move, not the frequency structure.', options: { bullet: true } },
+  ], { x: 8.95, y: 2.85, w: 3.9, h: 2.7, fontFace: 'Calibri', fontSize: 14, color: INK, margin: 0, valign: 'top', paraSpaceAfter: 8, isTextBox: true });
   s.addText([
     { text: '4.3', options: { color: RED } }, { text: ' → ', options: { color: MUTED } }, { text: '0.8 dB', options: { color: BLUE } },
-  ], { x: 7.2, y: 5.5, w: 5.5, h: 0.8, fontFace: 'Cambria', fontSize: 44, bold: true, margin: 0, isTextBox: true });
-  s.addText('range of the microphones’ mean levels, start of day 3 (final state: 4.1 → 1.0 dB)', { x: 7.2, y: 6.3, w: 5.5, h: 0.5, fontFace: 'Calibri', fontSize: 14, color: MUTED, margin: 0, valign: 'top', isTextBox: true });
-  s.addText('Captures from 25 Sep 2026: day3-a (left) and carpet-reordered (right), 257 Hz–6 kHz, 3–5 kHz omitted.', { x: 0.6, y: 6.95, w: 11.3, h: 0.3, fontFace: 'Calibri', fontSize: 11, color: MUTED, margin: 0, isTextBox: true });
+  ], { x: 8.95, y: 5.55, w: 3.9, h: 0.7, fontFace: 'Cambria', fontSize: 36, bold: true, margin: 0, isTextBox: true });
+  s.addText('range of the microphones’ mean levels, start of day 3 (final state: 4.1 → 1.0 dB)', { x: 8.95, y: 6.25, w: 3.9, h: 0.6, fontFace: 'Calibri', fontSize: 12, color: MUTED, margin: 0, valign: 'top', isTextBox: true });
+  s.addText('Captures from 25 Sep 2026: day3-a (left) and carpet-reordered (right).', { x: 0.6, y: 6.95, w: 8.0, h: 0.3, fontFace: 'Calibri', fontSize: 11, color: MUTED, margin: 0, isTextBox: true });
   s.addText('3', { x: 12.2, y: 6.95, w: 0.5, h: 0.3, fontFace: 'Calibri', fontSize: 12, color: MUTED, align: 'right', margin: 0, isTextBox: true });
-  s.addNotes('Same figure as chapter 1 of the report. The same two captures were calibrated two ways: with the factory files and with the corrections measured on 16 Sep. The span is the range of the capsules mean levels: 4.3 to 0.8 dB at the start of day 3, 4.1 to 1.0 dB in the final configuration. Room error below 3 kHz: 2.277 to 1.997 dB and 1.736 to 1.387 dB. The change is mainly a per-capsule offset, so it mainly moves whole rows.');
+  s.addNotes('Same figure as chapter 1 of the report, redrawn larger. The same two captures were calibrated two ways: with the factory files and with the corrections measured on 16 Sep. The span is the range of the capsules mean levels: 4.3 to 0.8 dB at the start of day 3, 4.1 to 1.0 dB in the final configuration. Room error below 3 kHz: 2.277 to 1.997 dB and 1.736 to 1.387 dB. The change is mainly a per-capsule offset, so it mainly moves whole rows.');
 }
 
 // Slide 4: the same polar with the 30 Sep measurement on top

@@ -251,11 +251,11 @@ def mic_before_after(run):                              # same capture, factory 
     nb, na = B - B.mean(1, keepdims=True), A - A.mean(1, keepdims=True); lo = f < 3000
     return f, np.asarray(p2), nb[:, ::-1], na[:, ::-1], rms(nb[lo]), rms(na[lo]), float(np.ptp(B[lo].mean(0))), float(np.ptp(A[lo].mean(0)))
 
-def fig_mic():
+def fig_mic(figsize=(7.4, 6.4), fs=1.0, out='/fig-mic.png'):
     from matplotlib.colors import LinearSegmentedColormap
     runs = [(DAY3A, 'day3-a (start of day 3)'), (FINAL, 'carpet-reordered (final)')]; res = [mic_before_after(r) for r, _ in runs]
     bw = LinearSegmentedColormap.from_list('bw', ['#c05621', '#f6d7c3', '#ffffff', '#cfe0f3', '#2b6cb0'])
-    fig, axs = plt.subplots(3, 2, figsize=(7.4, 6.4), gridspec_kw=dict(hspace=.5, wspace=.12))
+    fig, axs = plt.subplots(3, 2, figsize=figsize, gridspec_kw=dict(hspace=.5, wspace=.12))
     f = res[0][0]; pos = res[0][1][::-1]; xx = np.arange(len(f) + 1); yy = np.arange(len(pos) + 1)
     nom = {257: '0.26k', 400: '0.4k', 630: '0.63k', 1000: '1k', 1600: '1.6k', 2500: '2.5k', 6000: '6k'}
     tk = []; tl = []
@@ -268,12 +268,12 @@ def fig_mic():
         for r, (M, ttl, cm, v) in enumerate(((nb, f'{nm}\nfactory files: {eb:.3f} dB below 3 kHz, span {sb:.1f} dB', 'RdBu_r', 12), (na, f'corrected: {ea:.3f} dB, span {sa:.1f} dB', 'RdBu_r', 12),
                                            (G, 'effect of the correction (blue = closer to arc mean)', bw, 3))):
             a = axs[r, c]; ims[r] = a.pcolormesh(xx, yy, M.T, cmap=cm, vmin=-v, vmax=v); a.axvline(np.searchsorted(f, 4000), color='k', lw=1.2); a.invert_yaxis()
-            a.set_yticks(np.arange(len(pos)) + .5); a.set_yticklabels([f'{q:+.0f}°'.replace('-', '−') for q in pos] if c == 0 else [], fontsize=5.5)
-            a.set_xticks([i + .5 for i in tk]); a.set_xticklabels(tl, fontsize=5.5); a.set_title(ttl, fontsize=6.4, loc='left')
-    cb = fig.colorbar(ims[0], ax=axs[:2, :], shrink=.85, pad=.02, aspect=28); cb.set_label('capsule level minus arc mean (dB): blue = quieter, red = louder', fontsize=6); cb.ax.tick_params(labelsize=5.5)
-    cb2 = fig.colorbar(ims[2], ax=axs[2, :], shrink=.85, pad=.02, aspect=14); cb2.set_ticks([-3, 0, 3]); cb2.set_ticklabels(['−3 dB\nfurther', '0', '+3 dB\ncloser']); cb2.set_label('change in deviation from the arc mean (dB)', fontsize=6); cb2.ax.tick_params(labelsize=5.5)
-    fig.text(.45, .015, 'Frequency in kHz (the black line marks the omitted 3–5 kHz). Top of each map = +90°.', ha='center', fontsize=6)
-    fig.savefig(HERE + '/fig-mic.png', dpi=200, bbox_inches='tight'); plt.close(fig)
+            a.set_yticks(np.arange(len(pos)) + .5); a.set_yticklabels([f'{q:+.0f}°'.replace('-', '−') for q in pos] if c == 0 else [], fontsize=5.5 * fs)
+            a.set_xticks([i + .5 for i in tk]); a.set_xticklabels(tl, fontsize=5.5 * fs); a.set_title(ttl, fontsize=6.4 * fs, loc='left')
+    cb = fig.colorbar(ims[0], ax=axs[:2, :], shrink=.85, pad=.02, aspect=28); cb.set_label('capsule level minus arc mean (dB): blue = quieter, red = louder', fontsize=6 * fs); cb.ax.tick_params(labelsize=5.5 * fs)
+    cb2 = fig.colorbar(ims[2], ax=axs[2, :], shrink=.85, pad=.02, aspect=14); cb2.set_ticks([-3, 0, 3]); cb2.set_ticklabels(['−3 dB\nfurther', '0', '+3 dB\ncloser']); cb2.set_label('change in deviation from the arc mean (dB)', fontsize=6 * fs); cb2.ax.tick_params(labelsize=5.5 * fs)
+    fig.text(.45, .015, 'Frequency in kHz (the black line marks the omitted 3–5 kHz). Top of each map = +90°.', ha='center', fontsize=6 * fs)
+    fig.savefig(HERE + out, dpi=200, bbox_inches='tight'); plt.close(fig)
     return res
 
 def page1():
