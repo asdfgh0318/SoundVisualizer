@@ -120,23 +120,24 @@ const INK = '1F2A44', RED = 'D6336C', BLUE = '2B6CB0', MUTED = '5B6578';
   s.background = { color: 'FFFFFF' };
   s.addText('THE RING WRAP', { x: 0.6, y: 0.5, w: 6, h: 0.35, fontFace: 'Calibri', fontSize: 14, bold: true, color: BLUE, charSpacing: 3, margin: 0, isTextBox: true });
   s.addText('Thinsulate on the ring hardly matters', { x: 0.6, y: 0.85, w: 12.1, h: 0.8, fontFace: 'Cambria', fontSize: 32, bold: true, color: INK, margin: 0, valign: 'top', isTextBox: true });
-  s.addText('Size of the change in room error (dB)', { x: 0.6, y: 1.95, w: 7.2, h: 0.35, fontFace: 'Calibri', fontSize: 14, bold: true, color: INK, margin: 0, isTextBox: true });
-  s.addChart(pres.charts.BAR, [{ name: 'Change in room error (dB)', labels: ['Ring wrap taken off, 24 Sep', 'Part of ring wrap off, 23 Sep', 'Handling alone (typical)', 'Carpet on the empty floor, 24 Sep'], values: [0.014, 0.018, 0.04, 0.737] }], {
-    x: 0.5, y: 2.3, w: 7.5, h: 4.3, barDir: 'bar', chartColors: ['9AA5B8', '9AA5B8', 'C9CFDA', BLUE], catAxisOrientation: 'maxMin', catAxisLabelPos: 'low', catAxisLabelFrequency: 1,
-    showLegend: false, showTitle: false, catAxisLabelFontSize: 14, catAxisLabelColor: INK, catAxisLabelFontFace: 'Calibri',
+  s.addText('Size of the change in room error (dB)', { x: 0.6, y: 1.9, w: 7.2, h: 0.35, fontFace: 'Calibri', fontSize: 14, bold: true, color: INK, margin: 0, isTextBox: true });
+  s.addChart(pres.charts.BAR, [{ name: 'Change in room error (dB)', labels: ['Tripod wrap partly off (23 Sep)', 'Ring wrap, first part off (23 Sep)', 'Ring wrap, more off (23 Sep)', 'Rest of ring wrap off (24 Sep)', 'Handling alone (typical)', 'Carpet on the empty floor (24 Sep)'], values: [0.004, 0.018, 0.002, 0.014, 0.04, 0.737] }], {
+    x: 0.5, y: 2.25, w: 7.7, h: 4.55, barDir: 'bar', chartColors: ['9AA5B8', '9AA5B8', '9AA5B8', '9AA5B8', 'C9CFDA', BLUE], catAxisOrientation: 'maxMin', catAxisLabelPos: 'low', catAxisLabelFrequency: 1,
+    showLegend: false, showTitle: false, catAxisLabelFontSize: 13, catAxisLabelColor: INK, catAxisLabelFontFace: 'Calibri',
     valAxisMinVal: 0, valAxisMaxVal: 0.9, valAxisMajorUnit: 0.3, valAxisLabelFontSize: 12, valAxisLabelColor: MUTED, valAxisLabelFontFace: 'Calibri', valAxisLabelFormatCode: '0.0',
     valGridLine: { color: 'E3E7EE', size: 0.5 }, catGridLine: { style: 'none' }, barGapWidthPct: 45,
-    showValue: true, dataLabelFontSize: 14, dataLabelColor: INK, dataLabelFontFace: 'Calibri', dataLabelFormatCode: '0.000', dataLabelPosition: 'outEnd',
+    showValue: true, dataLabelFontSize: 13, dataLabelColor: INK, dataLabelFontFace: 'Calibri', dataLabelFormatCode: '0.000', dataLabelPosition: 'outEnd',
   });
-  s.addText('0.014 dB', { x: 8.6, y: 2.0, w: 4.2, h: 0.9, fontFace: 'Cambria', fontSize: 48, bold: true, color: RED, margin: 0, isTextBox: true });
-  s.addText('change in room error when the wrap came off (2.219 → 2.205 dB). Same day, loudspeaker unmoved.', { x: 8.6, y: 2.95, w: 4.2, h: 0.9, fontFace: 'Calibri', fontSize: 14, color: INK, margin: 0, valign: 'top', isTextBox: true });
+  s.addText('0.02 dB', { x: 8.6, y: 1.95, w: 4.2, h: 0.9, fontFace: 'Cambria', fontSize: 48, bold: true, color: RED, margin: 0, isTextBox: true });
+  s.addText('at most: the largest change in room error from taking any Thinsulate wrap off the ring or the tripod, in four cases.', { x: 8.6, y: 2.9, w: 4.2, h: 1.0, fontFace: 'Calibri', fontSize: 14, color: INK, margin: 0, valign: 'top', isTextBox: true });
   s.addText([
-    { text: 'That is the size of the noise: the same state measured twice differs by 0.006–0.015 dB, and handling by about 0.04 dB.', options: { bullet: true, breakLine: true } },
-    { text: 'The carpet on the empty floor changed the error 50 times more.', options: { bullet: true } },
-  ], { x: 8.6, y: 4.1, w: 4.2, h: 2.4, fontFace: 'Calibri', fontSize: 14, color: INK, margin: 0, valign: 'top', paraSpaceAfter: 8, isTextBox: true });
-  s.addText('Ring wrap: 24 Sep wall-direct-absorber → ring-bare; 23 Sep tripod-unwrapped → ring-unwrapped. Carpet: 24 Sep, 2.054 → 1.317 dB.', { x: 0.6, y: 6.95, w: 11.3, h: 0.3, fontFace: 'Calibri', fontSize: 11, color: MUTED, margin: 0, isTextBox: true });
+    { text: 'Three cases got slightly worse, one slightly better: no clear effect.', options: { bullet: true, breakLine: true } },
+    { text: 'The same state measured twice differs by 0.006–0.015 dB, and handling by about 0.04 dB.', options: { bullet: true, breakLine: true } },
+    { text: 'The carpet on the empty floor changed the error 40 times more.', options: { bullet: true } },
+  ], { x: 8.6, y: 4.1, w: 4.2, h: 2.6, fontFace: 'Calibri', fontSize: 14, color: INK, margin: 0, valign: 'top', paraSpaceAfter: 8, isTextBox: true });
+  s.addText('Runs: foam-out → tripod-unwrapped → ring-unwrapped → -2 (23 Sep); wall-direct-absorber → ring-bare (24 Sep). Carpet: 2.054 → 1.317 dB.', { x: 0.6, y: 6.95, w: 11.3, h: 0.3, fontFace: 'Calibri', fontSize: 11, color: MUTED, margin: 0, isTextBox: true });
   s.addText('6', { x: 12.2, y: 6.95, w: 0.5, h: 0.3, fontFace: 'Calibri', fontSize: 12, color: MUTED, align: 'right', margin: 0, isTextBox: true });
-  s.addNotes('Source: README of the chamber trials (docs/analysis/chamber-treatments-2026-09-23) and the loudspeaker sessions. 24 Sep: wall-direct-absorber (ring still wrapped) to ring-bare (the rest of the Thinsulate wrap removed from the ring), 10 minutes apart, speaker on the wall, nothing else changed: room error below 3 kHz 2.219 to 2.205 dB (-0.014); map change 0.36 dB spread over all capsules; 250-400 Hz -0.10, 1.6-3 kHz +0.04, 5-6.4 kHz +0.09. 23 Sep: tripod-unwrapped (ring wrapped) to ring-unwrapped (part removed): 1.387 to 1.406 dB (+0.018), map change 0.18 dB, a new hub mounting preset from there; ring-unwrapped to ring-unwrapped-2: +0.002. Repeat floor 0.006-0.015 dB, handling about 0.04 dB (README). Carpet on the empty floor: 24 Sep floor-no-wedges 2.054 to chaotic-carpet 1.317 dB (-0.737), source unmoved. 0.737 / 0.014 = 53, so about 50 times.');
+  s.addNotes('Source: README of the chamber trials (docs/analysis/chamber-treatments-2026-09-23) and the loudspeaker sessions, room error below 3 kHz. 23 Sep: foam-out 1.3837 to tripod-unwrapped 1.3874 (+0.004, some wrapping off the tripod legs); to ring-unwrapped 1.4057 (+0.018, part of the ring wrapping removed; a new hub mounting preset from there); to ring-unwrapped-2 1.4076 (+0.002, more of the ring unwrapped). 24 Sep, speaker on the wall (a different geometry): wall-direct-absorber 2.2193 to ring-bare 2.2054 (-0.014), the rest of the ring wrap removed, 10 minutes apart; map change 0.36 dB spread over all capsules. Three of the four changes are slightly worse, one slightly better. The README concludes the ring wrap is worth a little only at the high end, and that the best state measured was tripod bare and ring wrapped. Repeat floor 0.006-0.015 dB, handling about 0.04 dB (README). Carpet on the empty floor: 24 Sep floor-no-wedges 2.054 to chaotic-carpet 1.317 dB (-0.737), source unmoved. 0.737 / 0.018 = 40.');
 }
 
 // Slide 5: the band table of the evaluation, colour graded
