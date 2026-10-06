@@ -111,14 +111,14 @@ const INK = '1F2A44', RED = 'D6336C', BLUE = '2B6CB0', MUTED = '5B6578';
   s.background = { color: 'FFFFFF' };
   s.addText('THE EVALUATION', { x: 8.95, y: 0.5, w: 3.9, h: 0.35, fontFace: 'Calibri', fontSize: 14, bold: true, color: BLUE, charSpacing: 3, margin: 0, isTextBox: true });
   s.addText('Band by band against the ISO tolerance', { x: 8.95, y: 0.85, w: 3.9, h: 1.3, fontFace: 'Cambria', fontSize: 26, bold: true, color: INK, margin: 0, valign: 'top', isTextBox: true });
-  const line = (c) => [{ type: 'none' }, { type: 'none' }, { type: 'solid', pt: 0.5, color: c }, { type: 'none' }];
-  const H = (t, extra = {}) => ({ text: t, options: Object.assign({ bold: true, fontFace: 'Calibri', fontSize: 12, color: INK, align: 'center', valign: 'middle', border: line('9AA5B8') }, extra) });
-  const C = (t, fill, o = {}) => ({ text: t, options: Object.assign({ fontFace: 'Calibri', fontSize: 14, color: INK, align: 'center', valign: 'middle', fill: fill ? { color: fill } : undefined, border: [{ type: 'solid', pt: 1.5, color: 'FFFFFF' }, { type: 'solid', pt: 1.5, color: 'FFFFFF' }, { type: 'solid', pt: 1.5, color: 'FFFFFF' }, { type: 'solid', pt: 1.5, color: 'FFFFFF' }] }, o) });
+  const GRID = { type: 'solid', pt: 0.75, color: '9AA5B8' }, SEP = { type: 'solid', pt: 2, color: '4A5568' };
+  const H = (t, extra = {}) => ({ text: t, options: Object.assign({ bold: true, fontFace: 'Calibri', fontSize: 12, color: INK, align: 'center', valign: 'middle', border: [GRID, GRID, GRID, GRID] }, extra) });
+  const C = (t, fill, o = {}) => ({ text: t, options: Object.assign({ fontFace: 'Calibri', fontSize: 14, color: INK, align: 'center', valign: 'middle', fill: fill ? { color: fill } : undefined, border: [GRID, GRID, GRID, GRID] }, o) });
   const rows = [
-    [H('Band'), H('Limit'), H('Tones'), H('Start of day 3', { colspan: 2, color: RED }), H('Final', { colspan: 2, color: BLUE })],
-    [H('Hz'), H('± dB'), H('per band'), H('worst mic, dB'), H('cells in limit'), H('worst mic, dB'), H('cells in limit')],
+    [H('Band'), H('Limit'), H('Tones'), H('Start of day 3', { colspan: 2, color: RED, border: [GRID, GRID, GRID, SEP] }), H('Final', { colspan: 2, color: BLUE, border: [GRID, GRID, GRID, SEP] })],
+    [H('Hz'), H('± dB'), H('per band'), H('worst mic, dB', { border: [GRID, GRID, GRID, SEP] }), H('cells in limit'), H('worst mic, dB', { border: [GRID, GRID, GRID, SEP] }), H('cells in limit')],
   ];
-  T.rows.forEach((r) => rows.push([C(String(r.band), null, { bold: true }), C(String(r.limit), null), C(String(r.tones), null), C(r.gdev.toFixed(2), r.gdevc, { bold: true }), C(r.gcells + ' %', r.gcellsc), C(r.xdev.toFixed(2), r.xdevc, { bold: true }), C(r.xcells + ' %', r.xcellsc)]));
+  T.rows.forEach((r) => rows.push([C(String(r.band), null, { bold: true }), C(String(r.limit), null), C(String(r.tones), null), C(r.gdev.toFixed(2), r.gdevc, { bold: true, border: [GRID, GRID, GRID, SEP] }), C(r.gcells + ' %', r.gcellsc), C(r.xdev.toFixed(2), r.xdevc, { bold: true, border: [GRID, GRID, GRID, SEP] }), C(r.xcells + ' %', r.xcellsc)]));
   s.addTable(rows, { x: 0.6, y: 0.5, w: 7.9, colW: [0.85, 0.8, 0.85, 1.4, 1.3, 1.4, 1.3], rowH: [0.38, 0.34].concat(Array(T.rows.length).fill(0.46)), margin: [0.02, 0.04, 0.02, 0.04] });
   // colour key
   s.addText('Colour key', { x: 8.95, y: 2.35, w: 3.9, h: 0.3, fontFace: 'Calibri', fontSize: 14, bold: true, color: INK, margin: 0, isTextBox: true });
@@ -130,11 +130,10 @@ const INK = '1F2A44', RED = 'D6336C', BLUE = '2B6CB0', MUTED = '5B6578';
   // scorecard
   const g = T.card.g, x = T.card.x;
   s.addText([
-    { text: 'Within the tolerance from: ', options: { bullet: true } }, { text: `${g.cutoff} Hz → ${x.cutoff} Hz`, options: { bold: true, breakLine: true } },
     { text: 'Bands clearly over: ', options: { bullet: true } }, { text: `${g.fail} → ${x.fail}`, options: { bold: true, breakLine: true } },
     { text: 'Cells inside the limit: ', options: { bullet: true } }, { text: `${g.cells} % → ${x.cells} %`, options: { bold: true } },
   ], { x: 8.95, y: 4.1, w: 3.9, h: 1.5, fontFace: 'Calibri', fontSize: 14, color: INK, margin: 0, valign: 'top', paraSpaceAfter: 6, isTextBox: true });
-  s.addText('ISO anechoic tolerance values used as an analogue, not a qualification of the room. Same pair as slide 4 (25 Sep); the highest band evaluated is 2500 Hz.', { x: 8.95, y: 5.85, w: 3.9, h: 0.95, fontFace: 'Calibri', fontSize: 12, color: MUTED, margin: 0, valign: 'top', isTextBox: true });
+  s.addText('ISO anechoic tolerance values used as an analogue, not a qualification of the room. Same pair as slide 4 (25 Sep). The highest band evaluated is 2500 Hz.', { x: 8.95, y: 5.85, w: 3.9, h: 0.95, fontFace: 'Calibri', fontSize: 12, color: MUTED, margin: 0, valign: 'top', isTextBox: true });
   s.addText('5', { x: 12.2, y: 6.95, w: 0.5, h: 0.3, fontFace: 'Calibri', fontSize: 12, color: MUTED, align: 'right', margin: 0, isTextBox: true });
   s.addNotes('Same table as page 4 of the report. Each one-third-octave band is judged against the anechoic tolerance values of ISO 5305 Table 1 (also ISO 3745 as printed by Cunefare 2003): +-1.5 dB for 125-630 Hz, +-1.0 dB for 800-5000 Hz. The number is the worst microphone band-mean deviation from the arc mean, in dB; the colour is that number as a share of the limit. Cells in limit counts tone x microphone cells inside the limit (3 tones x 11 microphones = 33 cells at 250 Hz, where the grid starts at 257 Hz). This is an analogue: the standards use a traverse and test decay with distance, we use eleven fixed microphones at one radius. The room is treated and not qualified. Within the tolerance values from 1250 Hz at the start of day 3 and from 2000 Hz in the final state, up to 2500 Hz, the highest band evaluated. Caveat: the loudspeaker position was not documented across the day.');
 }
