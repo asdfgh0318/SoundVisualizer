@@ -262,12 +262,12 @@ def fig_mic():
     for c, ((run, nm), (f, p, nb, na, eb, ea, sb, sa)) in enumerate(zip(runs, res)):
         G = np.abs(nb) - np.abs(na)
         for r, (M, ttl, cm, v) in enumerate(((nb, f'{nm}\nfactory files: {eb:.3f} dB below 3 kHz, span {sb:.1f} dB', 'RdBu_r', 12), (na, f'corrected: {ea:.3f} dB, span {sa:.1f} dB', 'RdBu_r', 12),
-                                           (G, 'closer to flat (blue) or further (orange)', bw, 3))):
+                                           (G, 'effect of the correction: closer to the arc mean (blue) or further (orange)', bw, 3))):
             a = axs[r, c]; ims[r] = a.pcolormesh(xx, yy, M.T, cmap=cm, vmin=-v, vmax=v); a.axvline(np.searchsorted(f, 4000), color='k', lw=1.2); a.invert_yaxis()
             a.set_yticks(np.arange(len(pos)) + .5); a.set_yticklabels([f'{q:+.0f}°' for q in pos] if c == 0 else [], fontsize=5.5)
             a.set_xticks([i + .5 for i in tk]); a.set_xticklabels(tl, fontsize=5.5); a.set_title(ttl, fontsize=6.4, loc='left')
     cb = fig.colorbar(ims[0], ax=axs[:2, :], shrink=.85, pad=.02, aspect=28); cb.set_label('capsule level minus arc mean (dB): blue = quieter, red = louder', fontsize=6); cb.ax.tick_params(labelsize=5.5)
-    cb2 = fig.colorbar(ims[2], ax=axs[2, :], shrink=.85, pad=.02, aspect=14); cb2.set_ticks([-3, 0, 3]); cb2.set_ticklabels(['−3 dB\nworse', '0', '+3 dB\nbetter']); cb2.set_label('change in distance from flat', fontsize=6); cb2.ax.tick_params(labelsize=5.5)
+    cb2 = fig.colorbar(ims[2], ax=axs[2, :], shrink=.85, pad=.02, aspect=14); cb2.set_ticks([-3, 0, 3]); cb2.set_ticklabels(['−3 dB\nfurther', '0', '+3 dB\ncloser']); cb2.set_label('change in deviation from the arc mean (dB)', fontsize=6); cb2.ax.tick_params(labelsize=5.5)
     fig.text(.45, .015, 'Frequency in kHz (the black line marks the omitted 3–5 kHz). Top of each map = +90°.', ha='center', fontsize=6)
     fig.savefig(HERE + '/fig-mic.png', dpi=200, bbox_inches='tight'); plt.close(fig)
     return res
