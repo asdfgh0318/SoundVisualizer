@@ -32,25 +32,19 @@ const INK = '1F2A44', RED = 'D6336C', BLUE = '2B6CB0', MUTED = '5B6578';
   s.addText('THE FIX', { x: 0.6, y: 0.5, w: 6, h: 0.4, fontFace: 'Calibri', fontSize: 14, bold: true, color: BLUE, charSpacing: 3, margin: 0, isTextBox: true });
   s.addText('What we did: every microphone, one loudspeaker', { x: 0.6, y: 0.9, w: 12.1, h: 0.8, fontFace: 'Cambria', fontSize: 32, bold: true, color: INK, margin: 0, valign: 'top', isTextBox: true });
   // diagram: loudspeaker -> microphone, swap with the other capsules
-  s.addImage({ path: 'photo-source.jpg', x: 0.7, y: 2.25, w: 1.55, h: 1.75, sizing: { type: 'cover', w: 1.55, h: 1.75 }, altText: 'Our loudspeaker: a printed sphere with an 8 cm driver' });
+  s.addImage({ path: 'photo-source.jpg', x: 0.6, y: 2.3, w: 1.45, h: 1.65, sizing: { type: 'cover', w: 1.45, h: 1.65 }, altText: 'Our loudspeaker: a printed sphere with an 8 cm driver' });
   // the real UMIK-2 (miniDSP product photo), capsule end towards the loudspeaker
-  s.addText('tones, 62 Hz–16 kHz', { x: 2.3, y: 2.7, w: 2.0, h: 0.3, fontFace: 'Calibri', fontSize: 12, color: MUTED, align: 'center', margin: 0, isTextBox: true });
-  s.addShape(pres.shapes.LINE, { x: 2.4, y: 3.2, w: 1.95, h: 0, line: { color: RED, width: 2.5, dashType: 'dash', endArrowType: 'triangle' } });
-  s.addText('UMIK-2 microphone', { x: 4.45, y: 2.35, w: 2.6, h: 0.3, fontFace: 'Calibri', fontSize: 14, color: INK, margin: 0, isTextBox: true });
-  s.addImage({ path: 'umik2-photo.png', x: 4.45, y: 2.8, w: 2.75, h: 0.743, altText: 'UMIK-2 measurement microphone, capsule end on the left facing the loudspeaker' });
-  s.addText('capsule end faces the loudspeaker', { x: 4.45, y: 3.62, w: 2.9, h: 0.28, fontFace: 'Calibri', fontSize: 12, color: BLUE, bold: true, margin: 0, isTextBox: true });
-  // swap: the unit at the mounting point is exchanged, serial numbers shown
-  s.addText('swap, one unit at a time', { x: 4.45, y: 4.0, w: 2.9, h: 0.26, fontFace: 'Calibri', fontSize: 12, bold: true, color: INK, margin: 0, isTextBox: true });
-  const pill = (t, x) => s.addText(t, { x, y: 4.3, w: 0.92, h: 0.32, fontFace: 'Calibri', fontSize: 12, color: INK, align: 'center', valign: 'middle', margin: 0, shape: pres.shapes.ROUNDED_RECTANGLE, rectRadius: 0.1, fill: { color: 'EEF1F6' }, line: { color: 'C9CFDA', width: 0.75 } });
-  pill('810-8904', 4.45); pill('811-1896', 5.55); pill('811-1892', 6.65);
-  s.addText('⇄', { x: 5.37, y: 4.28, w: 0.2, h: 0.35, fontFace: 'Calibri', fontSize: 14, bold: true, color: INK, align: 'center', margin: 0, isTextBox: true });
-  s.addText('⇄', { x: 6.47, y: 4.28, w: 0.2, h: 0.35, fontFace: 'Calibri', fontSize: 14, bold: true, color: INK, align: 'center', margin: 0, isTextBox: true });
-  s.addText('Our loudspeaker', { x: 0.45, y: 4.05, w: 2.05, h: 0.3, fontFace: 'Calibri', fontSize: 14, color: INK, align: 'center', margin: 0, isTextBox: true });
+  s.addText('tones\n62 Hz–16 kHz', { x: 2.05, y: 2.75, w: 1.35, h: 0.5, fontFace: 'Calibri', fontSize: 12, color: MUTED, align: 'center', margin: 0, valign: 'bottom', isTextBox: true });
+  s.addShape(pres.shapes.LINE, { x: 2.15, y: 3.35, w: 1.35, h: 0, line: { color: RED, width: 2.5, dashType: 'dash', endArrowType: 'triangle' } });
+  s.addText('UMIK-2 microphone', { x: 3.6, y: 2.4, w: 2.5, h: 0.3, fontFace: 'Calibri', fontSize: 14, color: INK, margin: 0, isTextBox: true });
+  s.addImage({ path: 'umik2-photo.png', x: 3.6, y: 2.95, w: 3.0, h: 0.811, altText: 'UMIK-2 measurement microphone at the mounting point, capsule end on the left facing the loudspeaker' });
+  s.addText('capsule faces the loudspeaker', { x: 3.6, y: 3.88, w: 3.2, h: 0.28, fontFace: 'Calibri', fontSize: 13, color: BLUE, bold: true, margin: 0, isTextBox: true });
+  s.addText('Our loudspeaker', { x: 0.4, y: 4.05, w: 1.85, h: 0.3, fontFace: 'Calibri', fontSize: 14, color: INK, align: 'center', margin: 0, isTextBox: true });
   // settings
   s.addText([
     { text: '97 tones per microphone, 62 Hz to 16 kHz, 12 per octave (a stepped sweep)', options: { bullet: true, breakLine: true } },
     { text: 'One tone at a time: 0.7 s to settle, then 2 s recorded (6 s below 250 Hz)', options: { bullet: true, breakLine: true } },
-    { text: 'Same position, same loudspeaker, same level for every microphone', options: { bullet: true, breakLine: true } },
+    { text: 'Microphones swapped in turn: same position, same loudspeaker, same level', options: { bullet: true, breakLine: true } },
     { text: 'One microphone measured three times as the reference', options: { bullet: true } },
   ], { x: 0.6, y: 4.85, w: 6.7, h: 1.95, fontFace: 'Calibri', fontSize: 14, color: INK, margin: 0, valign: 'top', paraSpaceAfter: 6, isTextBox: true });
   // results
