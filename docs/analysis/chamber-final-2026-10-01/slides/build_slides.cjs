@@ -32,13 +32,16 @@ const INK = '1F2A44', RED = 'D6336C', BLUE = '2B6CB0', MUTED = '5B6578';
   s.addText('The new polar is rounder', { x: 7.4, y: 1.3, w: 5.3, h: 1.3, fontFace: 'Cambria', fontSize: 34, bold: true, color: INK, margin: 0, valign: 'top', isTextBox: true });
   s.addText([
     { text: 'Same kind of measurement, same axes, on 30 Sep.', options: { bullet: true, breakLine: true } },
-    { text: 'The microphones now carry their measured corrections, and the room has been treated.', options: { bullet: true, breakLine: true } },
-    { text: 'The outline is smooth and close to a circle.', options: { bullet: true, bold: true } },
-  ], { x: 7.4, y: 2.75, w: 5.3, h: 2.6, fontFace: 'Calibri', fontSize: 16, color: INK, margin: 0, valign: 'top', paraSpaceAfter: 10, isTextBox: true });
-  s.addText([
-    { text: '6.7', options: { color: RED } }, { text: ' → ', options: { color: MUTED } }, { text: '4.0 dB', options: { color: BLUE } },
-  ], { x: 7.4, y: 5.5, w: 5.3, h: 0.8, fontFace: 'Cambria', fontSize: 48, bold: true, margin: 0, isTextBox: true });
-  s.addText('between the loudest and quietest microphone', { x: 7.4, y: 6.3, w: 5.3, h: 0.5, fontFace: 'Calibri', fontSize: 14, color: MUTED, margin: 0, isTextBox: true });
+    { text: 'The microphones now carry their measured corrections, and the room has been treated.', options: { bullet: true } },
+  ], { x: 7.4, y: 2.6, w: 5.3, h: 1.5, fontFace: 'Calibri', fontSize: 16, color: INK, margin: 0, valign: 'top', paraSpaceAfter: 10, isTextBox: true });
+  const hdr = (t, color, align) => ({ text: t, options: { bold: true, color, fontFace: 'Calibri', fontSize: 14, align, fill: { color: 'FFFFFF' }, border: [{ type: 'none' }, { type: 'none' }, { type: 'solid', pt: 1, color: 'C9CFDA' }, { type: 'none' }] } });
+  const cell = (t, o = {}) => ({ text: t, options: Object.assign({ fontFace: 'Calibri', fontSize: 15, color: INK, align: 'right', border: [{ type: 'none' }, { type: 'none' }, { type: 'solid', pt: 0.5, color: 'E3E7EE' }, { type: 'none' }] }, o) });
+  s.addTable([
+    [hdr('', INK, 'left'), hdr('31 Aug', RED, 'right'), hdr('30 Sep', BLUE, 'right')],
+    [cell('Loudest minus quietest', { align: 'left' }), cell('6.7 dB', { bold: true, color: RED, fontSize: 20 }), cell('4.0 dB', { bold: true, color: BLUE, fontSize: 20 })],
+    [cell('Spread (rms)', { align: 'left' }), cell('2.05 dB', { bold: true, color: RED, fontSize: 20 }), cell('1.45 dB', { bold: true, color: BLUE, fontSize: 20 })],
+    [cell('Level range', { align: 'left' }), cell('63.9–70.6 dB', { color: RED }), cell('55.5–59.6 dB', { color: BLUE })],
+  ], { x: 7.4, y: 4.3, w: 5.3, colW: [2.3, 1.5, 1.5], rowH: [0.4, 0.55, 0.55, 0.45], margin: [0.04, 0.06, 0.04, 0.06] });
   s.addText('20–560 Hz, motor at 2000 µs. The two runs had different operating points (7.35 V against 11.7 V), which is why the blue is lower.', { x: 0.6, y: 6.95, w: 12.1, h: 0.3, fontFace: 'Calibri', fontSize: 11, color: MUTED, margin: 0, isTextBox: true });
   s.addNotes('Blue: 30 Sep propeller measurement (11.7 V, 7.3 A, thrust -4 N), read with the 16 Sep microphone corrections. Rms spread about the mean 1.45 dB against 2.05 dB for 31 Aug; range 4.0 dB (55.5 to 59.6 dB SPL) against 6.7 dB. The blue is about 11 dB lower because the motor ran at a different operating point. The 4 dB range of the blue is a bottom-louder trend. Honest caveat: with the same calibration applied to the 1-2 Sep runs, those are about as round as 30 Sep, so most of the improvement against the earlier baselines comes from the microphone calibration, not the room.');
 }
