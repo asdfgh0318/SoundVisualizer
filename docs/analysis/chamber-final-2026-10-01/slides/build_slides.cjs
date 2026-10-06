@@ -64,10 +64,14 @@ const INK = '1F2A44', RED = 'D6336C', BLUE = '2B6CB0', MUTED = '5B6578';
   s.addText('THE RESULT', { x: 8.95, y: 0.7, w: 3.9, h: 0.35, fontFace: 'Calibri', fontSize: 14, bold: true, color: BLUE, charSpacing: 3, margin: 0, isTextBox: true });
   s.addText('The correction removes the microphone offsets', { x: 8.95, y: 1.05, w: 3.9, h: 1.7, fontFace: 'Cambria', fontSize: 28, bold: true, color: INK, margin: 0, valign: 'top', isTextBox: true });
   s.addText([
-    { text: 'Top: factory files. Middle: corrected. Bottom: what the correction changed.', options: { bullet: true, breakLine: true } },
+    { text: 'TOP', options: { bold: true, color: RED, fontSize: 18 } }, { text: '  factory files', options: { color: INK, breakLine: true } },
+    { text: 'MIDDLE', options: { bold: true, color: BLUE, fontSize: 18 } }, { text: '  corrected', options: { color: INK, breakLine: true } },
+    { text: 'BOTTOM', options: { bold: true, color: INK, fontSize: 18 } }, { text: '  the change', options: { color: INK } },
+  ], { x: 8.95, y: 2.8, w: 3.9, h: 1.15, fontFace: 'Calibri', fontSize: 15, margin: 0, valign: 'top', paraSpaceAfter: 4, isTextBox: true });
+  s.addText([
     { text: 'A stripe across all frequencies is one microphone reading too loud or too quiet. The middle row has none.', options: { bullet: true, breakLine: true } },
     { text: 'The room pattern stays: whole rows move, not the frequency structure.', options: { bullet: true } },
-  ], { x: 8.95, y: 2.85, w: 3.9, h: 2.7, fontFace: 'Calibri', fontSize: 14, color: INK, margin: 0, valign: 'top', paraSpaceAfter: 8, isTextBox: true });
+  ], { x: 8.95, y: 4.1, w: 3.9, h: 1.4, fontFace: 'Calibri', fontSize: 14, color: INK, margin: 0, valign: 'top', paraSpaceAfter: 8, isTextBox: true });
   s.addText([
     { text: '4.3', options: { color: RED } }, { text: ' → ', options: { color: MUTED } }, { text: '0.8 dB', options: { color: BLUE } },
   ], { x: 8.95, y: 5.55, w: 3.9, h: 0.7, fontFace: 'Cambria', fontSize: 36, bold: true, margin: 0, isTextBox: true });
