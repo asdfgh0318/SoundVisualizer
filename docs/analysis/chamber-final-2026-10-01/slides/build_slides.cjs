@@ -104,7 +104,42 @@ const INK = '1F2A44', RED = 'D6336C', BLUE = '2B6CB0', MUTED = '5B6578';
   s.addNotes('Same pair as page 3 of the report (day3-a at 13:17, carpet-reordered at 19:15, both 25 Sep), read with the corrected microphone files. Room error is the rms deviation of the eleven microphones from their mean, per band. Start of day 3: 3.33, 2.57, 1.57, 0.80, 0.87, 1.04 dB; final: 1.99, 1.52, 1.47, 0.85, 0.96, 1.17 dB for the bands 250-400, 400-630, 630-1000, 1000-1600, 1600-3000 and 5000-6400 Hz. Caveat from the report: the loudspeaker was moved on purpose during the day (20 cm closer, into the ring plane, 5 cm back) and then returned to about its starting mounting point, which was not recorded. The tilt of the map changed from -0.41 to -0.63 and the mean level rose 1.16 dB, so the gain is the treatments plus a small unknown difference in source position, and part of it may be the louder direct sound. The clean pair with an unmoved source is 24 Sep: empty floor 2.054 to carpet 1.317 dB.');
 }
 
-// Slide 5: the same polar with the 30 Sep measurement on top
+// Slide 5: the band table of the evaluation, colour graded
+{
+  const T = JSON.parse(require('fs').readFileSync('table.json', 'utf8'));
+  const s = pres.addSlide();
+  s.background = { color: 'FFFFFF' };
+  s.addText('THE EVALUATION', { x: 8.95, y: 0.5, w: 3.9, h: 0.35, fontFace: 'Calibri', fontSize: 14, bold: true, color: BLUE, charSpacing: 3, margin: 0, isTextBox: true });
+  s.addText('Band by band against the ISO tolerance', { x: 8.95, y: 0.85, w: 3.9, h: 1.3, fontFace: 'Cambria', fontSize: 26, bold: true, color: INK, margin: 0, valign: 'top', isTextBox: true });
+  const line = (c) => [{ type: 'none' }, { type: 'none' }, { type: 'solid', pt: 0.5, color: c }, { type: 'none' }];
+  const H = (t, extra = {}) => ({ text: t, options: Object.assign({ bold: true, fontFace: 'Calibri', fontSize: 12, color: INK, align: 'center', valign: 'middle', border: line('9AA5B8') }, extra) });
+  const C = (t, fill, o = {}) => ({ text: t, options: Object.assign({ fontFace: 'Calibri', fontSize: 14, color: INK, align: 'center', valign: 'middle', fill: fill ? { color: fill } : undefined, border: [{ type: 'solid', pt: 1.5, color: 'FFFFFF' }, { type: 'solid', pt: 1.5, color: 'FFFFFF' }, { type: 'solid', pt: 1.5, color: 'FFFFFF' }, { type: 'solid', pt: 1.5, color: 'FFFFFF' }] }, o) });
+  const rows = [
+    [H('Band'), H('Limit'), H('Tones'), H('Start of day 3', { colspan: 2, color: RED }), H('Final', { colspan: 2, color: BLUE })],
+    [H('Hz'), H('± dB'), H('per band'), H('worst mic, dB'), H('cells in limit'), H('worst mic, dB'), H('cells in limit')],
+  ];
+  T.rows.forEach((r) => rows.push([C(String(r.band), null, { bold: true }), C(String(r.limit), null), C(String(r.tones), null), C(r.gdev.toFixed(2), r.gdevc, { bold: true }), C(r.gcells + ' %', r.gcellsc), C(r.xdev.toFixed(2), r.xdevc, { bold: true }), C(r.xcells + ' %', r.xcellsc)]));
+  s.addTable(rows, { x: 0.6, y: 0.5, w: 7.9, colW: [0.85, 0.8, 0.85, 1.4, 1.3, 1.4, 1.3], rowH: [0.38, 0.34].concat(Array(T.rows.length).fill(0.46)), margin: [0.02, 0.04, 0.02, 0.04] });
+  // colour key
+  s.addText('Colour key', { x: 8.95, y: 2.35, w: 3.9, h: 0.3, fontFace: 'Calibri', fontSize: 14, bold: true, color: INK, margin: 0, isTextBox: true });
+  T.scale.forEach((c, i) => s.addShape(pres.shapes.RECTANGLE, { x: 8.95 + i * 0.78, y: 2.7, w: 0.78, h: 0.3, fill: { color: c }, line: { color: 'FFFFFF', width: 1 } }));
+  s.addText('0', { x: 8.95, y: 3.03, w: 0.78, h: 0.25, fontFace: 'Calibri', fontSize: 12, color: MUTED, align: 'center', margin: 0, isTextBox: true });
+  s.addText('at the limit', { x: 8.95 + 2 * 0.78 - 0.1, y: 3.03, w: 0.98, h: 0.25, fontFace: 'Calibri', fontSize: 12, color: MUTED, align: 'center', margin: 0, isTextBox: true });
+  s.addText('2× or more', { x: 8.95 + 4 * 0.78 - 0.1, y: 3.03, w: 0.98, h: 0.25, fontFace: 'Calibri', fontSize: 12, color: MUTED, align: 'center', margin: 0, isTextBox: true });
+  s.addText('Worst microphone as a share of the limit. Cells: green 100 %, yellow 50 %, red 0 %.', { x: 8.95, y: 3.35, w: 3.9, h: 0.55, fontFace: 'Calibri', fontSize: 12, color: MUTED, margin: 0, valign: 'top', isTextBox: true });
+  // scorecard
+  const g = T.card.g, x = T.card.x;
+  s.addText([
+    { text: 'Within the tolerance from: ', options: { bullet: true } }, { text: `${g.cutoff} Hz → ${x.cutoff} Hz`, options: { bold: true, breakLine: true } },
+    { text: 'Bands clearly over: ', options: { bullet: true } }, { text: `${g.fail} → ${x.fail}`, options: { bold: true, breakLine: true } },
+    { text: 'Cells inside the limit: ', options: { bullet: true } }, { text: `${g.cells} % → ${x.cells} %`, options: { bold: true } },
+  ], { x: 8.95, y: 4.1, w: 3.9, h: 1.5, fontFace: 'Calibri', fontSize: 14, color: INK, margin: 0, valign: 'top', paraSpaceAfter: 6, isTextBox: true });
+  s.addText('ISO anechoic tolerance values used as an analogue, not a qualification of the room. Same pair as slide 4 (25 Sep); the highest band evaluated is 2500 Hz.', { x: 8.95, y: 5.85, w: 3.9, h: 0.95, fontFace: 'Calibri', fontSize: 12, color: MUTED, margin: 0, valign: 'top', isTextBox: true });
+  s.addText('5', { x: 12.2, y: 6.95, w: 0.5, h: 0.3, fontFace: 'Calibri', fontSize: 12, color: MUTED, align: 'right', margin: 0, isTextBox: true });
+  s.addNotes('Same table as page 4 of the report. Each one-third-octave band is judged against the anechoic tolerance values of ISO 5305 Table 1 (also ISO 3745 as printed by Cunefare 2003): +-1.5 dB for 125-630 Hz, +-1.0 dB for 800-5000 Hz. The number is the worst microphone band-mean deviation from the arc mean, in dB; the colour is that number as a share of the limit. Cells in limit counts tone x microphone cells inside the limit (3 tones x 11 microphones = 33 cells at 250 Hz, where the grid starts at 257 Hz). This is an analogue: the standards use a traverse and test decay with distance, we use eleven fixed microphones at one radius. The room is treated and not qualified. Within the tolerance values from 1250 Hz at the start of day 3 and from 2000 Hz in the final state, up to 2500 Hz, the highest band evaluated. Caveat: the loudspeaker position was not documented across the day.');
+}
+
+// Slide 6: the same polar with the 30 Sep measurement on top
 {
   const s = pres.addSlide();
   s.background = { color: 'FFFFFF' };
@@ -121,7 +156,7 @@ const INK = '1F2A44', RED = 'D6336C', BLUE = '2B6CB0', MUTED = '5B6578';
   ], { x: 7.4, y: 5.5, w: 5.3, h: 0.8, fontFace: 'Cambria', fontSize: 48, bold: true, margin: 0, isTextBox: true });
   s.addText('between the loudest and quietest microphone', { x: 7.4, y: 6.3, w: 5.3, h: 0.5, fontFace: 'Calibri', fontSize: 14, color: MUTED, margin: 0, isTextBox: true });
   s.addText('20–560 Hz, motor at 2000 µs. The two runs had different operating points (7.35 V against 11.7 V), which is why the blue is lower.', { x: 0.6, y: 6.95, w: 12.1, h: 0.3, fontFace: 'Calibri', fontSize: 11, color: MUTED, margin: 0, isTextBox: true });
-  s.addText(String(5), { x: 12.2, y: 6.95, w: 0.5, h: 0.3, fontFace: 'Calibri', fontSize: 12, color: MUTED, align: 'right', margin: 0, isTextBox: true });
+  s.addText(String(6), { x: 12.2, y: 6.95, w: 0.5, h: 0.3, fontFace: 'Calibri', fontSize: 12, color: MUTED, align: 'right', margin: 0, isTextBox: true });
   s.addNotes('Blue: 30 Sep propeller measurement (11.7 V, 7.3 A, thrust -4 N), read with the 16 Sep microphone corrections. Rms spread about the mean 1.45 dB against 2.05 dB for 31 Aug; range 4.0 dB (55.5 to 59.6 dB SPL) against 6.7 dB. The blue is about 11 dB lower because the motor ran at a different operating point. The 4 dB range of the blue is a bottom-louder trend. Honest caveat: with the same calibration applied to the 1-2 Sep runs, those are about as round as 30 Sep, so most of the improvement against the earlier baselines comes from the microphone calibration, not the room.');
 }
 
