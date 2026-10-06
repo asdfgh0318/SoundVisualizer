@@ -176,12 +176,14 @@ const INK = '1F2A44', RED = 'D6336C', BLUE = '2B6CB0', MUTED = '5B6578';
   ];
   s.addText('Mean level over the eleven microphones', { x: 7.6, y: 2.55, w: 5.2, h: 0.3, fontFace: 'Calibri', fontSize: 12, color: MUTED, margin: 0, isTextBox: true });
   items.forEach(([name, mean, col], i) => {
-    const y = 2.95 + i * 0.5;
+    const y = 2.9 + i * 0.46;
     s.addShape(pres.shapes.OVAL, { x: 7.6, y: y + 0.07, w: 0.26, h: 0.26, fill: { color: col }, line: { color: col, width: 0 } });
     s.addText(name, { x: 8.05, y, w: 2.6, h: 0.4, fontFace: 'Calibri', fontSize: 18, bold: true, color: INK, margin: 0, valign: 'middle', isTextBox: true });
     s.addText(mean.toFixed(1) + ' dB', { x: 10.6, y, w: 2.2, h: 0.4, fontFace: 'Calibri', fontSize: 18, color: INK, align: 'right', margin: 0, valign: 'middle', isTextBox: true });
   });
-  s.addText('At −90°, in the outflow (off the scale on the plot), all five meet at 94–98 dB. Every lined set-up reads 4.5–6.4 dB higher on average than the naked one.', { x: 7.6, y: 5.6, w: 5.2, h: 1.0, fontFace: 'Calibri', fontSize: 14, color: INK, margin: 0, valign: 'top', isTextBox: true });
+  s.addText('+4.5 to +6.4 dB', { x: 7.6, y: 5.3, w: 5.2, h: 0.8, fontFace: 'Cambria', fontSize: 40, bold: true, color: RED, margin: 0, isTextBox: true });
+  s.addText('louder than naked, on average', { x: 7.6, y: 6.08, w: 5.2, h: 0.35, fontFace: 'Calibri', fontSize: 14, color: INK, margin: 0, isTextBox: true });
+  s.addText('At −90°, in the outflow (off the plot), all five meet at 94–98 dB.', { x: 7.6, y: 6.45, w: 5.2, h: 0.3, fontFace: 'Calibri', fontSize: 12, color: MUTED, margin: 0, isTextBox: true });
   s.addText('2 Oct 2026, 5-inch 3-blade propeller, total level 100 Hz–10 kHz, motor at 2000 µs, corrected microphone files. Radial axis 65–90 dB.', { x: 0.6, y: 6.95, w: 11.3, h: 0.3, fontFace: 'Calibri', fontSize: 11, color: MUTED, margin: 0, isTextBox: true });
   s.addText('7', { x: 12.2, y: 6.95, w: 0.5, h: 0.3, fontFace: 'Calibri', fontSize: 12, color: MUTED, align: 'right', margin: 0, isTextBox: true });
   s.addNotes('Bases of 2 Oct 2026 in the data repo: 2004__5in3b__unset__v1-naked-horizontal, ...cork__v1-cork-horizontal, ...rubber__v1-rubber, ...felt__v1-felt, ...felt-rubber__v1-felt-rubber. Each capture is the PWM 2000 step; level per microphone is the total level 100 Hz to 10 kHz in dB SPL, read with the corrected microphone files (all after 16 Sep). The polar is mirrored to 360 degrees. Mean over the eleven positions: naked 74.2, cork 78.7, rubber 80.6, felt 79.5, felt plus rubber 78.7 dB. At -90 degrees (the outflow) all five are 93.7 to 98.3 dB. The slide shows levels as measured; operating points (voltage, thrust) were not compared here.');
