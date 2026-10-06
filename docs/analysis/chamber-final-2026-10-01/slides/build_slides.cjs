@@ -9,10 +9,8 @@ const INK = '1F2A44', RED = 'D6336C', BLUE = '2B6CB0', MUTED = '5B6578';
   const s = pres.addSlide();
   s.background = { color: '1F2A44' };
   s.addImage({ path: 'photo-chamber.jpg', x: 0, y: 0, w: 5.65, h: 7.5, sizing: { type: 'cover', w: 5.65, h: 7.5 }, altText: 'The chamber in its current set-up: the microphone ring laid flat around the propeller rig, speaker tripod on the left, absorbing material on floor, ceiling and walls' });
-  s.addText('CHAMBER MEASUREMENTS', { x: 6.3, y: 1.7, w: 6.5, h: 0.4, fontFace: 'Calibri', fontSize: 14, bold: true, color: 'AFC3E3', charSpacing: 3, margin: 0, isTextBox: true });
-  s.addText('Measuring a propeller in our chamber', { x: 6.3, y: 2.15, w: 6.5, h: 1.7, fontFace: 'Cambria', fontSize: 38, bold: true, color: 'FFFFFF', margin: 0, valign: 'top', isTextBox: true });
-  s.addText('The current set-up: eleven microphones on a ring around the source, absorbing material on floor, ceiling and walls.', { x: 6.3, y: 4.3, w: 6.2, h: 1.3, fontFace: 'Calibri', fontSize: 18, color: 'E3E9F4', margin: 0, valign: 'top', isTextBox: true });
-  s.addText('Photo of the final configuration, 5 Oct 2026', { x: 6.3, y: 6.95, w: 6.2, h: 0.3, fontFace: 'Calibri', fontSize: 12, color: 'AFC3E3', margin: 0, isTextBox: true });
+  s.addText('Chasing a round polar', { x: 6.3, y: 2.9, w: 6.8, h: 1.4, fontFace: 'Cambria', fontSize: 40, bold: true, color: 'FFFFFF', margin: 0, valign: 'middle', isTextBox: true });
+  s.addText('Our chamber in its current set-up (5 Oct 2026): eleven microphones on a ring around the source, absorbing material on floor, ceiling and walls.', { x: 6.3, y: 6.3, w: 6.3, h: 0.8, fontFace: 'Calibri', fontSize: 14, color: 'AFC3E3', margin: 0, valign: 'top', isTextBox: true });
   s.addNotes('Intro slide. The photo (komora_05_10_26.jpg) shows the chamber in the final configuration (carpet-reordered): the microphone ring laid flat around the propeller rig at the hub, the loudspeaker tripod on the left, batting on the floor and ceiling, wedges and lined pillars on the walls. Ring diameter 1.68 m (radius 0.84 m), eleven UMIK-2 microphones.');
 }
 
