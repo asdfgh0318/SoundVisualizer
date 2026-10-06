@@ -178,7 +178,9 @@
    "marg": 0,
    "marglist": "\u2014",
    "cells": 58,
-   "score": 1.997
+   "score": 1.997,
+   "over13": 7,
+   "cells13": 60
   },
   "x": {
    "cutoff": 2000,
@@ -187,7 +189,9 @@
    "marg": 2,
    "marglist": "630, 1250",
    "cells": 65,
-   "score": 1.387
+   "score": 1.387,
+   "over13": 6,
+   "cells13": 66
   }
  },
  "scale": [

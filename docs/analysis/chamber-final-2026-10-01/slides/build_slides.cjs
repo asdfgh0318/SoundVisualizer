@@ -130,8 +130,8 @@ const INK = '1F2A44', RED = 'D6336C', BLUE = '2B6CB0', MUTED = '5B6578';
   // scorecard
   const g = T.card.g, x = T.card.x;
   s.addText([
-    { text: 'Bands clearly over (of 11): ' }, { text: `${g.fail} → ${x.fail}`, options: { bold: true, breakLine: true } },
-    { text: 'Cells in limit (11 bands): ' }, { text: `${g.cells} % → ${x.cells} %`, options: { bold: true } },
+    { text: 'Bands clearly over (of 13): ' }, { text: `${g.over13} → ${x.over13}`, options: { bold: true, breakLine: true } },
+    { text: 'Cells in limit (13 bands): ' }, { text: `${g.cells13} % → ${x.cells13} %`, options: { bold: true } },
   ], { x: 8.95, y: 4.1, w: 3.9, h: 1.5, fontFace: 'Calibri', fontSize: 14, color: INK, margin: 0, valign: 'top', paraSpaceAfter: 6, isTextBox: true });
   s.addText('* Partial bands: only the tones above 5 kHz are measured (4 and 5 tones). 3–5 kHz is left out because of the loudspeaker: its cone rocks near 4.4 kHz. ISO values are an analogue, not a qualification of the room.', { x: 8.95, y: 5.75, w: 3.9, h: 1.15, fontFace: 'Calibri', fontSize: 12, color: MUTED, margin: 0, valign: 'top', isTextBox: true });
   s.addText('5', { x: 12.2, y: 6.95, w: 0.5, h: 0.3, fontFace: 'Calibri', fontSize: 12, color: MUTED, align: 'right', margin: 0, isTextBox: true });

@@ -21,5 +21,17 @@ for fc in (5000, 6300):
     tg, ng, dg, pg = extra(fc, G); tx, nx, dx, px = extra(fc, X)
     rows.append(dict(band=f'{fc}*', limit=tg, tones=ng, gdev=round(dg, 2), gdevc=hexc(dg / tg), gcells=round(pg), gcellsc=hexc((100 - pg) / 50), xdev=round(dx, 2), xdevc=hexc(dx / tx), xcells=round(px), xcellsc=hexc((100 - px) / 50)))
 card = {k: dict(cutoff=bf.cutoff(st), fail=bf.count(st, 'fail'), faillist=bf.lst(st, 'fail'), marg=bf.count(st, 'marg'), marglist=bf.lst(st, 'marg'), cells=round(st['tone_all']), score=round(st['score'], 3)) for k, st in (('g', G), ('x', X))}
+import numpy as np
+def all13(st, k):
+    over = bf.count(st, 'fail'); cells = 0; tot = 0
+    for fc in bf.TOB:
+        m = bf.sel(st['f'], fc); n = abs(st['D'][m]) <= bf.tol(fc); cells += int(n.sum()); tot += n.size
+    for fc in (5000, 6300):
+        tol, nt, dev, pct = extra(fc, st); m = bf.sel(st['f'], fc); n = abs(st['D'][m]) <= tol; cells += int(n.sum()); tot += n.size
+        over += int(dev > tol + bf.MARG)
+    return over, round(100 * cells / tot)
+for k, st in (('g', G), ('x', X)):
+    card[k]['over13'], card[k]['cells13'] = all13(st, k)
+print(card)
 json.dump(dict(rows=rows, card=card, scale=[hexc(t) for t in (0, .5, 1, 1.5, 2)]), open(os.path.join(HERE, 'table.json'), 'w'), indent=1)
 print(card)
