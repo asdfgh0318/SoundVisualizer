@@ -14,8 +14,8 @@ bb = [rms(B[(f >= a) & (f < b)]) for a, b in bands]; ba = [rms(A[(f >= a) & (f <
 json.dump(dict(labels=[f'{a}–{b}' for a, b in bands], before=bb, after=ba, eb=rms(B[lo]), ea=rms(A[lo])), open(os.path.join(HERE, 'wf-bands.json'), 'w'))
 G = np.abs(B) - np.abs(A)
 bw = LinearSegmentedColormap.from_list('bw', ['#c05621', '#f6d7c3', '#ffffff', '#cfe0f3', '#2b6cb0'])
-fs = 1.3
-fig, axs = plt.subplots(3, 1, figsize=(10.0, 7.2), gridspec_kw=dict(hspace=.55))
+fs = 1.6
+fig, axs = plt.subplots(3, 1, figsize=(10.4, 7.6), gridspec_kw=dict(hspace=.55))
 xx = np.arange(len(f) + 1); yy = np.arange(len(pos) + 1)
 nom = {257: '0.26k', 400: '0.4k', 630: '0.63k', 1000: '1k', 1600: '1.6k', 2500: '2.5k', 6000: '6k'}
 tk, tl = [], []

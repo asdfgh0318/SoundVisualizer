@@ -251,7 +251,7 @@ def mic_before_after(run):                              # same capture, factory 
     nb, na = B - B.mean(1, keepdims=True), A - A.mean(1, keepdims=True); lo = f < 3000
     return f, np.asarray(p2), nb[:, ::-1], na[:, ::-1], rms(nb[lo]), rms(na[lo]), float(np.ptp(B[lo].mean(0))), float(np.ptp(A[lo].mean(0)))
 
-def fig_mic(figsize=(7.4, 6.4), fs=1.0, out='/fig-mic.png'):
+def fig_mic(figsize=(7.4, 6.4), fs=1.0, out='/fig-mic.png', short=False):
     from matplotlib.colors import LinearSegmentedColormap
     runs = [(DAY3A, 'day3-a (start of day 3)'), (FINAL, 'carpet-reordered (final)')]; res = [mic_before_after(r) for r, _ in runs]
     bw = LinearSegmentedColormap.from_list('bw', ['#c05621', '#f6d7c3', '#ffffff', '#cfe0f3', '#2b6cb0'])
@@ -270,8 +270,8 @@ def fig_mic(figsize=(7.4, 6.4), fs=1.0, out='/fig-mic.png'):
             a = axs[r, c]; ims[r] = a.pcolormesh(xx, yy, M.T, cmap=cm, vmin=-v, vmax=v); a.axvline(np.searchsorted(f, 4000), color='k', lw=1.2); a.invert_yaxis()
             a.set_yticks(np.arange(len(pos)) + .5); a.set_yticklabels([f'{q:+.0f}°'.replace('-', '−') for q in pos] if c == 0 else [], fontsize=5.5 * fs)
             a.set_xticks([i + .5 for i in tk]); a.set_xticklabels(tl, fontsize=5.5 * fs); a.set_title(ttl, fontsize=6.4 * fs, loc='left')
-    cb = fig.colorbar(ims[0], ax=axs[:2, :], shrink=.85, pad=.02, aspect=28); cb.set_label('capsule level minus arc mean (dB): blue = quieter, red = louder', fontsize=6 * fs); cb.ax.tick_params(labelsize=5.5 * fs)
-    cb2 = fig.colorbar(ims[2], ax=axs[2, :], shrink=.85, pad=.02, aspect=14); cb2.set_ticks([-3, 0, 3]); cb2.set_ticklabels(['−3 dB\nfurther', '0', '+3 dB\ncloser']); cb2.set_label('change in deviation from the arc mean (dB)', fontsize=6 * fs); cb2.ax.tick_params(labelsize=5.5 * fs)
+    cb = fig.colorbar(ims[0], ax=axs[:2, :], shrink=.85, pad=.02, aspect=28); cb.set_label('level minus arc mean (dB)' if short else 'capsule level minus arc mean (dB): blue = quieter, red = louder', fontsize=6 * fs); cb.ax.tick_params(labelsize=5.5 * fs)
+    cb2 = fig.colorbar(ims[2], ax=axs[2, :], shrink=.85, pad=.02, aspect=14); cb2.set_ticks([-3, 0, 3]); cb2.set_ticklabels(['−3 dB\nfurther', '0', '+3 dB\ncloser']); cb2.set_label('change (dB)' if short else 'change in deviation from the arc mean (dB)', fontsize=6 * fs); cb2.ax.tick_params(labelsize=5.5 * fs)
     fig.text(.45, .015, 'Frequency in kHz (the black line marks the omitted 3–5 kHz). Top of each map = +90°.', ha='center', fontsize=6 * fs)
     fig.savefig(HERE + out, dpi=200, bbox_inches='tight'); plt.close(fig)
     return res
@@ -284,7 +284,7 @@ def page1():
 <p class="tag">SoundVisualizer · chamber report, 2026-10-05 · calibrator session 2026-09-16 (97 tones per capsule, amplitude 0.03)</p>
 <div class="top"><div><img src="photo-source.jpg"><p class="cap"><b>The test loudspeaker</b>: a printed 1-litre sphere with an 8 cm driver, placed at the hub (the centre of the ring).</p></div>
 <div><p>Eleven UMIK-2 measurement microphones, called <i>capsules</i> in this report, sit on a ring of 1.68 m diameter (0.84 m radius). Each came with a factory calibration file, and nobody had checked these files against each other. On 16 Sep we measured every capsule in turn, one at a time, at the same mounting point in front of our loudspeaker, over a stepped frequency sweep: 97 tones from 62 Hz to 16 kHz, 12 per octave. One capsule (810-8904) was measured three full times (18:21, 18:30 and 20:43) as the reference. The loudspeaker, the room and the mounting point were the same for every capsule, so a difference between two curves comes from the capsules.</p>
-<ul><li><b>Seven of the eleven factory files were wrong by 0.6–3.6 dB.</b> The errors are grouped by serial-number prefix.</li>
+<ul><li><b>Seven of the eleven factory files were off by 0.8–2.6 dB on average</b> (3.5 dB at the worst single frequency). The errors are grouped by serial-number prefix.</li>
 <li>Each capsule's difference from the reference was added to its calibration curve. The updated curves are called the <i>corrections</i>; the original curves are the <i>factory files</i>. For the same sound, the spread of the eleven readings fell from <b>4.01 dB to 0.02 dB</b>. Repeated measurements agreed to 0.08 dB (standard deviation).</li>
 <li>The reference level is set by the four capsules whose factory files agree with the measurement. Still open: the absolute level, which needs a 94 dB sound calibrator.</li>
 <li>On the 30 Sep propeller-plane polar (chapter 3), the corrections reduced the roughness from 3.3 to 1.0 dB (a different statistic from the rms spread on page 5, defined in <code>docs/analysis/baseline-story-2026-09-30/REPORT.pdf</code>).</li></ul></div></div>

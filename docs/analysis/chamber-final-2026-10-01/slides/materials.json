@@ -1,5 +1,5 @@
 {
- "Naked": {
+ "Bare": {
   "mean": 74.2,
   "rng": 27.9,
   "color": "#1F2A44"
@@ -17,7 +17,7 @@
  "Felt": {
   "mean": 79.5,
   "rng": 24.4,
-  "color": "#D6336C"
+  "color": "#1098AD"
  },
  "Felt + rubber": {
   "mean": 78.7,

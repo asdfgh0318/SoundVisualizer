@@ -60,17 +60,17 @@ const INK = '1F2A44', RED = 'D6336C', BLUE = '2B6CB0', MUTED = '5B6578';
     { text: '4.01', options: { color: RED } }, { text: ' → ', options: { color: MUTED } }, { text: '0.02 dB', options: { color: BLUE } },
   ], { x: 8.2, y: 5.05, w: 4.6, h: 0.75, fontFace: 'Cambria', fontSize: 40, bold: true, margin: 0, isTextBox: true });
   s.addText('spread across the eleven microphones for the same sound', { x: 8.2, y: 5.8, w: 4.6, h: 0.5, fontFace: 'Calibri', fontSize: 14, color: MUTED, margin: 0, valign: 'top', isTextBox: true });
-  s.addText('7 of 11 factory files were wrong by 0.6–3.6 dB', { x: 8.2, y: 6.35, w: 4.6, h: 0.5, fontFace: 'Calibri', fontSize: 14, bold: true, color: INK, margin: 0, valign: 'top', isTextBox: true });
+  s.addText('7 of 11 factory files were off by 0.8–2.6 dB on average', { x: 8.2, y: 6.35, w: 4.6, h: 0.5, fontFace: 'Calibri', fontSize: 14, bold: true, color: INK, margin: 0, valign: 'top', isTextBox: true });
   s.addText('Calibration session 16 Sep 2026, loudspeaker amplitude 0.03 of full scale. UMIK-2 photo: miniDSP product brief.', { x: 0.6, y: 6.95, w: 11.3, h: 0.3, fontFace: 'Calibri', fontSize: 11, color: MUTED, margin: 0, isTextBox: true });
   s.addText('3', { x: 12.2, y: 6.95, w: 0.5, h: 0.3, fontFace: 'Calibri', fontSize: 12, color: MUTED, align: 'right', margin: 0, isTextBox: true });
-  s.addNotes('Procedure (calibrator/session.py, 2026-09-16 session): each of the eleven UMIK-2 capsules was plugged in at the same mounting point in front of the loudspeaker and measured over 97 stepped tones, 62 Hz to 16 kHz (about 12 per octave), amplitude 0.03, 48 kHz sampling, 0.7 s settle and 2 s capture per tone (6 s below 250 Hz). Capsule 810-8904 was measured three full times (18:21, 18:30, 20:43) as the reference. The difference of each capsule from the reference was folded into its calibration curve; Sens Factors kept as in the factory files. The datum is the mean of four capsules whose factory files agree with measurement (810-8900, 810-8903, 811-1896, 811-2321). Spread 4.01 to 0.02 dB and 7 of 11 files wrong by 0.6-3.6 dB are from the project notes. Seven capsules had a mean offset beyond 0.6 dB (811-1892 -2.6, 811-1897 -1.4, 811-2310 -0.8, 810-8897 +0.8, 810-8901 +0.8, 810-8904 +0.9, 810-8893 +1.3). Absolute level is not anchored: that needs a 94 dB calibrator.');
+  s.addNotes('Procedure (calibrator/session.py, 2026-09-16 session): each of the eleven UMIK-2 capsules was plugged in at the same mounting point in front of the loudspeaker and measured over 97 stepped tones, 62 Hz to 16 kHz (about 12 per octave), amplitude 0.03, 48 kHz sampling, 0.7 s settle and 2 s capture per tone (6 s below 250 Hz). Capsule 810-8904 was measured three full times (18:21, 18:30, 20:43) as the reference. The difference of each capsule from the reference was folded into its calibration curve; Sens Factors kept as in the factory files. The datum is the mean of four capsules whose factory files agree with measurement (810-8900, 810-8903, 811-1896, 811-2321). Spread 4.01 to 0.02 dB is from the project notes: a same-session check, since the corrections come from this session, and the absolute level is not anchored (that needs a 94 dB calibrator). Seven capsules have a mean offset beyond 0.6 dB over frequency, between 0.76 and 2.59 dB; the worst single frequency is 3.48 dB (811-1892), from CORRECTIONS-2026-09-16.csv. Seven capsules had a mean offset beyond 0.6 dB (811-1892 -2.6, 811-1897 -1.4, 811-2310 -0.8, 810-8897 +0.8, 810-8901 +0.8, 810-8904 +0.9, 810-8893 +1.3). Absolute level is not anchored: that needs a 94 dB calibrator.');
 }
 
 // Slide 3: the waterfalls of the calibration, before and after
 {
   const s = pres.addSlide();
   s.background = { color: 'FFFFFF' };
-  s.addImage({ path: 'fig-mic-slide.png', x: 0.35, y: 0.3, w: 8.2, h: 6.38, altText: 'Maps of each microphone against frequency for two captures: factory files (top), corrected (middle), effect of the correction (bottom)' });
+  s.addImage({ path: 'fig-mic-slide.png', x: 0.3, y: 0.3, w: 8.06, h: 6.4, altText: 'Maps of each microphone against frequency for two captures: factory files (top), corrected (middle), effect of the correction (bottom)' });
   s.addText('THE RESULT', { x: 8.95, y: 0.7, w: 3.9, h: 0.35, fontFace: 'Calibri', fontSize: 14, bold: true, color: BLUE, charSpacing: 3, margin: 0, isTextBox: true });
   s.addText('The correction removes the microphone offsets', { x: 8.95, y: 1.05, w: 3.9, h: 1.7, fontFace: 'Cambria', fontSize: 28, bold: true, color: INK, margin: 0, valign: 'top', isTextBox: true });
   s.addText([
@@ -82,7 +82,7 @@ const INK = '1F2A44', RED = 'D6336C', BLUE = '2B6CB0', MUTED = '5B6578';
     { text: '4.3', options: { color: RED } }, { text: ' → ', options: { color: MUTED } }, { text: '0.8 dB', options: { color: BLUE } },
   ], { x: 8.95, y: 5.55, w: 3.9, h: 0.7, fontFace: 'Cambria', fontSize: 36, bold: true, margin: 0, isTextBox: true });
   s.addText('range of the microphones’ mean levels, start of day 3 (final state: 4.1 → 1.0 dB)', { x: 8.95, y: 6.25, w: 3.9, h: 0.6, fontFace: 'Calibri', fontSize: 12, color: MUTED, margin: 0, valign: 'top', isTextBox: true });
-  s.addText('Captures from 25 Sep 2026: day3-a (left) and carpet-reordered (right).', { x: 0.6, y: 6.95, w: 8.0, h: 0.3, fontFace: 'Calibri', fontSize: 11, color: MUTED, margin: 0, isTextBox: true });
+  s.addText('Two captures from 25 Sep 2026: the start of day 3 (left) and the final configuration (right).', { x: 0.6, y: 6.95, w: 8.0, h: 0.3, fontFace: 'Calibri', fontSize: 11, color: MUTED, margin: 0, isTextBox: true });
   s.addText('4', { x: 12.2, y: 6.95, w: 0.5, h: 0.3, fontFace: 'Calibri', fontSize: 12, color: MUTED, align: 'right', margin: 0, isTextBox: true });
   s.addNotes('Same figure as chapter 1 of the report, redrawn larger. The same two captures were calibrated two ways: with the factory files and with the corrections measured on 16 Sep. The span is the range of the capsules mean levels: 4.3 to 0.8 dB at the start of day 3, 4.1 to 1.0 dB in the final configuration. Room error below 3 kHz: 2.277 to 1.997 dB and 1.736 to 1.387 dB. The change is mainly a per-capsule offset, so it mainly moves whole rows.');
 }
@@ -91,14 +91,14 @@ const INK = '1F2A44', RED = 'D6336C', BLUE = '2B6CB0', MUTED = '5B6578';
 {
   const s = pres.addSlide();
   s.background = { color: 'FFFFFF' };
-  s.addImage({ path: 'fig-wf-slide.png', x: 0.35, y: 0.3, w: 7.61, h: 6.45, altText: 'Maps of each microphone against frequency: start of day 3, final state, and the change between them' });
+  s.addImage({ path: 'fig-wf-slide.png', x: 0.3, y: 0.3, w: 7.59, h: 6.45, altText: 'Maps of each microphone against frequency: start of day 3, final state, and the change between them' });
   s.addText('THE CHAMBER', { x: 8.95, y: 0.5, w: 3.9, h: 0.35, fontFace: 'Calibri', fontSize: 14, bold: true, color: BLUE, charSpacing: 3, margin: 0, isTextBox: true });
   s.addText('The treatments flatten the low end', { x: 8.95, y: 0.85, w: 3.9, h: 1.2, fontFace: 'Cambria', fontSize: 28, bold: true, color: INK, margin: 0, valign: 'top', isTextBox: true });
   s.addChart(pres.charts.BAR, [
     { name: 'Start of day 3', labels: ['250–400', '400–630', '630–1k', '1k–1.6k', '1.6k–3k', '5k–6.4k'], values: [3.33, 2.57, 1.57, 0.8, 0.87, 1.04] },
     { name: 'Final', labels: ['250–400', '400–630', '630–1k', '1k–1.6k', '1.6k–3k', '5k–6.4k'], values: [1.99, 1.52, 1.47, 0.85, 0.96, 1.17] },
   ], {
-    x: 8.85, y: 2.05, w: 4.1, h: 2.75, barDir: 'col', barGrouping: 'clustered', chartColors: ['9AA5B8', '1F2A44'], showLegend: true, legendPos: 'b', legendFontSize: 11, legendColor: INK, legendFontFace: 'Calibri',
+    x: 8.85, y: 2.05, w: 4.1, h: 2.75, barDir: 'col', barGrouping: 'clustered', chartColors: ['D6336C', '2B6CB0'], showLegend: true, legendPos: 'b', legendFontSize: 11, legendColor: INK, legendFontFace: 'Calibri',
     showTitle: true, title: 'Room error per band (dB, band in Hz)', titleFontSize: 12, titleColor: INK, titleFontFace: 'Calibri',
     catAxisLabelFontSize: 10, catAxisLabelColor: INK, catAxisLabelFontFace: 'Calibri', valAxisLabelFontSize: 10, valAxisLabelColor: MUTED, valAxisLabelFontFace: 'Calibri', valAxisMinVal: 0, valAxisMaxVal: 4, valAxisMajorUnit: 1,
     valGridLine: { color: 'E3E7EE', size: 0.5 }, catGridLine: { style: 'none' }, barGapWidthPct: 50,
@@ -109,13 +109,13 @@ const INK = '1F2A44', RED = 'D6336C', BLUE = '2B6CB0', MUTED = '5B6578';
   ], { x: 8.95, y: 4.85, w: 3.9, h: 0.65, fontFace: 'Cambria', fontSize: 34, bold: true, margin: 0, isTextBox: true });
   s.addText('room error below 3 kHz', { x: 8.95, y: 5.5, w: 3.9, h: 0.3, fontFace: 'Calibri', fontSize: 12, color: MUTED, margin: 0, isTextBox: true });
   s.addText('We improved the low end (below 630 Hz) by 1.2 dB: the error fell from 3.0 to 1.8 dB, 40 % lower. Above 1 kHz only marginal changes.', { x: 8.95, y: 5.85, w: 3.9, h: 0.95, fontFace: 'Calibri', fontSize: 14, color: INK, margin: 0, valign: 'top', isTextBox: true });
-  s.addText('25 Sep 2026. The loudspeaker was moved during the day and returned to about its starting point; the position was not documented.', { x: 0.6, y: 6.95, w: 11.3, h: 0.3, fontFace: 'Calibri', fontSize: 11, color: MUTED, margin: 0, isTextBox: true });
+  s.addText('25 Sep 2026. The loudspeaker was moved during the day and returned to about its starting point; the position was not documented. Room error: rms difference of the eleven microphones from their average.', { x: 0.6, y: 6.85, w: 11.4, h: 0.45, fontFace: 'Calibri', fontSize: 11, color: MUTED, margin: 0, valign: 'top', isTextBox: true });
   s.addText('5', { x: 12.2, y: 6.95, w: 0.5, h: 0.3, fontFace: 'Calibri', fontSize: 12, color: MUTED, align: 'right', margin: 0, isTextBox: true });
   s.addNotes('Same pair as page 3 of the report (day3-a at 13:17, carpet-reordered at 19:15, both 25 Sep), read with the corrected microphone files. Room error is the rms deviation of the eleven microphones from their mean, per band. Below 630 Hz the rms room error fell from 2.98 to 1.78 dB (1.2 dB, 40 %); between 1 and 3 kHz it went 0.84 to 0.91 dB. Start of day 3: 3.33, 2.57, 1.57, 0.80, 0.87, 1.04 dB; final: 1.99, 1.52, 1.47, 0.85, 0.96, 1.17 dB for the bands 250-400, 400-630, 630-1000, 1000-1600, 1600-3000 and 5000-6400 Hz. Caveat from the report: the loudspeaker was moved on purpose during the day (20 cm closer, into the ring plane, 5 cm back) and then returned to about its starting mounting point, which was not recorded. The tilt of the map changed from -0.41 to -0.63 and the mean level rose 1.16 dB, so the gain is the treatments plus a small unknown difference in source position, and part of it may be the louder direct sound. The clean pair with an unmoved source is 24 Sep: empty floor 2.054 to carpet 1.317 dB.');
 }
 
-// Slide 6: how marginal the Thinsulate wrap on the ring is
-{
+// Thinsulate ring wrap slide: left out of the deck on request; build it with WRAP_SLIDE=1
+if (process.env.WRAP_SLIDE) {
   const s = pres.addSlide();
   s.background = { color: 'FFFFFF' };
   s.addText('THE RING WRAP', { x: 0.6, y: 0.5, w: 6, h: 0.35, fontFace: 'Calibri', fontSize: 14, bold: true, color: BLUE, charSpacing: 3, margin: 0, isTextBox: true });
@@ -140,7 +140,7 @@ const INK = '1F2A44', RED = 'D6336C', BLUE = '2B6CB0', MUTED = '5B6578';
   s.addNotes('Source: README of the chamber trials (docs/analysis/chamber-treatments-2026-09-23) and the loudspeaker sessions, room error below 3 kHz. 23 Sep: foam-out 1.3837 to tripod-unwrapped 1.3874 (+0.004, some wrapping off the tripod legs); to ring-unwrapped 1.4057 (+0.018, part of the ring wrapping removed; a new hub mounting preset from there); to ring-unwrapped-2 1.4076 (+0.002, more of the ring unwrapped). 24 Sep, speaker on the wall (a different geometry): wall-direct-absorber 2.2193 to ring-bare 2.2054 (-0.014), the rest of the ring wrap removed, 10 minutes apart; map change 0.36 dB spread over all capsules. Three of the four changes are slightly worse, one slightly better. The README concludes the ring wrap is worth a little only at the high end, and that the best state measured was tripod bare and ring wrapped. Repeat floor 0.006-0.015 dB, handling about 0.04 dB (README). Carpet on the empty floor: 24 Sep floor-no-wedges 2.054 to chaotic-carpet 1.317 dB (-0.737), source unmoved. 0.737 / 0.018 = 40.');
 }
 
-// Slide 5: the band table of the evaluation, colour graded
+// Slide 6: the band table of the evaluation, colour graded
 {
   const T = JSON.parse(require('fs').readFileSync('table.json', 'utf8'));
   const s = pres.addSlide();
@@ -154,7 +154,7 @@ const INK = '1F2A44', RED = 'D6336C', BLUE = '2B6CB0', MUTED = '5B6578';
     [H('Band'), H('Limit'), H('Tones'), H('Start of day 3', { colspan: 2, color: RED, border: [GRID, GRID, GRID, SEP] }), H('Final', { colspan: 2, color: BLUE, border: [GRID, GRID, GRID, SEP] })],
     [H('Hz'), H('± dB'), H('per band'), H('worst mic, dB', { border: [GRID, GRID, GRID, SEP] }), H('cells in limit'), H('worst mic, dB', { border: [GRID, GRID, GRID, SEP] }), H('cells in limit')],
   ];
-  T.rows.forEach((r) => rows.push([C(String(r.band), null, { bold: true }), C(String(r.limit), null), C(String(r.tones), null), C(r.gdev.toFixed(2), r.gdevc, { bold: true, border: [GRID, GRID, GRID, SEP] }), C(r.gcells + ' %', r.gcellsc), C(r.xdev.toFixed(2), r.xdevc, { bold: true, border: [GRID, GRID, GRID, SEP] }), C(r.xcells + ' %', r.xcellsc)]));
+  T.rows.forEach((r) => rows.push([C(String(r.band), null, { bold: true }), C(r.limit.toFixed(1), null), C(String(r.tones), null), C(r.gdev.toFixed(2), r.gdevc, { bold: true, border: [GRID, GRID, GRID, SEP] }), C(r.gcells + ' %', r.gcellsc), C(r.xdev.toFixed(2), r.xdevc, { bold: true, border: [GRID, GRID, GRID, SEP] }), C(r.xcells + ' %', r.xcellsc)]));
   s.addTable(rows, { x: 0.6, y: 0.5, w: 7.9, colW: [0.85, 0.8, 0.85, 1.4, 1.3, 1.4, 1.3], rowH: [0.36, 0.32].concat(Array(T.rows.length).fill(0.43)), margin: [0.02, 0.04, 0.02, 0.04] });
   // colour key
   s.addText('Colour key', { x: 8.95, y: 2.35, w: 3.9, h: 0.3, fontFace: 'Calibri', fontSize: 14, bold: true, color: INK, margin: 0, isTextBox: true });
@@ -169,34 +169,34 @@ const INK = '1F2A44', RED = 'D6336C', BLUE = '2B6CB0', MUTED = '5B6578';
     { text: 'Bands clearly over (of 13): ' }, { text: `${g.over13} → ${x.over13}`, options: { bold: true, breakLine: true } },
     { text: 'Cells in limit (13 bands): ' }, { text: `${g.cells13} % → ${x.cells13} %`, options: { bold: true } },
   ], { x: 8.95, y: 4.1, w: 3.9, h: 1.5, fontFace: 'Calibri', fontSize: 14, color: INK, margin: 0, valign: 'top', paraSpaceAfter: 6, isTextBox: true });
-  s.addText('* Partial bands: only the tones above 5 kHz are measured (4 and 5 tones). 3–5 kHz is left out because of the loudspeaker: its cone rocks near 4.4 kHz. ISO values are an analogue, not a qualification of the room.', { x: 8.95, y: 5.75, w: 3.9, h: 1.15, fontFace: 'Calibri', fontSize: 12, color: MUTED, margin: 0, valign: 'top', isTextBox: true });
-  s.addText('7', { x: 12.2, y: 6.95, w: 0.5, h: 0.3, fontFace: 'Calibri', fontSize: 12, color: MUTED, align: 'right', margin: 0, isTextBox: true });
+  s.addText('* Partial bands: only the tones above 5 kHz are measured (4 and 5 tones). 3–5 kHz is left out because of the loudspeaker: its cone has a rocking mode near 4.4 kHz. ISO values are an analogue, not a qualification of the room.', { x: 8.95, y: 5.75, w: 3.9, h: 1.15, fontFace: 'Calibri', fontSize: 12, color: MUTED, margin: 0, valign: 'top', isTextBox: true });
+  s.addText('6', { x: 12.2, y: 6.95, w: 0.5, h: 0.3, fontFace: 'Calibri', fontSize: 12, color: MUTED, align: 'right', margin: 0, isTextBox: true });
   s.addNotes('Same table as page 4 of the report. Each one-third-octave band is judged against the anechoic tolerance values of ISO 5305 Table 1 (also ISO 3745 as printed by Cunefare 2003): +-1.5 dB for 125-630 Hz, +-1.0 dB for 800-5000 Hz. The number is the worst microphone band-mean deviation from the arc mean, in dB; the colour is that number as a share of the limit. Cells in limit counts tone x microphone cells inside the limit (3 tones x 11 microphones = 33 cells at 250 Hz, where the grid starts at 257 Hz). This is an analogue: the standards use a traverse and test decay with distance, we use eleven fixed microphones at one radius. The room is treated and not qualified. Within the tolerance values from 1250 Hz at the start of day 3 and from 2000 Hz in the final state, up to 2500 Hz. The rows marked * (5000 and 6300 Hz) are partial: 4 and 5 tones above 5 kHz, the limit is +-1.0 dB at 5000 Hz and +-1.5 dB at 6300 Hz (ISO 5305 Table 1). Both are over the limit in both states (1.24 and 1.23 dB; 1.59 and 1.77 dB). The 3150 and 4000 Hz bands are not shown: no tones between 3 and 5 kHz because of the rocking mode of the sphere at about 4.4 kHz. Caveat: the loudspeaker position was not documented across the day.');
 }
 
-// Slide 6: the same polar with the 30 Sep measurement on top
+// Slide 7: the same polar with the 30 Sep measurement on top
 {
   const s = pres.addSlide();
   s.background = { color: 'FFFFFF' };
   s.addImage({ path: 'polar-both.png', x: 0.6, y: 0.5, w: 5.95, h: 6.34, altText: 'Polar plot of 20 to 560 Hz: the jagged red 31 Aug outline and the smoother blue 30 Sep outline' });
-  s.addText('AFTER', { x: 7.4, y: 0.9, w: 5.3, h: 0.4, fontFace: 'Calibri', fontSize: 14, bold: true, color: BLUE, charSpacing: 3, margin: 0, isTextBox: true });
-  s.addText('The new polar is rounder', { x: 7.4, y: 1.3, w: 5.3, h: 1.3, fontFace: 'Cambria', fontSize: 34, bold: true, color: INK, margin: 0, valign: 'top', isTextBox: true });
+  s.addText('COMPARISON', { x: 7.4, y: 0.9, w: 5.3, h: 0.4, fontFace: 'Calibri', fontSize: 14, bold: true, color: BLUE, charSpacing: 3, margin: 0, isTextBox: true });
+  s.addText('31 Aug and 30 Sep on the same axes', { x: 7.4, y: 1.3, w: 5.3, h: 1.3, fontFace: 'Cambria', fontSize: 34, bold: true, color: INK, margin: 0, valign: 'top', isTextBox: true });
   s.addText([
-    { text: 'Same kind of measurement, same axes, on 30 Sep.', options: { bullet: true, breakLine: true } },
-    { text: 'The microphones now carry their measured corrections, and the room has been treated.', options: { bullet: true, breakLine: true } },
-    { text: 'The outline is smooth and close to a circle.', options: { bullet: true, bold: true } },
+    { text: 'Red: 31 Aug, factory microphone files, 7.35 V. Blue: 30 Sep, corrected files, 11.7 V.', options: { bullet: true, breakLine: true } },
+    { text: 'The propeller was mounted the other way round between the two, so the thrust points the other way. We do not expect this to change the sound.', options: { bullet: true, breakLine: true } },
+    { text: 'The 30 Sep outline is smoother.', options: { bullet: true, bold: true } },
   ], { x: 7.4, y: 2.75, w: 5.3, h: 2.6, fontFace: 'Calibri', fontSize: 16, color: INK, margin: 0, valign: 'top', paraSpaceAfter: 10, isTextBox: true });
   s.addText([
     { text: '6.7', options: { color: RED } }, { text: ' → ', options: { color: MUTED } }, { text: '4.0 dB', options: { color: BLUE } },
   ], { x: 7.4, y: 5.5, w: 5.3, h: 0.8, fontFace: 'Cambria', fontSize: 48, bold: true, margin: 0, isTextBox: true });
   s.addText('between the loudest and quietest microphone', { x: 7.4, y: 6.3, w: 5.3, h: 0.5, fontFace: 'Calibri', fontSize: 14, color: MUTED, margin: 0, isTextBox: true });
   s.addText('20–560 Hz, motor at 2000 µs. The two runs had different operating points (7.35 V against 11.7 V), which is why the blue is lower.', { x: 0.6, y: 6.95, w: 12.1, h: 0.3, fontFace: 'Calibri', fontSize: 11, color: MUTED, margin: 0, isTextBox: true });
-  s.addText(String(8), { x: 12.2, y: 6.95, w: 0.5, h: 0.3, fontFace: 'Calibri', fontSize: 12, color: MUTED, align: 'right', margin: 0, isTextBox: true });
+  s.addText(String(7), { x: 12.2, y: 6.95, w: 0.5, h: 0.3, fontFace: 'Calibri', fontSize: 12, color: MUTED, align: 'right', margin: 0, isTextBox: true });
   s.addNotes('Blue: 30 Sep propeller measurement (11.7 V, 7.3 A, thrust -4 N), read with the 16 Sep microphone corrections. Rms spread about the mean 1.45 dB against 2.05 dB for 31 Aug; range 4.0 dB (55.5 to 59.6 dB SPL) against 6.7 dB. The blue is about 11 dB lower because the motor ran at a different operating point. The 4 dB range of the blue is a bottom-louder trend. Honest caveat: with the same calibration applied to the 1-2 Sep runs, those are about as round as 30 Sep, so most of the improvement against the earlier baselines comes from the microphone calibration, not the room.');
 }
 
 
-// Slide 7: the material measurements overlaid
+// Slide 8: the material measurements overlaid
 {
   const s = pres.addSlide();
   s.background = { color: 'FFFFFF' };
@@ -204,10 +204,10 @@ const INK = '1F2A44', RED = 'D6336C', BLUE = '2B6CB0', MUTED = '5B6578';
   s.addText('THE MATERIALS', { x: 7.6, y: 0.7, w: 5.2, h: 0.35, fontFace: 'Calibri', fontSize: 14, bold: true, color: BLUE, charSpacing: 3, margin: 0, isTextBox: true });
   s.addText('Material measurements at 2000 µs', { x: 7.6, y: 1.05, w: 5.2, h: 1.3, fontFace: 'Cambria', fontSize: 30, bold: true, color: INK, margin: 0, valign: 'top', isTextBox: true });
   const items = [
-    ['Naked', 74.2, '1F2A44'],
+    ['Bare', 74.2, '1F2A44'],
     ['Cork', 78.7, '2F9E44'],
     ['Rubber', 80.6, 'F08C00'],
-    ['Felt', 79.5, 'D6336C'],
+    ['Felt', 79.5, '1098AD'],
     ['Felt + rubber', 78.7, '7048E8'],
   ];
   s.addText('Mean level over the eleven microphones', { x: 7.6, y: 2.55, w: 5.2, h: 0.3, fontFace: 'Calibri', fontSize: 12, color: MUTED, margin: 0, isTextBox: true });
@@ -218,10 +218,10 @@ const INK = '1F2A44', RED = 'D6336C', BLUE = '2B6CB0', MUTED = '5B6578';
     s.addText(mean.toFixed(1) + ' dB', { x: 10.6, y, w: 2.2, h: 0.4, fontFace: 'Calibri', fontSize: 18, color: INK, align: 'right', margin: 0, valign: 'middle', isTextBox: true });
   });
   s.addText('+4.5 to +6.4 dB', { x: 7.6, y: 5.3, w: 5.2, h: 0.8, fontFace: 'Cambria', fontSize: 40, bold: true, color: RED, margin: 0, isTextBox: true });
-  s.addText('louder than naked, on average', { x: 7.6, y: 6.08, w: 5.2, h: 0.35, fontFace: 'Calibri', fontSize: 14, color: INK, margin: 0, isTextBox: true });
+  s.addText('louder than bare, on average', { x: 7.6, y: 6.08, w: 5.2, h: 0.35, fontFace: 'Calibri', fontSize: 14, color: INK, margin: 0, isTextBox: true });
   s.addText('At −90°, in the outflow (off the plot), all five meet at 94–98 dB.', { x: 7.6, y: 6.45, w: 5.2, h: 0.3, fontFace: 'Calibri', fontSize: 12, color: MUTED, margin: 0, isTextBox: true });
   s.addText('2 Oct 2026, 5-inch 3-blade propeller, total level 100 Hz–10 kHz, motor at 2000 µs, corrected microphone files. Radial axis 65–90 dB.', { x: 0.6, y: 6.95, w: 11.3, h: 0.3, fontFace: 'Calibri', fontSize: 11, color: MUTED, margin: 0, isTextBox: true });
-  s.addText('9', { x: 12.2, y: 6.95, w: 0.5, h: 0.3, fontFace: 'Calibri', fontSize: 12, color: MUTED, align: 'right', margin: 0, isTextBox: true });
+  s.addText('8', { x: 12.2, y: 6.95, w: 0.5, h: 0.3, fontFace: 'Calibri', fontSize: 12, color: MUTED, align: 'right', margin: 0, isTextBox: true });
   s.addNotes('Bases of 2 Oct 2026 in the data repo: 2004__5in3b__unset__v1-naked-horizontal, ...cork__v1-cork-horizontal, ...rubber__v1-rubber, ...felt__v1-felt, ...felt-rubber__v1-felt-rubber. Each capture is the PWM 2000 step; level per microphone is the total level 100 Hz to 10 kHz in dB SPL, read with the corrected microphone files (all after 16 Sep). The polar is mirrored to 360 degrees. Mean over the eleven positions: naked 74.2, cork 78.7, rubber 80.6, felt 79.5, felt plus rubber 78.7 dB. At -90 degrees (the outflow) all five are 93.7 to 98.3 dB. The slide shows levels as measured; operating points (voltage, thrust) were not compared here.');
 }
 
