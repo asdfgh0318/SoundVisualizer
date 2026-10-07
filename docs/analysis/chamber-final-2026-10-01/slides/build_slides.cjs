@@ -200,29 +200,34 @@ if (process.env.WRAP_SLIDE) {
 {
   const s = pres.addSlide();
   s.background = { color: 'FFFFFF' };
-  s.addImage({ path: 'polar-materials.png', x: 0.45, y: 0.45, w: 6.37, h: 6.35, altText: 'Polar plot of five material set-ups at 2000 microseconds: naked, cork, rubber, felt and felt with rubber' });
-  s.addText('THE MATERIALS', { x: 7.6, y: 0.7, w: 5.2, h: 0.35, fontFace: 'Calibri', fontSize: 14, bold: true, color: BLUE, charSpacing: 3, margin: 0, isTextBox: true });
-  s.addText('Material measurements at 2000 µs', { x: 7.6, y: 1.05, w: 5.2, h: 1.3, fontFace: 'Cambria', fontSize: 30, bold: true, color: INK, margin: 0, valign: 'top', isTextBox: true });
+  s.addImage({ path: 'polar-materials.png', x: 0.45, y: 0.45, w: 6.37, h: 6.35, altText: 'Polar plot of ten material set-ups at 2000 microseconds, total level 500 Hz to 24 kHz: bare, cork, rubber, felt, felt with rubber, felt with PU foam, PU foam, double PU foam, 4 and 8 layers of Thinsulate' });
+  s.addText('THE MATERIALS', { x: 7.2, y: 0.4, w: 5.6, h: 0.35, fontFace: 'Calibri', fontSize: 14, bold: true, color: BLUE, charSpacing: 3, margin: 0, isTextBox: true });
+  s.addText('Materials at 2000 µs', { x: 7.2, y: 0.72, w: 5.6, h: 0.9, fontFace: 'Cambria', fontSize: 30, bold: true, color: INK, margin: 0, valign: 'top', isTextBox: true });
   const items = [
-    ['Bare', 74.2, '1F2A44'],
-    ['Felt + rubber', 78.7, '7048E8'],
-    ['Cork', 78.7, '2F9E44'],
-    ['Felt', 79.5, '1098AD'],
-    ['Rubber', 80.6, 'F08C00'],
+    ['Bare', 74.2, '1F2A44', '2 Oct', 0.0],
+    ['PU foam', 77.6, '862E9C', '7 Oct', 3.4],
+    ['Felt + rubber', 78.2, '7048E8', '2 Oct', 4.1],
+    ['PU foam, double layer', 78.2, '5C940D', '7 Oct', 4.1],
+    ['Cork', 78.6, '2F9E44', '2 Oct', 4.4],
+    ['Inner felt + outer PU foam', 78.8, 'C2255C', '7 Oct', 4.6],
+    ['Thinsulate, 8 layers', 79.2, '1864AB', '7 Oct', 5.0],
+    ['Felt', 79.3, '1098AD', '2 Oct', 5.2],
+    ['Thinsulate, 4 layers', 79.4, 'E03131', '7 Oct', 5.2],
+    ['Rubber', 80.3, 'F08C00', '2 Oct', 6.2],
   ];
-  s.addText('Mean level over the eleven microphones', { x: 7.6, y: 2.55, w: 5.2, h: 0.3, fontFace: 'Calibri', fontSize: 12, color: MUTED, margin: 0, isTextBox: true });
-  items.forEach(([name, mean, col], i) => {
-    const y = 2.9 + i * 0.46;
-    s.addShape(pres.shapes.OVAL, { x: 7.6, y: y + 0.07, w: 0.26, h: 0.26, fill: { color: col }, line: { color: col, width: 0 } });
-    s.addText(name, { x: 8.05, y, w: 2.6, h: 0.4, fontFace: 'Calibri', fontSize: 18, bold: true, color: INK, margin: 0, valign: 'middle', isTextBox: true });
-    s.addText(mean.toFixed(1) + ' dB', { x: 10.6, y, w: 2.2, h: 0.4, fontFace: 'Calibri', fontSize: 18, color: INK, align: 'right', margin: 0, valign: 'middle', isTextBox: true });
+  s.addText('Mean level, eleven microphones. Solid: 2 Oct. Dashed: 7 Oct.', { x: 7.2, y: 1.65, w: 5.6, h: 0.3, fontFace: 'Calibri', fontSize: 12, color: MUTED, margin: 0, isTextBox: true });
+  items.forEach(([name, mean, col, day, delta], i) => {
+    const y = 2.05 + i * 0.37;
+    s.addShape(pres.shapes.OVAL, { x: 7.2, y: y + 0.07, w: 0.2, h: 0.2, fill: { color: col }, line: { color: col, width: 0 } });
+    s.addText(name, { x: 7.5, y, w: 3.0, h: 0.34, fontFace: 'Calibri', fontSize: 14, bold: true, color: INK, margin: 0, valign: 'middle', isTextBox: true });
+    s.addText(day, { x: 10.55, y, w: 0.7, h: 0.34, fontFace: 'Calibri', fontSize: 12, color: MUTED, margin: 0, valign: 'middle', isTextBox: true });
+    s.addText(mean.toFixed(1) + ' dB', { x: 11.2, y, w: 1.6, h: 0.34, fontFace: 'Calibri', fontSize: 14, color: INK, align: 'right', margin: 0, valign: 'middle', isTextBox: true });
   });
-  s.addText('+4.5 to +6.4 dB', { x: 7.6, y: 5.3, w: 5.2, h: 0.8, fontFace: 'Cambria', fontSize: 40, bold: true, color: RED, margin: 0, isTextBox: true });
-  s.addText('louder than bare, on average', { x: 7.6, y: 6.08, w: 5.2, h: 0.35, fontFace: 'Calibri', fontSize: 14, color: INK, margin: 0, isTextBox: true });
-  s.addText('At −90°, in the outflow (off the plot), all five meet at 94–98 dB.', { x: 7.6, y: 6.45, w: 5.2, h: 0.3, fontFace: 'Calibri', fontSize: 12, color: MUTED, margin: 0, isTextBox: true });
-  s.addText('2 Oct 2026, 5-inch 3-blade propeller, total level 100 Hz–10 kHz, motor at 2000 µs, corrected microphone files. Radial axis 65–90 dB.', { x: 0.6, y: 6.95, w: 11.3, h: 0.3, fontFace: 'Calibri', fontSize: 11, color: MUTED, margin: 0, isTextBox: true });
+  s.addText('+3.4 to +6.2 dB', { x: 7.2, y: 5.85, w: 5.6, h: 0.7, fontFace: 'Cambria', fontSize: 36, bold: true, color: RED, margin: 0, isTextBox: true });
+  s.addText('louder than bare, on average (bare measured 2 Oct)', { x: 7.2, y: 6.5, w: 5.6, h: 0.3, fontFace: 'Calibri', fontSize: 13, color: INK, margin: 0, isTextBox: true });
+  s.addText('2 and 7 Oct 2026, 5-inch 3-blade propeller, total level 500 Hz–24 kHz, motor at 2000 µs, corrected microphone files. Radial axis 68–89 dB.', { x: 0.6, y: 6.95, w: 11.3, h: 0.3, fontFace: 'Calibri', fontSize: 11, color: MUTED, margin: 0, isTextBox: true });
   s.addText('8', { x: 12.2, y: 6.95, w: 0.5, h: 0.3, fontFace: 'Calibri', fontSize: 12, color: MUTED, align: 'right', margin: 0, isTextBox: true });
-  s.addNotes('Bases of 2 Oct 2026 in the data repo: 2004__5in3b__unset__v1-naked-horizontal, ...cork__v1-cork-horizontal, ...rubber__v1-rubber, ...felt__v1-felt, ...felt-rubber__v1-felt-rubber. Each capture is the PWM 2000 step; level per microphone is the total level 100 Hz to 10 kHz in dB SPL, read with the corrected microphone files (all after 16 Sep). The polar is mirrored to 360 degrees. Mean over the eleven positions: naked 74.2, cork 78.7, rubber 80.6, felt 79.5, felt plus rubber 78.7 dB. At -90 degrees (the outflow) all five are 93.7 to 98.3 dB. The slide shows levels as measured; operating points (voltage, thrust) were not compared here.');
+  s.addNotes('Bases in the data repo. 2 Oct 2026: 2004__5in3b__unset__v1-naked-horizontal (bare), ...cork__v1-cork-horizontal, ...rubber__v1-rubber, ...felt__v1-felt, ...felt-rubber__v1-felt-rubber. 7 Oct 2026 (axii__5in3b__...): inner-felt-outer-open-pore-pu-foam, open-pore-pu-foam, open-pore-pu-foam-double-layer, thinsulate-4-layers, thinsulate-8-layers. Each capture is the PWM 2000 step; level per microphone is the total level 500 Hz to 24 kHz in dB SPL (was 100 Hz to 10 kHz on the earlier version of this slide), read with the corrected microphone files (all after 16 Sep). The polar is mirrored to 360 degrees. Mean over the eleven positions. The bare reference is from 2 Oct, so the 7 Oct materials are compared across days: the differences from bare are indicative, not a controlled comparison. The earlier 100 Hz-10 kHz version had a strong lobe at -90 degrees (94-98 dB); with the band from 500 Hz it is 78-87 dB and fits on the plot. Operating points (voltage, thrust) were not compared here.');
 }
 
 pres.writeFile({ fileName: 'chamber-slides-final.pptx' }).then(() => console.log('written'));
