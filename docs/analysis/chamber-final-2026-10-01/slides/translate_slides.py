@@ -97,7 +97,7 @@ def tr(part):
     part = re.sub(r"s\.addNotes\('((?:[^'\\]|\\.)+)'\)", notes, part)
     return part
 out = tr(head) + mid + tr(tail)
-for a, b in (("'polar-both.png'", "'polar-both-pl.png'"), ("'fig-mic-slide.png'", "'fig-mic-slide-pl.png'"), ("'fig-wf-slide.png'", "'fig-wf-slide-pl.png'"), ("'polar-materials.png'", "'polar-materials-pl.png'"), ("'materials.json'", "'materials-pl.json'"), ("chamber-slides.pptx", "chamber-slides-pl.pptx")):
+for a, b in (("'polar-both.png'", "'polar-both-pl.png'"), ("'fig-mic-slide.png'", "'fig-mic-slide-pl.png'"), ("'fig-wf-slide.png'", "'fig-wf-slide-pl.png'"), ("'polar-materials.png'", "'polar-materials-pl.png'"), ("'materials.json'", "'materials-pl.json'"), ("chamber-slides-final.pptx", "chamber-slides-final-pl.pptx")):
     out = out.replace(a, b)
 # decimal commas in numbers built in code
 out = out.replace("r.gdev.toFixed(2)", "r.gdev.toFixed(2).replace('.', ',')").replace("r.xdev.toFixed(2)", "r.xdev.toFixed(2).replace('.', ',')").replace("r.limit.toFixed(1)", "r.limit.toFixed(1).replace('.', ',')").replace("mean.toFixed(1)", "mean.toFixed(1).replace('.', ',')")

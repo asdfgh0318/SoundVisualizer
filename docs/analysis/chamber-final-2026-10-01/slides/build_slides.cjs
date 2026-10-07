@@ -225,4 +225,4 @@ if (process.env.WRAP_SLIDE) {
   s.addNotes('Bases of 2 Oct 2026 in the data repo: 2004__5in3b__unset__v1-naked-horizontal, ...cork__v1-cork-horizontal, ...rubber__v1-rubber, ...felt__v1-felt, ...felt-rubber__v1-felt-rubber. Each capture is the PWM 2000 step; level per microphone is the total level 100 Hz to 10 kHz in dB SPL, read with the corrected microphone files (all after 16 Sep). The polar is mirrored to 360 degrees. Mean over the eleven positions: naked 74.2, cork 78.7, rubber 80.6, felt 79.5, felt plus rubber 78.7 dB. At -90 degrees (the outflow) all five are 93.7 to 98.3 dB. The slide shows levels as measured; operating points (voltage, thrust) were not compared here.');
 }
 
-pres.writeFile({ fileName: 'chamber-slides.pptx' }).then(() => console.log('written'));
+pres.writeFile({ fileName: 'chamber-slides-final.pptx' }).then(() => console.log('written'));

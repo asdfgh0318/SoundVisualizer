@@ -225,4 +225,4 @@ if (process.env.WRAP_SLIDE) {
   s.addNotes('Zestawy pomiarowe z 2 października 2026 w repozytorium danych: 2004__5in3b__unset__v1-naked-horizontal, ...cork__v1-cork-horizontal, ...rubber__v1-rubber, ...felt__v1-felt, ...felt-rubber__v1-felt-rubber. Każdy zapis to krok PWM 2000; poziom na mikrofon to poziom całkowity 100 Hz–10 kHz w dB SPL, odczytany z poprawionymi plikami mikrofonów (wszystkie po 16 września). Wykres jest odbity do 360 stopni. Średnia z jedenastu pozycji: bez materiału 74,2, korek 78,7, guma 80,6, filc 79,5, filc z gumą 78,7 dB. Przy −90 stopni (strumień wylotowy) wszystkie pięć mieści się w 93,7–98,3 dB. Slajd pokazuje poziomy tak, jak zmierzono; punktów pracy (napięcie, ciąg) tu nie porównywano.');
 }
 
-pres.writeFile({ fileName: 'chamber-slides-pl.pptx' }).then(() => console.log('written'));
+pres.writeFile({ fileName: 'chamber-slides-final-pl.pptx' }).then(() => console.log('written'));
