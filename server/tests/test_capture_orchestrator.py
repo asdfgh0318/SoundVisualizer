@@ -4,6 +4,7 @@ The orchestrator is glue code; we exercise its state machine, error handling,
 and persistence rather than the actual capture/PWM control."""
 
 import asyncio
+import time
 from typing import Any
 
 import numpy as np
@@ -18,6 +19,7 @@ from server.api.schemas import (
 )
 from server.core.calibration_override import apply_calibration_config
 from server.core.capture_orchestrator import (
+    REPEAT_IDLE_PWM_US,
     CaptureOrchestrator,
     CaptureRunRequest,
     MicSpecRun,
@@ -69,11 +71,13 @@ class FakeService:
         self.connected = True
         self.link_error: str | None = None
         self.zero_calls: list[int] = []  # records PWM at the moment zero() is called
+        self.pwm_log: list[tuple[float, int]] = []
 
     def set_pwm(self, pwm_us: int) -> None:
         if self.watchdog.tripped:
             raise RuntimeError(f"watchdog tripped on {self.watchdog.tripped}")
         self.stand.mot_pwm = pwm_us
+        self.pwm_log.append((time.monotonic(), pwm_us))
 
     def zero(self, n: int = 30) -> TareOffsets:
         if self.stand.mot_pwm != 1000:
@@ -235,3 +239,102 @@ async def test_tare_runs_once_before_motor_spin(fake_capture, request_body):
     assert len(svc.zero_calls) == 1
     # FakeService.zero raises unless PWM=1000 — so 1000 in the call log proves idle.
     assert svc.zero_calls[0] == 1000
+
+
+def _stored(slug: str):
+    from server.store import measurements as meas_store
+    return meas_store.list_measurements(slug)
+
+
+async def test_single_pass_default_writes_repeat_one(fake_capture, request_body):
+    assert request_body.repeats == 1
+    orch = CaptureOrchestrator(settle_before_tare_s=0.0)
+    svc = FakeService()
+    await orch.start_run(svc, request_body)
+    await _wait_until_done(orch)
+
+    final = orch.get_status()
+    assert final.state == "completed"
+    assert final.total_repeats == 1
+    assert len(final.measurement_ids) == 6
+    assert {m.repeat for m in _stored(final.key_slug)} == {1}
+    assert [p for _, p in svc.pwm_log] == [1100, 1200]
+
+
+async def test_repeats_run_the_ramp_n_times_with_idle_gap(fake_capture, request_body):
+    request_body.repeats = 3
+    request_body.repeat_gap_seconds = 0.05
+    orch = CaptureOrchestrator(settle_before_tare_s=0.0)
+    svc = FakeService()
+    await orch.start_run(svc, request_body)
+    await _wait_until_done(orch)
+
+    final = orch.get_status()
+    assert final.state == "completed"
+    assert final.current_repeat == 3 and final.total_repeats == 3
+    assert len(final.measurement_ids) == 18
+    assert len(set(final.measurement_ids)) == 18
+
+    stored = _stored(final.key_slug)
+    for r in (1, 2, 3):
+        assert sum(m.repeat == r for m in stored) == 6
+
+    idle = REPEAT_IDLE_PWM_US
+    assert [p for _, p in svc.pwm_log] == [1100, 1200, idle, 1100, 1200, idle, 1100, 1200]
+    for gap_i in (2, 5):
+        t_idle, _ = svc.pwm_log[gap_i]
+        t_next, _ = svc.pwm_log[gap_i + 1]
+        assert t_next - t_idle >= 0.05
+    assert len(svc.zero_calls) == 1
+    assert svc.stand.mot_pwm == 1000
+
+
+async def test_abort_during_repeat_gap(fake_capture, request_body):
+    request_body.repeats = 3
+    request_body.repeat_gap_seconds = 30.0
+    orch = CaptureOrchestrator(settle_before_tare_s=0.0)
+    svc = FakeService()
+    await orch.start_run(svc, request_body)
+    for _ in range(200):
+        if orch.get_status().phase == CaptureRunPhase.REPEAT_GAP:
+            break
+        await asyncio.sleep(0.01)
+    assert orch.get_status().phase == CaptureRunPhase.REPEAT_GAP
+    assert svc.stand.mot_pwm == REPEAT_IDLE_PWM_US
+
+    t0 = time.monotonic()
+    await orch.abort()
+    assert time.monotonic() - t0 < 1.0
+    final = orch.get_status()
+    assert final.state == "aborted"
+    assert svc.stand.mot_pwm == 1000
+    assert {m.repeat for m in _stored(final.key_slug)} == {1}
+
+
+async def test_cutoff_trip_during_gap_fails_run(fake_capture, request_body):
+    request_body.repeats = 2
+    request_body.repeat_gap_seconds = 0.3
+    orch = CaptureOrchestrator(settle_before_tare_s=0.0)
+    svc = FakeService()
+    await orch.start_run(svc, request_body)
+    for _ in range(200):
+        if orch.get_status().phase == CaptureRunPhase.REPEAT_GAP:
+            break
+        await asyncio.sleep(0.01)
+    svc.watchdog.tripped = "current"
+    svc.stand.mot_pwm = 1000
+    await _wait_until_done(orch)
+
+    final = orch.get_status()
+    assert final.state == "failed"
+    assert "tripped" in (final.error or "")
+    assert {m.repeat for m in _stored(final.key_slug)} == {1}
+
+
+def test_old_meta_without_repeat_reads_as_one():
+    from server.api.schemas import AcousticMeasurementMeta
+    m = AcousticMeasurementMeta.model_validate({
+        "t_start": "2026-09-02T10:00:00Z", "t_end": "2026-09-02T10:00:02Z",
+        "mic_serial": "x", "elevation_deg": 0.0, "half": "full",
+    })
+    assert m.repeat == 1

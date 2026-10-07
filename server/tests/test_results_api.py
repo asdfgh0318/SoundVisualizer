@@ -37,7 +37,7 @@ def _make_key():
 
 def _write_acoustic(
     slug: str, t_start, mic: str, elev: float, half: MeasurementHalf, pwm: int,
-    cal_id: str | None = None,
+    cal_id: str | None = None, repeat: int = 1,
 ):
     sr = 48000
     t = np.arange(8192) / sr
@@ -51,17 +51,22 @@ def _write_acoustic(
         half=half,
         sample_rate=sr,
         calibration_file_id=cal_id,
+        repeat=repeat,
     )
     saved = measurements.create_measurement(slug, meta)
     write_wav_float32(measurement_dir(slug, saved.id) / "audio.wav", audio, sr)
     return saved
 
 
-def _write_performance(slug: str, t_start, pwm: int, *, thrust: float = 5.1, current: float = 4.0, rpm: float = 12000):
+def _write_performance(
+    slug: str, t_start, pwm: int, *, thrust: float = 5.1, current: float = 4.0, rpm: float = 12000,
+    repeat: int = 1,
+):
     meta = PerformanceMeasurementMeta(
         t_start=t_start,
         t_end=t_start + timedelta(seconds=1),
         pwm_setpoint=pwm,
+        repeat=repeat,
     )
     csv = (
         b"t_offset_s,thrust_n,torque_nm,current_a,voltage_v,rpm,"
@@ -272,3 +277,25 @@ def test_pwm_points_flags_off_speed_capture(client):
     assert len(caps) == 3
     flags = {round(u["bpf_hz"]): u["off_speed"] for u in caps}
     assert flags == {238: False, 239: False, 164: True}
+
+
+def test_pwm_points_carry_repeat_index(client):
+    """Three passes of one ramp merge into one point; each capture and mic keeps its
+    repeat, and the merged (deduped) list is repeat 1 — what the Polar tab showed before."""
+    k = _make_key()
+    t0 = datetime.now(UTC)
+    for r in (1, 2, 3):
+        t = t0 + timedelta(seconds=20 * r)
+        _write_performance(k.slug, t, 1800, repeat=r)
+        _write_acoustic(k.slug, t, "8100001", 0.0, MeasurementHalf.FULL, 1800, repeat=r)
+        _write_acoustic(k.slug, t, "8100002", 45.0, MeasurementHalf.FULL, 1800, repeat=r)
+
+    points = client.get(f"/keys/{k.slug}/pwm_points").json()
+    assert len(points) == 1
+    p = points[0]
+    assert [u["repeat"] for u in p["underlying"]] == [1, 2, 3]
+    assert all(a["repeat"] == u["repeat"] for u in p["underlying"] for a in u["acoustic"])
+    assert {a["repeat"] for a in p["acoustic"]} == {1}
+
+    listed = client.get(f"/keys/{k.slug}/measurements").json()
+    assert sorted({m["repeat"] for m in listed}) == [1, 2, 3]

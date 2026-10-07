@@ -77,6 +77,8 @@ export function CapturePage() {
     stabilize_window: form.stabilize_window,
     stabilize_tolerance: form.stabilize_tolerance,
     stabilize_timeout_seconds: form.stabilize_timeout_seconds,
+    repeats: form.repeats,
+    repeat_gap_seconds: form.repeat_gap_seconds,
     trigger: form.trigger,
     research_tree_node_id: form.research_tree_node_id,
   });

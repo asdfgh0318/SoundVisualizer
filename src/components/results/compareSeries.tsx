@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from 'react';
 import { api } from '../../api/client';
-import type { AcousticInPoint, Key, MergedPWMPoint } from '../../api/types';
+import type { AcousticInPoint, Key, MergedPWMPoint, UnderlyingCapture } from '../../api/types';
 import { BASE_HELP } from '../../content/parameterHelp';
 import { InfoToggle } from '../ui/InfoToggle';
 import { keyLabel, seriesLabel } from './keyLabel';
@@ -16,6 +16,8 @@ export interface CompareSeries {
   pointId: string;
   pwm_us: number;
   acoustic: AcousticInPoint[];
+  /** Per-capture mic lists; carries the repeat index for the Polar tab's repeat view. */
+  underlying: UnderlyingCapture[];
   label: string;
   color: string;
 }
@@ -56,6 +58,7 @@ export function useCompareSeries(keySlug: string, point: MergedPWMPoint | null):
       pointId: point.id,
       pwm_us: point.pwm_us,
       acoustic: point.acoustic,
+      underlying: point.underlying,
       label: `${labelForKey(keySlug)} · ${point.pwm_us}µs`,
       color: SERIES_PALETTE[0],
     };
@@ -111,6 +114,7 @@ export function SeriesPicker({
       pointId: p.id,
       pwm_us: p.pwm_us,
       acoustic: p.acoustic,
+      underlying: p.underlying,
       label: `${labelForKey(selKey)} · ${p.pwm_us}µs`,
       color: '',
     });

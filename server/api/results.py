@@ -171,11 +171,13 @@ class AcousticInPoint(BaseModel):
     elevation_deg: float
     half: MeasurementHalf
     calibration_file_id: str | None
+    repeat: int = 1
 
 
 class UnderlyingCapture(BaseModel):
     t_start: str
     half: MeasurementHalf
+    repeat: int = 1
     performance_id: str | None
     acoustic: list[AcousticInPoint]
     performance_summary: PerformanceSummary | None
@@ -212,6 +214,7 @@ def list_pwm_points(slug: str) -> list[MergedPWMPoint]:
                 "acoustic": [],
                 "half": None,
                 "pwm_us": None,
+                "repeat": m.repeat,
             },
         )
         if isinstance(m, PerformanceMeasurementMeta):
@@ -227,6 +230,7 @@ def list_pwm_points(slug: str) -> list[MergedPWMPoint]:
                     elevation_deg=m.elevation_deg,
                     half=m.half,
                     calibration_file_id=m.calibration_file_id,
+                    repeat=m.repeat,
                 )
             )
             if bucket["half"] is None:
@@ -287,6 +291,7 @@ def list_pwm_points(slug: str) -> list[MergedPWMPoint]:
                     UnderlyingCapture(
                         t_start=c["t_start"].isoformat(),
                         half=half,
+                        repeat=c["repeat"],
                         performance_id=c["performance_id"],
                         acoustic=c["acoustic"],
                         performance_summary=perfs[idx],

@@ -13,6 +13,8 @@ export interface PolarPoint {
 export interface PolarSeries {
   label: string;
   color: string;
+  /** Line style; repeats of one capture share a colour and differ by dash. */
+  dash?: 'solid' | 'dash' | 'dashdot';
   points: PolarPoint[]; // sorted by elevation descending (+90 → -90)
 }
 
@@ -58,7 +60,7 @@ export function PolarPolarPlot({ series, rangeMode, unit, resetKey = 0 }: Props)
       const base = {
         type: 'scatterpolar' as const,
         mode: 'lines+markers' as const,
-        line: { color: s.color, width: 2 },
+        line: { color: s.color, width: 2, dash: s.dash ?? 'solid' },
         marker: { color: s.color, size: 7 },
         hovertemplate: hoverTemplate(unit),
         name: s.label,

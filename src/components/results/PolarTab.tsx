@@ -1,6 +1,8 @@
 import { useEffect, useMemo, useState } from 'react';
 import { api } from '../../api/client';
-import type { FFTResponse } from '../../api/types';
+import type { AcousticInPoint, FFTResponse } from '../../api/types';
+import { REPEATS_HELP } from '../../content/parameterHelp';
+import { InfoToggle } from '../ui/InfoToggle';
 import { type LevelSource, levelForSource } from './levelSource';
 import { LevelSourceSelector } from './LevelSourceSelector';
 import { type CompareSeries, type CompareSeriesApi, SeriesPicker } from './compareSeries';
@@ -16,6 +18,22 @@ interface Props {
 }
 
 const FFT_SETTINGS = { window: 'hann' as const, size: 4096, overlap: 0.5 };
+const REPEAT_DASH = ['solid', 'dash', 'dashdot'] as const;
+
+/** Mic list of each repeat in a series, one mic per elevation (first capture wins,
+ *  as in the server's merged list). Old data without a repeat field is repeat 1. */
+function micsByRepeat(s: CompareSeries): Map<number, AcousticInPoint[]> {
+  const out = new Map<number, AcousticInPoint[]>();
+  for (const u of s.underlying ?? []) {
+    for (const a of u.acoustic) {
+      const r = a.repeat ?? u.repeat ?? 1;
+      const list = out.get(r) ?? [];
+      if (!list.some((x) => x.elevation_deg === a.elevation_deg)) list.push(a);
+      out.set(r, list);
+    }
+  }
+  return new Map([...out.entries()].sort(([a], [b]) => a - b));
+}
 
 export function PolarTab({ compare }: Props) {
   const { series, keys, labelForKey, addSeries, removeSeries } = compare;
@@ -25,12 +43,28 @@ export function PolarTab({ compare }: Props) {
   const [band, setBand] = useState<FreqBand>(DEFAULT_BAND);
   const [source, setSource] = useState<LevelSource>({ kind: 'band' });
   const [rangeMode, setRangeMode] = useState<180 | 360>(180);
+  const [showRepeats, setShowRepeats] = useState(false);
 
-  // Fetch FFTs for every mic across every series (cache-keyed by measurement id).
-  const allAcoustic = useMemo(
-    () => series.flatMap((s) => s.acoustic.map((a) => ({ keySlug: s.keySlug, id: a.id }))),
+  const repeatsBySeries = useMemo(
+    () => new Map(series.map((s) => [s.id, micsByRepeat(s)])),
     [series],
   );
+  const anyRepeats = [...repeatsBySeries.values()].some((m) => m.size > 1);
+
+  // Fetch FFTs for every mic of every repeat across every series (cache-keyed by measurement id).
+  const allAcoustic = useMemo(() => {
+    const seen = new Set<string>();
+    const out: { keySlug: string; id: string }[] = [];
+    for (const s of series) {
+      const repeatMics = [...(repeatsBySeries.get(s.id)?.values() ?? [])].flat();
+      for (const a of [...s.acoustic, ...repeatMics]) {
+        if (seen.has(a.id)) continue;
+        seen.add(a.id);
+        out.push({ keySlug: s.keySlug, id: a.id });
+      }
+    }
+    return out;
+  }, [series, repeatsBySeries]);
   const allIdsKey = allAcoustic.map((a) => a.id).join(',');
 
   useEffect(() => {
@@ -57,19 +91,50 @@ export function PolarTab({ compare }: Props) {
   }, [allIdsKey]);
 
   const polarSeries = useMemo<PolarSeries[]>(() => {
-    return series.map((s: CompareSeries): PolarSeries => ({
-      label: s.label,
-      color: s.color,
-      points: s.acoustic
-        .map((a): PolarPoint => {
-          const fft = ffts[a.id];
-          const spl = fft ? levelForSource(fft, source, band) : Number.NaN;
-          return { elevation_deg: a.elevation_deg, spl_db: spl, mic_serial: a.mic_serial };
-        })
+    const level = (a: AcousticInPoint): number => {
+      const fft = ffts[a.id];
+      return fft ? levelForSource(fft, source, band) : Number.NaN;
+    };
+    const toPoints = (mics: AcousticInPoint[]): PolarPoint[] =>
+      mics
+        .map((a): PolarPoint => ({ elevation_deg: a.elevation_deg, spl_db: level(a), mic_serial: a.mic_serial }))
         .filter((p) => Number.isFinite(p.spl_db))
-        .sort((a, b) => b.elevation_deg - a.elevation_deg),
-    }));
-  }, [series, ffts, band, source]);
+        .sort((a, b) => b.elevation_deg - a.elevation_deg);
+
+    return series.flatMap((s: CompareSeries): PolarSeries[] => {
+      const byRepeat = repeatsBySeries.get(s.id) ?? new Map<number, AcousticInPoint[]>();
+      if (byRepeat.size <= 1) {
+        return [{ label: s.label, color: s.color, points: toPoints(s.acoustic) }];
+      }
+      if (showRepeats) {
+        return [...byRepeat.entries()].map(([r, mics]) => ({
+          label: `${s.label} · repeat ${r}`,
+          color: s.color,
+          dash: REPEAT_DASH[(r - 1) % REPEAT_DASH.length],
+          points: toPoints(mics),
+        }));
+      }
+      // Off: per elevation, the mean dB level over the repeats that have that mic.
+      const byElev = new Map<number, { serial: string; levels: number[] }>();
+      for (const mics of byRepeat.values()) {
+        for (const a of mics) {
+          const l = level(a);
+          if (!Number.isFinite(l)) continue;
+          const e = byElev.get(a.elevation_deg) ?? { serial: a.mic_serial, levels: [] };
+          e.levels.push(l);
+          byElev.set(a.elevation_deg, e);
+        }
+      }
+      const points = [...byElev.entries()]
+        .map(([elev, e]): PolarPoint => ({
+          elevation_deg: elev,
+          spl_db: e.levels.reduce((x, y) => x + y, 0) / e.levels.length,
+          mic_serial: e.serial,
+        }))
+        .sort((a, b) => b.elevation_deg - a.elevation_deg);
+      return [{ label: `${s.label} · mean of ${byRepeat.size} repeats`, color: s.color, points }];
+    });
+  }, [series, repeatsBySeries, showRepeats, ffts, band, source]);
 
   const allAbsolute =
     allAcoustic.length > 0 && allAcoustic.every((a) => ffts[a.id]?.absolute_spl);
@@ -105,7 +170,22 @@ export function PolarTab({ compare }: Props) {
           {' · '}
           <span className={allAbsolute ? 'text-emerald-400' : 'text-gray-400'}>{unit}</span>
         </div>
-        <RangeModeToggle value={rangeMode} onChange={setRangeMode} />
+        <div className="flex items-center gap-3">
+          <label
+            className={`inline-flex items-center gap-1.5 text-xs ${anyRepeats ? 'text-gray-300' : 'text-gray-500'}`}
+            title={anyRepeats ? undefined : 'None of these captures has more than one repeat'}
+          >
+            <input
+              type="checkbox"
+              checked={showRepeats}
+              disabled={!anyRepeats}
+              onChange={(e) => setShowRepeats(e.target.checked)}
+            />
+            Show all repeats
+            <InfoToggle label="repeats">{REPEATS_HELP}</InfoToggle>
+          </label>
+          <RangeModeToggle value={rangeMode} onChange={setRangeMode} />
+        </div>
       </div>
 
       {mixedAbsolute && (

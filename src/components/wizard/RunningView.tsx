@@ -14,6 +14,7 @@ const PHASE_LABELS: Record<string, string> = {
   stabilizing: 'Waiting for RPM to stabilize',
   recording: 'Recording audio',
   writing: 'Writing measurements',
+  repeat_gap: 'Spooling down at 1200 µs before the next repeat',
   spooling_down: 'Spooling motor down',
   completed: 'Completed',
   failed: 'Failed',
@@ -22,9 +23,13 @@ const PHASE_LABELS: Record<string, string> = {
 };
 
 export function RunningView({ status, onAbort }: Props) {
+  const repeats = status?.total_repeats ?? 1;
+  const repeatLabel = repeats > 1 ? `Repeat ${status?.current_repeat || 1} of ${repeats} · ` : '';
   const stepLabel = status
     ? status.total_steps > 0
-      ? `Step ${status.current_step} of ${status.total_steps}`
+      ? status.phase === 'repeat_gap'
+        ? `${repeatLabel}spool-down`
+        : `${repeatLabel}Step ${status.current_step} of ${status.total_steps}`
       : 'Initializing'
     : 'Connecting…';
   const pwmLabel = status?.current_pwm_us ? `ESC ${status.current_pwm_us} µs` : '';
@@ -51,10 +56,7 @@ export function RunningView({ status, onAbort }: Props) {
               <div
                 className="h-full bg-indigo-500 transition-all"
                 style={{
-                  width: `${
-                    Math.min(100, ((status.current_step - 1) / status.total_steps) * 100 +
-                      (phasePct(status.phase) / status.total_steps))
-                  }%`,
+                  width: `${progressPct(status)}%`,
                 }}
               />
             </div>
@@ -68,6 +70,16 @@ export function RunningView({ status, onAbort }: Props) {
       <LiveTelemetry active />
     </div>
   );
+}
+
+function progressPct(status: CaptureRunStatus): number {
+  const repeats = Math.max(1, status.total_repeats ?? 1);
+  const done = Math.max(0, (status.current_repeat || 1) - 1) * status.total_steps;
+  const inPass =
+    status.phase === 'repeat_gap'
+      ? 0
+      : Math.max(0, status.current_step - 1) + phasePct(status.phase) / 100;
+  return Math.min(100, ((done + inPass) / (status.total_steps * repeats)) * 100);
 }
 
 function phasePct(phase: string): number {

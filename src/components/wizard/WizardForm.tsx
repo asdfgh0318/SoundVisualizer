@@ -51,6 +51,31 @@ export function WizardForm() {
           steps={form.pwm_steps}
           onChange={(s) => updateForm({ pwm_steps: s })}
         />
+        <div className="grid grid-cols-2 gap-4 mt-4">
+          <Labeled label="Repeats" info={CAPTURE_HELP.repeats}>
+            <input
+              type="number"
+              min={1}
+              max={20}
+              step={1}
+              className="input w-full"
+              value={form.repeats}
+              onChange={(e) => updateForm({ repeats: Math.max(1, Math.round(Number(e.target.value))) })}
+            />
+          </Labeled>
+          <Labeled label="Spool-down wait (s)" info={CAPTURE_HELP.repeat_gap}>
+            <input
+              type="number"
+              min={0}
+              max={120}
+              step={0.5}
+              className="input w-full"
+              value={form.repeat_gap_seconds}
+              disabled={form.repeats <= 1}
+              onChange={(e) => updateForm({ repeat_gap_seconds: Math.max(0, Number(e.target.value)) })}
+            />
+          </Labeled>
+        </div>
       </Card>
 
       <Card title="Capture settings">

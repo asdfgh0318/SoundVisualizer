@@ -15,6 +15,11 @@ Per PWM step:
   5. Apply trigger sync to mic audios → write per-mic acoustic measurements.
   6. Broadcast status to subscribers after every state change.
 
+With `repeats` > 1 the whole step list runs again: between passes the ESC signal
+drops to REPEAT_IDLE_PWM_US and the orchestrator waits `repeat_gap_seconds` for
+the rotor to spool down before ramping up again. Every measurement records its
+pass in `repeat`. No re-tare between passes (the motor never stops).
+
 After all steps complete, gently ramp PWM back to 1000 µs (10 µs / 100 ms). On
 abort or failure, slam PWM to 1000 immediately.
 
@@ -32,7 +37,7 @@ from datetime import UTC, datetime
 from typing import TYPE_CHECKING, Any
 
 import numpy as np
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 
 from server.api.schemas import (
     AcousticMeasurementMeta,
@@ -59,6 +64,10 @@ if TYPE_CHECKING:
     from server.core.thrust_stand_service import TareOffsets, ThrustStandService
 
 log = logging.getLogger(__name__)
+
+# ESC signal held between repeated ramps: the bottom of the standard ramp, low
+# enough for the rotor to wind down from 2000 µs, without stopping the motor.
+REPEAT_IDLE_PWM_US = 1200
 
 
 def _arc_bpf(audios: list, sample_rate: int) -> float | None:
@@ -115,6 +124,9 @@ class CaptureRunRequest(BaseModel):
     stabilize_tolerance: float = 4.0
     stabilize_timeout_seconds: float = 30.0
     trigger: TriggerSyncRun = TriggerSyncRun()
+    # The step list runs `repeats` times so repeat scatter is measurable; 1 = one pass.
+    repeats: int = Field(default=1, ge=1, le=20)
+    repeat_gap_seconds: float = Field(default=4.0, ge=0.0, le=120.0)
     # Optional duct-research-tree linkage. When set, the orchestrator pushes the
     # SoundVis Results URL back to that node on successful completion.
     research_tree_node_id: str | None = None
@@ -200,6 +212,7 @@ class CaptureOrchestrator:
             phase=CaptureRunPhase.STARTING,
             half=req.half,
             total_steps=len(req.pwm_steps),
+            total_repeats=req.repeats,
         )
         await self._broadcast()
 
@@ -294,32 +307,48 @@ class CaptureOrchestrator:
         # would force a spool-down/spool-up per step — not worth the wear.
         await self._tare_before_spin_up()
 
-        for i, step in enumerate(req.pwm_steps):
-            self._status.current_step = i + 1
-            self._status.current_pwm_us = step.pwm_us
+        for repeat in range(1, req.repeats + 1):
+            self._status.current_repeat = repeat
+            if repeat > 1:
+                await self._repeat_gap(req)
 
-            self._status.phase = CaptureRunPhase.SETTING_PWM
-            await self._broadcast()
-            self._stand_service.set_pwm(step.pwm_us)
+            for i, step in enumerate(req.pwm_steps):
+                self._status.current_step = i + 1
+                self._status.current_pwm_us = step.pwm_us
 
-            self._status.phase = CaptureRunPhase.STABILIZING
-            await self._broadcast()
-            async with asyncio.timeout(req.stabilize_timeout_seconds):
-                await self._stand_service.stand.stabilize_rpm(
-                    req.stabilize_window, req.stabilize_tolerance
-                )
+                self._status.phase = CaptureRunPhase.SETTING_PWM
+                await self._broadcast()
+                self._stand_service.set_pwm(step.pwm_us)
 
-            await self._capture_step(req, key.slug, step)
+                self._status.phase = CaptureRunPhase.STABILIZING
+                await self._broadcast()
+                async with asyncio.timeout(req.stabilize_timeout_seconds):
+                    await self._stand_service.stand.stabilize_rpm(
+                        req.stabilize_window, req.stabilize_tolerance
+                    )
+
+                await self._capture_step(req, key.slug, step, repeat)
 
         self._status.phase = CaptureRunPhase.SPOOLING_DOWN
         await self._broadcast()
         await self._spool_down_gentle()
+
+    async def _repeat_gap(self, req: CaptureRunRequest) -> None:
+        assert self._stand_service is not None
+        self._status.phase = CaptureRunPhase.REPEAT_GAP
+        self._status.current_step = 0
+        self._status.current_pwm_us = REPEAT_IDLE_PWM_US
+        await self._broadcast()
+        # set_pwm refuses after a cutoff trip, which fails the run like any other step.
+        self._stand_service.set_pwm(REPEAT_IDLE_PWM_US)
+        await asyncio.sleep(req.repeat_gap_seconds)
 
     async def _capture_step(
         self,
         req: CaptureRunRequest,
         key_slug: str,
         step: PWMStep,
+        repeat: int = 1,
     ) -> None:
         assert self._stand_service is not None
         stand = self._stand_service.stand
@@ -348,7 +377,7 @@ class CaptureOrchestrator:
         await self._broadcast()
 
         perf_meta = PerformanceMeasurementMeta(
-            t_start=t_start, t_end=t_end, pwm_setpoint=step.pwm_us
+            t_start=t_start, t_end=t_end, pwm_setpoint=step.pwm_us, repeat=repeat
         )
         # Tyto samples are computed values; we need the raw PollResponse list to build the CSV.
         # finish_meas_series returns calibrated ThrustStandMeasurement objects. Use raw window:
@@ -384,6 +413,7 @@ class CaptureOrchestrator:
                 sample_rate=req.sample_rate,
                 calibration_file_id=mic.calibration_file_id,
                 bpf_hz=bpf_hz,
+                repeat=repeat,
             )
             saved = meas_store.create_measurement(key_slug, meta)
             write_wav_float32(

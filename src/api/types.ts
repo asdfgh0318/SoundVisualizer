@@ -18,6 +18,8 @@ export interface AcousticMeasurementMeta {
   t_start: string;
   t_end: string;
   pwm_setpoint: number | null;
+  /** Pass of a repeated ramp (1-based); absent on captures from before repeats existed. */
+  repeat?: number;
   mic_serial: string;
   elevation_deg: number;
   azimuth_deg: number | null;
@@ -32,6 +34,8 @@ export interface PerformanceMeasurementMeta {
   t_start: string;
   t_end: string;
   pwm_setpoint: number | null;
+  /** Pass of a repeated ramp (1-based); absent on captures from before repeats existed. */
+  repeat?: number;
 }
 
 export interface NorsonicMeasurementMeta {
@@ -40,6 +44,8 @@ export interface NorsonicMeasurementMeta {
   t_start: string;
   t_end: string;
   pwm_setpoint: number | null;
+  /** Pass of a repeated ramp (1-based); absent on captures from before repeats existed. */
+  repeat?: number;
 }
 
 export type MeasurementMeta =
@@ -162,6 +168,7 @@ export type CaptureRunPhase =
   | 'stabilizing'
   | 'recording'
   | 'writing'
+  | 'repeat_gap'
   | 'spooling_down'
   | 'completed'
   | 'failed'
@@ -177,6 +184,8 @@ export interface CaptureRunStatus {
   key_slug: string | null;
   current_step: number;
   total_steps: number;
+  current_repeat: number;
+  total_repeats: number;
   current_pwm_us: number | null;
   measurement_ids: string[];
   error: string | null;
@@ -208,6 +217,10 @@ export interface CaptureRunRequest {
   stabilize_tolerance: number;
   stabilize_timeout_seconds: number;
   trigger: CaptureTriggerConfig;
+  /** Run the ESC signal ramp this many times (server default 1). */
+  repeats: number;
+  /** Seconds held at 1200 µs between ramps so the rotor spools down. */
+  repeat_gap_seconds: number;
   /** Optional duct-research-tree linkage: server pushes Results URL back to
    *  this node on successful capture and flips status to 'in-progress'. */
   research_tree_node_id?: string | null;
@@ -293,11 +306,13 @@ export interface AcousticInPoint {
   elevation_deg: number;
   half: MeasurementHalf;
   calibration_file_id: string | null;
+  repeat?: number;
 }
 
 export interface UnderlyingCapture {
   t_start: string;
   half: MeasurementHalf;
+  repeat?: number;
   performance_id: string | null;
   acoustic: AcousticInPoint[];
   performance_summary: PerformanceSummary | null;

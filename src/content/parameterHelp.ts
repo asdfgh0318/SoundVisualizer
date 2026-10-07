@@ -13,6 +13,10 @@ export const CAPTURE_HELP = {
     'Largest RPM spread allowed inside the stabilize window for the speed to count as settled. Smaller is stricter and waits longer.',
   stabilize_timeout:
     'If the speed has not settled within this many seconds the capture stops with an error instead of recording an unsettled step.',
+  repeats:
+    'How many times the whole ramp runs in one capture. Every pass is saved with its repeat number, so the Polar tab can show how far the same point scatters from pass to pass. 3 is the default; 1 runs the ramp once.',
+  repeat_gap:
+    'Between passes the ESC signal drops to 1200 µs and the server waits this long before the next ramp starts, so a rotor coming down from 2000 µs has slowed before the first step settles. The stand is not re-tared between passes.',
   trigger_sync:
     'Aligns the microphone recordings on the first loud onset (block RMS above the threshold in dBFS), so every channel starts at the same instant. A source already running when the recording starts is left untouched; UMIK-2s cannot be clock-locked in hardware.',
 };
@@ -53,6 +57,12 @@ export const BASE_HELP = {
     'never recovered. The flat campaign is recognised from the base notes; the turn was worked out ' +
     'afterwards by the arc-error-map fit, because nobody wrote it down at the time.',
 };
+
+export const REPEATS_HELP =
+  'A capture made with repeats runs its ESC signal ramp several times in a row. ' +
+  'Off: one curve per base, each mic\u2019s level averaged over the repeats (arithmetic mean of the dB values). ' +
+  'On: one curve per repeat in the base\u2019s colour \u2014 repeat 1 solid, 2 dashed, 3 dash-dot \u2014 so the spread between ' +
+  'them is the repeat scatter of the measurement. Captures made before repeats existed have one pass and draw the same either way.';
 
 export const LEVEL_SOURCE_HELP = {
   general:

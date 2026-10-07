@@ -38,6 +38,9 @@ class _BaseMeasurementMeta(BaseModel):
     t_start: datetime
     t_end: datetime
     pwm_setpoint: int | None = None
+    # Which pass of a repeated ramp this belongs to (1-based). Captures from before
+    # repeats existed have no field and read as 1.
+    repeat: int = Field(default=1, ge=1)
 
 
 class AcousticMeasurementMeta(_BaseMeasurementMeta):
@@ -106,6 +109,7 @@ class CaptureRunPhase(StrEnum):
     STABILIZING = "stabilizing"
     RECORDING = "recording"
     WRITING = "writing"
+    REPEAT_GAP = "repeat_gap"
     SPOOLING_DOWN = "spooling_down"
     COMPLETED = "completed"
     FAILED = "failed"
@@ -120,6 +124,8 @@ class CaptureRunStatus(BaseModel):
     key_slug: str | None = None
     current_step: int = 0
     total_steps: int = 0
+    current_repeat: int = 0
+    total_repeats: int = 1
     current_pwm_us: int | None = None
     measurement_ids: list[str] = []
     error: str | None = None

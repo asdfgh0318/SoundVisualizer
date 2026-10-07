@@ -19,6 +19,8 @@ export interface WizardForm {
   stabilize_window: number;
   stabilize_tolerance: number;
   stabilize_timeout_seconds: number;
+  repeats: number;
+  repeat_gap_seconds: number;
   selected_mic_ids: string[];
   capture_mode: CaptureMode;
   /** Optional duct-research-tree node this capture is linked to. When set,
@@ -51,6 +53,8 @@ const defaultForm = (): WizardForm => ({
   stabilize_window: 10,
   stabilize_tolerance: 4.0,
   stabilize_timeout_seconds: 30.0,
+  repeats: 3,
+  repeat_gap_seconds: 4,
   selected_mic_ids: [],
   capture_mode: 'single',
   research_tree_node_id: null,

@@ -22,7 +22,7 @@ export function ReviewSummary({
     (m) => m.serial && m.deviceIndex !== null && form.selected_mic_ids.includes(m.id),
   );
   const totalRecordingS =
-    form.pwm_steps.reduce((sum, s) => sum + s.recording_ms, 0) / 1000;
+    (form.repeats * form.pwm_steps.reduce((sum, s) => sum + s.recording_ms, 0)) / 1000;
 
   return (
     <Card title="Review" description="Confirm before motor spool-up.">
@@ -47,6 +47,11 @@ export function ReviewSummary({
               </li>
             ))}
           </ul>
+          <div className="text-gray-400 text-xs mt-1">
+            {form.repeats > 1
+              ? `× ${form.repeats} repeats, ${form.repeat_gap_seconds} s at 1200 µs between them`
+              : 'single pass'}
+          </div>
         </Section>
         <Section label="Capture">
           <div className="text-gray-300">

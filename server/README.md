@@ -16,7 +16,7 @@ uvicorn server.main:app --reload --port 8000
 # → http://localhost:8000/docs   (OpenAPI / Swagger)
 ```
 
-Tests: `pytest server/tests/` (122 passing). Lint: `ruff check server/ scripts/`.
+Tests: `pytest server/tests/` (128 passing). Lint: `ruff check server/ scripts/`.
 
 ## Layout
 
@@ -56,7 +56,7 @@ server/
     paths.py keys.py measurements.py calibration.py
     setup_presets.py compat_tolerances.py psychoacoustics.py (versioned metrics cache)
   vendor/pawel/      # Vendored — Paweł's Tyto MSP + Norsonic protocol code
-  tests/             # 122 passing tests
+  tests/             # 128 passing tests
 ```
 
 ## Conventions
@@ -85,12 +85,12 @@ GET  /keys/{slug}
 GET  /keys/{slug}/measurements
 POST /keys/{slug}/measurements
 GET  /keys/{slug}/measurements/{id}
-GET  /keys/{slug}/pwm_points                     # underlying[].bpf_hz / off_speed flag (>3 % off the PWM's median BPF)
+GET  /keys/{slug}/pwm_points                     # underlying[].bpf_hz / off_speed flag (>3 % off the PWM's median BPF); underlying[].repeat + acoustic[].repeat
 GET  /keys/{slug}/measurements/{id}/fft          # + bpf_hz, tones[], band_centres_hz, broadband_bands_db (tone/broadband split)
 GET  /keys/{slug}/measurements/{id}/performance_summary
 GET  /keys/{slug}/measurements/{id}/psychoacoustics   # cached, versioned; rel/abs per calibration
 POST /capture/acoustic         (single-shot, no Tyto)
-POST /capture/run              (orchestrated PWM-ramp capture)
+POST /capture/run              (orchestrated PWM-ramp capture; repeats (default 1) + repeat_gap_seconds (default 4) run the ramp N times with a 1200 µs gap; every meta.json gets `repeat`, 1-based; status has current_repeat/total_repeats)
 GET  /capture/run
 DELETE /capture/run            (abort, slams PWM=1000)
 WS   /capture/run/ws           (live capture status stream)
