@@ -182,7 +182,7 @@ if (process.env.WRAP_SLIDE) {
   s.addText('COMPARISON', { x: 7.4, y: 0.9, w: 5.3, h: 0.4, fontFace: 'Calibri', fontSize: 14, bold: true, color: BLUE, charSpacing: 3, margin: 0, isTextBox: true });
   s.addText('31 Aug and 30 Sep on the same axes', { x: 7.4, y: 1.3, w: 5.3, h: 1.3, fontFace: 'Cambria', fontSize: 34, bold: true, color: INK, margin: 0, valign: 'top', isTextBox: true });
   s.addText([
-    { text: 'Red: 31 Aug, factory microphone files, motor supply 7.35 V. Blue: 30 Sep, corrected files, motor supply 11.7 V.', options: { bullet: true, breakLine: true } },
+    { text: 'Red: 31 Aug, factory microphone files, motor supply 7.35 V. Blue: 30 Sep, corrected files, motor supply 11.7 V. Two different propellers.', options: { bullet: true, breakLine: true } },
     { text: 'The propeller was mounted the other way round between the two, so the thrust points the other way. We do not expect this to change the sound.', options: { bullet: true, breakLine: true } },
     { text: 'The 30 Sep outline is smoother.', options: { bullet: true, bold: true } },
   ], { x: 7.4, y: 2.75, w: 5.3, h: 2.6, fontFace: 'Calibri', fontSize: 16, color: INK, margin: 0, valign: 'top', paraSpaceAfter: 10, isTextBox: true });
@@ -190,9 +190,9 @@ if (process.env.WRAP_SLIDE) {
     { text: '6.7', options: { color: RED } }, { text: ' → ', options: { color: MUTED } }, { text: '4.0 dB', options: { color: BLUE } },
   ], { x: 7.4, y: 5.5, w: 5.3, h: 0.8, fontFace: 'Cambria', fontSize: 48, bold: true, margin: 0, isTextBox: true });
   s.addText('between the loudest and quietest microphone', { x: 7.4, y: 6.3, w: 5.3, h: 0.5, fontFace: 'Calibri', fontSize: 14, color: MUTED, margin: 0, isTextBox: true });
-  s.addText('20–560 Hz, motor at 2000 µs. The motor ran on a different supply voltage (7.35 V against 11.7 V), which is why the blue is lower.', { x: 0.6, y: 6.95, w: 12.1, h: 0.3, fontFace: 'Calibri', fontSize: 11, color: MUTED, margin: 0, isTextBox: true });
+  s.addText('20–560 Hz, motor at 2000 µs. Different propellers and run conditions (7.35 V against 11.7 V supply), so the levels are not comparable; compare the shapes.', { x: 0.6, y: 6.95, w: 12.1, h: 0.3, fontFace: 'Calibri', fontSize: 11, color: MUTED, margin: 0, isTextBox: true });
   s.addText(String(7), { x: 12.2, y: 6.95, w: 0.5, h: 0.3, fontFace: 'Calibri', fontSize: 12, color: MUTED, align: 'right', margin: 0, isTextBox: true });
-  s.addNotes('Blue: 30 Sep propeller measurement (11.7 V, 7.3 A, thrust -4 N), read with the 16 Sep microphone corrections. Rms spread about the mean 1.45 dB against 2.05 dB for 31 Aug; range 4.0 dB (55.5 to 59.6 dB SPL) against 6.7 dB. The blue is about 11 dB lower because the motor ran at a different operating point. The 4 dB range of the blue is a bottom-louder trend. Honest caveat: with the same calibration applied to the 1-2 Sep runs, those are about as round as 30 Sep, so most of the improvement against the earlier baselines comes from the microphone calibration, not the room.');
+  s.addNotes('Blue: 30 Sep propeller measurement (11.7 V, 7.3 A, thrust -4 N), read with the 16 Sep microphone corrections. Rms spread about the mean 1.45 dB against 2.05 dB for 31 Aug; range 4.0 dB (55.5 to 59.6 dB SPL) against 6.7 dB. The blue is about 11 dB lower, but this cannot be attributed to the supply voltage (the blue run had the higher voltage): the two runs used different propellers, and the thrust direction was reversed, so the levels are not comparable. The 4 dB range of the blue is a bottom-louder trend. Honest caveat: with the same calibration applied to the 1-2 Sep runs, those are about as round as 30 Sep, so most of the improvement against the earlier baselines comes from the microphone calibration, not the room.');
 }
 
 
