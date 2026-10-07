@@ -215,7 +215,7 @@ if (process.env.WRAP_SLIDE) {
     ['Thinsulate, 4 layers', 79.4, 'E03131', '7 Oct', 5.2],
     ['Rubber', 80.3, 'F08C00', '2 Oct', 6.2],
   ];
-  s.addText('Mean level, eleven microphones. Solid: 2 Oct. Dashed: 7 Oct.', { x: 7.2, y: 1.65, w: 5.6, h: 0.3, fontFace: 'Calibri', fontSize: 12, color: MUTED, margin: 0, isTextBox: true });
+  s.addText('Mean level. Round markers: 2 Oct. Square: 7 Oct.', { x: 7.2, y: 1.65, w: 5.6, h: 0.3, fontFace: 'Calibri', fontSize: 12, color: MUTED, margin: 0, isTextBox: true });
   items.forEach(([name, mean, col, day, delta], i) => {
     const y = 2.05 + i * 0.37;
     s.addShape(pres.shapes.OVAL, { x: 7.2, y: y + 0.07, w: 0.2, h: 0.2, fill: { color: col }, line: { color: col, width: 0 } });

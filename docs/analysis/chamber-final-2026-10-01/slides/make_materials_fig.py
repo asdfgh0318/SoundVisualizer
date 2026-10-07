@@ -17,7 +17,7 @@ allv = np.concatenate([v for _, v, _, _ in data.values()]); rmin = float(np.floo
 fig = plt.figure(figsize=(6.4, 6.4), dpi=220); ax = fig.add_subplot(111, projection='polar')
 for nm, (el, v, col, day) in data.items():
     th = np.radians(np.r_[el, 180 - el[::-1]]); r = np.r_[v, v[::-1]]
-    ax.plot(np.r_[th, th[0]], np.r_[r, r[0]], color=col, lw=2.6 if nm == 'Bare' else 2.0, ls='-' if day == '2 Oct' else '--', marker='o', ms=4, mfc=col, mec='white', mew=.8)
+    ax.plot(np.r_[th, th[0]], np.r_[r, r[0]], color=col, lw=2.6 if nm == 'Bare' else 2.0, ls='-', marker='o' if day == '2 Oct' else 's', ms=4, mfc=col, mec='white', mew=.8)
 ax.set_rlim(rmin, rmax); ticks = [t for t in range(int(rmin), int(rmax) + 1) if t % 5 == 0 and t > rmin]; ax.set_rticks(ticks)
 ax.set_yticklabels([f'{t}' if i < len(ticks) - 1 else f'{t} dB' for i, t in enumerate(ticks)], fontsize=10, color='#555'); ax.set_rlabel_position(25)
 [(t.set_bbox(dict(facecolor='white', edgecolor='none', alpha=.9, pad=1.5)), t.set_zorder(30)) for t in ax.get_yticklabels()]
