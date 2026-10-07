@@ -81,7 +81,7 @@ const INK = '1F2A44', RED = 'D6336C', BLUE = '2B6CB0', MUTED = '5B6578';
   s.addText([
     { text: '4,3', options: { color: RED } }, { text: ' → ', options: { color: MUTED } }, { text: '0,8 dB', options: { color: BLUE } },
   ], { x: 8.95, y: 5.55, w: 3.9, h: 0.7, fontFace: 'Cambria', fontSize: 36, bold: true, margin: 0, isTextBox: true });
-  s.addText('rozstęp średnich poziomów mikrofonów, początek dnia 3 (stan końcowy: 4,1 → 1,0 dB)', { x: 8.95, y: 6.25, w: 3.9, h: 0.6, fontFace: 'Calibri', fontSize: 12, color: MUTED, margin: 0, valign: 'top', isTextBox: true });
+  s.addText('różnica między najgłośniejszym a najcichszym mikrofonem dla tego samego dźwięku: pliki fabryczne → z poprawkami (początek dnia 3; stan końcowy 4,1 → 1,0 dB)', { x: 8.95, y: 6.25, w: 3.9, h: 0.6, fontFace: 'Calibri', fontSize: 12, color: MUTED, margin: 0, valign: 'top', isTextBox: true });
   s.addText('Dwa pomiary z 25 września 2026: początek dnia 3 (po lewej) i konfiguracja końcowa (po prawej).', { x: 0.6, y: 6.95, w: 8.0, h: 0.3, fontFace: 'Calibri', fontSize: 11, color: MUTED, margin: 0, isTextBox: true });
   s.addText('4', { x: 12.2, y: 6.95, w: 0.5, h: 0.3, fontFace: 'Calibri', fontSize: 12, color: MUTED, align: 'right', margin: 0, isTextBox: true });
   s.addNotes('Ten sam rysunek co w rozdziale 1 raportu, narysowany większy. Te same dwa pomiary skalibrowano na dwa sposoby: plikami fabrycznymi i poprawkami zmierzonymi 16 września. Rozstęp to zakres średnich poziomów kapsuł: 4,3 do 0,8 dB na początku dnia 3 i 4,1 do 1,0 dB w konfiguracji końcowej. Błąd pomieszczenia poniżej 3 kHz: 2,277 do 1,997 dB oraz 1,736 do 1,387 dB. Zmiana to głównie przesunięcie każdej kapsuły, więc głównie przesuwa całe wiersze.');

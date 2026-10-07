@@ -37,7 +37,7 @@ L = {
  'A stripe across all frequencies is one microphone reading too loud or too quiet. The middle row has none.': 'Pasek przez wszystkie częstotliwości to jeden mikrofon, który pokazuje za głośno lub za cicho. W środkowym rzędzie go nie ma.',
  'The room pattern stays: whole rows move, not the frequency structure.': 'Obraz pomieszczenia zostaje: przesuwają się całe wiersze, a nie struktura częstotliwościowa.',
  '4.3': '4,3', '0.8 dB': '0,8 dB',
- 'range of the microphones’ mean levels, start of day 3 (final state: 4.1 → 1.0 dB)': 'rozstęp średnich poziomów mikrofonów, początek dnia 3 (stan końcowy: 4,1 → 1,0 dB)',
+ 'gap between the loudest and quietest microphone for the same sound: factory files → corrected (start of day 3; final state 4.1 → 1.0 dB)': 'różnica między najgłośniejszym a najcichszym mikrofonem dla tego samego dźwięku: pliki fabryczne → z poprawkami (początek dnia 3; stan końcowy 4,1 → 1,0 dB)',
  'Two captures from 25 Sep 2026: the start of day 3 (left) and the final configuration (right).': 'Dwa pomiary z 25 września 2026: początek dnia 3 (po lewej) i konfiguracja końcowa (po prawej).',
  'Maps of each microphone against frequency: start of day 3, final state, and the change between them': 'Mapy każdego mikrofonu w funkcji częstotliwości: początek dnia 3, stan końcowy i różnica między nimi',
  'THE CHAMBER': 'KOMORA',

@@ -81,7 +81,7 @@ const INK = '1F2A44', RED = 'D6336C', BLUE = '2B6CB0', MUTED = '5B6578';
   s.addText([
     { text: '4.3', options: { color: RED } }, { text: ' → ', options: { color: MUTED } }, { text: '0.8 dB', options: { color: BLUE } },
   ], { x: 8.95, y: 5.55, w: 3.9, h: 0.7, fontFace: 'Cambria', fontSize: 36, bold: true, margin: 0, isTextBox: true });
-  s.addText('range of the microphones’ mean levels, start of day 3 (final state: 4.1 → 1.0 dB)', { x: 8.95, y: 6.25, w: 3.9, h: 0.6, fontFace: 'Calibri', fontSize: 12, color: MUTED, margin: 0, valign: 'top', isTextBox: true });
+  s.addText('gap between the loudest and quietest microphone for the same sound: factory files → corrected (start of day 3; final state 4.1 → 1.0 dB)', { x: 8.95, y: 6.25, w: 3.9, h: 0.6, fontFace: 'Calibri', fontSize: 12, color: MUTED, margin: 0, valign: 'top', isTextBox: true });
   s.addText('Two captures from 25 Sep 2026: the start of day 3 (left) and the final configuration (right).', { x: 0.6, y: 6.95, w: 8.0, h: 0.3, fontFace: 'Calibri', fontSize: 11, color: MUTED, margin: 0, isTextBox: true });
   s.addText('4', { x: 12.2, y: 6.95, w: 0.5, h: 0.3, fontFace: 'Calibri', fontSize: 12, color: MUTED, align: 'right', margin: 0, isTextBox: true });
   s.addNotes('Same figure as chapter 1 of the report, redrawn larger. The same two captures were calibrated two ways: with the factory files and with the corrections measured on 16 Sep. The span is the range of the capsules mean levels: 4.3 to 0.8 dB at the start of day 3, 4.1 to 1.0 dB in the final configuration. Room error below 3 kHz: 2.277 to 1.997 dB and 1.736 to 1.387 dB. The change is mainly a per-capsule offset, so it mainly moves whole rows.');
