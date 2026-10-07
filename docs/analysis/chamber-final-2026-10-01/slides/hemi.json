@@ -1,0 +1,366 @@
+{
+ "rows": [
+  {
+   "band": "250",
+   "limit": 2.5,
+   "tones": 3,
+   "bare": [
+    5.71,
+    "E16450",
+    52,
+    "F1DB6F",
+    true
+   ],
+   "carpet": [
+    0.59,
+    "95C57D",
+    100,
+    "78BE82",
+    false
+   ],
+   "final": [
+    1.88,
+    "D6D573",
+    97,
+    "80C081",
+    false
+   ]
+  },
+  {
+   "band": "315",
+   "limit": 2.5,
+   "tones": 8,
+   "bare": [
+    2.6,
+    "F4D76D",
+    52,
+    "EFDB6F",
+    true
+   ],
+   "carpet": [
+    1.41,
+    "BECF77",
+    91,
+    "8FC37E",
+    false
+   ],
+   "final": [
+    0.89,
+    "A4C97B",
+    83,
+    "A3C87B",
+    false
+   ]
+  },
+  {
+   "band": "400",
+   "limit": 2.5,
+   "tones": 8,
+   "bare": [
+    2.05,
+    "DFD772",
+    70,
+    "C2D076",
+    false
+   ],
+   "carpet": [
+    0.87,
+    "A4C87B",
+    86,
+    "9AC67D",
+    false
+   ],
+   "final": [
+    1.41,
+    "BECF77",
+    80,
+    "ABCA7A",
+    false
+   ]
+  },
+  {
+   "band": "500",
+   "limit": 2.5,
+   "tones": 8,
+   "bare": [
+    2.25,
+    "E8D970",
+    68,
+    "C8D175",
+    false
+   ],
+   "carpet": [
+    1.09,
+    "AECB79",
+    91,
+    "8FC37E",
+    false
+   ],
+   "final": [
+    1.99,
+    "DCD672",
+    91,
+    "8FC37E",
+    false
+   ]
+  },
+  {
+   "band": "630",
+   "limit": 2.5,
+   "tones": 8,
+   "bare": [
+    1.64,
+    "CAD275",
+    82,
+    "A5C97B",
+    false
+   ],
+   "carpet": [
+    1.37,
+    "BDCE77",
+    85,
+    "9DC77C",
+    false
+   ],
+   "final": [
+    1.49,
+    "C2D076",
+    86,
+    "9AC67D",
+    false
+   ]
+  },
+  {
+   "band": "800",
+   "limit": 2.0,
+   "tones": 8,
+   "bare": [
+    1.42,
+    "D1D374",
+    72,
+    "BFCF77",
+    false
+   ],
+   "carpet": [
+    1.14,
+    "C0CF77",
+    83,
+    "A3C87B",
+    false
+   ],
+   "final": [
+    1.12,
+    "BECF77",
+    83,
+    "A3C87B",
+    false
+   ]
+  },
+  {
+   "band": "1000",
+   "limit": 2.0,
+   "tones": 9,
+   "bare": [
+    0.89,
+    "B0CB79",
+    82,
+    "A5C97B",
+    false
+   ],
+   "carpet": [
+    0.89,
+    "B0CB79",
+    98,
+    "7DBF81",
+    false
+   ],
+   "final": [
+    0.57,
+    "9CC77C",
+    99,
+    "7BBF82",
+    false
+   ]
+  },
+  {
+   "band": "1250",
+   "limit": 2.0,
+   "tones": 8,
+   "bare": [
+    0.72,
+    "A5C97B",
+    90,
+    "92C47E",
+    false
+   ],
+   "carpet": [
+    0.64,
+    "A0C87C",
+    98,
+    "7EBF81",
+    false
+   ],
+   "final": [
+    1.02,
+    "B7CD78",
+    99,
+    "7BBF82",
+    false
+   ]
+  },
+  {
+   "band": "1600",
+   "limit": 2.0,
+   "tones": 8,
+   "bare": [
+    1.39,
+    "CFD374",
+    93,
+    "89C27F",
+    false
+   ],
+   "carpet": [
+    1.53,
+    "D8D573",
+    93,
+    "89C27F",
+    false
+   ],
+   "final": [
+    1.15,
+    "C0CF76",
+    99,
+    "7BBF82",
+    false
+   ]
+  },
+  {
+   "band": "2000",
+   "limit": 2.0,
+   "tones": 8,
+   "bare": [
+    0.98,
+    "B5CD78",
+    94,
+    "86C180",
+    false
+   ],
+   "carpet": [
+    0.87,
+    "AECB79",
+    98,
+    "7EBF81",
+    false
+   ],
+   "final": [
+    0.77,
+    "A8CA7A",
+    99,
+    "7BBF82",
+    false
+   ]
+  },
+  {
+   "band": "2500",
+   "limit": 2.0,
+   "tones": 8,
+   "bare": [
+    0.81,
+    "ABCA7A",
+    86,
+    "9AC67D",
+    false
+   ],
+   "carpet": [
+    0.8,
+    "AACA7A",
+    98,
+    "7EBF81",
+    false
+   ],
+   "final": [
+    0.75,
+    "A7C97A",
+    93,
+    "89C27F",
+    false
+   ]
+  },
+  {
+   "band": "5000*",
+   "limit": 2.0,
+   "tones": 4,
+   "bare": [
+    1.77,
+    "E7D970",
+    95,
+    "83C180",
+    false
+   ],
+   "carpet": [
+    2.32,
+    "F2C969",
+    93,
+    "89C27F",
+    true
+   ],
+   "final": [
+    1.23,
+    "C5D076",
+    91,
+    "8FC37E",
+    false
+   ]
+  },
+  {
+   "band": "6300*",
+   "limit": 3.0,
+   "tones": 5,
+   "bare": [
+    1.36,
+    "B1CC79",
+    100,
+    "78BE82",
+    false
+   ],
+   "carpet": [
+    1.62,
+    "BBCE77",
+    100,
+    "78BE82",
+    false
+   ],
+   "final": [
+    1.77,
+    "C2D076",
+    100,
+    "78BE82",
+    false
+   ]
+  }
+ ],
+ "card": {
+  "bare": {
+   "over": 2,
+   "cells": 80,
+   "score": 2.054
+  },
+  "carpet": {
+   "over": 1,
+   "cells": 93,
+   "score": 1.317
+  },
+  "final": {
+   "over": 0,
+   "cells": 92,
+   "score": 1.387
+  }
+ },
+ "scale": [
+  "78BE82",
+  "B6CD78",
+  "F5DC6E",
+  "EBA05F",
+  "E16450"
+ ]
+}
