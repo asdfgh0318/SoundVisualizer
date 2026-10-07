@@ -182,7 +182,7 @@ if (process.env.WRAP_SLIDE) {
   s.addText('PORÓWNANIE', { x: 7.4, y: 0.9, w: 5.3, h: 0.4, fontFace: 'Calibri', fontSize: 14, bold: true, color: BLUE, charSpacing: 3, margin: 0, isTextBox: true });
   s.addText('31 sierpnia i 30 września na tych samych osiach', { x: 7.4, y: 1.3, w: 5.3, h: 1.3, fontFace: 'Cambria', fontSize: 26, bold: true, color: INK, margin: 0, valign: 'top', isTextBox: true });
   s.addText([
-    { text: 'Czerwony: 31 sierpnia, fabryczne pliki mikrofonów, zasilanie silnika 7,35 V. Niebieski: 30 września, pliki z poprawkami, zasilanie silnika 11,7 V. Dwa różne śmigła.', options: { bullet: true, breakLine: true } },
+    { text: 'Czerwony: 31 sierpnia, fabryczne pliki mikrofonów. Niebieski: 30 września, pliki z poprawkami. Dwa różne śmigła.', options: { bullet: true, breakLine: true } },
     { text: 'Między pomiarami śmigło zamontowano w przeciwną stronę, więc ciąg jest skierowany odwrotnie. Nie spodziewamy się, że to zmieni dźwięk.', options: { bullet: true, breakLine: true } },
     { text: 'Kształt z 30 września jest gładszy.', options: { bullet: true, bold: true } },
   ], { x: 7.4, y: 2.75, w: 5.3, h: 2.6, fontFace: 'Calibri', fontSize: 16, color: INK, margin: 0, valign: 'top', paraSpaceAfter: 10, isTextBox: true });
@@ -190,7 +190,7 @@ if (process.env.WRAP_SLIDE) {
     { text: '6,7', options: { color: RED } }, { text: ' → ', options: { color: MUTED } }, { text: '4,0 dB', options: { color: BLUE } },
   ], { x: 7.4, y: 5.5, w: 5.3, h: 0.8, fontFace: 'Cambria', fontSize: 48, bold: true, margin: 0, isTextBox: true });
   s.addText('między najgłośniejszym a najcichszym mikrofonem', { x: 7.4, y: 6.3, w: 5.3, h: 0.5, fontFace: 'Calibri', fontSize: 14, color: MUTED, margin: 0, isTextBox: true });
-  s.addText('20–560 Hz, silnik przy 2000 µs. Różne śmigła i warunki pracy (zasilanie 7,35 V wobec 11,7 V), więc poziomów nie wolno porównywać; porównujemy kształty.', { x: 0.6, y: 6.95, w: 12.1, h: 0.3, fontFace: 'Calibri', fontSize: 11, color: MUTED, margin: 0, isTextBox: true });
+  s.addText('20–560 Hz, silnik przy 2000 µs. Różne śmigła i warunki pracy, więc poziomów nie wolno porównywać; porównujemy kształty.', { x: 0.6, y: 6.95, w: 12.1, h: 0.3, fontFace: 'Calibri', fontSize: 11, color: MUTED, margin: 0, isTextBox: true });
   s.addText(String(7), { x: 12.2, y: 6.95, w: 0.5, h: 0.3, fontFace: 'Calibri', fontSize: 12, color: MUTED, align: 'right', margin: 0, isTextBox: true });
   s.addNotes('Niebieski: pomiar śmigła z 30 września (11,7 V, 7,3 A, ciąg −4 N), odczytany z poprawkami mikrofonów z 16 września. Rozrzut skuteczny wokół średniej 1,45 dB wobec 2,05 dB dla 31 sierpnia; rozstęp 4,0 dB (55,5 do 59,6 dB SPL) wobec 6,7 dB. Niebieski jest o około 11 dB niższy, ale nie można tego przypisać napięciu zasilania (niebieski miał wyższe napięcie): pomiary wykonano różnymi śmigłami, a kierunek ciągu był odwrócony, więc poziomów nie wolno porównywać. Rozstęp 4 dB niebieskiego to trend: głośniej na dole. Uczciwe zastrzeżenie: po zastosowaniu tej samej kalibracji do pomiarów z 1–2 września są one mniej więcej tak samo okrągłe jak z 30 września, więc większość poprawy względem wcześniejszych pomiarów bazowych pochodzi z kalibracji mikrofonów, nie z pomieszczenia.');
 }
