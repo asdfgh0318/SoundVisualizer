@@ -205,10 +205,10 @@ if (process.env.WRAP_SLIDE) {
   s.addText('Pomiary materiałów przy 2000 µs', { x: 7.6, y: 1.05, w: 5.2, h: 1.3, fontFace: 'Cambria', fontSize: 26, bold: true, color: INK, margin: 0, valign: 'top', isTextBox: true });
   const items = [
     ['Bez materiału', 74.2, '1F2A44'],
-    ['Korek', 78.7, '2F9E44'],
-    ['Guma', 80.6, 'F08C00'],
-    ['Filc', 79.5, '1098AD'],
     ['Filc + guma', 78.7, '7048E8'],
+    ['Korek', 78.7, '2F9E44'],
+    ['Filc', 79.5, '1098AD'],
+    ['Guma', 80.6, 'F08C00'],
   ];
   s.addText('Średni poziom z jedenastu mikrofonów', { x: 7.6, y: 2.55, w: 5.2, h: 0.3, fontFace: 'Calibri', fontSize: 12, color: MUTED, margin: 0, isTextBox: true });
   items.forEach(([name, mean, col], i) => {
