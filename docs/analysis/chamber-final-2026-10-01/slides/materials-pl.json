@@ -1,0 +1,27 @@
+{
+ "Bare": {
+  "mean": 74.2,
+  "rng": 27.9,
+  "color": "#1F2A44"
+ },
+ "Cork": {
+  "mean": 78.7,
+  "rng": 24.9,
+  "color": "#2F9E44"
+ },
+ "Rubber": {
+  "mean": 80.6,
+  "rng": 21.9,
+  "color": "#F08C00"
+ },
+ "Felt": {
+  "mean": 79.5,
+  "rng": 24.4,
+  "color": "#1098AD"
+ },
+ "Felt + rubber": {
+  "mean": 78.7,
+  "rng": 24.1,
+  "color": "#7048E8"
+ }
+}

@@ -1,6 +1,6 @@
 """Polar overlay of the 2 Oct material measurements at 2000 us (total level 100 Hz-10 kHz, corrected microphone files)."""
 import sys, os, json
-HERE = os.path.dirname(os.path.abspath(__file__)); sys.argv = ['x']
+HERE = os.path.dirname(os.path.abspath(__file__)); LANG = os.environ.get('SLIDE_LANG', 'en'); PL = LANG == 'pl'; sys.argv = ['x']
 import importlib.util, numpy as np
 import matplotlib; matplotlib.use('Agg'); import matplotlib.pyplot as plt
 sp = importlib.util.spec_from_file_location('bf', os.path.join(HERE, '..', 'build_final.py')); bf = importlib.util.module_from_spec(sp); sp.loader.exec_module(bf)
@@ -19,7 +19,7 @@ for nm, (el, v, col) in data.items():
     ax.plot(np.r_[th, th[0]], np.r_[r, r[0]], color=col, lw=2.8, marker='o', ms=5.5, mfc=col, mec='white', mew=1, label=nm)
 ax.set_rlim(rmin, rmax); ticks = [t for t in range(int(rmin), int(rmax) + 1) if t % 5 == 0 and t > rmin]; ax.set_rticks(ticks); ax.set_yticklabels([f'{t}' if i < len(ticks) - 1 else f'{t} dB' for i, t in enumerate(ticks)], fontsize=10, color='#555'); ax.set_rlabel_position(25); [(t.set_bbox(dict(facecolor='white', edgecolor='none', alpha=.9, pad=1.5)), t.set_zorder(30)) for t in ax.get_yticklabels()]
 ax.set_thetagrids([90, 45, 0, 315, 270, 225, 180, 135], ['+90°', '+45°', '0°', '−45°', '−90°', '−45°', '0°', '+45°'], fontsize=12, color='#333'); ax.grid(color='#cfd4dc', lw=1); ax.spines['polar'].set_color('#9aa3b2')
-ax.annotate('−90°: 94–98 dB,\noff the scale', xy=(np.radians(270), rmax), xytext=(np.radians(300), rmax + 4.5), fontsize=11, color='#333', ha='center', arrowprops=dict(arrowstyle='->', color='#333', lw=1.3), annotation_clip=False)
-fig.savefig(os.path.join(HERE, 'polar-materials.png'), bbox_inches='tight', pad_inches=.15, facecolor='white')
-json.dump({k: dict(mean=round(float(v.mean()), 1), rng=round(float(np.ptp(v)), 1), color=c) for k, (e, v, c) in data.items()}, open(os.path.join(HERE, 'materials.json'), 'w'), indent=1)
+ax.annotate('−90°: 94–98 dB,\npoza skalą' if PL else '−90°: 94–98 dB,\noff the scale', xy=(np.radians(270), rmax), xytext=(np.radians(300), rmax + 4.5), fontsize=11, color='#333', ha='center', arrowprops=dict(arrowstyle='->', color='#333', lw=1.3), annotation_clip=False)
+fig.savefig(os.path.join(HERE, 'polar-materials-pl.png' if PL else 'polar-materials.png'), bbox_inches='tight', pad_inches=.15, facecolor='white')
+json.dump({k: dict(mean=round(float(v.mean()), 1), rng=round(float(np.ptp(v)), 1), color=c) for k, (e, v, c) in data.items()}, open(os.path.join(HERE, 'materials-pl.json' if PL else 'materials.json'), 'w'), indent=1)
 print('rlim', rmin, rmax)
