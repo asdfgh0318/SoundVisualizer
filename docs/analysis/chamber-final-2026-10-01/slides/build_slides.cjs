@@ -95,8 +95,8 @@ const INK = '1F2A44', RED = 'D6336C', BLUE = '2B6CB0', MUTED = '5B6578';
   s.addText('THE CHAMBER', { x: 8.95, y: 0.5, w: 3.9, h: 0.35, fontFace: 'Calibri', fontSize: 14, bold: true, color: BLUE, charSpacing: 3, margin: 0, isTextBox: true });
   s.addText('The treatments flatten the low end', { x: 8.95, y: 0.85, w: 3.9, h: 1.2, fontFace: 'Cambria', fontSize: 28, bold: true, color: INK, margin: 0, valign: 'top', isTextBox: true });
   s.addChart(pres.charts.BAR, [
-    { name: 'Start of day 3', labels: ['250–400', '400–630', '630–1k', '1k–1.6k', '1.6k–3k', '5k–6.4k'], values: [3.33, 2.57, 1.57, 0.8, 0.87, 1.04] },
-    { name: 'Final', labels: ['250–400', '400–630', '630–1k', '1k–1.6k', '1.6k–3k', '5k–6.4k'], values: [1.99, 1.52, 1.47, 0.85, 0.96, 1.17] },
+    { name: 'Start of day 3', labels: ['250–400', '400–630', '630–1000', '1000–1600', '1600–3000', '5000–6400'], values: [3.33, 2.57, 1.57, 0.8, 0.87, 1.04] },
+    { name: 'Final', labels: ['250–400', '400–630', '630–1000', '1000–1600', '1600–3000', '5000–6400'], values: [1.99, 1.52, 1.47, 0.85, 0.96, 1.17] },
   ], {
     x: 8.85, y: 2.05, w: 4.1, h: 2.75, barDir: 'col', barGrouping: 'clustered', chartColors: ['D6336C', '2B6CB0'], showLegend: true, legendPos: 'b', legendFontSize: 11, legendColor: INK, legendFontFace: 'Calibri',
     showTitle: true, title: 'Room error per band (dB, band in Hz)', titleFontSize: 12, titleColor: INK, titleFontFace: 'Calibri',

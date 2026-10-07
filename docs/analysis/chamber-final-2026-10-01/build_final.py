@@ -258,7 +258,7 @@ def fig_mic(figsize=(7.4, 6.4), fs=1.0, out='/fig-mic.png', short=False, lang='e
     bw = LinearSegmentedColormap.from_list('bw', ['#c05621', '#f6d7c3', '#ffffff', '#cfe0f3', '#2b6cb0'])
     fig, axs = plt.subplots(3, 2, figsize=figsize, gridspec_kw=dict(hspace=.5, wspace=.12))
     f = res[0][0]; pos = res[0][1][::-1]; xx = np.arange(len(f) + 1); yy = np.arange(len(pos) + 1)
-    nom = {257: dc('0.26k'), 400: dc('0.4k'), 630: dc('0.63k'), 1000: '1k', 1600: dc('1.6k'), 2500: dc('2.5k'), 6000: '6k'}
+    nom = {257: '260', 400: '400', 630: '630', 1000: '1k', 1600: dc('1.6k'), 2500: dc('2.5k'), 6000: '6k'}
     tk = []; tl = []
     for z, lab in nom.items():
         i = int(np.argmin(abs(f - z)))
@@ -273,7 +273,7 @@ def fig_mic(figsize=(7.4, 6.4), fs=1.0, out='/fig-mic.png', short=False, lang='e
             a.set_xticks([i + .5 for i in tk]); a.set_xticklabels(tl, fontsize=5.5 * fs); a.set_title(ttl, fontsize=6.4 * fs, loc='left')
     cb = fig.colorbar(ims[0], ax=axs[:2, :], shrink=.85, pad=.02, aspect=28); cb.set_label(('poziom minus średnia łuku (dB)' if PL else 'level minus arc mean (dB)') if short else 'capsule level minus arc mean (dB): blue = quieter, red = louder', fontsize=6 * fs); cb.ax.tick_params(labelsize=5.5 * fs)
     cb2 = fig.colorbar(ims[2], ax=axs[2, :], shrink=.85, pad=.02, aspect=14); cb2.set_ticks([-3, 0, 3]); cb2.set_ticklabels(['−3 dB\ndalej', '0', '+3 dB\nbliżej'] if PL else ['−3 dB\nfurther', '0', '+3 dB\ncloser']); cb2.set_label(('zmiana (dB)' if PL else 'change (dB)') if short else 'change in deviation from the arc mean (dB)', fontsize=6 * fs); cb2.ax.tick_params(labelsize=5.5 * fs)
-    fig.text(.45, .015, 'Częstotliwość w kHz (czarna linia: pominięty zakres 3–5 kHz). Góra każdej mapy = +90°.' if PL else 'Frequency in kHz (the black line marks the omitted 3–5 kHz). Top of each map = +90°.', ha='center', fontsize=6 * fs)
+    fig.text(.45, .015, 'Częstotliwość w Hz (k = kHz; czarna linia: pominięty zakres 3–5 kHz). Góra każdej mapy = +90°.' if PL else 'Frequency in Hz (k = kHz; the black line marks the omitted 3–5 kHz). Top of each map = +90°.', ha='center', fontsize=6 * fs)
     fig.savefig(HERE + out, dpi=200, bbox_inches='tight'); plt.close(fig)
     return res
 

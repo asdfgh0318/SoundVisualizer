@@ -17,7 +17,7 @@ for nm, a, b, c in pairs:
     f, d = mapchange(a, b); m = f < 3000; ax.plot(f[m], d[m], color=c, lw=2.4 if '24' in nm else 1.6, label=nm, marker='o' if '24' in nm else None, ms=3)
 f, d = mapchange('2026-09-24/wall-direct-a', '2026-09-24/wall-direct-b'); m = f < 3000
 ax.fill_between(f[m], 0, d[m], color='#C9CFDA', alpha=.9, label='Repeat of one state (noise floor)')
-ax.set_xscale('log'); ax.set_xlim(257, 3000); ax.set_ylim(0, 1.6); ax.set_xticks([300, 400, 500, 630, 800, 1000, 1600, 2500]); ax.set_xticklabels(['0.3k', '0.4k', '0.5k', '0.63k', '0.8k', '1k', '1.6k', '2.5k'])
+ax.set_xscale('log'); ax.set_xlim(257, 3000); ax.set_ylim(0, 1.6); ax.set_xticks([300, 400, 500, 630, 800, 1000, 1600, 2500]); ax.set_xticklabels(['300', '400', '500', '630', '800', '1k', '1.6k', '2.5k'])
 ax.set_xlabel('Frequency (Hz)'); ax.set_ylabel('Change of the microphone pattern (dB rms)'); ax.grid(alpha=.3); ax.legend(fontsize=8, frameon=False, loc='upper right')
 ax.annotate('1.5 dB at 545 Hz', xy=(545, 1.49), xytext=(700, 1.45), fontsize=9, arrowprops=dict(arrowstyle='->', lw=1))
 fig.tight_layout(); fig.savefig(os.path.join(HERE, 'wrap-frequency.png'), facecolor='white')
