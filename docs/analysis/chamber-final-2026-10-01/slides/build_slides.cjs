@@ -240,6 +240,7 @@ if (process.env.WRAP_SLIDE) {
   s.addText('THE MEMBRANES', { x: 7.2, y: 0.4, w: 5.6, h: 0.35, fontFace: 'Calibri', fontSize: 14, bold: true, color: BLUE, charSpacing: 3, margin: 0, isTextBox: true });
   s.addText('Membranes at 2000 µs', { x: 7.2, y: 0.72, w: 5.6, h: 0.9, fontFace: 'Cambria', fontSize: 30, bold: true, color: INK, margin: 0, valign: 'top', isTextBox: true });
   const items = [
+    ['Bare prop', 75.1, '000000', '9 Oct'],
     ['Thinsulate, 4 layers', 82.8, 'E03131', '9 Oct'],
     ['Thinsulate, 2 layers', 84.0, 'F08C00', '9 Oct'],
     ['Thinsulate, 8 layers', 85.0, 'C2255C', '9 Oct'],
@@ -249,21 +250,25 @@ if (process.env.WRAP_SLIDE) {
     ['Duct + PU foam, double', 87.5, '5C940D', '9 Oct'],
     ['PU foam', 87.9, '862E9C', '8 Oct'],
     ['Cork', 88.5, '2F9E44', '9 Oct'],
-    ['Duct, membrane only', 89.5, '1F2A44', '8 Oct'],
+    ['Duct, membrane only', 89.5, '868E96', '8 Oct'],
   ];
   s.addText('Mean level. Round markers: 8 Oct. Square: 9 Oct.', { x: 7.2, y: 1.65, w: 5.6, h: 0.3, fontFace: 'Calibri', fontSize: 12, color: MUTED, margin: 0, isTextBox: true });
   items.forEach(([name, mean, col, day], i) => {
-    const y = 2.05 + i * 0.37;
-    s.addShape(pres.shapes.OVAL, { x: 7.2, y: y + 0.07, w: 0.2, h: 0.2, fill: { color: col }, line: { color: col, width: 0 } });
-    s.addText(name, { x: 7.5, y, w: 3.1, h: 0.34, fontFace: 'Calibri', fontSize: 14, bold: true, color: INK, margin: 0, valign: 'middle', isTextBox: true });
-    s.addText(day, { x: 10.6, y, w: 0.7, h: 0.34, fontFace: 'Calibri', fontSize: 12, color: MUTED, margin: 0, valign: 'middle', isTextBox: true });
-    s.addText(mean.toFixed(1) + ' dB', { x: 11.2, y, w: 1.6, h: 0.34, fontFace: 'Calibri', fontSize: 14, color: INK, align: 'right', margin: 0, valign: 'middle', isTextBox: true });
+    const y = 1.95 + i * 0.315;
+    s.addShape(pres.shapes.OVAL, { x: 7.2, y: y + 0.06, w: 0.18, h: 0.18, fill: { color: col }, line: { color: col, width: 0 } });
+    s.addText(name, { x: 7.5, y, w: 3.1, h: 0.3, fontFace: 'Calibri', fontSize: 14, bold: true, color: INK, margin: 0, valign: 'middle', isTextBox: true });
+    s.addText(day, { x: 10.6, y, w: 0.7, h: 0.3, fontFace: 'Calibri', fontSize: 12, color: MUTED, margin: 0, valign: 'middle', isTextBox: true });
+    s.addText(mean.toFixed(1) + ' dB', { x: 11.2, y, w: 1.6, h: 0.3, fontFace: 'Calibri', fontSize: 14, color: INK, align: 'right', margin: 0, valign: 'middle', isTextBox: true });
   });
-  s.addText('up to 10.2 dB', { x: 7.2, y: 5.68, w: 5.6, h: 0.6, fontFace: 'Cambria', fontSize: 34, bold: true, color: RED, margin: 0, isTextBox: true });
-  s.addText('best (Thinsulate, 4 layers) against worst (Duct, membrane only), at +18°; 6.7 dB on average', { x: 7.2, y: 6.3, w: 5.6, h: 0.5, fontFace: 'Calibri', fontSize: 13, color: INK, margin: 0, valign: 'top', isTextBox: true });
-  s.addText('8 and 9 Oct 2026, 5-inch 3-blade propeller, 500 Hz–24 kHz, 2000 µs, mean of 3 repeats, corrected files. Axis 76–94 dB. Not comparable with slide 8.', { x: 0.6, y: 6.95, w: 11.3, h: 0.3, fontFace: 'Calibri', fontSize: 11, color: MUTED, margin: 0, isTextBox: true });
+  s.addText('up to 10.2 dB', { x: 7.2, y: 5.43, w: 5.6, h: 0.5, fontFace: 'Cambria', fontSize: 28, bold: true, color: RED, margin: 0, isTextBox: true });
+  s.addText('best against worst membrane set-up (Thinsulate, 4 layers and Duct, membrane only), at +18°; 6.7 dB on average', { x: 7.2, y: 5.93, w: 5.6, h: 0.4, fontFace: 'Calibri', fontSize: 11, color: INK, margin: 0, valign: 'top', isTextBox: true });
+  s.addText([
+    { text: 'Thrust at 2000 µs: ', options: { bold: true } },
+    { text: 'bare prop 3.75 N. The quietest other set-up, Thinsulate 4 layers, only 0.39 N.' },
+  ], { x: 7.2, y: 6.37, w: 5.6, h: 0.5, fontFace: 'Calibri', fontSize: 12, color: INK, margin: 0, valign: 'top', isTextBox: true });
+  s.addText('8 and 9 Oct 2026, 5-inch 3-blade propeller, 500 Hz–24 kHz, 2000 µs, mean of 3 repeats, corrected files. Axis 69–94 dB. Not comparable with slide 8.', { x: 0.6, y: 6.95, w: 11.3, h: 0.3, fontFace: 'Calibri', fontSize: 11, color: MUTED, margin: 0, isTextBox: true });
   s.addText(process.env.ONLY ? '1' : '9', { x: 12.2, y: 6.95, w: 0.5, h: 0.3, fontFace: 'Calibri', fontSize: 12, color: MUTED, align: 'right', margin: 0, isTextBox: true });
-  s.addNotes('Bases in the data repo (f30__5in3b__membrane-...): 8 Oct 2026: membrane-duct-small, membrane-open-pore-pu-foam. 9 Oct 2026: membrane-duct-open-pore-pu-foam-double-layer, membrane-felt, membrane-felt-double-layer, membrane-cork, membrane-felt-rubber, membrane-thinsulate-8-layers, -4-layers, -2-layers. Each base was captured with 3 repeats of the ramp; the plot uses the PWM 2000 step and the mean over the 3 repeats of the total level 500 Hz to 24 kHz per microphone, in dB SPL, read with the corrected microphone files. The repeat-to-repeat scatter of the mean level is 0.02-0.11 dB. There is no bare reference measured with this set-up (the base names carry a different motor field, f30, from the 2 and 7 Oct materials), so levels here are not comparable with slide 8 and no louder-than-bare figure is given; the callout is the difference between the quietest (best: Thinsulate, 4 layers) and the loudest (worst: duct, membrane only) set-up: 10.2 dB at its largest, at +18°, and 6.7 dB on average over the eleven microphones. Per angle the difference runs from 4.1 dB at -90 degrees to 10.2 dB at +18 degrees; the largest spread across all ten set-ups at a single angle is the same 10.2 dB. Two of the bases are ducts. The polar is mirrored to 360 degrees.');
+  s.addNotes('Bases in the data repo (f30__5in3b__membrane-...): 8 Oct 2026: membrane-duct-small, membrane-open-pore-pu-foam. 9 Oct 2026: membrane-duct-open-pore-pu-foam-double-layer, membrane-felt, membrane-felt-double-layer, membrane-cork, membrane-felt-rubber, membrane-thinsulate-8-layers, -4-layers, -2-layers. Each base was captured with 3 repeats of the ramp; the plot uses the PWM 2000 step and the mean over the 3 repeats of the total level 500 Hz to 24 kHz per microphone, in dB SPL, read with the corrected microphone files. The repeat-to-repeat scatter of the mean level is 0.02-0.11 dB. The bare prop (base f30__5in3b__unset__v1-bare-prop, 9 Oct 16:10, 3 repeats) is the reference for this set-up and the quietest curve on average (75.1 dB), 7.7 dB below the quietest membrane set-up on average, but at -90 degrees it is 87.7 dB, level with the others. Thrust at 2000 us (median of the second half of each step, mean of 3 repeats, magnitude; the stand reads negative): bare prop 3.75 N; membrane set-ups 0.37-1.19 N (Thinsulate 2 layers 0.37, Thinsulate 4 layers 0.39, felt double 0.88, felt 0.95, duct membrane only 0.97, PU foam 1.03, duct + PU foam double 1.03, felt + rubber 1.09, Thinsulate 8 layers 1.10, cork 1.19), so every membrane set-up delivers 10-32 % of the bare thrust and the levels are not at equal thrust. Levels here are not comparable with slide 8 (different motor field in the base name, f30). The callout is the difference between the quietest (best: Thinsulate, 4 layers) and the loudest (worst: duct, membrane only) set-up: 10.2 dB at its largest, at +18°, and 6.7 dB on average over the eleven microphones. Per angle the difference runs from 4.1 dB at -90 degrees to 10.2 dB at +18 degrees; the largest spread across all ten set-ups at a single angle is the same 10.2 dB. Two of the bases are ducts. The polar is mirrored to 360 degrees.');
 }
 
 pres.writeFile({ fileName: process.env.OUT || 'chamber-slides-final.pptx' }).then(() => console.log('written'));

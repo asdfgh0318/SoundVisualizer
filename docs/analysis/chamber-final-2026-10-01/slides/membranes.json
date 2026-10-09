@@ -1,52 +1,68 @@
 {
+ "Bare prop": {
+  "mean": 75.1,
+  "color": "#000000",
+  "day": "9 Oct",
+  "thrust": 3.75
+ },
  "Membrane + cork": {
   "mean": 88.5,
   "color": "#2F9E44",
-  "day": "9 Oct"
+  "day": "9 Oct",
+  "thrust": 1.19
  },
  "Membrane + felt": {
   "mean": 86.3,
   "color": "#1098AD",
-  "day": "9 Oct"
+  "day": "9 Oct",
+  "thrust": 0.95
  },
  "Membrane + felt, double layer": {
   "mean": 86.4,
   "color": "#1864AB",
-  "day": "9 Oct"
+  "day": "9 Oct",
+  "thrust": 0.88
  },
  "Membrane + felt + rubber": {
   "mean": 86.0,
   "color": "#7048E8",
-  "day": "9 Oct"
+  "day": "9 Oct",
+  "thrust": 1.09
  },
  "Membrane + PU foam": {
   "mean": 87.9,
   "color": "#862E9C",
-  "day": "8 Oct"
+  "day": "8 Oct",
+  "thrust": 1.03
  },
  "Membrane + Thinsulate, 2 layers": {
   "mean": 84.0,
   "color": "#F08C00",
-  "day": "9 Oct"
+  "day": "9 Oct",
+  "thrust": 0.37
  },
  "Membrane + Thinsulate, 4 layers": {
   "mean": 82.8,
   "color": "#E03131",
-  "day": "9 Oct"
+  "day": "9 Oct",
+  "thrust": 0.39
  },
  "Membrane + Thinsulate, 8 layers": {
   "mean": 85.0,
   "color": "#C2255C",
-  "day": "9 Oct"
+  "day": "9 Oct",
+  "thrust": 1.1
  },
  "Membrane duct, small": {
   "mean": 89.5,
-  "color": "#1F2A44",
-  "day": "8 Oct"
+  "color": "#868E96",
+  "day": "8 Oct",
+  "thrust": 0.97
  },
  "Membrane duct + PU foam, double": {
   "mean": 87.5,
   "color": "#5C940D",
-  "day": "9 Oct"
+  "day": "9 Oct",
+  "thrust": 1.03
  }
 }
