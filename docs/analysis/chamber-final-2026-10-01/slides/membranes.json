@@ -1,0 +1,52 @@
+{
+ "Membrane + cork": {
+  "mean": 88.5,
+  "color": "#2F9E44",
+  "day": "9 Oct"
+ },
+ "Membrane + felt": {
+  "mean": 86.3,
+  "color": "#1098AD",
+  "day": "9 Oct"
+ },
+ "Membrane + felt, double layer": {
+  "mean": 86.4,
+  "color": "#1864AB",
+  "day": "9 Oct"
+ },
+ "Membrane + felt + rubber": {
+  "mean": 86.0,
+  "color": "#7048E8",
+  "day": "9 Oct"
+ },
+ "Membrane + PU foam": {
+  "mean": 87.9,
+  "color": "#862E9C",
+  "day": "8 Oct"
+ },
+ "Membrane + Thinsulate, 2 layers": {
+  "mean": 84.0,
+  "color": "#F08C00",
+  "day": "9 Oct"
+ },
+ "Membrane + Thinsulate, 4 layers": {
+  "mean": 82.8,
+  "color": "#E03131",
+  "day": "9 Oct"
+ },
+ "Membrane + Thinsulate, 8 layers": {
+  "mean": 85.0,
+  "color": "#C2255C",
+  "day": "9 Oct"
+ },
+ "Membrane duct, small": {
+  "mean": 89.5,
+  "color": "#1F2A44",
+  "day": "8 Oct"
+ },
+ "Membrane duct + PU foam, double": {
+  "mean": 87.5,
+  "color": "#5C940D",
+  "day": "9 Oct"
+ }
+}
