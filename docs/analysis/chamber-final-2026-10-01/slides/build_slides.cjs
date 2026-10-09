@@ -1,5 +1,7 @@
 const pptxgen = require('pptxgenjs');
 const pres = new pptxgen();
+let _n = 0; const _orig = pres.addSlide.bind(pres); const _scratch = new pptxgen();
+pres.addSlide = () => { _n++; return (process.env.ONLY && +process.env.ONLY !== _n) ? _scratch.addSlide() : _orig(); };
 pres.layout = 'LAYOUT_WIDE';            // 13.33 x 7.5 in
 pres.title = 'Chamber measurements';
 const INK = '1F2A44', RED = 'D6336C', BLUE = '2B6CB0', MUTED = '5B6578';
@@ -260,8 +262,8 @@ if (process.env.WRAP_SLIDE) {
   s.addText('up to 10.2 dB', { x: 7.2, y: 5.68, w: 5.6, h: 0.6, fontFace: 'Cambria', fontSize: 34, bold: true, color: RED, margin: 0, isTextBox: true });
   s.addText('best (Thinsulate, 4 layers) against worst (Duct, membrane only), at +18°; 6.7 dB on average', { x: 7.2, y: 6.3, w: 5.6, h: 0.5, fontFace: 'Calibri', fontSize: 13, color: INK, margin: 0, valign: 'top', isTextBox: true });
   s.addText('8 and 9 Oct 2026, 5-inch 3-blade propeller, 500 Hz–24 kHz, 2000 µs, mean of 3 repeats, corrected files. Axis 76–94 dB. Not comparable with slide 8.', { x: 0.6, y: 6.95, w: 11.3, h: 0.3, fontFace: 'Calibri', fontSize: 11, color: MUTED, margin: 0, isTextBox: true });
-  s.addText('9', { x: 12.2, y: 6.95, w: 0.5, h: 0.3, fontFace: 'Calibri', fontSize: 12, color: MUTED, align: 'right', margin: 0, isTextBox: true });
+  s.addText(process.env.ONLY ? '1' : '9', { x: 12.2, y: 6.95, w: 0.5, h: 0.3, fontFace: 'Calibri', fontSize: 12, color: MUTED, align: 'right', margin: 0, isTextBox: true });
   s.addNotes('Bases in the data repo (f30__5in3b__membrane-...): 8 Oct 2026: membrane-duct-small, membrane-open-pore-pu-foam. 9 Oct 2026: membrane-duct-open-pore-pu-foam-double-layer, membrane-felt, membrane-felt-double-layer, membrane-cork, membrane-felt-rubber, membrane-thinsulate-8-layers, -4-layers, -2-layers. Each base was captured with 3 repeats of the ramp; the plot uses the PWM 2000 step and the mean over the 3 repeats of the total level 500 Hz to 24 kHz per microphone, in dB SPL, read with the corrected microphone files. The repeat-to-repeat scatter of the mean level is 0.02-0.11 dB. There is no bare reference measured with this set-up (the base names carry a different motor field, f30, from the 2 and 7 Oct materials), so levels here are not comparable with slide 8 and no louder-than-bare figure is given; the callout is the difference between the quietest (best: Thinsulate, 4 layers) and the loudest (worst: duct, membrane only) set-up: 10.2 dB at its largest, at +18°, and 6.7 dB on average over the eleven microphones. Per angle the difference runs from 4.1 dB at -90 degrees to 10.2 dB at +18 degrees; the largest spread across all ten set-ups at a single angle is the same 10.2 dB. Two of the bases are ducts. The polar is mirrored to 360 degrees.');
 }
 
-pres.writeFile({ fileName: 'chamber-slides-final.pptx' }).then(() => console.log('written'));
+pres.writeFile({ fileName: process.env.OUT || 'chamber-slides-final.pptx' }).then(() => console.log('written'));
