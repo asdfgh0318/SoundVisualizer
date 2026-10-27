@@ -92,15 +92,19 @@ export function SeriesPicker({
   onRemove: (id: string) => void;
 }) {
   const [selKey, setSelKey] = useState('');
-  const [points, setPoints] = useState<MergedPWMPoint[]>([]);
+  // Point ids ("2000-0") repeat across bases, so the list carries the base it was loaded for:
+  // an Add while a new base's points are still loading must not pair the new label with the
+  // previous base's mics.
+  const [loaded, setLoaded] = useState<{ key: string; points: MergedPWMPoint[] }>({ key: '', points: [] });
+  const points = loaded.key === selKey ? loaded.points : [];
   const [selPoint, setSelPoint] = useState('');
 
   useEffect(() => {
-    if (!selKey) { setPoints([]); setSelPoint(''); return; }
+    if (!selKey) return;
     let cancelled = false;
     api.listPWMPoints(selKey).then(
-      (p) => { if (!cancelled) { setPoints(p); setSelPoint(p[0]?.id ?? ''); } },
-      () => !cancelled && setPoints([]),
+      (p) => { if (!cancelled) { setLoaded({ key: selKey, points: p }); setSelPoint(p[0]?.id ?? ''); } },
+      () => !cancelled && setLoaded({ key: selKey, points: [] }),
     );
     return () => { cancelled = true; };
   }, [selKey]);
