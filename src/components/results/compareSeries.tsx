@@ -75,6 +75,46 @@ export function useCompareSeries(keySlug: string, point: MergedPWMPoint | null):
   return { series, keys, labelForKey, addSeries, removeSeries };
 }
 
+const localDay = (iso: string) => new Date(iso).toLocaleDateString('sv');
+
+/** One series per base holding the captures of `day` at `pwmUs`; captures from other days
+ *  are dropped even when they merged into the same point, so days are never mixed. */
+async function seriesForDay(
+  keys: Key[],
+  day: string,
+  pwmUs: number,
+  labelForKey: (slug: string) => string,
+): Promise<CompareSeries[]> {
+  const perKey = await Promise.all(
+    keys.map(async (k) => {
+      const points = await api.listPWMPoints(k.slug).catch(() => [] as MergedPWMPoint[]);
+      return points
+        .filter((p) => p.pwm_us === pwmUs)
+        .map((p): CompareSeries | null => {
+          const underlying = p.underlying.filter((u) => localDay(u.t_start) === day);
+          if (!underlying.length) return null;
+          const first = Math.min(...underlying.map((u) => u.repeat ?? 1));
+          const acoustic = underlying
+            .filter((u) => (u.repeat ?? 1) === first)
+            .flatMap((u) => u.acoustic)
+            .sort((a, b) => b.elevation_deg - a.elevation_deg);
+          return {
+            id: `${k.slug}::${p.id}@${day}`,
+            keySlug: k.slug,
+            pointId: p.id,
+            pwm_us: p.pwm_us,
+            acoustic,
+            underlying,
+            label: `${labelForKey(k.slug)} · ${p.pwm_us}µs · ${day}`,
+            color: '',
+          };
+        })
+        .filter((x): x is CompareSeries => x !== null);
+    }),
+  );
+  return perKey.flat();
+}
+
 /** Cross-key series picker: key → PWM point → add. Shows active series as chips. */
 export function SeriesPicker({
   keys,
@@ -98,6 +138,29 @@ export function SeriesPicker({
   const [loaded, setLoaded] = useState<{ key: string; points: MergedPWMPoint[] }>({ key: '', points: [] });
   const points = loaded.key === selKey ? loaded.points : [];
   const [selPoint, setSelPoint] = useState('');
+  const [day, setDay] = useState(() => new Date().toLocaleDateString('sv'));
+  const [dayPwm, setDayPwm] = useState(2000);
+  const [dayIds, setDayIds] = useState<string[]>([]);
+  const [dayBusy, setDayBusy] = useState(false);
+  const [dayMsg, setDayMsg] = useState('');
+
+  const toggleDay = async () => {
+    if (dayIds.length) {
+      dayIds.forEach(onRemove);
+      setDayIds([]);
+      setDayMsg('');
+      return;
+    }
+    setDayBusy(true);
+    try {
+      const found = await seriesForDay(keys, day, dayPwm, labelForKey);
+      found.forEach(onAdd);
+      setDayIds(found.map((f) => f.id));
+      setDayMsg(found.length ? '' : `No captures at ${dayPwm} µs on ${day}`);
+    } finally {
+      setDayBusy(false);
+    }
+  };
 
   useEffect(() => {
     if (!selKey) return;
@@ -167,6 +230,43 @@ export function SeriesPicker({
         >
           + Add series
         </button>
+      </div>
+
+      <div className="flex flex-wrap items-end gap-2">
+        <label className="block">
+          <span className="text-[11px] text-gray-500">Day</span>
+          <input
+            type="date"
+            className="input mt-1"
+            value={day}
+            disabled={dayIds.length > 0}
+            onChange={(e) => setDay(e.target.value)}
+          />
+        </label>
+        <label className="block">
+          <span className="text-[11px] text-gray-500">ESC signal (µs)</span>
+          <input
+            type="number"
+            className="input mt-1 w-24 font-mono"
+            min={1000}
+            max={2000}
+            step={50}
+            value={dayPwm}
+            disabled={dayIds.length > 0}
+            onChange={(e) => setDayPwm(Number(e.target.value))}
+          />
+        </label>
+        <label className="inline-flex items-center gap-2 text-sm text-gray-200 py-2">
+          <input
+            type="checkbox"
+            checked={dayIds.length > 0}
+            disabled={dayBusy || !day}
+            onChange={toggleDay}
+          />
+          Show every base from this day
+        </label>
+        {dayBusy && <span className="text-xs text-gray-500 py-2">loading…</span>}
+        {dayMsg && <span className="text-xs text-amber-400 py-2">{dayMsg}</span>}
       </div>
 
       <div className="flex flex-wrap gap-2">
