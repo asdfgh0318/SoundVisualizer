@@ -6,6 +6,19 @@ Drone-noise directivity measurement tool. Captures audio from up to 6 miniDSP UM
 
 **Refactor MVP is built.** Phases 0/1/2/3/4/5/7/8/9/10 of [PLAN.md](PLAN.md) are complete. Server + frontend run end-to-end against either real hardware (when `tyto.enabled = true` in `config.toml`) or against synthesised "fake capture" data for results-tool development without the rig.
 
+## Next session — Adam's list from 2026-10-28 (r27 materials, `:8128`)
+
+1. **Investigate thrust further.** At 2000 µs every r27 base spins at the same speed (12,077–12,338 rpm, ±1 %) yet thrust spans −5.5 to −8.9 N and motor current follows it, so the material changes the rotor's loading, not its speed (felt −8.91 N / 21.4 A highest). Results' left column ranks thrust + rpm at 2000 µs (`ThrustRanking`).
+2. **More materials:** felt + rubber, rubber, and more.
+3. Maybe a **test inlet for the duct** ("testowy wlot do ducta").
+4. **Ask Stach about the model.**
+5. **Arrange cork and foams** ("korek, pianki z druta — zarządzić").
+6. **Bare propellers** — `r27-8x45mr-bare-prop` has never been captured, and the material nodes are compared only to a same-day bare prop.
+7. **Cage** ("klatka") etc.
+8. **TAKE PHOTOS of every set-up.**
+
+Also open: recapture Thinsulate 2 (deleted 2026-10-28 — thrust fell over the repeats at constant rpm, check its mount) and Thinsulate 10 (only from 2026-10-27); motor field typed `2217` / `axi-2217` / `axi2217` across bases — settle one; the audio BPF detector (100–320 Hz) misses the ~410 Hz BPF at 2000 µs; the Pi still runs a 1.5 A supply (the self-powered mic hub stopped the USB over-current storm; the official 27 W PD supply is the real fix).
+
 ## Next session — start here (written 2026-09-08)
 
 > **READ THIS BEFORE ANY HUB-LOUDSPEAKER MEASUREMENT.** The printed sphere is a valid
