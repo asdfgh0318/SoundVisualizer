@@ -77,11 +77,13 @@ export function useCompareSeries(keySlug: string, point: MergedPWMPoint | null):
 
 const localDay = (iso: string) => new Date(iso).toLocaleDateString('sv');
 
-/** One series per base holding the captures of `day` at `pwmUs`; captures from other days
- *  are dropped even when they merged into the same point, so days are never mixed. */
-async function seriesForDay(
+/** One series per base at `pwmUs`, holding only the captures of that base's most recent day
+ *  within [from, to]; captures from other days are dropped even when they merged into the
+ *  same point, so no curve mixes days. */
+async function seriesForDays(
   keys: Key[],
-  day: string,
+  from: string,
+  to: string,
   pwmUs: number,
   labelForKey: (slug: string) => string,
 ): Promise<CompareSeries[]> {
@@ -91,8 +93,10 @@ async function seriesForDay(
       return points
         .filter((p) => p.pwm_us === pwmUs)
         .map((p): CompareSeries | null => {
+          const days = p.underlying.map((u) => localDay(u.t_start)).filter((d) => d >= from && d <= to);
+          if (!days.length) return null;
+          const day = days.sort().at(-1)!;
           const underlying = p.underlying.filter((u) => localDay(u.t_start) === day);
-          if (!underlying.length) return null;
           const first = Math.min(...underlying.map((u) => u.repeat ?? 1));
           const acoustic = underlying
             .filter((u) => (u.repeat ?? 1) === first)
@@ -138,7 +142,8 @@ export function SeriesPicker({
   const [loaded, setLoaded] = useState<{ key: string; points: MergedPWMPoint[] }>({ key: '', points: [] });
   const points = loaded.key === selKey ? loaded.points : [];
   const [selPoint, setSelPoint] = useState('');
-  const [day, setDay] = useState(() => new Date().toLocaleDateString('sv'));
+  const [dayFrom, setDayFrom] = useState(() => new Date().toLocaleDateString('sv'));
+  const [dayTo, setDayTo] = useState(() => new Date().toLocaleDateString('sv'));
   const [dayPwm, setDayPwm] = useState(2000);
   const [dayIds, setDayIds] = useState<string[]>([]);
   const [dayBusy, setDayBusy] = useState(false);
@@ -153,10 +158,11 @@ export function SeriesPicker({
     }
     setDayBusy(true);
     try {
-      const found = await seriesForDay(keys, day, dayPwm, labelForKey);
+      const found = await seriesForDays(keys, dayFrom, dayTo, dayPwm, labelForKey);
       found.forEach(onAdd);
       setDayIds(found.map((f) => f.id));
-      setDayMsg(found.length ? '' : `No captures at ${dayPwm} µs on ${day}`);
+      const span = dayFrom === dayTo ? `on ${dayTo}` : `from ${dayFrom} to ${dayTo}`;
+      setDayMsg(found.length ? '' : `No captures at ${dayPwm} µs ${span}`);
     } finally {
       setDayBusy(false);
     }
@@ -234,13 +240,25 @@ export function SeriesPicker({
 
       <div className="flex flex-wrap items-end gap-2">
         <label className="block">
-          <span className="text-[11px] text-gray-500">Day</span>
+          <span className="text-[11px] text-gray-500">From</span>
           <input
             type="date"
             className="input mt-1"
-            value={day}
+            value={dayFrom}
+            max={dayTo}
             disabled={dayIds.length > 0}
-            onChange={(e) => setDay(e.target.value)}
+            onChange={(e) => setDayFrom(e.target.value)}
+          />
+        </label>
+        <label className="block">
+          <span className="text-[11px] text-gray-500">To</span>
+          <input
+            type="date"
+            className="input mt-1"
+            value={dayTo}
+            min={dayFrom}
+            disabled={dayIds.length > 0}
+            onChange={(e) => setDayTo(e.target.value)}
           />
         </label>
         <label className="block">
@@ -260,10 +278,10 @@ export function SeriesPicker({
           <input
             type="checkbox"
             checked={dayIds.length > 0}
-            disabled={dayBusy || !day}
+            disabled={dayBusy || !dayFrom || !dayTo || dayFrom > dayTo}
             onChange={toggleDay}
           />
-          Show every base from this day
+          Show every base from these days
         </label>
         {dayBusy && <span className="text-xs text-gray-500 py-2">loading…</span>}
         {dayMsg && <span className="text-xs text-amber-400 py-2">{dayMsg}</span>}
