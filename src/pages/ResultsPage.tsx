@@ -10,6 +10,7 @@ import { PerformanceHeader } from '../components/results/PerformanceHeader';
 import { PolarTab } from '../components/results/PolarTab';
 import { PsychoacousticsTab } from '../components/results/PsychoacousticsTab';
 import { PWMPointSidebar } from '../components/results/PWMPointSidebar';
+import { ThrustRanking } from '../components/results/ThrustRanking';
 
 type Tab = 'fft' | 'polar' | 'custom' | 'psy' | 'live';
 
@@ -123,6 +124,11 @@ function ResultsBody({ keySlug, tab }: { keySlug: string; tab: Tab }) {
           onSelect={(id) => { setSelectedId(id); setDrilldownTStart(null); }}
           onDrilldown={(_mergedId, t) => setDrilldownTStart(t)}
         />
+        {(tab === 'fft' || tab === 'polar') && (
+          <div className="mt-4 lg:sticky lg:top-4">
+            <ThrustRanking series={compare.series} />
+          </div>
+        )}
       </aside>
 
       <div className="space-y-4 min-w-0">
