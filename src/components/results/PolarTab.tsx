@@ -7,7 +7,7 @@ import { type LevelSource, levelForSource } from './levelSource';
 import { LevelSourceSelector } from './LevelSourceSelector';
 import { type CompareSeries, type CompareSeriesApi, SeriesPicker } from './compareSeries';
 import {
-  DEFAULT_BAND,
+  FREQ_MAX,
   FrequencyBandSelector,
   type FreqBand,
 } from './FrequencyBandSelector';
@@ -35,12 +35,14 @@ function micsByRepeat(s: CompareSeries): Map<number, AcousticInPoint[]> {
   return new Map([...out.entries()].sort(([a], [b]) => a - b));
 }
 
+const POLAR_DEFAULT_BAND: FreqBand = { low_hz: 500, high_hz: FREQ_MAX };
+
 export function PolarTab({ compare }: Props) {
   const { series, keys, labelForKey, addSeries, removeSeries } = compare;
   const [ffts, setFfts] = useState<Record<string, FFTResponse>>({});
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<Error | null>(null);
-  const [band, setBand] = useState<FreqBand>(DEFAULT_BAND);
+  const [band, setBand] = useState<FreqBand>(POLAR_DEFAULT_BAND);
   const [source, setSource] = useState<LevelSource>({ kind: 'band' });
   const [rangeMode, setRangeMode] = useState<180 | 360>(180);
   const [showRepeats, setShowRepeats] = useState(false);
