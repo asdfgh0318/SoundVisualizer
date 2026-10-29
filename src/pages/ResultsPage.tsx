@@ -7,7 +7,7 @@ import { FFTTab } from '../components/results/FFTTab';
 import { LiveTab } from '../components/results/LiveTab';
 import { KeyPicker } from '../components/results/KeyPicker';
 import { PerformanceHeader } from '../components/results/PerformanceHeader';
-import { PolarTab } from '../components/results/PolarTab';
+import { type ArcLevels, PolarTab } from '../components/results/PolarTab';
 import { PsychoacousticsTab } from '../components/results/PsychoacousticsTab';
 import { PWMPointSidebar } from '../components/results/PWMPointSidebar';
 import { ThrustRanking } from '../components/results/ThrustRanking';
@@ -50,6 +50,7 @@ function ResultsBody({ keySlug, tab }: { keySlug: string; tab: Tab }) {
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [drilldownTStart, setDrilldownTStart] = useState<string | null>(null);
   const [reloadKey, setReloadKey] = useState(0);
+  const [arcLevels, setArcLevels] = useState<ArcLevels | null>(null);
 
   useEffect(() => {
     let cancelled = false;
@@ -126,7 +127,7 @@ function ResultsBody({ keySlug, tab }: { keySlug: string; tab: Tab }) {
         />
         {(tab === 'fft' || tab === 'polar') && (
           <div className="mt-4 lg:sticky lg:top-4">
-            <ThrustRanking series={compare.series} />
+            <ThrustRanking series={compare.series} arcLevels={tab === 'polar' ? arcLevels : null} />
           </div>
         )}
       </aside>
@@ -134,7 +135,7 @@ function ResultsBody({ keySlug, tab }: { keySlug: string; tab: Tab }) {
       <div className="space-y-4 min-w-0">
         <PerformanceHeader point={effectivePoint} drilldownTStart={drilldownTStart} />
         {tab === 'fft' && <FFTTab compare={compare} />}
-        {tab === 'polar' && <PolarTab compare={compare} />}
+        {tab === 'polar' && <PolarTab compare={compare} onArcLevels={setArcLevels} />}
         {tab === 'custom' && (
           <CustomTab
             keySlug={keySlug}

@@ -15,6 +15,14 @@ import { type PolarPoint, PolarPlotFrame, type PolarSeries } from './PolarPlot';
 
 interface Props {
   compare: CompareSeriesApi;
+  onArcLevels?: (a: ArcLevels) => void;
+}
+
+/** One number per series for ranking: energy mean over the mics of each mic's repeat-mean level. */
+export interface ArcLevels {
+  bySeries: Record<string, number>;
+  unit: string;
+  what: string;
 }
 
 const FFT_SETTINGS = { window: 'hann' as const, size: 4096, overlap: 0.5 };
@@ -37,7 +45,7 @@ function micsByRepeat(s: CompareSeries): Map<number, AcousticInPoint[]> {
 
 const POLAR_DEFAULT_BAND: FreqBand = { low_hz: 500, high_hz: FREQ_MAX };
 
-export function PolarTab({ compare }: Props) {
+export function PolarTab({ compare, onArcLevels }: Props) {
   const { series, keys, labelForKey, addSeries, removeSeries } = compare;
   const [ffts, setFfts] = useState<Record<string, FFTResponse>>({});
   const [loading, setLoading] = useState(false);
@@ -138,6 +146,27 @@ export function PolarTab({ compare }: Props) {
     });
   }, [series, repeatsBySeries, showRepeats, ffts, band, source]);
 
+  const arcLevelBySeries = useMemo(() => {
+    const out: Record<string, number> = {};
+    for (const s of series) {
+      const byRepeat = repeatsBySeries.get(s.id);
+      const groups = byRepeat && byRepeat.size > 1 ? [...byRepeat.values()] : [s.acoustic];
+      const byElev = new Map<number, number[]>();
+      for (const mics of groups) {
+        for (const a of mics) {
+          const fft = ffts[a.id];
+          const l = fft ? levelForSource(fft, source, band) : Number.NaN;
+          if (!Number.isFinite(l)) continue;
+          byElev.set(a.elevation_deg, [...(byElev.get(a.elevation_deg) ?? []), l]);
+        }
+      }
+      const perMic = [...byElev.values()].map((ls) => ls.reduce((x, y) => x + y, 0) / ls.length);
+      if (!perMic.length) continue;
+      out[s.id] = 10 * Math.log10(perMic.reduce((acc, l) => acc + 10 ** (l / 10), 0) / perMic.length);
+    }
+    return out;
+  }, [series, repeatsBySeries, ffts, band, source]);
+
   const allAbsolute =
     allAcoustic.length > 0 && allAcoustic.every((a) => ffts[a.id]?.absolute_spl);
   const mixedAbsolute = allAcoustic.some((a) => ffts[a.id]?.absolute_spl) && !allAbsolute;
@@ -147,6 +176,14 @@ export function PolarTab({ compare }: Props) {
   );
   const unit = allAbsolute ? 'dB SPL' : 'dBFS';
   const drawable = polarSeries.filter((s) => s.points.length >= 2);
+  const levelWhat =
+    source.kind === 'tone'
+      ? `BPF harmonic ${source.harmonic}`
+      : `${Math.round(band.low_hz)}–${Math.round(band.high_hz)} Hz${source.kind === 'broadband' ? ', tones notched' : ''}`;
+
+  useEffect(() => {
+    onArcLevels?.({ bySeries: arcLevelBySeries, unit, what: levelWhat });
+  }, [onArcLevels, arcLevelBySeries, unit, levelWhat]);
 
   return (
     <div className="space-y-4">
