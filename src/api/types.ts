@@ -6,6 +6,9 @@ export interface Key {
   shroud: string;
   notes: string;
   slug: string;
+  /** Span of the base's captures, UTC; only on listings (GET /keys). */
+  first_measured_at?: string | null;
+  last_measured_at?: string | null;
 }
 
 /** 'full' = single-pass: all mics record simultaneously. 'top' / 'bottom' kept

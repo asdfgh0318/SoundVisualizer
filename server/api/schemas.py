@@ -19,6 +19,14 @@ class Key(BaseModel):
         return key_slug(self.motor, self.propeller, self.shroud, self.notes)
 
 
+class KeyListing(Key):
+    """A base as the pickers list it: the key plus the span of its captures, so two bases of
+    the same material can be told apart by date. Not written to key.json."""
+
+    first_measured_at: datetime | None = None
+    last_measured_at: datetime | None = None
+
+
 class MeasurementHalf(StrEnum):
     """Which half-config the mics were in during this capture.
 

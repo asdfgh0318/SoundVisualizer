@@ -1,13 +1,13 @@
 from fastapi import APIRouter, HTTPException
 
-from server.api.schemas import Key
+from server.api.schemas import Key, KeyListing
 from server.store import keys as store
 
 router = APIRouter(prefix="/keys", tags=["keys"])
 
 
 @router.get("")
-def list_keys() -> list[Key]:
+def list_keys() -> list[KeyListing]:
     return store.list_keys()
 
 

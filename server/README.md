@@ -16,7 +16,7 @@ uvicorn server.main:app --reload --port 8000
 # → http://localhost:8000/docs   (OpenAPI / Swagger)
 ```
 
-Tests: `pytest server/tests/` (128 passing). Lint: `ruff check server/ scripts/`.
+Tests: `pytest server/tests/` (129 passing). Lint: `ruff check server/ scripts/`.
 
 ## Layout
 
@@ -56,7 +56,7 @@ server/
     paths.py keys.py measurements.py calibration.py
     setup_presets.py compat_tolerances.py psychoacoustics.py (versioned metrics cache)
   vendor/pawel/      # Vendored — Paweł's Tyto MSP + Norsonic protocol code
-  tests/             # 128 passing tests
+  tests/             # 129 passing tests
 ```
 
 ## Conventions
@@ -79,7 +79,7 @@ GET  /setup-presets
 POST /setup-presets
 GET  /setup-presets/{id}
 DELETE /setup-presets/{id}
-GET  /keys
+GET  /keys                        # each base + first/last capture time (UTC)
 POST /keys
 GET  /keys/{slug}
 GET  /keys/{slug}/measurements

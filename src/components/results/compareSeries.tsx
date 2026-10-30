@@ -3,7 +3,7 @@ import { api } from '../../api/client';
 import type { AcousticInPoint, Key, MergedPWMPoint, UnderlyingCapture } from '../../api/types';
 import { BASE_HELP } from '../../content/parameterHelp';
 import { InfoToggle } from '../ui/InfoToggle';
-import { keyLabel, seriesLabel } from './keyLabel';
+import { captureDays, keyLabel, localDay, seriesLabel } from './keyLabel';
 
 // Series #0 is always the indigo base (the currently selected point); extras cycle the rest.
 export const SERIES_PALETTE = ['#818cf8', '#f472b6', '#34d399', '#fb923c', '#22d3ee', '#a78bfa', '#facc15'];
@@ -29,6 +29,11 @@ export interface CompareSeriesApi {
   addSeries: (s: CompareSeries) => void;
   removeSeries: (id: string) => void;
 }
+
+const withDays = (label: string, underlying: UnderlyingCapture[]) => {
+  const days = captureDays(underlying.map((u) => u.t_start));
+  return days ? `${label} · ${days}` : label;
+};
 
 /** Manages the overlay series list: base (the selected point) + user-added extras,
  *  with cycled colors and human labels resolved from the key list. Lifted to the
@@ -59,7 +64,7 @@ export function useCompareSeries(keySlug: string, point: MergedPWMPoint | null):
       pwm_us: point.pwm_us,
       acoustic: point.acoustic,
       underlying: point.underlying,
-      label: `${labelForKey(keySlug)} · ${point.pwm_us}µs`,
+      label: withDays(`${labelForKey(keySlug)} · ${point.pwm_us}µs`, point.underlying),
       color: SERIES_PALETTE[0],
     };
     const rest = extra
@@ -74,8 +79,6 @@ export function useCompareSeries(keySlug: string, point: MergedPWMPoint | null):
 
   return { series, keys, labelForKey, addSeries, removeSeries };
 }
-
-const localDay = (iso: string) => new Date(iso).toLocaleDateString('sv');
 
 /** One series per base at `pwmUs`, holding only the captures of that base's most recent day
  *  within [from, to]; captures from other days are dropped even when they merged into the
@@ -188,7 +191,7 @@ export function SeriesPicker({
       pwm_us: p.pwm_us,
       acoustic: p.acoustic,
       underlying: p.underlying,
-      label: `${labelForKey(selKey)} · ${p.pwm_us}µs`,
+      label: withDays(`${labelForKey(selKey)} · ${p.pwm_us}µs`, p.underlying),
       color: '',
     });
   };

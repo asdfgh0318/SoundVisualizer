@@ -114,3 +114,16 @@ def test_api_dev_seed(client):
     # 2 halves * 2 PWM steps * (1 performance + 4 acoustic) = 4 perf + 16 acoustic
     assert len(body["performance"]) == 4
     assert len(body["acoustic"]) == 16
+
+
+def test_key_listing_carries_capture_span():
+    k = Key(motor="m", propeller="p", shroud="s", notes="dated")
+    keys.create_key(k)
+    assert keys.list_keys()[0].first_measured_at is None
+    for t in (datetime(2026, 10, 28, 19, 10, 9, tzinfo=UTC), datetime(2026, 10, 30, 16, 0, 0, tzinfo=UTC)):
+        meta = PerformanceMeasurementMeta(t_start=t, t_end=t + timedelta(seconds=1), pwm_setpoint=2000)
+        measurements.create_measurement(k.slug, meta, telemetry_csv=b"t\n")
+    (listing,) = keys.list_keys()
+    assert listing.first_measured_at == datetime(2026, 10, 28, 19, 10, 9, tzinfo=UTC)
+    assert listing.last_measured_at == datetime(2026, 10, 30, 16, 0, 0, tzinfo=UTC)
+    assert "first_measured_at" not in (keys.key_dir(k.slug) / "key.json").read_text()
