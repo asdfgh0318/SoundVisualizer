@@ -6,12 +6,14 @@ The present r27 duct, unlined, gives −8.01 N at 2000 µs against −10.57 N fo
 propeller (2026-11-02), so it costs thrust. This one is meant to add it. **Untested: nothing
 here has been printed or run yet.**
 
-**Pusher layout (2026-11-02, Adam's choice):** air enters through the lip, passes the Tyto motor
-plate, the hub and three aerofoil struts and the motor, then the propeller, and leaves through the
-diffuser. The motor hangs from the hub, shaft down to the propeller. It needs a pusher propeller
-(APC 8x4.5MRP) or the motor reversed with the propeller flipped, and the stand will read thrust
-with the opposite sign to a tractor set-up. The stand and its motor plate now sit in the inflow,
-upstream of the lip.
+**Pusher layout (2026-11-02, Adam's choice):** the first duct's shape, with the motor moved to
+the inlet side. Air enters through the lip past the Tyto motor plate, the spider and the motor,
+goes through the propeller and leaves through the diffuser. The spider sits 20 mm above the lip:
+a hub on the motor's rear face and three plain box arms that reach past the lip and drop as legs
+down the outside of the duct, each held by one radial M3 screw into a heat-set insert in the
+outer wall. Nothing crosses the outlet and the inside of the duct stays smooth. It needs a pusher
+propeller (APC 8x4.5MRP) or the motor reversed with the propeller flipped, and the stand will
+read thrust with the opposite sign to a tractor set-up.
 
 ![half-section](section.png)
 
@@ -20,15 +22,10 @@ upstream of the lip.
 | tip gap | 1.0 mm (throat Ø205.2) | 1: as small as can be built |
 | inlet lip radius | 25 mm = 12.2 % D<sub>t</sub> | 2: 10–13 % D<sub>t</sub>, never under ~6 % |
 | wall at the propeller plane | 30 mm (outer Ø265.2) | 3: ≥ 10 % of D = 20.3 mm |
-| propeller disc | 107 mm below the lip edge, 66 % of the length | 4: well behind the lip; rearward is better static |
+| propeller disc | 35 mm below the lip edge, 39 % of the length | 4: behind the lip (NASA: 45 %) |
 | diffuser | 10°, 45 mm, exit Ø221.1, exit/disc area 1.18 | 5: 10°, area ratio 1.1–1.3 |
-| struts | 3 × NACA 0015, 22 mm chord, trailing edges 55 mm (27 % D<sub>t</sub>) upstream of the disc | 6: well clear of the rotor; odd count so the two blades never pass two struts at once |
-| length | 162 mm | |
-
-Upstream struts put their wakes into the propeller, which is why they sit as far forward of it
-as the motor allows and have an aerofoil section. That reasoning is mine, not from the
-extracts; the 5.5 % D<sub>t</sub> spacing rule in the PDF is the only sourced number for strut
-placement.
+| spider | hub + 3 box arms (8 × 12 mm) 20 mm above the lip, legs down the outer wall | 6: supports out of the rotor plane (55 mm upstream of the disc) |
+| length | 90 mm | |
 
 ## Files
 
@@ -42,15 +39,15 @@ openscad -D 'part="spider"'  -o spider.stl       duct.scad
 ```
 
 - `duct.scad` — the model; every number above is a parameter at the top. Changing
-  `prop_to_mount` moves the hub and struts and lengthens or shortens the throat to suit.
-- `duct_quarter.stl` — print **4×** (133 × 133 × 162 mm, exit face on the bed); 6 pin holes
-  Ø3.2 per cut face for 3 mm pins or filament offcuts, then glue. Each strut root sits in a 3 mm
-  pocket in the throat wall and is held by one M3 screw from outside (counterbored) into a
-  heat-set insert in the strut root.
+  `prop_to_mount` moves the spider; the model refuses (assert) if the motor face would end up
+  inside the lip.
+- `duct_quarter.stl` — print **4×** (133 × 133 × 90 mm, exit face on the bed); 4 pin holes
+  Ø3.2 per cut face for 3 mm pins or filament offcuts, then glue. Three of the quarters' outer
+  walls carry an M3 heat-set insert for a spider leg.
 - `duct_full.stl` — the whole ring, for a bed of at least 270 mm.
-- `spider.stl` — hub + 3 aerofoil struts (180 × 180 × 22 mm), prints flat on the motor-side face.
-  The motor bolts to its downstream face and the Tyto motor plate to its upstream face, on the
-  same long M3 bolts (stand plate → hub → motor).
+- `spider.stl` — hub + 3 arms + legs (238 × 238 × 60 mm), exported arms-down so it prints with
+  no supports; needs a bed of at least 240 mm. The motor bolts to its downstream face and the
+  Tyto motor plate to its upstream face, on the same long M3 bolts (stand plate → spider → motor).
 - `viewer.html` — interactive 3D view in the browser (three.js from the CDN; built from the same
   numbers as `duct.scad`, so keep the two in step). Open it with `/snap/bin/brave viewer.html`.
 - `render.py` — redraws `section.png` and `assembly.png` (OpenSCAD's own PNG export needs a display).
@@ -62,7 +59,7 @@ The motor dimensions in `duct.scad` are **placeholders, not verified data** (mar
 - `prop_to_mount` (55 mm) — propeller disc to the motor's rear mounting face, with the prop adapter fitted;
 - `mount_holes_n`, `mount_holes_pcd` (4 on Ø25) — the AXI 2217 rear-mount hole pattern, which the Tyto plate must share;
 - `hub_hole_d` (12 mm) — clearance for whatever protrudes from the motor's rear;
-- `blade_below` (10 mm) — straight throat below the disc; must cover the blade tips' axial extent.
+- `throat_len` (20 mm) — straight throat around the disc; must cover the blade tips' axial extent.
 
 Measure the real tip gap after assembly with a feeler gauge. A ring printed in four pieces will
 not be round to 0.1 mm, so sand the throat until the tightest blade clears everywhere.

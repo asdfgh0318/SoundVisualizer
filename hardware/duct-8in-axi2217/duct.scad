@@ -1,61 +1,60 @@
 // Pusher duct for the APC 8x4.5MR(P) on the AXI 2217/12, one piece with the motor on the Tyto 1585 stand.
 // Geometry follows docs/acoustic-speculations/duct-inlet-design-rules.pdf (derived from the
 // verified extracts in the papers repo): ~1 mm tip gap, lip radius ~12 % of the throat diameter,
-// wall >= 10 % of D at the propeller plane, propeller well behind the lip, 10 deg diffuser,
-// exit area ratio 1.1-1.3, supports well clear of the rotor.
+// wall >= 10 % of D at the propeller plane, propeller behind the lip, 10 deg diffuser,
+// exit area ratio 1.1-1.3.
 //
-// Pusher layout: air enters at the top (inlet lip), passes the stand plate, the hub and the
-// three aerofoil struts and the motor, then the propeller, then leaves through the diffuser at
-// the bottom. The motor hangs from the hub with its shaft pointing down to the propeller; the
-// Tyto motor plate bolts onto the hub from upstream, on the same bolts as the motor.
-// Thrust pushes the duct towards the stand, so it reads with the opposite sign to a tractor.
-// Needs a pusher propeller (APC 8x4.5MRP) or the motor reversed with the propeller flipped.
+// Pusher layout: the motor sits upstream of the propeller, on the inlet side. Air enters at the
+// top past the Tyto motor plate, the spider and the motor, goes through the propeller and leaves
+// through the diffuser at the bottom. The spider sits above the inlet; its three arms reach past
+// the lip and drop as legs down the outside of the duct, each held by one radial M3 screw into a
+// heat-set insert in the outer wall, so nothing crosses the outlet and the inside stays smooth.
+// Needs a pusher propeller (APC 8x4.5MRP) or the motor reversed with the propeller flipped; the
+// stand reads thrust with the opposite sign to a tractor set-up.
 //
 // z = 0 is the exit (flat face, print the duct quarters on it).
 //   openscad -D 'part="quarter"' -o duct_quarter.stl duct.scad   // print 4x, pin + glue
 //   openscad -D 'part="duct"'    -o duct_full.stl    duct.scad   // whole ring (~265 mm)
-//   openscad -D 'part="spider"'  -o spider.stl       duct.scad   // hub + 3 aerofoil struts, printed flat
+//   openscad -D 'part="spider"'  -o spider.stl       duct.scad   // print arms-down, legs up
 
 part = "assembly";   // duct | quarter | spider | assembly
 
 // ---- propeller and gap ----
-prop_d    = 203.2;   // APC 8x4.5MR(P), 8 in
-tip_gap   = 1.0;     // rule 1: as small as can be built; check the real gap with a feeler gauge
-throat_r  = prop_d / 2 + tip_gap;
-blade_below = 10;    // straight throat below the disc, covers the blade tips' axial extent [MEASURE]
+prop_d   = 203.2;    // APC 8x4.5MR(P), 8 in
+tip_gap  = 1.0;      // rule 1: as small as can be built; check the real gap with a feeler gauge
+throat_r = prop_d / 2 + tip_gap;
 
 // ---- inlet ----
 lip_r     = 25;      // rule 2: ~12 % of throat diameter (6 % minimum = 12 mm)
 lip_out_r = 5;
 wall      = 30;      // rule 3: >= 0.1 * prop_d = 20 mm at the propeller plane
+throat_len = 20;     // straight section around the propeller disc; must cover the blade tips' axial extent
+
+// ---- outlet ----
+diff_angle = 10;     // rule 5
+diff_len   = 45;     // exit area ratio ~1.18 at 10 deg
+exit_r     = throat_r + diff_len * tan(diff_angle);
+outer_r    = throat_r + wall;
+outer_exit_r = exit_r + 14.5;
 
 // ---- motor stack (MEASURE these before printing) ----
 prop_to_mount   = 55;    // propeller disc to the motor's rear mounting face, mm   [MEASURE]
 mount_holes_n   = 4;     // AXI 2217 rear mount                                    [MEASURE]
 mount_holes_pcd = 25;    // hole circle diameter                                   [MEASURE]
-mount_hole_d    = 3.2;   // M3 clearance; long M3 bolts go stand plate -> hub -> motor
+mount_hole_d    = 3.2;   // M3 clearance; long M3 bolts go stand plate -> spider -> motor
 hub_hole_d      = 12;    // clearance for the shaft end / circlip / bearing boss   [MEASURE]
 
-// ---- outlet ----
-diff_angle = 10;                              // rule 5
-diff_len   = 45;                              // exit area ratio ~1.18 at 10 deg
-exit_r     = throat_r + diff_len * tan(diff_angle);
-outer_exit_r = exit_r + 14.5;
-
-// ---- hub and struts (upstream of the propeller) ----
+// ---- spider: hub on the motor's rear face, 3 box arms, legs down the outer wall ----
+arms_n     = 3;
+arm_w      = 8;       // tangential width
+arm_t      = 12;      // axial thickness of hub and arms
 hub_r      = 22;
-hub_t      = 22;     // = strut_chord, so hub and struts print flat on the motor-side face
-struts_n   = 3;       // odd, so the two blades never pass two struts at once
-strut_chord = 22;     // along the flow
-strut_tc   = 0.15;    // NACA 0015 section
-root_w     = 8;       // thickened root that carries the M3 heat-set insert
-root_len   = 12;      // radial length of the thickened root
-pocket     = 3;       // root sits this deep in the duct wall
-insert_d   = 4.0;     // M3 heat-set insert
-insert_depth = 8;
+leg_t      = 7;       // radial thickness of the legs
+leg_bolt_z = 70;      // height of the leg screws on the outer wall (outer wall is straight from z_prop to the lip)
+insert_d   = 4.0;     // M3 heat-set insert in the duct wall
+insert_depth = 10;
 screw_d    = 3.4;
-cbore_d    = 6.5;     // counterbore for the screw head, from the outside of the duct
-strut_angle0 = 45;    // keeps the struts off the quarter cut planes (0/90/180/270)
+arm_angle0 = 45;      // keeps the legs off the quarter cut planes (0/90/180/270)
 
 // ---- quarter split ----
 pin_d     = 3.2;
@@ -63,18 +62,14 @@ pin_depth = 8;
 
 $fn = 180;
 
-z_prop   = diff_len + blade_below;
-z_hub0   = z_prop + prop_to_mount;               // motor rear face = hub's downstream face
-z_strut  = z_hub0 + strut_chord / 2;             // strut mid-chord; struts flush with the hub
-z_lip0   = z_strut + strut_chord / 2 + 5;        // straight throat ends above the struts
-z_top    = z_lip0 + lip_r;
+z_prop  = diff_len + throat_len / 2;
+z_lip0  = diff_len + throat_len;
+z_top   = z_lip0 + lip_r;
+z_mount = z_prop + prop_to_mount;            // motor rear face = spider's downstream face
 highlight_r = throat_r + lip_r;
-outer_r  = throat_r + wall;
+leg_r0  = outer_r + 0.3;                     // leg inner face, just clear of the outer wall
 
 function arc(c, r, a0, a1, n = 24) = [for (i = [0:n]) let(a = a0 + (a1 - a0) * i / n) [c[0] + r * cos(a), c[1] + r * sin(a)]];
-function naca_half(c, t, n = 30) = [for (i = [0:n]) let(x = (1 - cos(180 * i / n)) / 2)
-    [x * c, 5 * t * c * (0.2969 * sqrt(x) - 0.1260 * x - 0.3516 * x * x + 0.2843 * pow(x, 3) - 0.1036 * pow(x, 4))]];
-function naca(c, t) = let(h = naca_half(c, t)) concat(h, [for (i = [len(h) - 2:-1:1]) [h[i][0], -h[i][1]]]);
 
 profile = concat(
     [[exit_r, 0], [throat_r, diff_len], [throat_r, z_lip0]],
@@ -85,25 +80,21 @@ profile = concat(
 
 assert(highlight_r + lip_out_r >= outer_r - 0.01, "lip and wall do not meet; raise lip_r or lower wall");
 assert(wall >= 0.1 * prop_d, "rule 3: wall thinner than 10 % of the propeller diameter");
-assert(z_strut - strut_chord / 2 - z_prop >= 0.055 * 2 * throat_r, "rule 6: struts closer than ~5.5 % Dt to the disc");
+assert(z_mount > z_top + 2, "motor mount face is inside the lip; the spider would hit the duct");
+assert(leg_bolt_z > z_prop && leg_bolt_z < z_top - lip_out_r - 6, "leg screw must land on the straight outer wall");
 
-module at_struts() { for (i = [0:struts_n - 1]) rotate([0, 0, strut_angle0 + i * 360 / struts_n]) children(); }
+module at_arms() { for (i = [0:arms_n - 1]) rotate([0, 0, arm_angle0 + i * 360 / arms_n]) children(); }
 
 module duct() {
     difference() {
         rotate_extrude() polygon(profile);
-        at_struts() {
-            translate([throat_r - 0.01, -root_w / 2 - 0.3, z_strut - strut_chord / 2 - 0.3])
-                cube([pocket + 0.01, root_w + 0.6, strut_chord + 0.6]);                  // root pocket
-            translate([throat_r, 0, z_strut]) rotate([0, 90, 0]) cylinder(d = screw_d, h = wall + 10, $fn = 24);
-            translate([throat_r + 8, 0, z_strut]) rotate([0, 90, 0]) cylinder(d = cbore_d, h = wall + 10, $fn = 32);
-        }
+        at_arms() translate([outer_r - insert_depth, 0, leg_bolt_z]) rotate([0, 90, 0]) cylinder(d = insert_d, h = insert_depth + 1, $fn = 24);
     }
 }
 
 module quarter() {
     pin_rs = [throat_r + 0.3 * wall, throat_r + 0.7 * wall];
-    pin_zs = [diff_len / 2 + 5, z_prop + 20, z_lip0 - 10];
+    pin_zs = [z_prop - 15, z_prop + 8];
     difference() {
         intersection() { duct(); translate([0, 0, -1]) cube([400, 400, 400]); }
         for (r = pin_rs, z = pin_zs) {
@@ -113,40 +104,35 @@ module quarter() {
     }
 }
 
-// Hub and struts in place (z = hub's downstream face at z_hub0).
+// In place: downstream face of hub and arms at z_mount.
 module spider() {
+    leg_len = z_mount + arm_t - (leg_bolt_z - 8);
     difference() {
         union() {
-            translate([0, 0, z_hub0]) cylinder(r = hub_r, h = hub_t);
-            at_struts() {
-                // aerofoil strut: chord along z, thickness tangential, extruded radially
-                translate([hub_r - 3, 0, z_strut + strut_chord / 2]) rotate([0, 90, 0])
-                    linear_extrude(throat_r + pocket - 0.3 - (hub_r - 3)) rotate([0, 0, 0]) polygon(naca(strut_chord, strut_tc));
-                hull() {                                   // thickened root carrying the insert
-                    translate([throat_r - root_len, -strut_tc * strut_chord / 2, z_strut - strut_chord / 2]) cube([0.1, strut_tc * strut_chord, strut_chord]);
-                    translate([throat_r - 4, -root_w / 2, z_strut - strut_chord / 2]) cube([4 + pocket - 0.3, root_w, strut_chord]);
-                }
+            translate([0, 0, z_mount]) cylinder(r = hub_r, h = arm_t);
+            at_arms() {
+                translate([0, -arm_w / 2, z_mount]) cube([leg_r0 + leg_t, arm_w, arm_t]);
+                translate([leg_r0, -arm_w / 2, leg_bolt_z - 8]) cube([leg_t, arm_w, leg_len]);
             }
         }
-        translate([0, 0, z_hub0 - 1]) cylinder(d = hub_hole_d, h = hub_t + 2);
-        for (i = [0:mount_holes_n - 1]) rotate([0, 0, 45 + i * 360 / mount_holes_n])
-            translate([mount_holes_pcd / 2, 0, z_hub0 - 1]) cylinder(d = mount_hole_d, h = hub_t + 2, $fn = 24);
-        at_struts() translate([throat_r + pocket - 0.3 - insert_depth, 0, z_strut]) rotate([0, 90, 0]) cylinder(d = insert_d, h = insert_depth + 1, $fn = 24);
+        translate([0, 0, z_mount - 1]) cylinder(d = hub_hole_d, h = arm_t + 2);
+        for (i = [0:mount_holes_n - 1]) rotate([0, 0, i * 360 / mount_holes_n])
+            translate([mount_holes_pcd / 2, 0, z_mount - 1]) cylinder(d = mount_hole_d, h = arm_t + 2, $fn = 24);
+        at_arms() translate([leg_r0 - 1, 0, leg_bolt_z]) rotate([0, 90, 0]) cylinder(d = screw_d, h = leg_t + 2, $fn = 24);
     }
 }
 
 module prop_disc() { color("orange", 0.5) translate([0, 0, z_prop - 1]) cylinder(d = prop_d, h = 2); }
 module motor()     { color("gray") translate([0, 0, z_prop + 12]) cylinder(d = 28, h = prop_to_mount - 12); }   // placeholder body
-module stand()     { color("DimGray", 0.6) translate([-20, -20, z_hub0 + hub_t]) cube([40, 40, 4]); }           // Tyto motor plate, placeholder
+module stand()     { color("DimGray", 0.6) translate([-20, -20, z_mount + arm_t]) cube([40, 40, 4]); }          // Tyto motor plate, placeholder
 
 if (part == "duct") duct();
 else if (part == "quarter") quarter();
-else if (part == "spider") translate([0, 0, -z_hub0]) spider();
+else if (part == "spider") translate([0, 0, z_mount + arm_t]) rotate([180, 0, 0]) spider();   // arms on the bed, legs up
 else { color("SteelBlue") duct(); color("DimGray") spider(); motor(); stand(); prop_disc(); }
 
 echo(str("throat diameter ", 2 * throat_r, " mm; outer diameter ", 2 * outer_r,
          " mm; exit diameter ", 2 * exit_r, " mm; exit area / disc area ", pow(exit_r / (prop_d / 2), 2),
          "; lip radius ", 100 * lip_r / (2 * throat_r), " % Dt; propeller ", z_top - z_prop,
-         " mm below the lip edge (", 100 * (z_top - z_prop) / z_top, " % of the length); struts ",
-         z_strut - strut_chord / 2 - z_prop, " mm upstream of the disc (", 100 * (z_strut - strut_chord / 2 - z_prop) / (2 * throat_r),
-         " % Dt); total length ", z_top, " mm"));
+         " mm below the lip edge (", 100 * (z_top - z_prop) / z_top, " % of the length); motor mount face ",
+         z_mount - z_top, " mm above the lip; total length ", z_top, " mm"));

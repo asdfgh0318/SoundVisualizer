@@ -23,22 +23,21 @@
   <div class="dim" id="dims"></div>
   <label><input type="checkbox" id="cut" checked> cut away a quarter</label>
   <label><input type="checkbox" id="prop" checked> propeller disc</label>
-  <label><input type="checkbox" id="spider" checked> hub, struts, motor, stand plate (motor and plate: placeholder size)</label>
-  <div class="hint">Drag to rotate · scroll to zoom · right-drag to pan. Air enters at the top, past the stand, hub and struts, then the propeller.<br>Same parameters as duct.scad; motor sizes are not yet measured.</div>
+  <label><input type="checkbox" id="spider" checked> spider, motor, stand plate (motor and plate: placeholder size)</label>
+  <div class="hint">Drag to rotate · scroll to zoom · right-drag to pan. Air enters at the top, past the stand plate, spider and motor, then the propeller.<br>Same parameters as duct.scad; motor sizes are not yet measured.</div>
 </div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
 <script>
-const P = { prop_d: 203.2, tip_gap: 1.0, blade_below: 10, lip_r: 25, lip_out_r: 5, wall: 30, prop_to_mount: 55,
-            diff_angle: 10, diff_len: 45, hub_r: 22, struts_n: 3, strut_chord: 22, strut_tc: 0.15, root_w: 8, pocket: 3,
-            strut_angle0: 45 };
+const P = { prop_d: 203.2, tip_gap: 1.0, throat_len: 20, lip_r: 25, lip_out_r: 5, wall: 30, prop_to_mount: 55,
+            diff_angle: 10, diff_len: 45, hub_r: 22, arms_n: 3, arm_w: 8, arm_t: 12, leg_t: 7, leg_bolt_z: 70, arm_angle0: 45 };
 const rad = d => d * Math.PI / 180;
 const throat_r = P.prop_d / 2 + P.tip_gap;
 const diff_len = P.diff_len;
 const exit_r = throat_r + diff_len * Math.tan(rad(P.diff_angle));
-const outer_exit_r = exit_r + 14.5;
-const z_prop = diff_len + P.blade_below, z_hub0 = z_prop + P.prop_to_mount, z_strut = z_hub0 + P.strut_chord / 2;
-const z_lip0 = z_strut + P.strut_chord / 2 + 5, z_top = z_lip0 + P.lip_r;
+const outer_exit_r = exit_r + 14.5, outer_r = throat_r + P.wall;
+const z_prop = diff_len + P.throat_len / 2, z_lip0 = diff_len + P.throat_len, z_top = z_lip0 + P.lip_r;
+const z_mount = z_prop + P.prop_to_mount, leg_r0 = outer_r + 0.3;
 const hl = throat_r + P.lip_r;
 const arc = (cx, cz, r, a0, a1, n = 30) => Array.from({ length: n + 1 }, (_, i) => {
   const a = rad(a0 + (a1 - a0) * i / n); return [cx + r * Math.cos(a), cz + r * Math.sin(a)]; });
@@ -52,7 +51,7 @@ document.getElementById("dims").textContent =
   `disc below lip ${(z_top - z_prop).toFixed(0)} mm    (${(100 * (z_top - z_prop) / z_top).toFixed(0)} % of length)\n` +
   `diffuser       ${P.diff_angle}°, ${diff_len} mm, exit Ø${(2 * exit_r).toFixed(1)}\n` +
   `exit/disc area ${((exit_r / (P.prop_d / 2)) ** 2).toFixed(2)}\n` +
-  `struts end     ${(z_strut - P.strut_chord / 2 - z_prop).toFixed(0)} mm upstream of the disc\n` +
+  `motor face     ${(z_mount - z_top).toFixed(0)} mm above the lip\n` +
   `length         ${z_top} mm`;
 
 const canvas = document.getElementById("c");
@@ -97,32 +96,27 @@ const grey = new THREE.MeshStandardMaterial({ color: 0x555555, roughness: 0.7, s
 const motorLen = P.prop_to_mount - 12;
 const motor = new THREE.Mesh(new THREE.CylinderGeometry(14, 14, motorLen, 48), new THREE.MeshStandardMaterial({ color: 0x9aa0a4 }));
 motor.position.y = z_prop + 12 + motorLen / 2; mount.add(motor);
-const hub = new THREE.Mesh(new THREE.CylinderGeometry(P.hub_r, P.hub_r, P.strut_chord, 48), grey);
-hub.position.y = z_hub0 + P.strut_chord / 2; mount.add(hub);
+const hub = new THREE.Mesh(new THREE.CylinderGeometry(P.hub_r, P.hub_r, P.arm_t, 48), grey);
+hub.position.y = z_mount + P.arm_t / 2; mount.add(hub);
 const plate = new THREE.Mesh(new THREE.BoxGeometry(40, 4, 40), new THREE.MeshStandardMaterial({ color: 0x333333, transparent: true, opacity: 0.7 }));
-plate.position.y = z_hub0 + P.strut_chord + 2; mount.add(plate);
-function nacaShape(c, t, n = 30) {
-  const up = Array.from({ length: n + 1 }, (_, i) => { const x = (1 - Math.cos(Math.PI * i / n)) / 2;
-    return [x * c, 5 * t * c * (0.2969 * Math.sqrt(x) - 0.1260 * x - 0.3516 * x * x + 0.2843 * x ** 3 - 0.1036 * x ** 4)]; });
-  const pts = [...up, ...up.slice(1, -1).reverse().map(([x, y]) => [x, -y])];
-  return new THREE.Shape(pts.map(([x, y]) => new THREE.Vector2(x, y)));
-}
-const strutLen = throat_r + P.pocket - 0.3 - (P.hub_r - 3);
-const strutGeo = new THREE.ExtrudeGeometry(nacaShape(P.strut_chord, P.strut_tc), { depth: strutLen, bevelEnabled: false });
-for (let i = 0; i < P.struts_n; i++) {
-  const a = rad(P.strut_angle0 + i * 360 / P.struts_n);
+plate.position.y = z_mount + P.arm_t + 2; mount.add(plate);
+const legLen = z_mount + P.arm_t - (P.leg_bolt_z - 8);
+for (let i = 0; i < P.arms_n; i++) {
+  const a = rad(P.arm_angle0 + i * 360 / P.arms_n);
   const g = new THREE.Group();
-  const m = new THREE.Mesh(strutGeo, grey);
-  m.rotation.z = -Math.PI / 2;          // chord runs downward from the leading edge at the top
-  m.position.z = P.hub_r - 3;           // start inside the hub, extrude radially outward
-  g.add(m);
-  g.rotation.y = a + Math.PI / 2;
-  g.position.y = z_strut + P.strut_chord / 2;
+  const armLen = leg_r0 + P.leg_t;
+  const arm = new THREE.Mesh(new THREE.BoxGeometry(armLen, P.arm_t, P.arm_w), grey);
+  arm.position.set(armLen / 2, z_mount + P.arm_t / 2, 0); g.add(arm);
+  const leg = new THREE.Mesh(new THREE.BoxGeometry(P.leg_t, legLen, P.arm_w), grey);
+  leg.position.set(leg_r0 + P.leg_t / 2, P.leg_bolt_z - 8 + legLen / 2, 0); g.add(leg);
+  const screw = new THREE.Mesh(new THREE.CylinderGeometry(1.6, 1.6, P.leg_t + 10, 16), new THREE.MeshStandardMaterial({ color: 0xc0a040 }));
+  screw.rotation.z = Math.PI / 2; screw.position.set(leg_r0 + P.leg_t / 2 - 5, P.leg_bolt_z, 0); g.add(screw);
+  g.rotation.y = a;
   mount.add(g);
 }
 scene.add(mount);
 
-scene.add(new THREE.ArrowHelper(new THREE.Vector3(0, -1, 0), new THREE.Vector3(0, z_top + 90, 0), 60, 0x333333, 14, 8));
+scene.add(new THREE.ArrowHelper(new THREE.Vector3(0, -1, 0), new THREE.Vector3(70, z_mount + 70, 0), 60, 0x333333, 14, 8));
 scene.add(new THREE.ArrowHelper(new THREE.Vector3(0, -1, 0), new THREE.Vector3(0, -10, 0), 60, 0x333333, 14, 8));
 
 document.getElementById("cut").onchange = e => buildDuct(e.target.checked);
