@@ -1,0 +1,124 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Duct 8in Viewer</title>
+<style>
+  :root { --bg:#f4f6f7; --ink:#10171b; --ink-2:#46545c; --panel:#ffffffdd; }
+  @media (prefers-color-scheme: dark) { :root { --bg:#111619; --ink:#e6ecef; --ink-2:#a3b1b8; --panel:#1b2226dd; } }
+  html, body { margin:0; height:100%; background:var(--bg); color:var(--ink); font:13px/1.4 "IBM Plex Sans", "DejaVu Sans", Arial, sans-serif; }
+  #c { position:fixed; inset:0; }
+  .panel { position:fixed; top:12px; left:12px; max-width:min(330px, calc(100vw - 24px)); background:var(--panel);
+           padding:10px 12px; border-radius:8px; box-shadow:0 2px 10px #0002; }
+  h1 { font-size:15px; margin:0 0 6px; }
+  .dim { font-family:"IBM Plex Mono", "DejaVu Sans Mono", monospace; font-size:11.5px; color:var(--ink-2); margin:0 0 8px; white-space:pre; overflow-x:auto; }
+  label { display:block; margin:3px 0; cursor:pointer; }
+  .hint { font-size:11px; color:var(--ink-2); margin-top:6px; }
+</style>
+</head>
+<body>
+<canvas id="c"></canvas>
+<div class="panel">
+  <h1>Duct — APC 8x4.5MR on AXI 2217/12</h1>
+  <div class="dim" id="dims"></div>
+  <label><input type="checkbox" id="cut" checked> cut away a quarter</label>
+  <label><input type="checkbox" id="prop" checked> propeller disc</label>
+  <label><input type="checkbox" id="spider" checked> spider + motor (placeholder size)</label>
+  <div class="hint">Drag to rotate · scroll to zoom · right-drag to pan. Air enters at the top.<br>Same parameters as duct.scad; motor sizes are not yet measured.</div>
+</div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+<script>
+const P = { prop_d: 203.2, tip_gap: 1.0, lip_r: 25, lip_out_r: 5, wall: 30, throat_len: 20, prop_to_mount: 55, diff_angle: 10,
+            arms_n: 3, arm_w: 6, arm_depth: 12, hub_r: 22, hub_t: 5, arm_angle0: 30 };
+const rad = d => d * Math.PI / 180;
+const throat_r = P.prop_d / 2 + P.tip_gap;
+const diff_len = P.prop_to_mount - P.throat_len / 2;
+const exit_r = throat_r + diff_len * Math.tan(rad(P.diff_angle));
+const outer_exit_r = exit_r + 14.5;
+const z_lip0 = diff_len + P.throat_len, z_prop = diff_len + P.throat_len / 2, z_top = z_lip0 + P.lip_r;
+const hl = throat_r + P.lip_r;
+const arc = (cx, cz, r, a0, a1, n = 30) => Array.from({ length: n + 1 }, (_, i) => {
+  const a = rad(a0 + (a1 - a0) * i / n); return [cx + r * Math.cos(a), cz + r * Math.sin(a)]; });
+const prof = [[exit_r, 0], [throat_r, diff_len], [throat_r, z_lip0], ...arc(hl, z_lip0, P.lip_r, 180, 90),
+              ...arc(hl, z_top - P.lip_out_r, P.lip_out_r, 90, 0), [hl + P.lip_out_r, z_prop], [outer_exit_r, 0], [exit_r, 0]];
+
+document.getElementById("dims").textContent =
+  `tip gap        ${P.tip_gap.toFixed(1)} mm   (throat Ø${(2 * throat_r).toFixed(1)})\n` +
+  `lip radius     ${P.lip_r} mm    (${(100 * P.lip_r / (2 * throat_r)).toFixed(1)} % Dt)\n` +
+  `wall at disc   ${P.wall} mm    (outer Ø${(2 * (hl + P.lip_out_r)).toFixed(1)})\n` +
+  `disc below lip ${(z_top - z_prop).toFixed(0)} mm    (${(100 * (z_top - z_prop) / z_top).toFixed(0)} % of length)\n` +
+  `diffuser       ${P.diff_angle}°, ${diff_len} mm, exit Ø${(2 * exit_r).toFixed(1)}\n` +
+  `exit/disc area ${((exit_r / (P.prop_d / 2)) ** 2).toFixed(2)}\n` +
+  `length         ${z_top} mm`;
+
+const canvas = document.getElementById("c");
+const renderer = new THREE.WebGLRenderer({ canvas, antialias: true });
+renderer.setPixelRatio(window.devicePixelRatio);
+const scene = new THREE.Scene();
+const dark = matchMedia("(prefers-color-scheme: dark)").matches;
+scene.background = new THREE.Color(dark ? 0x111619 : 0xf4f6f7);
+const camera = new THREE.PerspectiveCamera(35, 1, 1, 5000);
+camera.position.set(380, 300, 420);
+const controls = new THREE.OrbitControls(camera, canvas);
+controls.target.set(0, 40, 0);
+scene.add(new THREE.HemisphereLight(0xffffff, 0x445566, 0.75));
+const sun = new THREE.DirectionalLight(0xffffff, 0.7); sun.position.set(300, 500, 200); scene.add(sun);
+
+const ductMat = new THREE.MeshStandardMaterial({ color: 0x4a7fa8, metalness: 0.05, roughness: 0.6, side: THREE.DoubleSide });
+const pts = prof.map(([r, z]) => new THREE.Vector2(r, z));
+let duct;
+function buildDuct(cut) {
+  if (duct) { scene.remove(duct); duct.children.forEach(c => c.geometry.dispose()); }
+  duct = new THREE.Group();
+  const phi = cut ? Math.PI * 1.5 : Math.PI * 2;
+  duct.add(new THREE.Mesh(new THREE.LatheGeometry(pts, 240, Math.PI * 0.5, phi), ductMat));
+  if (cut) {
+    const shape = new THREE.Shape(pts.map(p => new THREE.Vector2(p.x, p.y)));
+    const capMat = new THREE.MeshStandardMaterial({ color: 0x2d5878, side: THREE.DoubleSide });
+    for (const a of [Math.PI * 0.5, Math.PI * 2]) {
+      const cap = new THREE.Mesh(new THREE.ShapeGeometry(shape), capMat);
+      cap.rotation.y = a - Math.PI / 2; duct.add(cap);
+    }
+  }
+  scene.add(duct);
+}
+buildDuct(true);
+
+const propDisc = new THREE.Mesh(new THREE.CylinderGeometry(P.prop_d / 2, P.prop_d / 2, 1.5, 120),
+  new THREE.MeshStandardMaterial({ color: 0xd9822b, transparent: true, opacity: 0.45 }));
+propDisc.position.y = z_prop; scene.add(propDisc);
+
+const mount = new THREE.Group();
+const grey = new THREE.MeshStandardMaterial({ color: 0x555555, roughness: 0.7 });
+const motor = new THREE.Mesh(new THREE.CylinderGeometry(14, 14, P.prop_to_mount - 12, 48), new THREE.MeshStandardMaterial({ color: 0x9aa0a4 }));
+motor.position.y = (P.prop_to_mount - 12) / 2; mount.add(motor);
+const hub = new THREE.Mesh(new THREE.CylinderGeometry(P.hub_r, P.hub_r, P.hub_t, 48), grey);
+hub.position.y = -P.hub_t / 2; mount.add(hub);
+const tab_r = (exit_r + outer_exit_r) / 2;
+for (let i = 0; i < P.arms_n; i++) {
+  const a = rad(P.arm_angle0 + i * 360 / P.arms_n), len = tab_r - P.hub_r + 4;
+  const arm = new THREE.Mesh(new THREE.BoxGeometry(len, P.arm_depth, P.arm_w), grey);
+  const mid = P.hub_r - 4 + len / 2;
+  arm.position.set(mid * Math.cos(a), -P.arm_depth / 2, -mid * Math.sin(a)); arm.rotation.y = a; mount.add(arm);
+  const tab = new THREE.Mesh(new THREE.CylinderGeometry(7, 7, P.hub_t, 32), grey);
+  tab.position.set(tab_r * Math.cos(a), -P.hub_t / 2, -tab_r * Math.sin(a)); mount.add(tab);
+}
+scene.add(mount);
+
+const arrow = new THREE.ArrowHelper(new THREE.Vector3(0, -1, 0), new THREE.Vector3(0, z_top + 90, 0), 60, 0x333333, 14, 8);
+scene.add(arrow);
+
+document.getElementById("cut").onchange = e => buildDuct(e.target.checked);
+document.getElementById("prop").onchange = e => propDisc.visible = e.target.checked;
+document.getElementById("spider").onchange = e => mount.visible = e.target.checked;
+
+function resize() {
+  const w = innerWidth, h = innerHeight;
+  renderer.setSize(w, h, false); camera.aspect = w / h; camera.updateProjectionMatrix();
+}
+addEventListener("resize", resize); resize();
+(function loop() { requestAnimationFrame(loop); controls.update(); renderer.render(scene, camera); })();
+</script>
+</body>
+</html>

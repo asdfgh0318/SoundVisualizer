@@ -37,6 +37,8 @@ openscad -D 'part="spider"'  -o spider.stl       duct.scad
 - `spider.stl` — motor plate + 3 arms (218 × 191 × 12 mm), printed flat. It sits between the
   motor's rear mount and the Tyto motor plate, and bolts into three M3 heat-set inserts in the
   duct's exit face.
+- `viewer.html` — interactive 3D view in the browser (three.js from the CDN; built from the same
+  profile as `duct.scad`, so keep the two in step). Open it with `/snap/bin/brave viewer.html`.
 - `render.py` — redraws `section.png` and `assembly.png` (OpenSCAD's own PNG export needs a display).
 
 ## Measure before printing
