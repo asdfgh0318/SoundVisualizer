@@ -20,6 +20,15 @@ here has been printed or run yet.**
 
 ## Files
 
+The STLs are build output (the repo ignores `*.stl`); regenerate them after any change:
+
+```bash
+openscad -D 'part="quarter"' -o duct_quarter.stl duct.scad
+openscad -D 'part="duct"'    -o duct_full.stl    duct.scad
+openscad -D 'part="spider"'  -o spider.stl       duct.scad
+../../.venv/bin/python render.py   # section.png, assembly.png
+```
+
 - `duct.scad` — the model; every number above is a parameter at the top. Changing
   `prop_to_mount` moves the exit plane, so the spider always sits on the motor's rear mount.
 - `duct_quarter.stl` — print **4×** (133 × 133 × 90 mm, exit face on the bed); 4 pin holes
