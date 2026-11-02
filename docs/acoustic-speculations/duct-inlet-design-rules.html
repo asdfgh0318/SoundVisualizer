@@ -1,0 +1,160 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Duct Inlet Design Rules</title>
+<style>
+  @page { size: A4; margin: 10mm 13mm 9mm; }
+  :root {
+    --ink:#10171b; --ink-2:#46545c; --ink-3:#74828a; --rule:#c6d0d5; --rule-2:#e0e6e9;
+    --panel:#f1f4f6; --accent:#17566e; --accent-2:#0f7ba8; --signal:#8f5c0d; --fail:#96382a; --ok:#2f6b3a;
+    --serif:"Source Serif 4", Charter, "DejaVu Serif", Georgia, serif;
+    --sans:"IBM Plex Sans", "DejaVu Sans", "Helvetica Neue", Arial, sans-serif;
+    --mono:"IBM Plex Mono", "DejaVu Sans Mono", Consolas, monospace;
+  }
+  * { box-sizing:border-box; }
+  html,body { margin:0; padding:0; }
+  body { font-family:var(--serif); font-size:8.1pt; line-height:1.25; color:var(--ink); background:#fff;
+         -webkit-print-color-adjust:exact; print-color-adjust:exact; }
+  @media screen { body { max-width:190mm; margin:10mm auto; padding:0 16px; } }
+  p { margin:0 0 4pt; }
+  code { font-family:var(--mono); font-size:.92em; }
+  b,strong { font-family:var(--sans); font-weight:600; }
+  header { border-bottom:1.5pt solid var(--ink); padding-bottom:5pt; margin-bottom:7pt;
+           display:grid; grid-template-columns:1fr auto; gap:0 8mm; align-items:end; }
+  .eyebrow { font-family:var(--mono); font-size:6.4pt; letter-spacing:.13em; text-transform:uppercase; color:var(--ink-3); margin:0 0 2pt; }
+  h1 { font-family:var(--sans); font-weight:700; font-size:20pt; letter-spacing:-.025em; line-height:.98; margin:0; }
+  .sub { font-size:9pt; color:var(--ink-2); margin:4pt 0 0; max-width:140mm; }
+  .headmeta { font-family:var(--mono); font-size:6.6pt; line-height:1.5; color:var(--ink-3); text-align:right; white-space:nowrap; }
+  .headmeta b { color:var(--ink-2); font-weight:500; font-family:var(--mono); }
+  h2 { font-family:var(--sans); font-weight:700; font-size:11.5pt; letter-spacing:-.015em; margin:8pt 0 3pt;
+       padding-top:5pt; border-top:.7pt solid var(--rule); break-after:avoid; }
+  h2 .n { font-family:var(--mono); font-weight:400; font-size:7pt; color:var(--ink-3); margin-right:6pt; letter-spacing:.08em; }
+  h3 { font-family:var(--sans); font-weight:600; font-size:9pt; margin:7pt 0 2.5pt; break-after:avoid; }
+  .quote { border-left:1.8pt solid var(--accent); padding:2pt 0 2pt 4mm; margin:4pt 0 6pt;
+           font-family:var(--sans); font-weight:500; font-size:8.2pt; line-height:1.3; break-inside:avoid; }
+  .quote span { display:block; margin-top:2pt; font-family:var(--mono); font-weight:400; font-size:6.3pt; color:var(--ink-3); letter-spacing:.02em; }
+  ul, ol { margin:0 0 4pt 0; padding-left:4.5mm; }
+  li { margin:0 0 2.4pt; }
+  li::marker { color:var(--ink-3); }
+  table { border-collapse:collapse; width:100%; margin:3pt 0 6pt; font-size:7.3pt; line-height:1.28; }
+  th { font-family:var(--sans); font-weight:600; font-size:6.6pt; text-transform:uppercase; letter-spacing:.06em; color:var(--ink-2);
+       text-align:left; padding:3pt 4pt; border-bottom:1pt solid var(--ink); vertical-align:bottom; }
+  td { padding:2.6pt 4pt; border-bottom:.5pt solid var(--rule-2); vertical-align:top; }
+  tr { break-inside:avoid; }
+  td:first-child { font-family:var(--sans); font-weight:600; font-size:7.2pt; width:24%; }
+  td.mm { font-family:var(--mono); font-size:6.8pt; width:15%; }
+  td.ev { font-family:var(--mono); font-size:6.5pt; white-space:nowrap; width:5%; }
+  td.src { font-family:var(--mono); font-size:6.2pt; color:var(--ink-3); width:17%; }
+  .inshort { background:#eef4ee; border-left:2pt solid var(--ok); padding:5pt 4mm 4pt; margin:4pt 0 6pt; font-size:8.6pt; line-height:1.33; }
+  .inshort > b:first-child { font-family:var(--mono); font-weight:500; font-size:6.6pt; letter-spacing:.1em; text-transform:uppercase; color:var(--ok); margin-right:4pt; }
+  .panel { background:var(--panel); border-left:1.8pt solid var(--accent); padding:5pt 4mm 4pt; margin:5pt 0 7pt; break-inside:avoid; }
+  .panel.warn { border-color:var(--signal); }
+  .panel h3 { margin-top:0; }
+  .panel table td:first-child { width:30%; }
+  .two { display:grid; grid-template-columns:1fr 1fr; gap:0 7mm; }
+  .foot { margin-top:9pt; padding-top:4pt; border-top:.7pt solid var(--rule); font-size:6.9pt; color:var(--ink-3); line-height:1.35; }
+  .pb { break-before:page; }
+  @media (max-width:640px) { header, .two { display:block; } .headmeta { text-align:left; margin-top:6pt; white-space:normal; } }
+</style>
+</head>
+<body>
+
+<header>
+  <div>
+    <p class="eyebrow">SoundVisualizer &middot; literature, not our measurements &middot; r27 duct</p>
+    <h1>Duct Inlet Design Rules</h1>
+    <p class="sub">How to shape the inlet of a static ducted propeller so the duct adds thrust instead of costing it: tip gap, lip radius, wall thickness, where the propeller sits, and the outlet. Written for the APC 8x4.5MR duct of the 2026-10-27 research tree. Every number in the rules is someone else's, with the conditions it was measured under.</p>
+  </div>
+  <div class="headmeta">
+    <b>2026-11-02</b><br>
+    derived from <b>EXTRACTS-DUCT-LINING.md</b><br>
+    &sect;1&ndash;1.4 &middot; 278 quotes verified<br>
+    quotes below re-checked<br>
+    against the PDF text dumps<br>
+    evidence: <b>papers/SoundVisualizer/</b><br>
+    <b>design-rules/</b>
+  </div>
+</header>
+
+<div class="inshort"><b>In short</b>
+Close the blade-tip gap to about 1&nbsp;mm first; then give the inlet a generously rounded lip (10&ndash;13&nbsp;% of the throat diameter, about 20&ndash;26&nbsp;mm here) on a wall at least 20&nbsp;mm thick, with the propeller set back behind the lip. The outlet flare is second-order. On a duct this small, getting the gap and the lip wrong turns the duct from a thrust gain into a thrust loss &mdash; which is what our unlined duct measures today.</div>
+
+<p><b>How to read this page.</b> It is a derived document: it summarises <code>papers/SoundVisualizer/design-rules/EXTRACTS-DUCT-LINING.md</code> &sect;1&ndash;1.4 (private papers repo), and where the two disagree <b>the extract governs</b>; where an extract and the paper disagree, the paper governs. Each rule carries its evidence type &mdash; <b>E</b> experiment, <b>S</b> simulation or analytical model, <b>R</b> reported second-hand inside another paper &mdash; and a file and PDF page. Millimetres are worked out for the 8-inch propeller (D&nbsp;&asymp;&nbsp;203&nbsp;mm, R&nbsp;&asymp;&nbsp;102&nbsp;mm) with the throat diameter D<sub>t</sub> taken as &asymp;&nbsp;D; our duct's real dimensions are not yet recorded, so treat them as starting values.</p>
+
+<h2><span class="n">01</span>Why it matters here &mdash; our rig, measured</h2>
+<div class="panel warn">
+<h3>2026-11-02, ESC signal 2000&nbsp;&micro;s, duct and propeller one piece on the Tyto stand (the load cell sees both)</h3>
+<table>
+<thead><tr><th>Set-up</th><th>Thrust</th><th>rpm</th><th>Current</th></tr></thead>
+<tbody>
+<tr><td>Bare propeller, no duct</td><td>&minus;10.57&nbsp;N</td><td>11,804</td><td>22.94&nbsp;A</td></tr>
+<tr><td>Duct, no lining</td><td>&minus;8.01&nbsp;N (repeat &minus;7.93&nbsp;N)</td><td>12,262</td><td>20.97&nbsp;A</td></tr>
+<tr><td>Duct + Thinsulate 2 / 8 / 10 layers</td><td>&minus;8.77 / &minus;8.82 / &minus;8.91&nbsp;N</td><td>12,145&ndash;12,212</td><td>21.2&ndash;21.4&nbsp;A</td></tr>
+<tr><td>Duct + Thinsulate 4 layers</td><td>&minus;9.23&nbsp;N (repeat &minus;9.23&nbsp;N)</td><td>12,140</td><td>21.45&nbsp;A</td></tr>
+</tbody>
+</table>
+<p>The empty duct gives 24&nbsp;% less thrust than the bare propeller while turning 4&nbsp;% faster; every lining, which narrows the tip gap, wins part of it back. A well-shaped duct should do the opposite of the first line (&sect;03). These are our captures (bases <code>axi2217__8in__…__r27-*</code>), not literature; repeat runs of one set-up agree within 0.1&nbsp;N on the same day.</p>
+</div>
+
+<h2><span class="n">02</span>The rules, in order of importance</h2>
+<table>
+<thead><tr><th>Rule</th><th>Number and condition</th><th>For our duct</th><th>Ev.</th><th>Source</th></tr></thead>
+<tbody>
+<tr><td>1. Tip gap: as small as you can build, about 1&nbsp;mm</td><td>5-inch Gemfan, CFD: 0.6&nbsp;% and 1.1&nbsp;% of R perform alike; 3.6&nbsp;% R &ldquo;a sudden drop&rdquo;. Reducing 3.04&rarr;1.71&nbsp;% R: +17.85&nbsp;% hover efficiency; 3.04&rarr;5.17&nbsp;% R: up to &minus;18.1&nbsp;%, below an open rotor. 10-inch duct, measured: a wider gap collapses the suction on the lip and with it the duct thrust. NASA rig: 0.05&nbsp;in (1.27&nbsp;mm), limited by misalignment and blade stretch.</td><td class="mm">aim &le;&nbsp;1&ndash;1.5&nbsp;mm; 3.7&nbsp;mm already bad; 5.3&nbsp;mm worse than no duct</td><td class="ev">S/E</td><td class="src">Chew 2021 p.&nbsp;14; Dayhoum 2025 ApplSci p.&nbsp;9; Martin &amp; Tung 2004 pp.&nbsp;3&ndash;4; Zawodny 2025 p.&nbsp;9</td></tr>
+<tr><td>2. Inlet lip: generously rounded</td><td>16&nbsp;cm rotor, 17 shrouds: more lip radius always helped; best model 13&nbsp;% D<sub>t</sub>. Plain cylinder, lip 1.4&rarr;8.3&nbsp;% D<sub>t</sub>: figure of merit 0.72&rarr;0.89. Recommended 3&ndash;15&nbsp;% of rotor diameter. Below ~6&nbsp;% D<sub>t</sub> the lip separates (one study still separated at 12.5&nbsp;%). A smaller lip lowers duct thrust but steadies hover in a crosswind.</td><td class="mm">minimum ~12&nbsp;mm; aim 20&ndash;26&nbsp;mm radius</td><td class="ev">E/R</td><td class="src">Pereira 2008 pp.&nbsp;1, 70, 113; Dayhoum 2025 p.&nbsp;9; Zhang &amp; Barakos 2020 p.&nbsp;23; Martin &amp; Tung pp.&nbsp;3&ndash;4</td></tr>
+<tr><td>3. Wall at least 10&nbsp;% of D thick at the propeller plane</td><td>Black &amp; Wainauski: thinner walls separate at static conditions. It is also the room the rounded lip needs.</td><td class="mm">&ge;&nbsp;20&nbsp;mm</td><td class="ev">R</td><td class="src">Zawodny 2025 (NASA TM) p.&nbsp;8</td></tr>
+<tr><td>4. Propeller set back behind the lip</td><td>NASA rig: propeller 45&nbsp;% of the duct chord behind the leading edge. Hamilton Standard: the rearward position is better static, the forward one in forward flight.</td><td class="mm">disc clear of the lip curve; ~45&nbsp;% of duct length in</td><td class="ev">E/R</td><td class="src">Zawodny 2025 p.&nbsp;9; Pereira 2008 p.&nbsp;78</td></tr>
+<tr><td>5. Outlet: a modest flare (second-order)</td><td>Best diffuser angle 10&deg;, length 31&ndash;50&nbsp;% D<sub>t</sub>. Exit area ratio called &ldquo;the most powerful&rdquo; variable: up to +15&nbsp;% static thrust at 1.2&ndash;1.3; NASA chose 1.15 (exit area / disc area). Sources disagree on the angle (see &sect;04); diffuser length moved thrust only ~3&nbsp;% in one sweep.</td><td class="mm">10&deg;, 63&ndash;102&nbsp;mm long; exit &asymp;&nbsp;218&nbsp;mm dia. at 1.15</td><td class="ev">E/R</td><td class="src">Pereira 2008 pp.&nbsp;1, 75, 77, 113; Zawodny 2025 p.&nbsp;8; Dayhoum 2025 p.&nbsp;9</td></tr>
+<tr><td>6. Supports out of the rotor plane</td><td>Fenestron tests: moving struts ~5.5&nbsp;% D<sub>t</sub> further from the rotor cut noise by up to 10&nbsp;dB, to the no-strut level. Acoustic, not thrust.</td><td class="mm">struts &ge;&nbsp;~11&nbsp;mm behind the disc</td><td class="ev">R</td><td class="src">Pereira 2008 p.&nbsp;119</td></tr>
+</tbody>
+</table>
+
+<h3>The passages the first two rules stand on</h3>
+<div class="two">
+<div>
+<div class="quote">&ldquo;While the tip clearances of 0.6% and 1.1% produce comparable results, a sudden drop in performance can be observed for 3.6% tip clearance.&rdquo;<span>Chew, Gan &amp; Hesse, AIAA SciTech 2021, p.&nbsp;14</span></div>
+<div class="quote">&ldquo;increasing the tip clearance from 3.04% to 5.17% of the rotor radius can lead to a significant reduction in hover efficiency of up to 18.1%, even falling below the performance of an open rotor configuration.&rdquo;<span>Dayhoum, Ramirez-Serrano &amp; Martinuzzi, Appl. Sci. 15 (2025) 9594, p.&nbsp;9</span></div>
+<div class="quote">&ldquo;As the tip gap is increased, the suction pressure near the leading edge rapidly collapses&rdquo;<span>Martin &amp; Tung, AHS 60th Forum 2004, p.&nbsp;3</span></div>
+</div>
+<div>
+<div class="quote">&ldquo;Increasing the lip radius and decreasing the blade tip clearance caused performance to improve, while optimal values of diffuser angle and length were found to be 10&deg; and 50% of the shroud throat diameter, respectively.&rdquo;<span>Pereira, PhD dissertation, Univ. of Maryland 2008, p.&nbsp;1</span></div>
+<div class="quote">&ldquo;The increase in rlip caused a near-linear increase in figure of merit (at the same collective) from 0.72 to 0.89.&rdquo;<span>Pereira 2008, p.&nbsp;70, reporting Parlett 1955</span></div>
+<div class="quote">&ldquo;it is argued that there could be a critical lip radius of 6% duct diameter, below which separation would take place. However, as tested by Graf et al. [31], flow separation was also observed with a radius of 12.5%.&rdquo;<span>Zhang &amp; Barakos, Aeronautical Journal 124 (2020), p.&nbsp;23</span></div>
+</div>
+</div>
+
+<h2><span class="n">03</span>What a good duct can give &mdash; and why a small one can lose</h2>
+<div class="two">
+<div>
+<div class="quote">&ldquo;Compared to the baseline open rotor, the shrouded rotors showed increases in thrust by up to 94%, at the same power consumption, or reductions in power by up to 62% at the same thrust.&rdquo;<span>Pereira 2008, p.&nbsp;1 &mdash; 16&nbsp;cm rotor, best of 17 shrouds</span></div>
+<div class="quote">&ldquo;the duct thrust developed to approximately 38% of the isolated rotor thriist [sic] at high RPM.&rdquo;<span>Martin &amp; Tung 2004, p.&nbsp;3 &mdash; 10-inch rotor, smallest tip gap (1&nbsp;% R)</span></div>
+</div>
+<div>
+<div class="quote">&ldquo;The internal flow losses tend to counteract the duct thrust, and beiow [sic] a certain RPM the duct produces a net download (compared to the isolated rotor).&rdquo;<span>Martin &amp; Tung 2004, p.&nbsp;3</span></div>
+<div class="quote">&ldquo;for a given overall aircraft size limitation, and ignoring considerations of the safety benefits of a shroud, a larger-diameter open rotor is more likely to give better performance than a smaller-diameter shrouded rotor.&rdquo;<span>Pereira 2008, p.&nbsp;2</span></div>
+</div>
+</div>
+<p>So the duct's thrust is suction on the inlet lip: a wide gap or a sharp lip kills it, and at small scale the viscous losses inside the duct can then outweigh what is left. Our unlined duct (&sect;01) sits on the losing side. The gain is not scale-free either: over a similar tip-clearance range Hubbard's 48-inch model lost ~84&nbsp;% of its thrust and Mort's 7-foot fan ~20&nbsp;% (Pereira 2008, p.&nbsp;70, 74), so no percentage here transfers to an 8-inch duct without measuring it.</p>
+
+<h2><span class="n">04</span>Where the sources disagree</h2>
+<ul>
+<li><b>Diffuser angle.</b> Pereira finds 10&deg; best; Taylor 1958 finds the result &ldquo;virtually independent of the expansion angle of the diffuser, and depended only on the value of the expansion ratio&rdquo; (Pereira p.&nbsp;74); Dyer found &ldquo;increasing the diffuser angle caused thrust and power loading to decrease, contrary to predictions&rdquo; (Pereira p.&nbsp;94); Li, Yonezawa &amp; Liu's CFD put the optimum at 0&deg; (Drones 2021, p.&nbsp;10). Keep the flare modest and treat it as a later experiment.</li>
+<li><b>Diffuser length.</b> Pereira gives a single optimum (31&ndash;50&nbsp;% D<sub>t</sub>); Ma&rsquo;arof 2023 found no correlation with thrust and named tip clearance the most consistent driver (p.&nbsp;314).</li>
+<li><b>How small the gap must be.</b> On 30-inch propellers a gap of 0.12&rarr;0.56&nbsp;% D<sub>t</sub> cost under 5&nbsp;% thrust (Pereira p.&nbsp;79), while 0&rarr;4.4&nbsp;% D<sub>t</sub> cost Hubbard ~84&nbsp;% (p.&nbsp;70): the penalty grows once the gap is already a few percent, which is where a 3&ndash;5&nbsp;mm gap on our duct would be.</li>
+<li><b>Lip radius against crosswind.</b> The larger lip gives more static thrust; Martin &amp; Tung's smaller lip &ldquo;improved the stability for hover in a crosswind&rdquo; (p.&nbsp;4). On the stand only the first matters.</li>
+</ul>
+
+<h2><span class="n">05</span>How to test it on our rig</h2>
+<ol>
+<li><b>Record the duct first:</b> inner diameter, tip gap, duct length, where the propeller disc sits along it, and the present inlet edge (sharp, chamfered or rounded). Without these the millimetres in &sect;02 are guesses.</li>
+<li><b>One change at a time, against same-day references.</b> Each session: bare propeller and unlined duct at the start (and the bare propeller again at the end), then the variant; repeats of one set-up agree within 0.1&nbsp;N, so differences above ~0.2&nbsp;N are real.</li>
+<li><b>Order:</b> (a) a bolt-on rounded lip ring, ~25&nbsp;mm radius, on the existing duct; (b) a tighter tip gap (the linings already show the direction); (c) only then the outlet flare.</li>
+<li><b>Compare at equal rpm or per watt</b>, not only at equal ESC signal: the bare propeller ran 4&nbsp;% slower than the ducted one, and the NASA rig needed 4.6&nbsp;% more rpm with the duct to match the open propeller's thrust (Zawodny 2025, p.&nbsp;49).</li>
+<li><b>Photograph every set-up.</b></li>
+</ol>
+
+<div class="foot">Derived 2026-11-02 from <code>papers/SoundVisualizer/design-rules/EXTRACTS-DUCT-LINING.md</code> &sect;1&ndash;1.4 (private repo <code>asdfgh0318/papers</code>, commit 4c47a05), which governs; every quotation on this page was re-checked against the <code>pdftotext</code> dumps with the alphanumeric-key matcher of <code>scripts/verify_quotes.py</code>. Sources read at source: Pereira 2008 (PhD, Univ. of Maryland); Martin &amp; Tung 2004 (AHS Forum 60, OCR text &mdash; misspellings kept and marked [sic]); Chew, Gan &amp; Hesse 2021 (AIAA SciTech, doi:10.2514/6.2021-0212); Dayhoum, Ramirez-Serrano &amp; Martinuzzi 2025 (Appl. Sci. 15, 9594); Zawodny, Schiller, Pettingill &amp; Medina 2025 (NASA/TM-20250009190); Zhang &amp; Barakos 2020 (Aeronaut. J. 124, doi:10.1017/aer.2019.164); Li, Yonezawa &amp; Liu 2021 (Drones 5, 101); Ma&rsquo;arof et al. 2023 (JARASET 32(3)). Parlett, Hubbard, Taylor, Mort, Black/Wainauski/Rohrbach and Dyer are reported inside Pereira 2008 and were not retrieved themselves (evidence R). Our measurements in &sect;01 are captures on the Pi, backed up to <code>SoundVisualizer-data</code>.</div>
+
+</body>
+</html>
