@@ -43,7 +43,7 @@ def section(path):
     r, z = zip(*prof)
     ax.fill(r, z, color="#4a7fa8", alpha=.85, lw=1, ec="#17364a")
     ax.plot([0, prop_d / 2], [z_prop, z_prop], color="#d9822b", lw=3, label="APC 8x4.5MRP disc (pusher)")
-    ax.add_patch(plt.Rectangle((0, z_prop + 12), 14, prop_to_mount - 12, color="#999", alpha=.7, label="AXI 2217 (placeholder size)"))
+    ax.add_patch(plt.Rectangle((0, z_mount - 35), 27.7 / 2, 35, color="#999", alpha=.7, label="AXI 2217 body, Ø27.7 × 35 (AXI catalogue)"))
     ax.add_patch(plt.Rectangle((0, z_mount), leg_r0 + leg_t, arm_t, color="#555", alpha=.8, label="spider: hub + 3 box arms + legs"))
     ax.add_patch(plt.Rectangle((leg_r0, leg_bolt_z - 8), leg_t, z_mount - (leg_bolt_z - 8), color="#555", alpha=.8))
     ax.plot([leg_r0 - 9, leg_r0 + leg_t], [leg_bolt_z, leg_bolt_z], color="k", lw=1.2)
@@ -113,3 +113,21 @@ if __name__ == "__main__":
     section("section.png")
     view3d("assembly.png", [("duct_full.stl", "#4a7fa8", True, None), ("spider.stl", "#555555", False, z_mount + arm_t)])
     print("wrote section.png, assembly.png", file=sys.stderr)
+
+
+def spider_top(path):
+    """Top view of spider.stl, to check the motor holes are cut."""
+    t = read_stl("spider.stl")
+    fig, ax = plt.subplots(figsize=(6, 6))
+    top = t[(np.abs(t[:, :, 2] - t[:, :, 2].min()) < 1e-3).all(axis=1)]      # the flat face on the bed
+    for tri in top:
+        ax.fill(tri[:, 0], tri[:, 1], color="#555", lw=0)
+    for x, y, lab in [(9.5, 0, "M3, 19 mm pair"), (0, 8, "M3, 16 mm pair")]:
+        ax.annotate(lab, xy=(x, y), xytext=(x + 25, y + 30), fontsize=8, arrowprops=dict(arrowstyle="->", lw=.7))
+    ax.set_aspect("equal"); ax.set_xlim(-40, 40); ax.set_ylim(-40, 40)
+    ax.set_title("Spider hub, bed face: AXI 2217 rear mount (4 × M3, 19 / 16 mm) + Ø9 centre", fontsize=9)
+    fig.tight_layout(); fig.savefig(path, dpi=130)
+
+
+if __name__ == "__main__":
+    spider_top("spider-hub.png")

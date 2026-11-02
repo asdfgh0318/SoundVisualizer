@@ -50,15 +50,20 @@ openscad -D 'part="spider"'  -o spider.stl       duct.scad
   Tyto motor plate to its upstream face, on the same long M3 bolts (stand plate → spider → motor).
 - `viewer.html` — interactive 3D view in the browser (three.js from the CDN; built from the same
   numbers as `duct.scad`, so keep the two in step). Open it with `/snap/bin/brave viewer.html`.
-- `render.py` — redraws `section.png` and `assembly.png` (OpenSCAD's own PNG export needs a display).
+- `render.py` — redraws `section.png`, `assembly.png` and `spider-hub.png` (OpenSCAD's own PNG export needs a display).
 
 ## Measure before printing
 
 The motor dimensions in `duct.scad` are **placeholders, not verified data** (marked `[MEASURE]`):
 
 - `prop_to_mount` (55 mm) — propeller disc to the motor's rear mounting face, with the prop adapter fitted;
-- `mount_holes_n`, `mount_holes_pcd` (4 on Ø25) — the AXI 2217 rear-mount hole pattern, which the Tyto plate must share;
-- `hub_hole_d` (12 mm) — clearance for whatever protrudes from the motor's rear;
+- `hub_hole_d` (9 mm) — clearance for the shaft end and circlip at the motor's rear.
+
+The rear-mount holes are **not** a placeholder: 4 × M3 in a cross, one pair 19 mm apart and the
+other 16 mm apart, from AXI's own drawing ("AXI 2208 & 2212 & 2217", catalogue
+`modelmotors.cz/file/wisiwig/files/actual_katalog_lr.pdf`, p. 6; body Ø27.7 × 35 mm for the
+2217). Check them against your motor anyway — the drawing covers the V1 Gold Line series. The
+Tyto motor plate must take the same pattern (`spider-hub.png` shows the hub's holes).
 - `throat_len` (20 mm) — straight throat around the disc; must cover the blade tips' axial extent.
 
 Measure the real tip gap after assembly with a feeler gauge. A ring printed in four pieces will

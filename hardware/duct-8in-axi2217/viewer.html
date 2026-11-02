@@ -23,14 +23,15 @@
   <div class="dim" id="dims"></div>
   <label><input type="checkbox" id="cut" checked> cut away a quarter</label>
   <label><input type="checkbox" id="prop" checked> propeller disc</label>
-  <label><input type="checkbox" id="spider" checked> spider, motor, stand plate (motor and plate: placeholder size)</label>
+  <label><input type="checkbox" id="spider" checked> spider, motor (Ø27.7 × 35), stand plate (placeholder), M3 bolts</label>
+  <label><input type="checkbox" id="bolts" checked> show bolts (off: see the empty holes)</label>
   <div class="hint">Drag to rotate · scroll to zoom · right-drag to pan. Air enters at the top, past the stand plate, spider and motor, then the propeller.<br>Same parameters as duct.scad; motor sizes are not yet measured.</div>
 </div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
 <script>
 const P = { prop_d: 203.2, tip_gap: 1.0, throat_len: 20, lip_r: 25, lip_out_r: 5, wall: 30, prop_to_mount: 55,
-            diff_angle: 10, diff_len: 45, hub_r: 22, arms_n: 3, arm_w: 8, arm_t: 12, leg_t: 7, leg_bolt_z: 70, arm_angle0: 45 };
+            diff_angle: 10, diff_len: 45, hub_r: 22, pair_a: 19, pair_b: 16, hole_d: 3.2, hub_hole_d: 9, arms_n: 3, arm_w: 8, arm_t: 12, leg_t: 7, leg_bolt_z: 70, arm_angle0: 45 };
 const rad = d => d * Math.PI / 180;
 const throat_r = P.prop_d / 2 + P.tip_gap;
 const diff_len = P.diff_len;
@@ -93,13 +94,22 @@ propDisc.position.y = z_prop; scene.add(propDisc);
 
 const mount = new THREE.Group();
 const grey = new THREE.MeshStandardMaterial({ color: 0x555555, roughness: 0.7, side: THREE.DoubleSide });
-const motorLen = P.prop_to_mount - 12;
-const motor = new THREE.Mesh(new THREE.CylinderGeometry(14, 14, motorLen, 48), new THREE.MeshStandardMaterial({ color: 0x9aa0a4 }));
-motor.position.y = z_prop + 12 + motorLen / 2; mount.add(motor);
-const hub = new THREE.Mesh(new THREE.CylinderGeometry(P.hub_r, P.hub_r, P.arm_t, 48), grey);
-hub.position.y = z_mount + P.arm_t / 2; mount.add(hub);
-const plate = new THREE.Mesh(new THREE.BoxGeometry(40, 4, 40), new THREE.MeshStandardMaterial({ color: 0x333333, transparent: true, opacity: 0.7 }));
+const motor = new THREE.Mesh(new THREE.CylinderGeometry(27.7 / 2, 27.7 / 2, 35, 48), new THREE.MeshStandardMaterial({ color: 0x9aa0a4 }));
+motor.position.y = z_mount - 35 / 2; mount.add(motor);
+// hub with the AXI 2217 rear-mount holes (4 x M3, pairs 19 and 16 mm apart) and the centre clearance hole
+const hubShape = new THREE.Shape(); hubShape.absarc(0, 0, P.hub_r, 0, Math.PI * 2, false);
+const hole = (x, y, r) => { const h = new THREE.Path(); h.absarc(x, y, r, 0, Math.PI * 2, true); hubShape.holes.push(h); };
+hole(0, 0, P.hub_hole_d / 2);
+for (const [x, y] of [[P.pair_a / 2, 0], [-P.pair_a / 2, 0], [0, P.pair_b / 2], [0, -P.pair_b / 2]]) hole(x, y, P.hole_d / 2);
+const hub = new THREE.Mesh(new THREE.ExtrudeGeometry(hubShape, { depth: P.arm_t, bevelEnabled: false, curveSegments: 32 }), grey);
+hub.rotation.x = -Math.PI / 2; hub.position.y = z_mount; mount.add(hub);
+const plate = new THREE.Mesh(new THREE.BoxGeometry(40, 4, 40), new THREE.MeshStandardMaterial({ color: 0x333333, transparent: true, opacity: 0.35 }));
 plate.position.y = z_mount + P.arm_t + 2; mount.add(plate);
+const boltMat = new THREE.MeshStandardMaterial({ color: 0xc0a040 });
+for (const [x, y] of [[P.pair_a / 2, 0], [-P.pair_a / 2, 0], [0, P.pair_b / 2], [0, -P.pair_b / 2]]) {
+  const b = new THREE.Mesh(new THREE.CylinderGeometry(1.5, 1.5, P.arm_t + 14, 16), boltMat);
+  b.position.set(x, z_mount + (P.arm_t + 14) / 2 - 6, -y); b.userData.bolt = true; mount.add(b);
+}
 const legLen = z_mount + P.arm_t - (P.leg_bolt_z - 8);
 for (let i = 0; i < P.arms_n; i++) {
   const a = rad(P.arm_angle0 + i * 360 / P.arms_n);
@@ -122,6 +132,7 @@ scene.add(new THREE.ArrowHelper(new THREE.Vector3(0, -1, 0), new THREE.Vector3(0
 document.getElementById("cut").onchange = e => buildDuct(e.target.checked);
 document.getElementById("prop").onchange = e => propDisc.visible = e.target.checked;
 document.getElementById("spider").onchange = e => mount.visible = e.target.checked;
+document.getElementById("bolts").onchange = e => mount.children.forEach(c => { if (c.userData.bolt) c.visible = e.target.checked; });
 
 function resize() {
   const w = innerWidth, h = innerHeight;

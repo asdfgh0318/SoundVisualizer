@@ -39,10 +39,12 @@ outer_exit_r = exit_r + 14.5;
 
 // ---- motor stack (MEASURE these before printing) ----
 prop_to_mount   = 55;    // propeller disc to the motor's rear mounting face, mm   [MEASURE]
-mount_holes_n   = 4;     // AXI 2217 rear mount                                    [MEASURE]
-mount_holes_pcd = 25;    // hole circle diameter                                   [MEASURE]
+// AXI 2208/2212/2217 rear face: 4 x M3 in a cross, one pair 19 mm apart, the other 16 mm apart
+// (AXI catalogue drawing "AXI 2208 & 2212 & 2217", modelmotors.cz actual_katalog_lr.pdf p. 6).
+mount_pair_a    = 19;    // spacing of one opposite pair, mm
+mount_pair_b    = 16;    // spacing of the other pair, at 90 deg to the first
 mount_hole_d    = 3.2;   // M3 clearance; long M3 bolts go stand plate -> spider -> motor
-hub_hole_d      = 12;    // clearance for the shaft end / circlip / bearing boss   [MEASURE]
+hub_hole_d      = 9;     // clearance for the 3.17 mm shaft end and circlip; Ø12 left 0.4 mm to the 16 mm holes [MEASURE]
 
 // ---- spider: hub on the motor's rear face, 3 box arms, legs down the outer wall ----
 arms_n     = 3;
@@ -81,6 +83,7 @@ profile = concat(
 assert(highlight_r + lip_out_r >= outer_r - 0.01, "lip and wall do not meet; raise lip_r or lower wall");
 assert(wall >= 0.1 * prop_d, "rule 3: wall thinner than 10 % of the propeller diameter");
 assert(z_mount > z_top + 2, "motor mount face is inside the lip; the spider would hit the duct");
+assert(mount_pair_b / 2 - mount_hole_d / 2 - hub_hole_d / 2 >= 1.5, "less than 1.5 mm between the centre hole and the motor holes");
 assert(leg_bolt_z > z_prop && leg_bolt_z < z_top - lip_out_r - 6, "leg screw must land on the straight outer wall");
 
 module at_arms() { for (i = [0:arms_n - 1]) rotate([0, 0, arm_angle0 + i * 360 / arms_n]) children(); }
@@ -116,14 +119,14 @@ module spider() {
             }
         }
         translate([0, 0, z_mount - 1]) cylinder(d = hub_hole_d, h = arm_t + 2);
-        for (i = [0:mount_holes_n - 1]) rotate([0, 0, i * 360 / mount_holes_n])
-            translate([mount_holes_pcd / 2, 0, z_mount - 1]) cylinder(d = mount_hole_d, h = arm_t + 2, $fn = 24);
+        for (p = [[mount_pair_a / 2, 0], [-mount_pair_a / 2, 0], [0, mount_pair_b / 2], [0, -mount_pair_b / 2]])
+            translate([p[0], p[1], z_mount - 1]) cylinder(d = mount_hole_d, h = arm_t + 2, $fn = 24);
         at_arms() translate([leg_r0 - 1, 0, leg_bolt_z]) rotate([0, 90, 0]) cylinder(d = screw_d, h = leg_t + 2, $fn = 24);
     }
 }
 
 module prop_disc() { color("orange", 0.5) translate([0, 0, z_prop - 1]) cylinder(d = prop_d, h = 2); }
-module motor()     { color("gray") translate([0, 0, z_prop + 12]) cylinder(d = 28, h = prop_to_mount - 12); }   // placeholder body
+module motor()     { color("gray") translate([0, 0, z_mount - 35]) cylinder(d = 27.7, h = 35); }   // AXI 2217 body, Ø27.7 x 35 (catalogue)
 module stand()     { color("DimGray", 0.6) translate([-20, -20, z_mount + arm_t]) cube([40, 40, 4]); }          // Tyto motor plate, placeholder
 
 if (part == "duct") duct();
