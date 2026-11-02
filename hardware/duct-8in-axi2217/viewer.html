@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<title>Duct 8in Viewer</title>
+<title>Pusher Duct Viewer</title>
 <style>
   :root { --bg:#f4f6f7; --ink:#10171b; --ink-2:#46545c; --panel:#ffffffdd; }
   @media (prefers-color-scheme: dark) { :root { --bg:#111619; --ink:#e6ecef; --ink-2:#a3b1b8; --panel:#1b2226dd; } }
@@ -19,29 +19,31 @@
 <body>
 <canvas id="c"></canvas>
 <div class="panel">
-  <h1>Duct — APC 8x4.5MR on AXI 2217/12</h1>
+  <h1>Pusher duct — APC 8x4.5MRP on AXI 2217/12</h1>
   <div class="dim" id="dims"></div>
   <label><input type="checkbox" id="cut" checked> cut away a quarter</label>
   <label><input type="checkbox" id="prop" checked> propeller disc</label>
-  <label><input type="checkbox" id="spider" checked> spider + motor (placeholder size)</label>
-  <div class="hint">Drag to rotate · scroll to zoom · right-drag to pan. Air enters at the top.<br>Same parameters as duct.scad; motor sizes are not yet measured.</div>
+  <label><input type="checkbox" id="spider" checked> hub, struts, motor, stand plate (motor and plate: placeholder size)</label>
+  <div class="hint">Drag to rotate · scroll to zoom · right-drag to pan. Air enters at the top, past the stand, hub and struts, then the propeller.<br>Same parameters as duct.scad; motor sizes are not yet measured.</div>
 </div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
 <script>
-const P = { prop_d: 203.2, tip_gap: 1.0, lip_r: 25, lip_out_r: 5, wall: 30, throat_len: 20, prop_to_mount: 55, diff_angle: 10,
-            arms_n: 3, arm_w: 6, arm_depth: 12, hub_r: 22, hub_t: 5, arm_angle0: 30 };
+const P = { prop_d: 203.2, tip_gap: 1.0, blade_below: 10, lip_r: 25, lip_out_r: 5, wall: 30, prop_to_mount: 55,
+            diff_angle: 10, diff_len: 45, hub_r: 22, struts_n: 3, strut_chord: 22, strut_tc: 0.15, root_w: 8, pocket: 3,
+            strut_angle0: 45 };
 const rad = d => d * Math.PI / 180;
 const throat_r = P.prop_d / 2 + P.tip_gap;
-const diff_len = P.prop_to_mount - P.throat_len / 2;
+const diff_len = P.diff_len;
 const exit_r = throat_r + diff_len * Math.tan(rad(P.diff_angle));
 const outer_exit_r = exit_r + 14.5;
-const z_lip0 = diff_len + P.throat_len, z_prop = diff_len + P.throat_len / 2, z_top = z_lip0 + P.lip_r;
+const z_prop = diff_len + P.blade_below, z_hub0 = z_prop + P.prop_to_mount, z_strut = z_hub0 + P.strut_chord / 2;
+const z_lip0 = z_strut + P.strut_chord / 2 + 5, z_top = z_lip0 + P.lip_r;
 const hl = throat_r + P.lip_r;
 const arc = (cx, cz, r, a0, a1, n = 30) => Array.from({ length: n + 1 }, (_, i) => {
   const a = rad(a0 + (a1 - a0) * i / n); return [cx + r * Math.cos(a), cz + r * Math.sin(a)]; });
 const prof = [[exit_r, 0], [throat_r, diff_len], [throat_r, z_lip0], ...arc(hl, z_lip0, P.lip_r, 180, 90),
-              ...arc(hl, z_top - P.lip_out_r, P.lip_out_r, 90, 0), [hl + P.lip_out_r, z_prop], [outer_exit_r, 0], [exit_r, 0]];
+              ...arc(hl, z_top - P.lip_out_r, P.lip_out_r, 90, 0), [throat_r + P.wall, z_prop], [outer_exit_r, 0], [exit_r, 0]];
 
 document.getElementById("dims").textContent =
   `tip gap        ${P.tip_gap.toFixed(1)} mm   (throat Ø${(2 * throat_r).toFixed(1)})\n` +
@@ -50,6 +52,7 @@ document.getElementById("dims").textContent =
   `disc below lip ${(z_top - z_prop).toFixed(0)} mm    (${(100 * (z_top - z_prop) / z_top).toFixed(0)} % of length)\n` +
   `diffuser       ${P.diff_angle}°, ${diff_len} mm, exit Ø${(2 * exit_r).toFixed(1)}\n` +
   `exit/disc area ${((exit_r / (P.prop_d / 2)) ** 2).toFixed(2)}\n` +
+  `struts end     ${(z_strut - P.strut_chord / 2 - z_prop).toFixed(0)} mm upstream of the disc\n` +
   `length         ${z_top} mm`;
 
 const canvas = document.getElementById("c");
@@ -61,7 +64,7 @@ scene.background = new THREE.Color(dark ? 0x111619 : 0xf4f6f7);
 const camera = new THREE.PerspectiveCamera(35, 1, 1, 5000);
 camera.position.set(380, 300, 420);
 const controls = new THREE.OrbitControls(camera, canvas);
-controls.target.set(0, 40, 0);
+controls.target.set(0, 80, 0);
 scene.add(new THREE.HemisphereLight(0xffffff, 0x445566, 0.75));
 const sun = new THREE.DirectionalLight(0xffffff, 0.7); sun.position.set(300, 500, 200); scene.add(sun);
 
@@ -90,24 +93,37 @@ const propDisc = new THREE.Mesh(new THREE.CylinderGeometry(P.prop_d / 2, P.prop_
 propDisc.position.y = z_prop; scene.add(propDisc);
 
 const mount = new THREE.Group();
-const grey = new THREE.MeshStandardMaterial({ color: 0x555555, roughness: 0.7 });
-const motor = new THREE.Mesh(new THREE.CylinderGeometry(14, 14, P.prop_to_mount - 12, 48), new THREE.MeshStandardMaterial({ color: 0x9aa0a4 }));
-motor.position.y = (P.prop_to_mount - 12) / 2; mount.add(motor);
-const hub = new THREE.Mesh(new THREE.CylinderGeometry(P.hub_r, P.hub_r, P.hub_t, 48), grey);
-hub.position.y = -P.hub_t / 2; mount.add(hub);
-const tab_r = (exit_r + outer_exit_r) / 2;
-for (let i = 0; i < P.arms_n; i++) {
-  const a = rad(P.arm_angle0 + i * 360 / P.arms_n), len = tab_r - P.hub_r + 4;
-  const arm = new THREE.Mesh(new THREE.BoxGeometry(len, P.arm_depth, P.arm_w), grey);
-  const mid = P.hub_r - 4 + len / 2;
-  arm.position.set(mid * Math.cos(a), -P.arm_depth / 2, -mid * Math.sin(a)); arm.rotation.y = a; mount.add(arm);
-  const tab = new THREE.Mesh(new THREE.CylinderGeometry(7, 7, P.hub_t, 32), grey);
-  tab.position.set(tab_r * Math.cos(a), -P.hub_t / 2, -tab_r * Math.sin(a)); mount.add(tab);
+const grey = new THREE.MeshStandardMaterial({ color: 0x555555, roughness: 0.7, side: THREE.DoubleSide });
+const motorLen = P.prop_to_mount - 12;
+const motor = new THREE.Mesh(new THREE.CylinderGeometry(14, 14, motorLen, 48), new THREE.MeshStandardMaterial({ color: 0x9aa0a4 }));
+motor.position.y = z_prop + 12 + motorLen / 2; mount.add(motor);
+const hub = new THREE.Mesh(new THREE.CylinderGeometry(P.hub_r, P.hub_r, P.strut_chord, 48), grey);
+hub.position.y = z_hub0 + P.strut_chord / 2; mount.add(hub);
+const plate = new THREE.Mesh(new THREE.BoxGeometry(40, 4, 40), new THREE.MeshStandardMaterial({ color: 0x333333, transparent: true, opacity: 0.7 }));
+plate.position.y = z_hub0 + P.strut_chord + 2; mount.add(plate);
+function nacaShape(c, t, n = 30) {
+  const up = Array.from({ length: n + 1 }, (_, i) => { const x = (1 - Math.cos(Math.PI * i / n)) / 2;
+    return [x * c, 5 * t * c * (0.2969 * Math.sqrt(x) - 0.1260 * x - 0.3516 * x * x + 0.2843 * x ** 3 - 0.1036 * x ** 4)]; });
+  const pts = [...up, ...up.slice(1, -1).reverse().map(([x, y]) => [x, -y])];
+  return new THREE.Shape(pts.map(([x, y]) => new THREE.Vector2(x, y)));
+}
+const strutLen = throat_r + P.pocket - 0.3 - (P.hub_r - 3);
+const strutGeo = new THREE.ExtrudeGeometry(nacaShape(P.strut_chord, P.strut_tc), { depth: strutLen, bevelEnabled: false });
+for (let i = 0; i < P.struts_n; i++) {
+  const a = rad(P.strut_angle0 + i * 360 / P.struts_n);
+  const g = new THREE.Group();
+  const m = new THREE.Mesh(strutGeo, grey);
+  m.rotation.z = -Math.PI / 2;          // chord runs downward from the leading edge at the top
+  m.position.z = P.hub_r - 3;           // start inside the hub, extrude radially outward
+  g.add(m);
+  g.rotation.y = a + Math.PI / 2;
+  g.position.y = z_strut + P.strut_chord / 2;
+  mount.add(g);
 }
 scene.add(mount);
 
-const arrow = new THREE.ArrowHelper(new THREE.Vector3(0, -1, 0), new THREE.Vector3(0, z_top + 90, 0), 60, 0x333333, 14, 8);
-scene.add(arrow);
+scene.add(new THREE.ArrowHelper(new THREE.Vector3(0, -1, 0), new THREE.Vector3(0, z_top + 90, 0), 60, 0x333333, 14, 8));
+scene.add(new THREE.ArrowHelper(new THREE.Vector3(0, -1, 0), new THREE.Vector3(0, -10, 0), 60, 0x333333, 14, 8));
 
 document.getElementById("cut").onchange = e => buildDuct(e.target.checked);
 document.getElementById("prop").onchange = e => propDisc.visible = e.target.checked;
