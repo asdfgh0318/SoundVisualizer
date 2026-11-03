@@ -10,6 +10,7 @@
    "color": "#000000",
    "day": "2 Nov",
    "base": "axi2217__8in__none__r27-8x45mr-bare-prop",
+   "old_fit": false,
    "thrust": 10.56,
    "thrust_min_max": [
     10.51,
@@ -41,6 +42,7 @@
    "color": "#868E96",
    "day": "2 Nov",
    "base": "axi2217__8in__duct-unlined__r27-duct-unlined",
+   "old_fit": false,
    "thrust": 7.99,
    "thrust_min_max": [
     7.95,
@@ -72,6 +74,7 @@
    "color": "#F08C00",
    "day": "2 Nov",
    "base": "axi2217__8in__thinsulate-2-layers__r27-thinsulate-2-layers-trial-2026-11-02",
+   "old_fit": false,
    "thrust": 8.78,
    "thrust_min_max": [
     8.75,
@@ -103,6 +106,7 @@
    "color": "#E03131",
    "day": "2 Nov",
    "base": "axi2217__8in__thinsulate-4-layers__r27-thinsulate-4-layers",
+   "old_fit": false,
    "thrust": 9.22,
    "thrust_min_max": [
     9.13,
@@ -134,6 +138,7 @@
    "color": "#1098AD",
    "day": "30 Oct",
    "base": "axi2217__8in__thinsulate-6-layers__r27-thinsulate-6-layers",
+   "old_fit": false,
    "thrust": 8.64,
    "thrust_min_max": [
     8.55,
@@ -165,6 +170,7 @@
    "color": "#C2255C",
    "day": "2 Nov",
    "base": "axi2217__8in__thinsulate-8-layers__r27-thinsulate-8-layers-archive-2026-11-02-trial-1619",
+   "old_fit": false,
    "thrust": 8.82,
    "thrust_min_max": [
     8.73,
@@ -196,6 +202,7 @@
    "color": "#7048E8",
    "day": "2 Nov",
    "base": "axi2217__8in__thinsulate-10-layers__r27-thinsulate-10-layers",
+   "old_fit": false,
    "thrust": 8.89,
    "thrust_min_max": [
     8.88,
@@ -219,6 +226,134 @@
     "-54": 92.9,
     "-72": 91.4,
     "-90": 91.3
+   }
+  },
+  "Felt": {
+   "mean": 90.7,
+   "repeat_spread": 0.3,
+   "color": "#2F9E44",
+   "day": "28 Oct",
+   "base": "axi2217__8in__felt__r27-felt",
+   "old_fit": true,
+   "thrust": 8.96,
+   "thrust_min_max": [
+    8.94,
+    8.98
+   ],
+   "rpm": 12112,
+   "rpm_min_max": [
+    12096,
+    12143
+   ],
+   "current": 21.44,
+   "per_mic": {
+    "90": 94.5,
+    "72": 94.4,
+    "54": 93.6,
+    "36": 91.0,
+    "18": 88.5,
+    "0": 83.3,
+    "-18": 87.0,
+    "-36": 90.5,
+    "-54": 92.5,
+    "-72": 92.0,
+    "-90": 90.0
+   }
+  },
+  "Felt, double layer": {
+   "mean": 90.9,
+   "repeat_spread": 0.05,
+   "color": "#5C940D",
+   "day": "29 Oct",
+   "base": "axi2217__8in__felt-2-layers__r27-felt-2-layers",
+   "old_fit": true,
+   "thrust": 8.62,
+   "thrust_min_max": [
+    8.54,
+    8.72
+   ],
+   "rpm": 12196,
+   "rpm_min_max": [
+    12168,
+    12219
+   ],
+   "current": 21.14,
+   "per_mic": {
+    "90": 94.3,
+    "72": 94.7,
+    "54": 94.0,
+    "36": 91.4,
+    "18": 88.5,
+    "0": 84.3,
+    "-18": 86.2,
+    "-36": 90.3,
+    "-54": 92.6,
+    "-72": 91.1,
+    "-90": 92.5
+   }
+  },
+  "Felt, double + rubber": {
+   "mean": 90.5,
+   "repeat_spread": 0.29,
+   "color": "#862E9C",
+   "day": "29 Oct",
+   "base": "axi2217__8in__felt-2-layers-rubber__r27-felt-2-layers-rubber",
+   "old_fit": true,
+   "thrust": 8.69,
+   "thrust_min_max": [
+    8.6,
+    8.76
+   ],
+   "rpm": 12177,
+   "rpm_min_max": [
+    12165,
+    12197
+   ],
+   "current": 21.18,
+   "per_mic": {
+    "90": 94.4,
+    "72": 94.6,
+    "54": 93.9,
+    "36": 91.2,
+    "18": 88.2,
+    "0": 83.8,
+    "-18": 85.6,
+    "-36": 90.0,
+    "-54": 92.3,
+    "-72": 89.9,
+    "-90": 91.7
+   }
+  },
+  "Rubber": {
+   "mean": 91.3,
+   "repeat_spread": 0.21,
+   "color": "#1864AB",
+   "day": "29 Oct",
+   "base": "axi2217__8in__rubber__r27-rubber",
+   "old_fit": true,
+   "thrust": 7.58,
+   "thrust_min_max": [
+    7.52,
+    7.67
+   ],
+   "rpm": 12292,
+   "rpm_min_max": [
+    12276,
+    12304
+   ],
+   "current": 20.67,
+   "per_mic": {
+    "90": 95.3,
+    "72": 95.1,
+    "54": 94.6,
+    "36": 92.6,
+    "18": 90.2,
+    "0": 86.1,
+    "-18": 86.8,
+    "-36": 91.1,
+    "-54": 92.9,
+    "-72": 88.8,
+    "-90": 90.6
    }
   }
  },

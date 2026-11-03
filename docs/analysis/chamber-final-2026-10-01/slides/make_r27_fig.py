@@ -19,7 +19,14 @@ SETS = [  # label, base, day (YYYY-MM-DD, the only day read from that base), col
     ('Thinsulate, 6 layers', T + '6-layers__r27-thinsulate-6-layers', '2026-10-30', '#1098AD'),
     ('Thinsulate, 8 layers', T + '8-layers__r27-thinsulate-8-layers-archive-2026-11-02-trial-1619', '2026-11-02', '#C2255C'),
     ('Thinsulate, 10 layers', T + '10-layers__r27-thinsulate-10-layers', '2026-11-02', '#7048E8'),
+    # fitted the old way, before the new lining fit of 30 Oct, and on other days: indicative only
+    ('Felt', 'axi2217__8in__felt__r27-felt', '2026-10-28', '#2F9E44'),
+    ('Felt, double layer', 'axi2217__8in__felt-2-layers__r27-felt-2-layers', '2026-10-29', '#5C940D'),
+    ('Felt, double + rubber', 'axi2217__8in__felt-2-layers-rubber__r27-felt-2-layers-rubber', '2026-10-29', '#862E9C'),
+    ('Rubber', 'axi2217__8in__rubber__r27-rubber', '2026-10-29', '#1864AB'),
 ]
+MARK = {'2026-11-02': 's', '2026-10-30': 'o', '2026-10-29': 'D', '2026-10-28': '^'}
+OLD_FIT = {'2026-10-28', '2026-10-29'}
 LO, HI, PWM = 500, 24000, 2000
 DAYLABEL = lambda d: f'{int(d[8:])} {["", "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"][int(d[5:7])]}'
 
@@ -47,7 +54,7 @@ for nm, base, day, col in SETS:
     data[nm] = (gs[0]['elev'], lv.mean(0), col, day)
     p = perf(base, day)
     out[nm] = dict(mean=round(float(lv.mean()), 1), repeat_spread=round(float(np.ptp(lv.mean(1))), 2), color=col, day=DAYLABEL(day), base=base,
-                   thrust=round(p['thrust'], 2), thrust_min_max=[round(x, 2) for x in sorted(p['thrust_rng'])], rpm=round(p['rpm']),
+                   old_fit=day in OLD_FIT, thrust=round(p['thrust'], 2), thrust_min_max=[round(x, 2) for x in sorted(p['thrust_rng'])], rpm=round(p['rpm']),
                    rpm_min_max=[round(x) for x in p['rpm_rng']], current=round(p['current'], 2),
                    per_mic=dict(zip([int(e) for e in gs[0]['elev']], [round(float(x), 1) for x in lv.mean(0)])))
 
@@ -56,7 +63,7 @@ fig = plt.figure(figsize=(6.4, 6.4), dpi=220); ax = fig.add_subplot(111, project
 for nm, (el, v, col, day) in data.items():
     th = np.radians(np.r_[el, 180 - el[::-1]]); r = np.r_[v, v[::-1]]
     ax.plot(np.r_[th, th[0]], np.r_[r, r[0]], color=col, lw=3.4 if nm.startswith('Bare') else 2.0, ls='-',
-            marker='o' if day == '2026-10-30' else 's', ms=4, mfc=col, mec='white', mew=.8)
+            marker=MARK[day], ms=4, mfc=col, mec='white', mew=.8)
 ax.set_rlim(rmin, rmax); ticks = [t for t in range(int(rmin), int(rmax) + 1) if t % 5 == 0 and t > rmin]; ax.set_rticks(ticks)
 ax.set_yticklabels([f'{t}' if i < len(ticks) - 1 else f'{t} dB' for i, t in enumerate(ticks)], fontsize=10, color='#555'); ax.set_rlabel_position(25)
 [(t.set_bbox(dict(facecolor='white', edgecolor='none', alpha=.9, pad=1.5)), t.set_zorder(30)) for t in ax.get_yticklabels()]
@@ -83,7 +90,7 @@ for a in (a1, a2):
 for nm, (e, v, col, day) in data.items():
     if nm.startswith('Bare'): continue
     y = v[order]; ref = data[REF][1][order]
-    mk = 'o' if day == '2026-10-30' else 's'
+    mk = MARK[day]
     lw = 2.6 if nm == REF else 2.0
     a1.plot(x, y, color=col, lw=lw, marker=mk, ms=5, mfc=col, mec='white', mew=.8, zorder=3)
     a2.plot(x, y - ref, color=col, lw=lw, marker=mk, ms=5, mfc=col, mec='white', mew=.8, zorder=3)
@@ -108,7 +115,7 @@ for nm, (el, v, col, day) in data.items():
     if nm.startswith('Bare'): continue
     th = np.radians(np.r_[el, 180 - el[::-1]]); r = np.r_[v, v[::-1]]
     ax.plot(np.r_[th, th[0]], np.r_[r, r[0]], color=col, lw=2.6 if nm == 'Duct, no lining' else 2.0, ls='-',
-            marker='o' if day == '2026-10-30' else 's', ms=4.5, mfc=col, mec='white', mew=.8, zorder=3)
+            marker=MARK[day], ms=4.5, mfc=col, mec='white', mew=.8, zorder=3)
 ax.set_rlim(zmin, zmax); zt = [t for t in range(int(zmin) + 1, int(zmax) + 1) if t % 2 == 0]; ax.set_rticks(zt)
 ax.set_yticklabels([f'{t}' if i < len(zt) - 1 else f'{t} dB' for i, t in enumerate(zt)], fontsize=10, color='#555'); ax.set_rlabel_position(25)
 [(t.set_bbox(dict(facecolor='white', edgecolor='none', alpha=.9, pad=1.5)), t.set_zorder(30)) for t in ax.get_yticklabels()]
