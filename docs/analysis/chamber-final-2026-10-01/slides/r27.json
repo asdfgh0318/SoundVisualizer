@@ -196,6 +196,38 @@
     "-90": 91.8
    }
   },
+  "Inlet + felt": {
+   "mean": 90.9,
+   "repeat_spread": 0.75,
+   "color": "#2F9E44",
+   "day": "3 Nov",
+   "base": "axi2217__8in__inlet-felt__r27-inlet-felt",
+   "old_fit": false,
+   "thrust": 9.98,
+   "thrust_min_max": [
+    9.91,
+    10.02
+   ],
+   "rpm": 12077,
+   "rpm_min_max": [
+    12055,
+    12108
+   ],
+   "current": 21.68,
+   "per_mic": {
+    "90": 95.9,
+    "72": 95.2,
+    "54": 94.3,
+    "36": 91.5,
+    "18": 88.5,
+    "0": 82.7,
+    "-18": 87.4,
+    "-36": 90.7,
+    "-54": 92.9,
+    "-72": 89.1,
+    "-90": 91.6
+   }
+  },
   "Thinsulate, 2 layers": {
    "mean": 90.9,
    "repeat_spread": 0.22,

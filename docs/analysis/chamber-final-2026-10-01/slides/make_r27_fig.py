@@ -18,6 +18,7 @@ SETS = [  # label, base, day (YYYY-MM-DD, the only day read from that base), col
     ('Inlet + Thinsulate, 2 layers', 'axi2217__8in__inlet-thinsulate-2-layers__r27-inlet-thinsulate-2-layers', '2026-11-03', '#F08C00'),
     ('Inlet + Thinsulate, 4 layers', 'axi2217__8in__inlet-thinsulate-4-layers__r27-inlet-thinsulate-4-layers', '2026-11-03', '#E03131'),
     ('Inlet + Thinsulate 4 + rubber', 'axi2217__8in__inlet-thinsulate-4-layers-rubber__r27-inlet-thinsulate-4-layers-rubber', '2026-11-03', '#9C36B5'),
+    ('Inlet + felt', 'axi2217__8in__inlet-felt__r27-inlet-felt', '2026-11-03', '#2F9E44'),
     ('Thinsulate, 2 layers', T + '2-layers__r27-thinsulate-2-layers-trial-2026-11-02', '2026-11-02', '#F08C00'),
     ('Thinsulate, 4 layers', T + '4-layers__r27-thinsulate-4-layers', '2026-11-02', '#E03131'),
     ('Thinsulate, 6 layers', T + '6-layers__r27-thinsulate-6-layers', '2026-10-30', '#1098AD'),
@@ -34,7 +35,7 @@ SETS = [  # label, base, day (YYYY-MM-DD, the only day read from that base), col
 MARK = {'2026-11-03': '*', '2026-11-02': 's', '2026-10-30': 'o', '2026-10-29': 'D', '2026-10-28': '^'}
 OLD_FIT = {'2026-10-28', '2026-10-29'}
 LO, HI, PWM = 500, 24000, 2000
-LS = {k: (0, (5, 1.6)) for k in ('Duct + inlet, no lining', 'Inlet + Thinsulate, 2 layers', 'Inlet + Thinsulate, 4 layers', 'Inlet + Thinsulate 4 + rubber')}   # dashed: the duct with the inlet
+LS = {k: (0, (5, 1.6)) for k in ('Duct + inlet, no lining', 'Inlet + Thinsulate, 2 layers', 'Inlet + Thinsulate, 4 layers', 'Inlet + Thinsulate 4 + rubber', 'Inlet + felt')}   # dashed: the duct with the inlet
 DAYLABEL = lambda d: f'{int(d[8:])} {["", "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"][int(d[5:7])]}'
 
 

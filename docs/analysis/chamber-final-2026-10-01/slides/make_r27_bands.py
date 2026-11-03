@@ -22,6 +22,7 @@ SETS = {
     'i_thin2': ('axi2217__8in__inlet-thinsulate-2-layers__r27-inlet-thinsulate-2-layers', '2026-11-03'),
     'i_thin4': ('axi2217__8in__inlet-thinsulate-4-layers__r27-inlet-thinsulate-4-layers', '2026-11-03'),
     'i_thin4r': ('axi2217__8in__inlet-thinsulate-4-layers-rubber__r27-inlet-thinsulate-4-layers-rubber', '2026-11-03'),
+    'i_felt': ('axi2217__8in__inlet-felt__r27-inlet-felt', '2026-11-03'),
 }
 FC = np.array([100 * 2 ** (i / 3) for i in range(24)])          # 100 Hz .. 20 kHz
 NH = 10
@@ -67,6 +68,7 @@ PAIRS = [  # label, a, b (b minus a), same day?
     ('Thinsulate 2 − unlined, with inlet', 'inlet', 'i_thin2', True),
     ('Thinsulate 4 − unlined, with inlet', 'inlet', 'i_thin4', True),
     ('Thin 4 + rubber − unlined, with inlet', 'inlet', 'i_thin4r', True),
+    ('Felt − unlined, with inlet', 'inlet', 'i_felt', True),
 ]
 GROUPS = [('100–315 Hz', 100, 355), ('400–800 Hz', 355, 890), ('1–2 kHz', 890, 2240), ('2.5–5 kHz', 2240, 5600), ('6.3–10 kHz', 5600, 11200), ('12.5–20 kHz', 11200, 22400)]
 
@@ -87,7 +89,7 @@ print('\nabsolute, total per group (dB):')
 for k in ('bare', 'duct', 'inlet', 'thin4', 'i_thin4'):
     print(f"{k:38}" + ''.join(f'{grp(R[k]["tot"], lo, hi):13.1f}' for _, lo, hi in GROUPS) + ''.join(f'{x:7.1f}' for x in R[k]['tone'][:3]))
 print('\ntones, front-mic mean (dB), harmonics 1..10:')
-for k in ('duct', 'inlet', 'thin2', 'i_thin2', 'thin4', 'i_thin4', 'i_thin4r'):
+for k in ('duct', 'inlet', 'thin2', 'i_thin2', 'thin4', 'i_thin4', 'i_thin4r', 'i_felt'):
     print(f"{k:10}" + ''.join(f'{x:7.1f}' for x in R[k]['tone']))
 
 # ---- figure: b - a per third-octave band, total and broadband, with the repeat floor shaded ----
@@ -95,7 +97,7 @@ fl = np.abs(R['inlet_b']['tot'] - R['inlet']['tot'])
 fig, axs = plt.subplots(3, 1, figsize=(9, 10), dpi=170, sharex=True, gridspec_kw=dict(hspace=.12))
 panels = [('Inlet vs no inlet (unlined; 3 Nov − 2 Nov, crosses days)', [('inlet − no inlet', 'duct', 'inlet', '#0B7285')]),
           ('Linings, no inlet (2 Nov, same day)', [('Thinsulate 2 − unlined', 'duct', 'thin2', '#F08C00'), ('Thinsulate 4 − unlined', 'duct', 'thin4', '#E03131')]),
-          ('Linings, with inlet (3 Nov, same day)', [('Thinsulate 2 − unlined', 'inlet', 'i_thin2', '#F08C00'), ('Thinsulate 4 − unlined', 'inlet', 'i_thin4', '#E03131'), ('Thinsulate 4 + rubber − unlined', 'inlet', 'i_thin4r', '#2F9E44')])]
+          ('Linings, with inlet (3 Nov, same day)', [('Thinsulate 2 − unlined', 'inlet', 'i_thin2', '#F08C00'), ('Thinsulate 4 − unlined', 'inlet', 'i_thin4', '#E03131'), ('Thinsulate 4 + rubber − unlined', 'inlet', 'i_thin4r', '#2F9E44'), ('Felt − unlined', 'inlet', 'i_felt', '#A0522D')])]
 for ax, (title, lines) in zip(axs, panels):
     ax.fill_between(FC, -fl, fl, color='#dee2e6', step='mid', label='repeat floor (inlet run 2 vs run 1)')
     ax.axhline(0, color='#868E96', lw=1)

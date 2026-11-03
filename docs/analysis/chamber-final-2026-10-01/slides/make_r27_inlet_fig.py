@@ -15,6 +15,7 @@ SETS = [  # label, base, day, colour, line style
     ('Inlet + Thinsulate, 2 layers (3 Nov)', 'axi2217__8in__inlet-thinsulate-2-layers__r27-inlet-thinsulate-2-layers', '2026-11-03', '#1098AD', '-'),
     ('Inlet + Thinsulate, 4 layers (3 Nov)', 'axi2217__8in__inlet-thinsulate-4-layers__r27-inlet-thinsulate-4-layers', '2026-11-03', '#7048E8', '-'),
     ('Inlet + Thinsulate 4 + rubber (3 Nov)', 'axi2217__8in__inlet-thinsulate-4-layers-rubber__r27-inlet-thinsulate-4-layers-rubber', '2026-11-03', '#2F9E44', '-'),
+    ('Inlet + felt (3 Nov)', 'axi2217__8in__inlet-felt__r27-inlet-felt', '2026-11-03', '#A0522D', '-'),
     ('Duct, no lining, no inlet (2 Nov)', 'axi2217__8in__duct-unlined__r27-duct-unlined', '2026-11-02', '#495057', '-'),
 ]
 PWM, LO, HI = 2000, 500, 24000
@@ -48,7 +49,8 @@ print('elev            ' + ' '.join(f'{int(e):>6}' for e in el))
 for nm, (e, lv, _, _) in data.items():
     assert (e == el).all()
     print(f'{nm[:15]:15} ' + ' '.join(f'{x:6.1f}' for x in lv.mean(0)))
-a, b, t, t4, t4r, c = (data[s[0]][1].mean(0) for s in SETS)
+a, b, t, t4, t4r, fe, c = (data[s[0]][1].mean(0) for s in SETS)
+print('felt - run1     ' + ' '.join(f'{x:+6.1f}' for x in fe - a))
 print('thin4r - run1   ' + ' '.join(f'{x:+6.1f}' for x in t4r - a))
 print('thin4 - run1    ' + ' '.join(f'{x:+6.1f}' for x in t4 - a))
 print('run2 - run1     ' + ' '.join(f'{x:+6.1f}' for x in b - a))
