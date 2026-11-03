@@ -66,3 +66,34 @@ json.dump(dict(axis=[rmin, rmax], sets=out), open(os.path.join(HERE, 'r27.json')
 print('rlim', rmin, rmax)
 for k, v in out.items():
     print(f"{k:24} {v['day']:7} {v['mean']:5.1f} dB (rep spread {v['repeat_spread']}) {v['thrust']:6.2f} N {v['thrust_min_max']} {v['rpm']:6d} rpm {v['rpm_min_max']} {v['current']:.2f} A")
+
+
+# ---- line version: level against microphone angle, one line per set-up next to each other ----
+# The polar hides the 0.1-1 dB differences between linings under the 11 dB gap to the bare prop, so the bare prop
+# stays in the slide's list but not in this chart, and the lower panel shows each set-up minus the unlined duct.
+REF = 'Duct, no lining'
+el = data[REF][0]
+order = np.argsort(el)
+x = el[order]
+fig, (a1, a2) = plt.subplots(2, 1, figsize=(6.4, 6.4), dpi=220, sharex=True, gridspec_kw=dict(height_ratios=[1.15, 1], hspace=.08))
+for a in (a1, a2):
+    a.axvspan(-99, -63, color='#eceff3', zorder=0)
+    a.grid(color='#dde1e7', lw=.8); a.set_axisbelow(True)
+    for sp_ in ('top', 'right'): a.spines[sp_].set_visible(False)
+for nm, (e, v, col, day) in data.items():
+    if nm.startswith('Bare'): continue
+    y = v[order]; ref = data[REF][1][order]
+    mk = 'o' if day == '2026-10-30' else 's'
+    lw = 2.6 if nm == REF else 2.0
+    a1.plot(x, y, color=col, lw=lw, marker=mk, ms=5, mfc=col, mec='white', mew=.8, zorder=3)
+    a2.plot(x, y - ref, color=col, lw=lw, marker=mk, ms=5, mfc=col, mec='white', mew=.8, zorder=3)
+a1.set_ylabel('level, dB SPL', fontsize=11, color='#333')
+a2.set_ylabel('minus unlined duct, dB', fontsize=11, color='#333')
+a2.axhline(0, color='#868E96', lw=1.2)
+a2.set_xticks(x); a2.set_xticklabels([f'{int(t):+d}°'.replace('-', '−') if t else '0°' for t in x], fontsize=10)
+a2.set_xlabel('microphone elevation', fontsize=11, color='#333')
+a2.set_xlim(-95, 95)
+a1.text(-79, a1.get_ylim()[1] - .3, 'in the flow?\nvaries ~1 dB\nrun to run', fontsize=7.5, color='#6b7280', ha='center', va='top')
+for a in (a1, a2): a.tick_params(labelsize=10, colors='#444')
+fig.savefig(os.path.join(HERE, 'lines-r27.png'), bbox_inches='tight', pad_inches=.12, facecolor='white')
+print('lines-r27.png written')
