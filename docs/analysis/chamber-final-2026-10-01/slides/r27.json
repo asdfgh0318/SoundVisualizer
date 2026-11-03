@@ -100,6 +100,70 @@
     "-90": 93.6
    }
   },
+  "Inlet + Thinsulate, 2 layers": {
+   "mean": 91.3,
+   "repeat_spread": 0.06,
+   "color": "#F08C00",
+   "day": "3 Nov",
+   "base": "axi2217__8in__inlet-thinsulate-2-layers__r27-inlet-thinsulate-2-layers",
+   "old_fit": false,
+   "thrust": 10.04,
+   "thrust_min_max": [
+    9.96,
+    10.1
+   ],
+   "rpm": 12087,
+   "rpm_min_max": [
+    12066,
+    12116
+   ],
+   "current": 21.66,
+   "per_mic": {
+    "90": 95.8,
+    "72": 95.3,
+    "54": 94.4,
+    "36": 91.6,
+    "18": 88.6,
+    "0": 82.4,
+    "-18": 87.9,
+    "-36": 91.2,
+    "-54": 93.2,
+    "-72": 91.2,
+    "-90": 92.6
+   }
+  },
+  "Inlet + Thinsulate, 4 layers": {
+   "mean": 90.9,
+   "repeat_spread": 0.33,
+   "color": "#E03131",
+   "day": "3 Nov",
+   "base": "axi2217__8in__inlet-thinsulate-4-layers__r27-inlet-thinsulate-4-layers",
+   "old_fit": false,
+   "thrust": 10.05,
+   "thrust_min_max": [
+    9.97,
+    10.11
+   ],
+   "rpm": 12076,
+   "rpm_min_max": [
+    12055,
+    12114
+   ],
+   "current": 21.69,
+   "per_mic": {
+    "90": 95.9,
+    "72": 95.3,
+    "54": 94.4,
+    "36": 91.6,
+    "18": 88.5,
+    "0": 82.8,
+    "-18": 87.2,
+    "-36": 90.8,
+    "-54": 93.1,
+    "-72": 87.6,
+    "-90": 92.5
+   }
+  },
   "Thinsulate, 2 layers": {
    "mean": 90.9,
    "repeat_spread": 0.22,
