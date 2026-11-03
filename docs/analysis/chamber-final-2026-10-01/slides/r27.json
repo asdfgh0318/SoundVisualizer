@@ -164,6 +164,38 @@
     "-90": 92.5
    }
   },
+  "Inlet + Thinsulate 4 + rubber": {
+   "mean": 91.2,
+   "repeat_spread": 0.29,
+   "color": "#9C36B5",
+   "day": "3 Nov",
+   "base": "axi2217__8in__inlet-thinsulate-4-layers-rubber__r27-inlet-thinsulate-4-layers-rubber",
+   "old_fit": false,
+   "thrust": 10.08,
+   "thrust_min_max": [
+    10.07,
+    10.11
+   ],
+   "rpm": 12075,
+   "rpm_min_max": [
+    12046,
+    12104
+   ],
+   "current": 21.73,
+   "per_mic": {
+    "90": 96.6,
+    "72": 95.7,
+    "54": 95.1,
+    "36": 92.1,
+    "18": 88.8,
+    "0": 83.4,
+    "-18": 86.8,
+    "-36": 90.9,
+    "-54": 93.3,
+    "-72": 88.4,
+    "-90": 91.8
+   }
+  },
   "Thinsulate, 2 layers": {
    "mean": 90.9,
    "repeat_spread": 0.22,
@@ -519,6 +551,6 @@
  },
  "zoom_axis": [
   81.0,
-  96.5
+  97.5
  ]
 }

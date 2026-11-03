@@ -38,21 +38,21 @@ s.addText('Mean level over the arc. Markers: ★ 3 Nov, ■ 2 Nov, ● 30 Oct, �
   { x: L, y: 1.9, w: W, h: 0.6, fontFace: 'Calibri', fontSize: 13, color: MUTED, margin: 0, valign: 'top', isTextBox: true });
 
 const X = { dot: L, name: L + 0.3, day: L + 3.1, db: L + 3.9, th: L + 4.95, rpm: L + 5.9 };
-const RH = 0.3, Y0 = 3.0;
-const head = (t, x, w) => s.addText(t, { x, y: 2.62, w, h: 0.3, fontFace: 'Calibri', fontSize: 12, bold: true, color: MUTED, align: 'right', margin: 0, valign: 'bottom', isTextBox: true });
+const RH = 0.285, Y0 = 2.9;
+const head = (t, x, w) => s.addText(t, { x, y: 2.52, w, h: 0.3, fontFace: 'Calibri', fontSize: 12, bold: true, color: MUTED, align: 'right', margin: 0, valign: 'bottom', isTextBox: true });
 head('level', X.db, 0.95); head('thrust', X.th, 0.85); head('rpm', X.rpm, 0.85);
-s.addShape(pres.shapes.LINE, { x: L, y: 2.95, w: W, h: 0, line: { color: 'C9CFD8', width: 1 } });
+s.addShape(pres.shapes.LINE, { x: L, y: 2.85, w: W, h: 0, line: { color: 'C9CFD8', width: 1 } });
 items.forEach(([name, v], i) => {
   const y = Y0 + i * RH, col = v.color.replace('#', '');
   s.addShape(pres.shapes.OVAL, { x: X.dot, y: y + 0.06, w: 0.18, h: 0.18, fill: { color: col }, line: { color: col, width: 0 } });
-  s.addText(name + (v.old_fit ? ' †' : ''), { x: X.name, y, w: 2.8, h: RH, fontFace: 'Calibri', fontSize: 15, bold: true, color: INK, margin: 0, valign: 'middle', isTextBox: true });
+  s.addText(name + (v.old_fit ? ' †' : ''), { x: X.name, y, w: 2.85, h: RH, fontFace: 'Calibri', fontSize: 14, bold: true, color: INK, margin: 0, valign: 'middle', isTextBox: true });
   s.addText(`${MARK[v.day] || ''} ${v.day}`, { x: X.day, y, w: 0.8, h: RH, fontFace: 'Calibri', fontSize: 12, color: v.old_fit ? '8A94A6' : MUTED, margin: 0, valign: 'middle', isTextBox: true });
   s.addText(n(v.mean, 1) + ' dB', { x: X.db, y, w: 0.95, h: RH, fontFace: 'Calibri', fontSize: 15, color: INK, align: 'right', margin: 0, valign: 'middle', isTextBox: true });
   s.addText(n(v.thrust, 2) + ' N', { x: X.th, y, w: 0.85, h: RH, fontFace: 'Calibri', fontSize: 15, bold: true, color: name === best[0] ? RED : name === 'Duct + inlet, no lining' ? '0B7285' : INK, align: 'right', margin: 0, valign: 'middle', isTextBox: true });
   s.addText(n(v.rpm), { x: X.rpm, y, w: 0.85, h: RH, fontFace: 'Calibri', fontSize: 15, color: INK, align: 'right', margin: 0, valign: 'middle', isTextBox: true });
 });
 
-const yC = Y0 + items.length * RH + 0.15;
+const yC = Y0 + items.length * RH + 0.12;
 s.addText(`+${n(gain, 2)} N`, { x: L, y: yC, w: W, h: 0.7, fontFace: 'Cambria', fontSize: 40, bold: true, color: RED, margin: 0, isTextBox: true });
 s.addText(`${best[0]} against the unlined duct, both ${duct.day}: it wins back ${(100 * gain / loss).toFixed(0)} % of the ${n(loss, 2)} N the empty duct loses to the bare prop, and is ${n(-dMeanB, 1)} dB quieter from −54° to +90°.`,
   { x: L, y: yC + 0.72, w: W, h: 0.66, fontFace: 'Calibri', fontSize: 13, color: INK, margin: 0, valign: 'top', isTextBox: true });
@@ -63,7 +63,7 @@ s.addText([
 s.addText([
   { text: `Inlet (dashed, ${inlet.day}): `, options: { bold: true, color: '0B7285' } },
   { text: `${n(inlet.thrust, 2)} N, +${n(inlet.thrust - duct.thrust, 2)} N over the unlined duct of 2 Nov at the same level (${n(frontMean(inlet, duct), 1)} dB from −54° to +90°). Same day with the inlet: ` +
-    iLined.map(([k, v]) => `${k.replace('Inlet + Thinsulate, ', 'Thinsulate ').replace(' layers', '')} ${n(v.thrust - inlet.thrust, 2).replace(/^(?!−)/, '+')} N, ${n(frontMean(v, inlet), 1).replace(/^(?!−)/, '+')} dB`).join('; ') +
+    iLined.map(([k, v]) => `${k.replace('Inlet + Thinsulate, ', 'Thinsulate ').replace('Inlet + Thinsulate ', 'Thinsulate ').replace(' layers', '')} ${n(v.thrust - inlet.thrust, 2).replace(/^(?!−)/, '+')} N, ${n(frontMean(v, inlet), 1).replace(/^(?!−)/, '+')} dB`).join('; ') +
     '. A repeat of the bare inlet agreed to 0.04 N.' },
 ], { x: L, y: yC + 2.12, w: W, h: 0.85, fontFace: 'Calibri', fontSize: 13, color: INK, margin: 0, valign: 'top', isTextBox: true });
 
@@ -72,7 +72,7 @@ s.addText(`28 Oct–3 Nov 2026, APC 8x4.5MR, AXI 2217/12, 500 Hz–24 kHz, 2000 
 s.addText('1', { x: 15.6, y: 11.0, w: 0.45, h: 0.35, fontFace: 'Calibri', fontSize: 13, color: MUTED, align: 'right', margin: 0, isTextBox: true });
 
 const lines = Object.entries(S).map(([k, v]) => `${k} (${v.day}${v.old_fit ? ', old fit' : ''}, base ${v.base}): ${n(v.mean, 1)} dB (repeat-to-repeat spread of the mean ${v.repeat_spread} dB), thrust ${n(v.thrust, 2)} N (repeats ${v.thrust_min_max.join('–')}), ${n(v.rpm)} rpm (${v.rpm_min_max.join('–')}), ${n(v.current, 2)} A; per microphone from +90 to -90: ${Object.values(v.per_mic).join(', ')} dB.`);
-s.addNotes(['All set-ups are the 8-inch APC 8x4.5MR on the AXI 2217/12 in the r27 duct. The bare prop, the unlined duct and Thinsulate 2/4/8/10 are from 2 Nov; the duct with the inlet (no lining), and with Thinsulate 2 and 4 inside it, from 3 Nov; the bare-inlet value is run 1, whose repeat (base r27-duct-unlined-inlet-trial-2026-11-03) gave 10.08 N and 0.0-0.2 dB from -54 to +90 degrees; Thinsulate 6 from 30 Oct; felt and PU foam from 28 Oct; felt double, felt double + rubber, rubber and PU foam + rubber from 29 Oct. The linings from 28-29 Oct were fitted the old way: with the new fit (from 30 Oct) the Thinsulates gave 8-26 % more thrust than their old-fit runs, so the old-fit values are probably low and are not comparable with the rest. The PU foam base also holds a 27 Oct run that was deleted on the Pi; only the 28 Oct run is used. Only the 2 Nov set-ups are compared with each other (the headline numbers). Each base: the PWM 2000 step of 3 repeats; level per microphone is the total level 500 Hz to 24 kHz in dB SPL with the corrected microphone files, mean over the 3 repeats, and the list gives the mean over the eleven positions. Thrust (the stand reads negative, shown as magnitude), rpm and current are the median of the second half of each step, mean over the 3 repeats; rpm is the stand reading (electrical) times 60/7 for the 14-pole motor. Duct and propeller are one piece on the stand, so the thrust includes the duct.',
+s.addNotes(['All set-ups are the 8-inch APC 8x4.5MR on the AXI 2217/12 in the r27 duct. The bare prop, the unlined duct and Thinsulate 2/4/8/10 are from 2 Nov; the duct with the inlet (no lining), and with Thinsulate 2, Thinsulate 4 and Thinsulate 4 + rubber inside it, from 3 Nov; the bare-inlet value is run 1, whose repeat (base r27-duct-unlined-inlet-trial-2026-11-03) gave 10.08 N and 0.0-0.2 dB from -54 to +90 degrees; Thinsulate 6 from 30 Oct; felt and PU foam from 28 Oct; felt double, felt double + rubber, rubber and PU foam + rubber from 29 Oct. The linings from 28-29 Oct were fitted the old way: with the new fit (from 30 Oct) the Thinsulates gave 8-26 % more thrust than their old-fit runs, so the old-fit values are probably low and are not comparable with the rest. The PU foam base also holds a 27 Oct run that was deleted on the Pi; only the 28 Oct run is used. Only the 2 Nov set-ups are compared with each other (the headline numbers). Each base: the PWM 2000 step of 3 repeats; level per microphone is the total level 500 Hz to 24 kHz in dB SPL with the corrected microphone files, mean over the 3 repeats, and the list gives the mean over the eleven positions. Thrust (the stand reads negative, shown as magnitude), rpm and current are the median of the second half of each step, mean over the 3 repeats; rpm is the stand reading (electrical) times 60/7 for the 14-pole motor. Duct and propeller are one piece on the stand, so the thrust includes the duct.',
   'The radial axis is zoomed to the ducted set-ups, so the bare prop (74-80 dB at most positions, 96.1 dB at -90 degrees) is not drawn. The -90 and -72 degree positions vary run to run by about 1 dB even without a remount and probably sit in the flow, so their levels are less trustworthy than the rest of the arc.',
   ...lines].join('\n\n'));
 

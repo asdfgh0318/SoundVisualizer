@@ -15,18 +15,20 @@ MODES = {   # out file, day, {key: base}, panels, title
     'inlet': ('heatmap-r27-inlet-linings.png', '2026-11-03',
               {'ref': I, 'ref_b': I + '-trial-2026-11-03',
                'thin2': 'axi2217__8in__inlet-thinsulate-2-layers__r27-inlet-thinsulate-2-layers',
-               'thin4': 'axi2217__8in__inlet-thinsulate-4-layers__r27-inlet-thinsulate-4-layers'},
-              ['Thinsulate 2 effect:  [inlet + Thinsulate 2]  minus  [inlet, unlined]',
-               'Thinsulate 4 effect:  [inlet + Thinsulate 4]  minus  [inlet, unlined]',
-               'Repeat floor:  [inlet, unlined, run 2]  minus  [run 1]  (nothing changed)'],
+               'thin4': 'axi2217__8in__inlet-thinsulate-4-layers__r27-inlet-thinsulate-4-layers',
+               'thin4r': 'axi2217__8in__inlet-thinsulate-4-layers-rubber__r27-inlet-thinsulate-4-layers-rubber'},
+              [('Thinsulate 2 effect:  [inlet + Thinsulate 2]  minus  [inlet, unlined]', 'thin2'),
+               ('Thinsulate 4 effect:  [inlet + Thinsulate 4]  minus  [inlet, unlined]', 'thin4'),
+               ('Thinsulate 4 + rubber effect:  [inlet + Thinsulate 4 + rubber]  minus  [inlet, unlined]', 'thin4r'),
+               ('Repeat floor:  [inlet, unlined, run 2]  minus  [run 1]  (nothing changed)', 'ref_b')],
               'r27 duct WITH the inlet, 2000 µs, 3 Nov (same day)'),
     'noinlet': ('heatmap-r27-linings-no-inlet.png', '2026-11-02',
                 {'ref': D, 'ref_b': D + '-archive-2026-11-02-trial-1751',
                  'thin2': T + '2-layers__r27-thinsulate-2-layers-trial-2026-11-02',
                  'thin4': T + '4-layers__r27-thinsulate-4-layers'},
-                ['Thinsulate 2 effect:  [Thinsulate 2]  minus  [unlined]   (no inlet)',
-                 'Thinsulate 4 effect:  [Thinsulate 4]  minus  [unlined]   (no inlet)',
-                 'Repeat floor:  [unlined, 17:51 run]  minus  [unlined, 17:35 run]  (nothing changed)'],
+                [('Thinsulate 2 effect:  [Thinsulate 2]  minus  [unlined]   (no inlet)', 'thin2'),
+                 ('Thinsulate 4 effect:  [Thinsulate 4]  minus  [unlined]   (no inlet)', 'thin4'),
+                 ('Repeat floor:  [unlined, 17:51 run]  minus  [unlined, 17:35 run]  (nothing changed)', 'ref_b')],
                 'r27 duct WITHOUT the inlet, 2000 µs, 2 Nov (same day)'),
 }
 FC = np.array([100 * 2 ** (i / 3) for i in range(24)])          # 100 Hz .. 20 kHz
@@ -46,9 +48,9 @@ for mode, (OUT, DAY, SETS, TITLES, HEAD) in MODES.items():
     assert len(gs) == 3, (k, len(gs))
     el = gs[0]['elev']
     R[k] = np.mean([bands(g) for g in gs], 0)
-  PANELS = list(zip(TITLES, [R['thin2'] - R['ref'], R['thin4'] - R['ref'], R['ref_b'] - R['ref']]))
+  PANELS = [(t, R[k] - R['ref']) for t, k in TITLES]
   if True:
-    fig, axs = plt.subplots(3, 1, figsize=(13, 12.5), dpi=160, gridspec_kw=dict(hspace=.42))
+    fig, axs = plt.subplots(len(PANELS), 1, figsize=(13, 4.15 * len(PANELS)), dpi=160, gridspec_kw=dict(hspace=.42))
     for ax, (title, d) in zip(axs, PANELS):
         im = ax.imshow(d, cmap='RdBu_r', vmin=-LIM, vmax=LIM, aspect='auto')
         for i in range(d.shape[0]):
