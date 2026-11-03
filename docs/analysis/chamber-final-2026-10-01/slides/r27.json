@@ -1,0 +1,225 @@
+{
+ "axis": [
+  72.0,
+  98.0
+ ],
+ "sets": {
+  "Bare prop, no duct": {
+   "mean": 80.0,
+   "repeat_spread": 0.69,
+   "color": "#000000",
+   "day": "2 Nov",
+   "base": "axi2217__8in__none__r27-8x45mr-bare-prop",
+   "thrust": 10.56,
+   "thrust_min_max": [
+    10.51,
+    10.64
+   ],
+   "rpm": 11807,
+   "rpm_min_max": [
+    11777,
+    11824
+   ],
+   "current": 22.95,
+   "per_mic": {
+    "90": 80.7,
+    "72": 80.6,
+    "54": 80.2,
+    "36": 77.9,
+    "18": 74.3,
+    "0": 74.4,
+    "-18": 77.2,
+    "-36": 79.2,
+    "-54": 80.3,
+    "-72": 79.4,
+    "-90": 96.1
+   }
+  },
+  "Duct, no lining": {
+   "mean": 91.5,
+   "repeat_spread": 0.47,
+   "color": "#868E96",
+   "day": "2 Nov",
+   "base": "axi2217__8in__duct-unlined__r27-duct-unlined",
+   "thrust": 7.99,
+   "thrust_min_max": [
+    7.95,
+    8.02
+   ],
+   "rpm": 12269,
+   "rpm_min_max": [
+    12245,
+    12291
+   ],
+   "current": 20.96,
+   "per_mic": {
+    "90": 95.6,
+    "72": 95.2,
+    "54": 94.5,
+    "36": 92.1,
+    "18": 89.8,
+    "0": 85.3,
+    "-18": 88.1,
+    "-36": 91.5,
+    "-54": 93.2,
+    "-72": 89.0,
+    "-90": 91.7
+   }
+  },
+  "Thinsulate, 2 layers": {
+   "mean": 90.9,
+   "repeat_spread": 0.22,
+   "color": "#F08C00",
+   "day": "2 Nov",
+   "base": "axi2217__8in__thinsulate-2-layers__r27-thinsulate-2-layers-trial-2026-11-02",
+   "thrust": 8.78,
+   "thrust_min_max": [
+    8.75,
+    8.83
+   ],
+   "rpm": 12205,
+   "rpm_min_max": [
+    12166,
+    12230
+   ],
+   "current": 21.25,
+   "per_mic": {
+    "90": 95.0,
+    "72": 94.7,
+    "54": 94.0,
+    "36": 91.6,
+    "18": 89.0,
+    "0": 83.9,
+    "-18": 87.6,
+    "-36": 91.2,
+    "-54": 93.0,
+    "-72": 87.9,
+    "-90": 92.0
+   }
+  },
+  "Thinsulate, 4 layers": {
+   "mean": 90.6,
+   "repeat_spread": 0.12,
+   "color": "#E03131",
+   "day": "2 Nov",
+   "base": "axi2217__8in__thinsulate-4-layers__r27-thinsulate-4-layers",
+   "thrust": 9.22,
+   "thrust_min_max": [
+    9.13,
+    9.28
+   ],
+   "rpm": 12157,
+   "rpm_min_max": [
+    12141,
+    12171
+   ],
+   "current": 21.45,
+   "per_mic": {
+    "90": 94.7,
+    "72": 94.5,
+    "54": 93.6,
+    "36": 91.0,
+    "18": 88.4,
+    "0": 83.3,
+    "-18": 87.6,
+    "-36": 91.0,
+    "-54": 92.9,
+    "-72": 89.0,
+    "-90": 90.1
+   }
+  },
+  "Thinsulate, 6 layers": {
+   "mean": 91.0,
+   "repeat_spread": 0.16,
+   "color": "#1098AD",
+   "day": "30 Oct",
+   "base": "axi2217__8in__thinsulate-6-layers__r27-thinsulate-6-layers",
+   "thrust": 8.64,
+   "thrust_min_max": [
+    8.55,
+    8.73
+   ],
+   "rpm": 12176,
+   "rpm_min_max": [
+    12123,
+    12228
+   ],
+   "current": 21.11,
+   "per_mic": {
+    "90": 94.9,
+    "72": 94.9,
+    "54": 94.1,
+    "36": 91.7,
+    "18": 89.1,
+    "0": 84.2,
+    "-18": 87.2,
+    "-36": 90.8,
+    "-54": 92.7,
+    "-72": 90.3,
+    "-90": 90.9
+   }
+  },
+  "Thinsulate, 8 layers": {
+   "mean": 91.2,
+   "repeat_spread": 0.11,
+   "color": "#C2255C",
+   "day": "2 Nov",
+   "base": "axi2217__8in__thinsulate-8-layers__r27-thinsulate-8-layers-archive-2026-11-02-trial-1619",
+   "thrust": 8.82,
+   "thrust_min_max": [
+    8.73,
+    8.89
+   ],
+   "rpm": 12200,
+   "rpm_min_max": [
+    12194,
+    12208
+   ],
+   "current": 21.3,
+   "per_mic": {
+    "90": 95.1,
+    "72": 95.0,
+    "54": 94.2,
+    "36": 91.8,
+    "18": 89.1,
+    "0": 84.3,
+    "-18": 87.2,
+    "-36": 91.0,
+    "-54": 93.0,
+    "-72": 91.6,
+    "-90": 91.0
+   }
+  },
+  "Thinsulate, 10 layers": {
+   "mean": 91.0,
+   "repeat_spread": 0.1,
+   "color": "#7048E8",
+   "day": "2 Nov",
+   "base": "axi2217__8in__thinsulate-10-layers__r27-thinsulate-10-layers",
+   "thrust": 8.89,
+   "thrust_min_max": [
+    8.88,
+    8.92
+   ],
+   "rpm": 12177,
+   "rpm_min_max": [
+    12152,
+    12207
+   ],
+   "current": 21.4,
+   "per_mic": {
+    "90": 94.9,
+    "72": 94.7,
+    "54": 94.0,
+    "36": 91.7,
+    "18": 88.7,
+    "0": 83.7,
+    "-18": 86.8,
+    "-36": 90.8,
+    "-54": 92.9,
+    "-72": 91.4,
+    "-90": 91.3
+   }
+  }
+ }
+}
