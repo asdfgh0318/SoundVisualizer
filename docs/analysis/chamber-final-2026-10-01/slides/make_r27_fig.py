@@ -24,6 +24,8 @@ SETS = [  # label, base, day (YYYY-MM-DD, the only day read from that base), col
     ('Felt, double layer', 'axi2217__8in__felt-2-layers__r27-felt-2-layers', '2026-10-29', '#5C940D'),
     ('Felt, double + rubber', 'axi2217__8in__felt-2-layers-rubber__r27-felt-2-layers-rubber', '2026-10-29', '#862E9C'),
     ('Rubber', 'axi2217__8in__rubber__r27-rubber', '2026-10-29', '#1864AB'),
+    ('PU foam', 'axi2217__8in__pu-foam__r27-pu-foam', '2026-10-28', '#A0522D'),          # base also holds the deleted 27 Oct run
+    ('PU foam + rubber', 'axi2217__8in__pu-foam-rubber__r27-pu-foam-rubber', '2026-10-29', '#FCC419'),
 ]
 MARK = {'2026-11-02': 's', '2026-10-30': 'o', '2026-10-29': 'D', '2026-10-28': '^'}
 OLD_FIT = {'2026-10-28', '2026-10-29'}
