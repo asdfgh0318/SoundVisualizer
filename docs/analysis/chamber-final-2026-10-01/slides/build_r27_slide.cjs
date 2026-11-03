@@ -76,4 +76,44 @@ s.addNotes(['All set-ups are the 8-inch APC 8x4.5MR on the AXI 2217/12 in the r2
   'The radial axis is zoomed to the ducted set-ups, so the bare prop (74-80 dB at most positions, 96.1 dB at -90 degrees) is not drawn. The -90 and -72 degree positions vary run to run by about 1 dB even without a remount and probably sit in the flow, so their levels are less trustworthy than the rest of the arc.',
   ...lines].join('\n\n'));
 
+// ---- page 2: each set-up with and without the inlet ----
+{
+  const s2 = pres.addSlide();
+  s2.background = { color: 'FFFFFF' };
+  s2.addImage({ path: 'polar-r27-inlet.png', x: 0.3, y: 1.4, w: 6.8, h: 8.63, altText: 'Polar plot of the duct with the inlet (two runs, with Thinsulate 2 and 4) and the unlined duct without it, 2000 microseconds' });
+  const L2 = 7.35, W2 = 8.85;
+  s2.addText('THE INLET', { x: L2, y: 0.6, w: W2, h: 0.4, fontFace: 'Calibri', fontSize: 16, bold: true, color: BLUE, charSpacing: 3, margin: 0, isTextBox: true });
+  s2.addText('With and without the inlet', { x: L2, y: 0.98, w: W2, h: 0.85, fontFace: 'Cambria', fontSize: 38, bold: true, color: INK, margin: 0, valign: 'top', isTextBox: true });
+  s2.addText(`2000 µs, mean of 3 repeats. Without the inlet: ${duct.day}; with it: ${inlet.day}, so every row crosses days. Level is the mean over −54° to +90°.`,
+    { x: L2, y: 1.9, w: W2, h: 0.6, fontFace: 'Calibri', fontSize: 13, color: MUTED, margin: 0, valign: 'top', isTextBox: true });
+  const PAIRS = [['None', 'Duct, no lining', 'Duct + inlet, no lining'], ['Thinsulate 2', 'Thinsulate, 2 layers', 'Inlet + Thinsulate, 2 layers'], ['Thinsulate 4', 'Thinsulate, 4 layers', 'Inlet + Thinsulate, 4 layers']];
+  const sg = (x, d) => (x >= 0 ? '+' : '') + n(x, d);
+  const hdr = { fontFace: 'Calibri', fontSize: 12, bold: true, color: MUTED, align: 'center', valign: 'middle', fill: { color: 'F1F3F5' } };
+  const c = (t, o = {}) => ({ text: t, options: { fontFace: 'Calibri', fontSize: 14, color: INK, align: 'right', valign: 'middle', ...o } });
+  const rows = [[
+    { text: 'lining', options: { ...hdr, align: 'left' } }, { text: 'thrust\nno inlet', options: hdr }, { text: 'thrust\ninlet', options: hdr }, { text: 'Δ thrust', options: hdr },
+    { text: 'rpm\nno inlet → inlet', options: hdr }, { text: 'level\nno inlet → inlet', options: hdr }, { text: 'Δ level', options: hdr }, { text: '0°\nno inlet → inlet', options: hdr }]];
+  PAIRS.forEach(([lab, a, b]) => {
+    const A = S[a], B = S[b];
+    rows.push([c(lab, { align: 'left', bold: true }), c(n(A.thrust, 2) + ' N'), c(n(B.thrust, 2) + ' N'), c(sg(B.thrust - A.thrust, 2) + ' N', { bold: true, color: '0B7285' }),
+      c(`${n(A.rpm)} → ${n(B.rpm)}`, { fontSize: 13 }), c(`${n(frontMean(A, { per_mic: Object.fromEntries(Object.keys(A.per_mic).map((k) => [k, 0])) }), 1)} → ${n(frontMean(B, { per_mic: Object.fromEntries(Object.keys(B.per_mic).map((k) => [k, 0])) }), 1)}`, { fontSize: 13 }),
+      c(sg(frontMean(B, A), 1) + ' dB', { bold: true }), c(`${n(A.per_mic['0'], 1)} → ${n(B.per_mic['0'], 1)}`, { fontSize: 13 })]);
+  });
+  s2.addTable(rows, { x: L2, y: 2.65, w: W2, colW: [1.3, 0.9, 0.9, 0.95, 1.5, 1.15, 0.85, 1.3], rowH: [0.6, 0.45, 0.45, 0.45], border: { type: 'solid', pt: 0.75, color: 'C9CFD8' }, margin: 0.05 });
+  const npa = PAIRS.map(([, a, b]) => [S[a].thrust / S[a].current, S[b].thrust / S[b].current]);
+  s2.addText([
+    { text: 'Thrust: ', options: { bold: true } },
+    { text: `with the inlet all three land at ${n(Math.min(...PAIRS.map(([, , b]) => S[b].thrust)), 2)}–${n(Math.max(...PAIRS.map(([, , b]) => S[b].thrust)), 2)} N. The weaker the set-up without it, the more the inlet adds, so the linings and the inlet fix the same loss. Per amp: ${npa.map((x) => n(x[0], 3)).join(' / ')} N/A without, ${npa.map((x) => n(x[1], 3)).join(' / ')} N/A with.`, options: { breakLine: true } },
+    { text: ' ', options: { breakLine: true, fontSize: 6 } },
+    { text: 'Noise: ', options: { bold: true } },
+    { text: 'without the inlet the linings were 0.6–0.9 dB quieter than the empty duct; with it the three are within 0.3 dB, and the 0° microphone is quieter in every case. The inlet slows the prop by 80–190 rpm at the same ESC signal.', options: { breakLine: true } },
+    { text: ' ', options: { breakLine: true, fontSize: 6 } },
+    { text: 'Caution: ', options: { bold: true, color: RED } },
+    { text: 'day to day the rig moves up to ~0.2 N and a few tenths of a dB, so the thrust gains are real and the level differences of 0.3 dB or less are not settled. Thinsulate 4 without the inlet, re-run on the inlet day, would make its row same-day.' },
+  ], { x: L2, y: 5.05, w: W2, h: 3.4, fontFace: 'Calibri', fontSize: 14, color: INK, margin: 0, valign: 'top', isTextBox: true });
+  s2.addText(`2–3 Nov 2026, APC 8x4.5MR, AXI 2217/12, 500 Hz–24 kHz, 2000 µs, mean of 3 repeats, corrected files. Inlet set-ups from 3 Nov; plain inlet value is run 1 (repeat: 10.08 N). rpm = stand × 60/7.`,
+    { x: 0.6, y: 11.0, w: 15.0, h: 0.35, fontFace: 'Calibri', fontSize: 12, color: MUTED, margin: 0, isTextBox: true });
+  s2.addText('2', { x: 15.6, y: 11.0, w: 0.45, h: 0.35, fontFace: 'Calibri', fontSize: 13, color: MUTED, align: 'right', margin: 0, isTextBox: true });
+}
+
 pres.writeFile({ fileName: process.env.OUT || '2026-11-03 duct linings thrust rpm.pptx' }).then((f) => console.log('written', f));
