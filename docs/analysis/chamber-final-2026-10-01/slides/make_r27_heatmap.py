@@ -29,9 +29,9 @@ for k, base in SETS.items():
     el = gs[0]['elev']
     R[k] = np.mean([bands(g) for g in gs], 0)
 
-PANELS = [('Inlet + Thinsulate 2 − inlet, no lining', R['i_thin2'] - R['inlet']),
-          ('Inlet + Thinsulate 4 − inlet, no lining', R['i_thin4'] - R['inlet']),
-          ('Repeat floor: inlet run 2 − run 1 (nothing changed)', R['inlet_b'] - R['inlet'])]
+PANELS = [('Thinsulate 2 effect:  [inlet + Thinsulate 2]  minus  [inlet, unlined]', R['i_thin2'] - R['inlet']),
+          ('Thinsulate 4 effect:  [inlet + Thinsulate 4]  minus  [inlet, unlined]', R['i_thin4'] - R['inlet']),
+          ('Repeat floor:  [inlet, unlined, run 2]  minus  [run 1]  (nothing changed)', R['inlet_b'] - R['inlet'])]
 LIM = 3
 fig, axs = plt.subplots(3, 1, figsize=(13, 12.5), dpi=160, gridspec_kw=dict(hspace=.32))
 for ax, (title, d) in zip(axs, PANELS):
