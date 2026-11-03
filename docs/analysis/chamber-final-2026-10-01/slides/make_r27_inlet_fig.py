@@ -1,4 +1,4 @@
-"""Polar: the r27 duct with the inlet (3 Nov, run and repeat) against the unlined duct without it (2 Nov), 2000 us,
+"""Polar: the r27 duct with the inlet (3 Nov, run and repeat, and with Thinsulate 2) against the unlined duct without it (2 Nov), 2000 us,
 total level 500 Hz-24 kHz, mean of the 3 repeats, corrected microphone files. Different days: indicative.
 Prints thrust/rpm/current per set-up and the inlet's repeat-to-repeat check.
 """
@@ -12,6 +12,7 @@ I = 'axi2217__8in__duct-unlined-inlet__r27-duct-unlined-inlet'
 SETS = [  # label, base, day, colour, line style
     ('Duct + inlet, run 1 (3 Nov)', I, '2026-11-03', '#D6336C', '-'),
     ('Duct + inlet, run 2 (3 Nov)', I + '-trial-2026-11-03', '2026-11-03', '#F08C00', '--'),
+    ('Inlet + Thinsulate, 2 layers (3 Nov)', 'axi2217__8in__inlet-thinsulate-2-layers__r27-inlet-thinsulate-2-layers', '2026-11-03', '#1098AD', '-'),
     ('Duct, no lining, no inlet (2 Nov)', 'axi2217__8in__duct-unlined__r27-duct-unlined', '2026-11-02', '#495057', '-'),
 ]
 PWM, LO, HI = 2000, 500, 24000
@@ -45,10 +46,10 @@ print('elev            ' + ' '.join(f'{int(e):>6}' for e in el))
 for nm, (e, lv, _, _) in data.items():
     assert (e == el).all()
     print(f'{nm[:15]:15} ' + ' '.join(f'{x:6.1f}' for x in lv.mean(0)))
-a, b, c = (data[s[0]][1].mean(0) for s in SETS)
+a, b, t, c = (data[s[0]][1].mean(0) for s in SETS)
 print('run2 - run1     ' + ' '.join(f'{x:+6.1f}' for x in b - a))
+print('thin2 - run1    ' + ' '.join(f'{x:+6.1f}' for x in t - a))
 print('run1 - no inlet ' + ' '.join(f'{x:+6.1f}' for x in a - c))
-print('run2 - no inlet ' + ' '.join(f'{x:+6.1f}' for x in b - c))
 
 allv = np.concatenate([lv.mean(0) for _, lv, _, _ in data.values()])
 zmin, zmax = float(np.floor(allv.min()) - 1), float(np.ceil(allv.max()) + .5)
@@ -63,6 +64,6 @@ ax.set_yticklabels([f'{t}' if i < len(zt) - 1 else f'{t} dB' for i, t in enumera
 ax.set_thetagrids([90, 45, 0, 315, 270, 225, 180, 135], ['+90°', '+45°', '0°', '−45°', '−90°', '−45°', '0°', '+45°'], fontsize=12, color='#333')
 ax.grid(color='#cfd4dc', lw=1); ax.spines['polar'].set_color('#9aa3b2')
 ax.legend(loc='upper center', bbox_to_anchor=(.5, -.06), fontsize=10, frameon=False, ncol=1)
-ax.set_title('r27 duct at 2000 µs, 500 Hz–24 kHz, mean of 3 repeats\n(grey: −90°/−72°, probably in the flow; different days)', fontsize=10, color='#333', pad=18)
+ax.set_title('r27 duct at 2000 µs, 500 Hz–24 kHz, mean of 3 repeats\n(grey: −90°/−72°, probably in the flow; the no-inlet duct is from another day)', fontsize=10, color='#333', pad=18)
 fig.savefig(os.path.join(HERE, 'polar-r27-inlet.png'), bbox_inches='tight', pad_inches=.15, facecolor='white')
 print('polar-r27-inlet.png written, axis', zmin, zmax)
