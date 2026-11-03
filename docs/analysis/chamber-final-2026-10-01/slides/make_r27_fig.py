@@ -14,6 +14,7 @@ T = 'axi2217__8in__thinsulate-'
 SETS = [  # label, base, day (YYYY-MM-DD, the only day read from that base), colour
     ('Bare prop, no duct', 'axi2217__8in__none__r27-8x45mr-bare-prop', '2026-11-02', '#000000'),
     ('Duct, no lining', 'axi2217__8in__duct-unlined__r27-duct-unlined', '2026-11-02', '#868E96'),
+    ('Duct + inlet, no lining', 'axi2217__8in__duct-unlined-inlet__r27-duct-unlined-inlet', '2026-11-03', '#0B7285'),   # run 1; the repeat (trial base) agrees to 0.04 N
     ('Thinsulate, 2 layers', T + '2-layers__r27-thinsulate-2-layers-trial-2026-11-02', '2026-11-02', '#F08C00'),
     ('Thinsulate, 4 layers', T + '4-layers__r27-thinsulate-4-layers', '2026-11-02', '#E03131'),
     ('Thinsulate, 6 layers', T + '6-layers__r27-thinsulate-6-layers', '2026-10-30', '#1098AD'),
@@ -27,9 +28,10 @@ SETS = [  # label, base, day (YYYY-MM-DD, the only day read from that base), col
     ('PU foam', 'axi2217__8in__pu-foam__r27-pu-foam', '2026-10-28', '#A0522D'),          # base also holds the deleted 27 Oct run
     ('PU foam + rubber', 'axi2217__8in__pu-foam-rubber__r27-pu-foam-rubber', '2026-10-29', '#FCC419'),
 ]
-MARK = {'2026-11-02': 's', '2026-10-30': 'o', '2026-10-29': 'D', '2026-10-28': '^'}
+MARK = {'2026-11-03': '*', '2026-11-02': 's', '2026-10-30': 'o', '2026-10-29': 'D', '2026-10-28': '^'}
 OLD_FIT = {'2026-10-28', '2026-10-29'}
 LO, HI, PWM = 500, 24000, 2000
+LS = {'Duct + inlet, no lining': (0, (5, 1.6))}   # dashed: a different duct, not a lining
 DAYLABEL = lambda d: f'{int(d[8:])} {["", "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"][int(d[5:7])]}'
 
 
@@ -64,7 +66,7 @@ allv = np.concatenate([v for _, v, _, _ in data.values()]); rmin = float(np.floo
 fig = plt.figure(figsize=(6.4, 6.4), dpi=220); ax = fig.add_subplot(111, projection='polar')
 for nm, (el, v, col, day) in data.items():
     th = np.radians(np.r_[el, 180 - el[::-1]]); r = np.r_[v, v[::-1]]
-    ax.plot(np.r_[th, th[0]], np.r_[r, r[0]], color=col, lw=3.4 if nm.startswith('Bare') else 2.0, ls='-',
+    ax.plot(np.r_[th, th[0]], np.r_[r, r[0]], color=col, lw=3.4 if nm.startswith('Bare') else 2.0, ls=LS.get(nm, '-'),
             marker=MARK[day], ms=4, mfc=col, mec='white', mew=.8)
 ax.set_rlim(rmin, rmax); ticks = [t for t in range(int(rmin), int(rmax) + 1) if t % 5 == 0 and t > rmin]; ax.set_rticks(ticks)
 ax.set_yticklabels([f'{t}' if i < len(ticks) - 1 else f'{t} dB' for i, t in enumerate(ticks)], fontsize=10, color='#555'); ax.set_rlabel_position(25)
@@ -116,7 +118,7 @@ ax.bar(np.radians(270), zmax - zmin, width=np.radians(54), bottom=zmin, color='#
 for nm, (el, v, col, day) in data.items():
     if nm.startswith('Bare'): continue
     th = np.radians(np.r_[el, 180 - el[::-1]]); r = np.r_[v, v[::-1]]
-    ax.plot(np.r_[th, th[0]], np.r_[r, r[0]], color=col, lw=2.6 if nm == 'Duct, no lining' else 2.0, ls='-',
+    ax.plot(np.r_[th, th[0]], np.r_[r, r[0]], color=col, lw=2.6 if nm in ('Duct, no lining', 'Duct + inlet, no lining') else 2.0, ls=LS.get(nm, '-'),
             marker=MARK[day], ms=4.5, mfc=col, mec='white', mew=.8, zorder=3)
 ax.set_rlim(zmin, zmax); zt = [t for t in range(int(zmin) + 1, int(zmax) + 1) if t % 2 == 0]; ax.set_rticks(zt)
 ax.set_yticklabels([f'{t}' if i < len(zt) - 1 else f'{t} dB' for i, t in enumerate(zt)], fontsize=10, color='#555'); ax.set_rlabel_position(25)
