@@ -97,3 +97,22 @@ a1.text(-79, a1.get_ylim()[1] - .3, 'in the flow?\nvaries ~1 dB\nrun to run', fo
 for a in (a1, a2): a.tick_params(labelsize=10, colors='#444')
 fig.savefig(os.path.join(HERE, 'lines-r27.png'), bbox_inches='tight', pad_inches=.12, facecolor='white')
 print('lines-r27.png written')
+
+
+# ---- zoomed polar: the same plot, radial axis on the duct set-ups only, so each lining is its own line ----
+duct_v = np.concatenate([v for nm, (_, v, _, _) in data.items() if not nm.startswith('Bare')])
+zmin, zmax = float(np.floor(duct_v.min()) - 1), float(np.ceil(duct_v.max()) + .5)
+fig = plt.figure(figsize=(6.4, 6.4), dpi=220); ax = fig.add_subplot(111, projection='polar')
+ax.bar(np.radians(270), zmax - zmin, width=np.radians(54), bottom=zmin, color='#eceff3', zorder=0)   # -90/-72 region, probably in the flow
+for nm, (el, v, col, day) in data.items():
+    if nm.startswith('Bare'): continue
+    th = np.radians(np.r_[el, 180 - el[::-1]]); r = np.r_[v, v[::-1]]
+    ax.plot(np.r_[th, th[0]], np.r_[r, r[0]], color=col, lw=2.6 if nm == 'Duct, no lining' else 2.0, ls='-',
+            marker='o' if day == '2026-10-30' else 's', ms=4.5, mfc=col, mec='white', mew=.8, zorder=3)
+ax.set_rlim(zmin, zmax); zt = [t for t in range(int(zmin) + 1, int(zmax) + 1) if t % 2 == 0]; ax.set_rticks(zt)
+ax.set_yticklabels([f'{t}' if i < len(zt) - 1 else f'{t} dB' for i, t in enumerate(zt)], fontsize=10, color='#555'); ax.set_rlabel_position(25)
+[(t.set_bbox(dict(facecolor='white', edgecolor='none', alpha=.9, pad=1.5)), t.set_zorder(30)) for t in ax.get_yticklabels()]
+ax.set_thetagrids([90, 45, 0, 315, 270, 225, 180, 135], ['+90°', '+45°', '0°', '−45°', '−90°', '−45°', '0°', '+45°'], fontsize=12, color='#333'); ax.grid(color='#cfd4dc', lw=1); ax.spines['polar'].set_color('#9aa3b2')
+fig.savefig(os.path.join(HERE, 'polar-r27-zoom.png'), bbox_inches='tight', pad_inches=.15, facecolor='white')
+R = json.load(open(os.path.join(HERE, 'r27.json'))); R['zoom_axis'] = [zmin, zmax]; json.dump(R, open(os.path.join(HERE, 'r27.json'), 'w'), indent=1, ensure_ascii=False)
+print('polar-r27-zoom.png written, axis', zmin, zmax)

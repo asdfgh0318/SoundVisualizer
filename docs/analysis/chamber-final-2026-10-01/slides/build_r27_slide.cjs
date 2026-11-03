@@ -25,10 +25,10 @@ const n = (x, d = 0) => x.toLocaleString('en-US', { minimumFractionDigits: d, ma
 
 const s = pres.addSlide();
 s.background = { color: 'FFFFFF' };
-s.addImage({ path: 'lines-r27.png', x: 0.45, y: 0.4, w: 6.4, h: 6.4, altText: 'Level against microphone elevation for six 8-inch duct set-ups at 2000 microseconds (top) and each minus the unlined duct (bottom), total level 500 Hz to 24 kHz' });
+s.addImage({ path: 'polar-r27-zoom.png', x: 0.45, y: 0.45, w: 6.37, h: 6.35, altText: 'Polar plot of six 8-inch duct set-ups at 2000 microseconds, total level 500 Hz to 24 kHz, radial axis zoomed to the duct levels' });
 s.addText('THE DUCT LININGS', { x: 7.2, y: 0.4, w: 5.8, h: 0.35, fontFace: 'Calibri', fontSize: 14, bold: true, color: BLUE, charSpacing: 3, margin: 0, isTextBox: true });
 s.addText('Duct linings at 2000 µs', { x: 7.2, y: 0.72, w: 5.8, h: 0.8, fontFace: 'Cambria', fontSize: 30, bold: true, color: INK, margin: 0, valign: 'top', isTextBox: true });
-s.addText('Square: 2 Nov. Round: 30 Oct. Bare prop off the chart (11 dB lower).', { x: 7.2, y: 1.5, w: 5.8, h: 0.3, fontFace: 'Calibri', fontSize: 12, color: MUTED, margin: 0, isTextBox: true });
+s.addText('Mean level. Square markers: 2 Nov. Round: 30 Oct. Bare prop off the plot.', { x: 7.2, y: 1.5, w: 5.8, h: 0.3, fontFace: 'Calibri', fontSize: 12, color: MUTED, margin: 0, isTextBox: true });
 
 const X = { dot: 7.2, name: 7.47, day: 9.85, db: 10.4, th: 11.32, rpm: 12.12 };
 const head = (t, x, w, align = 'right') => s.addText(t, { x, y: 1.83, w, h: 0.26, fontFace: 'Calibri', fontSize: 10, bold: true, color: MUTED, align, margin: 0, valign: 'bottom', isTextBox: true });
@@ -58,7 +58,7 @@ s.addText([
   { text: `${n(-dMaxB, 1)}–${n(-dMinB, 1)} dB below the unlined duct from −54° to +90° (${n(-dMeanB, 1)} dB on average).` },
 ], { x: 7.2, y: yC + 1.48, w: 5.8, h: 0.45, fontFace: 'Calibri', fontSize: 11, color: INK, margin: 0, valign: 'top', isTextBox: true });
 
-s.addText(`2 Nov 2026 (6 layers: 30 Oct), APC 8x4.5MR, AXI 2217/12, 500 Hz–24 kHz, 2000 µs, mean of 3 repeats. Grey band: −90°/−72°, probably in the flow. rpm = stand × 60/7.`,
+s.addText(`2 Nov 2026 (6 layers: 30 Oct), APC 8x4.5MR, AXI 2217/12, 500 Hz–24 kHz, 2000 µs, mean of 3 repeats. Axis ${R.zoom_axis[0]}–${R.zoom_axis[1]} dB. Grey: −90°/−72°, probably in the flow. rpm = stand × 60/7.`,
   { x: 0.6, y: 6.95, w: 11.6, h: 0.3, fontFace: 'Calibri', fontSize: 10, color: MUTED, margin: 0, isTextBox: true });
 s.addText('1', { x: 12.2, y: 6.95, w: 0.5, h: 0.3, fontFace: 'Calibri', fontSize: 12, color: MUTED, align: 'right', margin: 0, isTextBox: true });
 
