@@ -6,6 +6,39 @@ Drone-noise directivity measurement tool. Captures audio from up to 6 miniDSP UM
 
 **Refactor MVP is built.** Phases 0/1/2/3/4/5/7/8/9/10 of [PLAN.md](PLAN.md) are complete. Server + frontend run end-to-end against either real hardware (when `tyto.enabled = true` in `config.toml`) or against synthesised "fake capture" data for results-tool development without the rig.
 
+## r27 state after 2026-11-03 — the duct now has an inlet (read first)
+
+**From 2026-11-03 every r27 comparison is WITH the inlet** (Adam: "always with inlet"): lining X = base
+`axi2217__8in__inlet-<x>__r27-inlet-<x>` against `axi2217__8in__duct-unlined-inlet__r27-duct-unlined-inlet` from
+the same day. The no-inlet bases (28 Oct–2 Nov) are history. Results at 2000 µs, 3 Nov, front mics −54…+90°:
+
+| With inlet | Thrust | Total level vs unlined | Broadband 2–20 kHz | 2×BPF (800 Hz) |
+|---|---|---|---|---|
+| unlined (run 1 / repeat) | 10.12 / 10.08 N | — | — | — |
+| Thinsulate 2 | 10.04 N | −0.2 dB | −0.4 dB | +0.7 dB |
+| Thinsulate 4 | 10.05 N | −0.3 dB | −0.6 dB | +1.1 dB |
+| Thinsulate 4 + rubber | 10.08 N | ±0.0 dB | −0.8 dB | +4.4 dB (rubber brings back the tone) |
+| felt | 9.98 N | −0.4 dB | −0.6 dB | +0.4 dB (repeats drifted 0.75 dB — rerun) |
+
+- The inlet gave +2.13 N over the unlined duct of 2 Nov (7.99 → 10.12 N, 0.44 N short of the bare prop, same N/W
+  as the bare prop) at the same total level. Without the inlet the linings recovered 0.8–1.2 N; with it they add
+  nothing — the linings and the inlet fixed the same lip-flow loss.
+- Per band: the inlet takes 2–4 dB off 400 Hz–2 kHz broadband but adds ~0.5–1.5 dB above 2.5 kHz. The duct's own
+  noise sits at 1–5 kHz (+15–18 dB over the bare prop), the 2.5–5 kHz group (~88 dB) sets the total, and nothing
+  tried so far touches it. Inside the inlet duct the linings act at the centre mics (0°, ±18°) above 2 kHz and at
+  125–315 Hz; the top mics (+54…+90°) see nothing.
+- Repeat floor (same set-up twice, same day): ≤0.3 dB per cell except the BPF/2×BPF columns (±2 dB) and the −72°
+  row (up to 3.5 dB). Read every heatmap against it.
+- Figures, all in `docs/analysis/chamber-final-2026-10-01/slides/` and rebuilt by their scripts: the A3 deck
+  `2026-11-03 duct linings thrust rpm.{pptx,pdf}` (`make_r27_fig.py` → `build_r27_slide.cjs`; p.1 all set-ups,
+  p.2 with/without inlet), `polar-r27-inlet.png` (`make_r27_inlet_fig.py`), `bands-r27-inlet.png`
+  (`make_r27_bands.py`), `heatmap-r27-inlet-linings.png` (`make_r27_heatmap.py`, mic × third-octave Δ panels
+  plus the repeat floor). Adding a set-up = one line in each script's SETS.
+- Pi data partition: 123 MB free after the felt run (one more run). Next clean-up candidates, all already on
+  GitHub: the 2 Nov `*-trial-*` / `*-archive-2026-11-02-*` bases (~270 MB).
+- The r27 research tree still has **no GitHub repo** (`asdfgh0318/2026-10-27-research-tree` was not created;
+  creating it was refused by the permission classifier on 2026-11-03). Local clone is committed through `95a0c8f`.
+
 ## Next session — Adam's list from 2026-10-28 (r27 materials, `:8128`)
 
 1. **Investigate thrust further.** At 2000 µs every r27 base spins at the same speed (12,077–12,338 rpm, ±1 %) yet thrust spans −5.5 to −8.9 N and motor current follows it, so the material changes the rotor's loading, not its speed (felt −8.91 N / 21.4 A highest). Results' left column ranks thrust + rpm at 2000 µs (`ThrustRanking`).
