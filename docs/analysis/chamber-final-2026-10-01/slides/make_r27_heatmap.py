@@ -32,6 +32,12 @@ MODES = {   # out file, day, {key: base}, panels, title
                  ('Thinsulate 4 effect:  [Thinsulate 4]  minus  [unlined]   (no inlet)', 'thin4'),
                  ('Repeat floor:  [unlined, 17:51 run]  minus  [unlined, 17:35 run]  (nothing changed)', 'ref_b')],
                 'r27 duct WITHOUT the inlet, 2000 µs, 2 Nov (same day)'),
+    'petg': ('heatmap-r27-inlet-petg.png', '2026-11-03',
+             {'ref': I + '-trial-2026-11-03', 'ref_b': I,
+              'petg': ('axi2217__8in__inlet-petg-1-layer__r27-inlet-petg-1-layer', '2026-11-04')},
+             [('PETG wall effect:  [inlet + PETG 1-layer wall, 4 Nov]  minus  [inlet, unlined, latest run, 3 Nov]   (crosses days)', 'petg'),
+              ('Repeat floor:  [inlet, unlined, run 1]  minus  [run 2]   (3 Nov, nothing changed)', 'ref_b')],
+             'r27 duct WITH the inlet, 2000 µs: PETG wall (4 Nov) against the unlined inlet duct (3 Nov)'),
 }
 FC = np.array([100 * 2 ** (i / 3) for i in range(24)])          # 100 Hz .. 20 kHz
 LAB = [f'{f/1000:g}k' if f >= 1000 else f'{f:.0f}' for f in [100, 125, 160, 200, 250, 315, 400, 500, 630, 800, 1000, 1250, 1600, 2000, 2500, 3150, 4000, 5000, 6300, 8000, 10000, 12500, 16000, 20000]]
@@ -46,7 +52,8 @@ LIM = 3
 for mode, (OUT, DAY, SETS, TITLES, HEAD) in MODES.items():
   R = {}
   for k, base in SETS.items():
-    gs = [g for g in bf.groups(bf.base(base), bf.CORR) if g['pwm'] == 2000 and g['cid'].startswith(DAY)]
+    base, day = base if isinstance(base, tuple) else (base, DAY)
+    gs = [g for g in bf.groups(bf.base(base), bf.CORR) if g['pwm'] == 2000 and g['cid'].startswith(day)]
     assert len(gs) == 3, (k, len(gs))
     el = gs[0]['elev']
     R[k] = np.mean([bands(g) for g in gs], 0)
@@ -68,7 +75,7 @@ for mode, (OUT, DAY, SETS, TITLES, HEAD) in MODES.items():
         ax.set_ylabel('microphone')
     axs[-1].set_xlabel('third-octave band centre, Hz')
     cb = fig.colorbar(im, cax=fig.add_axes([0.93, 0.38, 0.012, 0.25]), label='Δ level, dB (blue = quieter)')
-    fig.suptitle(HEAD + ': level change per microphone and third-octave band, mean of 3 repeats\nBelow the dashed line: −72°/−90°, probably in the flow', fontsize=11.5, x=.5, y=.95)
+    fig.suptitle(HEAD + ': level change per microphone and third-octave band, mean of 3 repeats\nBelow the dashed line: −72°/−90°, probably in the flow', fontsize=11.5, x=.5, y=.95 if len(PANELS) > 2 else 1.02)
     fig.savefig(os.path.join(HERE, OUT), bbox_inches='tight', facecolor='white')
     for title, d in PANELS:
         front = el >= -54
