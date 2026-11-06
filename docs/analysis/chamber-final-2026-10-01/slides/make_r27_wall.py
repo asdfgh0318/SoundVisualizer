@@ -29,6 +29,7 @@ SETS = [  # key, label, base, day, colour, style
     ('thin4r', 'inlet + Thinsulate 4 + rubber (3 Nov)', 'axi2217__8in__inlet-thinsulate-4-layers-rubber__r27-inlet-thinsulate-4-layers-rubber', '2026-11-03', '#9C36B5', '-'),
     ('felt', 'inlet + felt (3 Nov)', 'axi2217__8in__inlet-felt__r27-inlet-felt', '2026-11-03', '#2F9E44', '-'),
     ('petg', 'inlet + PETG 1-layer wall (4 Nov)', 'axi2217__8in__inlet-petg-1-layer__r27-inlet-petg-1-layer', '2026-11-04', '#A0522D', '-'),
+    ('tw', 'inlet + transparent wall (6 Nov)', 'axi2217__8in__inlet-transparent-wall__r27-inlet-transparent-wall', '2026-11-06', '#1971C2', '-'),
 ]
 FC = np.array([100 * 2 ** (i / 3) for i in range(24)])
 SIDE, TOP = (0, 18, -18), (54, 72, 90)

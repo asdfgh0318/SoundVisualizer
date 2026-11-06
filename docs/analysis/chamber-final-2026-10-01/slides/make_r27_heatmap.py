@@ -38,6 +38,14 @@ MODES = {   # out file, day, {key: base}, panels, title
              [('PETG wall effect:  [inlet + PETG 1-layer wall, 4 Nov]  minus  [inlet, unlined, latest run, 3 Nov]   (crosses days)', 'petg'),
               ('Repeat floor:  [inlet, unlined, run 1]  minus  [run 2]   (3 Nov, nothing changed)', 'ref_b')],
              'r27 duct WITH the inlet, 2000 µs: PETG wall (4 Nov) against the unlined inlet duct (3 Nov)'),
+    'transp': ('heatmap-r27-inlet-transparent-wall.png', '2026-11-03',
+               {'ref': I + '-trial-2026-11-03', 'ref_b': I,
+                'tw': ('axi2217__8in__inlet-transparent-wall__r27-inlet-transparent-wall', '2026-11-06'),
+                'petg': ('axi2217__8in__inlet-petg-1-layer__r27-inlet-petg-1-layer', '2026-11-04')},
+               [('Transparent wall effect:  [inlet + transparent wall, 6 Nov]  minus  [inlet, unlined, latest run, 3 Nov]   (crosses days)', 'tw'),
+                ('PETG wall effect:  [inlet + PETG 1-layer wall, 4 Nov]  minus  [inlet, unlined, latest run, 3 Nov]   (crosses days)', 'petg'),
+                ('Repeat floor:  [inlet, unlined, run 1]  minus  [run 2]   (3 Nov, nothing changed)', 'ref_b')],
+               'r27 duct WITH the inlet, 2000 µs: transparent wall (6 Nov) and PETG wall (4 Nov) against the unlined inlet duct (3 Nov)'),
 }
 FC = np.array([100 * 2 ** (i / 3) for i in range(24)])          # 100 Hz .. 20 kHz
 LAB = [f'{f/1000:g}k' if f >= 1000 else f'{f:.0f}' for f in [100, 125, 160, 200, 250, 315, 400, 500, 630, 800, 1000, 1250, 1600, 2000, 2500, 3150, 4000, 5000, 6300, 8000, 10000, 12500, 16000, 20000]]
