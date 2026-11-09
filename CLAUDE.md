@@ -39,6 +39,16 @@ the same day. The no-inlet bases (28 Oct–2 Nov) are history. Results at 2000 �
 - The r27 research tree is on GitHub since 2026-11-03: private repo `asdfgh0318/2026-10-27-research-tree`
   (push from the laptop after copying the Pi's `data.json` over, like the other trees).
 
+## g5 state after 2026-11-09 — 5 in prop in the 8 in duct, inlet on (read before any g5 run)
+
+**An unexplained fault at 2000 µs.** From 18:34 local on 2026-11-09, most 2000 µs steps have current climbing (8–9.7 A against 7.5 A normal) with rpm and thrust falling and 11–22 kHz 4–5 dB up. 1500–1900 µs stay normal in the same repeats. It happens with no lining too, so the lining is not the cause; motor, ESC, prop and power are unchecked. Until it is found, **compare `g5` materials at 1900 µs**. Normal 2000 µs repeats exist only for 4 layers (6) and 2 layers (first run + repeat 1 of `-trial-`).
+
+Bases (all 2026-11-09): `thinsulate-4-layers` (+ `-trial-`), `thinsulate-2-layers` (+ `-trial-`, `-confirm-`), `duct-unlined` (**stopped early by a 10 A cutoff, ignore repeat 2 at 1800 µs**), `duct-unlined__g5-duct-unlined-full-2026-11-09` (the unlined reference). Adam: keep the 26 A cutoff, do not lower it. Remove the motor line (14 × shaft rate, ±150 Hz) from every level, and start at 500 Hz (chamber rating).
+
+Lining minus unlined at 1900 µs, 5 in / 8 in (r27, 3 Nov): thrust 2 layers −2.1 % / −0.7 %, 4 layers −3.1 % / −0.5 %; side total −1.00, −1.25 / −0.20, −0.52 dB; above 2.2 kHz side −0.90, −1.26 / −0.49, −0.65 dB. The −90° mic clips 70–74 % of the time at ≥1800 µs and −72° up to 6 %; exclude both.
+
+**USB:** over-current bursts at 18:13–18:30 and 19:09–19:17 dropped mics and the Tyto; none during any recording. A replug needs a `soundvis` restart, then watch 11 cards for a minute before spinning. Cause not found; the Pi is still on the 1.5 A supply.
+
 ## Next session — Adam's list from 2026-10-28 (r27 materials, `:8128`)
 
 1. **Investigate thrust further.** At 2000 µs every r27 base spins at the same speed (12,077–12,338 rpm, ±1 %) yet thrust spans −5.5 to −8.9 N and motor current follows it, so the material changes the rotor's loading, not its speed (felt −8.91 N / 21.4 A highest). Results' left column ranks thrust + rpm at 2000 µs (`ThrustRanking`).
