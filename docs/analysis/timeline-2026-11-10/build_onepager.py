@@ -1,0 +1,64 @@
+"""timeline-onepager.pdf: the work from 2 Oct 2026 step by step — what was done, why, what followed.
+
+A derived document. Every number is copied from CLAIMS.md (which is built on levels.csv and levels-1900.csv);
+CLAIMS.md governs where they disagree. Re-check this file against it after CLAIMS.md changes.
+The figure is timeline-fig.png (make_timeline_fig.py); run that first.
+The "why" column is Adam's account of the reasoning, not something the recordings can show.
+"""
+import os, subprocess
+HERE = os.path.dirname(os.path.abspath(__file__))
+
+STEPS = [  # dates, what we did, why, what followed, tag, tag class
+    ('2 and 7 Oct', 'Wrapped materials around the 5 in propeller: cork, rubber, felt, felt + rubber, PU foam, Thinsulate 4 and 8, combinations. One repeat each.',
+     'First look at whether an absorbing material close to the propeller lowers the noise.*',
+     'Every material was louder than the bare propeller (76.5–79.7 dB against 72–73 dB) and lost thrust (2.9–3.5 N against 3.6 N).',
+     'Fault', 'f'),
+    ('7 Oct, afternoon', 'The same with the larger 8x4.5 propeller in the cage. First runs with three repeats.',
+     'To see whether the result holds for a bigger propeller, and how much one set-up scatters.*',
+     'Same result, larger: bare 7.05 N / 75.6 dB; with materials 5.7–6.6 N / 82.0–86.9 dB. Three repeats became the standard.',
+     'Fault', 'f'),
+    ('8–9 Oct', 'Built a small duct with an Oracover membrane wall and put ten linings behind the membrane.',
+     'A thin membrane should let the sound through to the material with little loss, so the material can work. No aerodynamic treatment was added.',
+     'The duct took most of the thrust (3.76 N bare, 0.37–1.20 N ducted) and was 8.5–15.7 dB louder than the bare propeller. The quietest linings were also the ones with the least thrust.',
+     'Fault', 'f'),
+    ('27 Oct – 2 Nov', '8 in duct with the 8x4.5 propeller and linings: PETG, PU foam, Thinsulate 2–10, felt, rubber, combinations. No inlet.',
+     'A larger duct that keeps usable thrust, to compare linings in it.*',
+     'Thrust depended on the lining and its mount (5.7–9.2 N). On 2 Nov Thinsulate 4 looked best: +1.26 N, −0.95 dB against the unlined duct. But the gain came with the thrust: the plain inlet of the next step gave +2.1 N, and with it the same lining took off only 0.31 dB.',
+     'Not a win', 'f'),
+    ('3–6 Nov', 'Added an inlet to the duct and repeated the linings.',
+     'Thinsulate 4 seemed to work by narrowing the duct towards a better entry shape, so the entry itself was worth fixing.*',
+     'Thrust of the unlined duct rose from 8.0 to 10.1 N and every lining landed at 10.0–10.3 N. The noise did not move (91.7 against 91.4 dB), and the linings now did a third of what they did before (−0.2 / −0.3 dB).',
+     'Win on thrust', 'w'),
+    ('9 Nov', 'Put the 5 in propeller in the same 8 in duct, inlet on.',
+     'With the blade tips far from the wall the duct should act less on the flow and more like a cover holding the material.',
+     'The linings did more: −0.7 / −0.9 dB against 0.0 / −0.25 dB with the 8 in propeller (1900 µs). A fault appeared at 2000 µs that day, cause not found.',
+     'Gain', 'g'),
+]
+
+html = '''<!doctype html><meta charset="utf-8"><title>Duct and lining work, step by step</title><style>
+@page{size:A4;margin:8mm 11mm} body{font-family:"IBM Plex Sans","DejaVu Sans",Arial,sans-serif;font-size:7.4pt;line-height:1.2;color:#10171b;margin:0}
+h1{font-size:16pt;margin:0 0 1.5mm} h2{font-size:9.5pt;margin:2.5mm 0 1mm} p{margin:0 0 2mm} .s{color:#5c6770}
+table{border-collapse:collapse;width:100%;table-layout:fixed} th{text-align:left;font-weight:600;border-bottom:1px solid #10171b;padding:1.2mm 1.6mm;font-size:7.8pt}
+td{border-bottom:1px solid #dee2e6;padding:.9mm 1.6mm;vertical-align:top} .d{font-weight:600}
+.t{font-weight:700} .f{color:#c92a2a} .g{color:#e8590c} .w{color:#2f9e44} ul{margin:0;padding-left:4.5mm} li{margin-bottom:.8mm}
+</style>
+<h1>Duct and lining work, step by step</h1>
+<p class="s">2 October – 9 November 2026. Levels are the total from 500 Hz to 20 kHz over the microphones from −54° to +90°, at 2000 µs unless stated.
+Each lining is compared with the unlined set-up of the same day. The reasons are Adam's account, except those marked *, which are filled in and still to be confirmed by him; the numbers come from the recordings (<code>CLAIMS.md</code> governs).</p>
+<img src="timeline-fig.png" style="width:100%;margin:0 0 2mm">
+<table><tr><th style="width:9%">When</th><th style="width:24%">What we did</th><th style="width:24%">Why</th><th style="width:34%">What followed</th><th style="width:9%">Outcome</th></tr>
+''' + ''.join(f'<tr><td class="d">{d}</td><td>{a}</td><td>{b}</td><td>{c}</td><td class="t {k}">{t}</td></tr>' for d, a, b, c, t, k in STEPS) + '''</table>
+<h2>Where this leaves us</h2>
+<ul>
+<li><b>The inlet fixed the thrust, not the noise.</b> The duct with the inlet makes 10.1 N against 10.6 N for the bare propeller, and is still 13.1 dB louder than it. No lining and no inlet has touched that.</li>
+<li><b>Once the flow was fixed, the linings mattered less.</b> Without the inlet Thinsulate 2 / 4 added +0.80 / +1.26 N and took off 0.60 / 0.95 dB; with it they add nothing and take off 0.22 / 0.31 dB.</li>
+<li><b>What looked like a material gain was mostly airflow.</b> Of the 0.95 dB Thinsulate 4 took off without the inlet, 0.31 dB stays once the inlet fixes the flow (different days). Lining and loading changed together in every step before the inlet.</li>
+</ul>
+<h2>Not yet shown</h2>
+<ul>
+<li><b>That the membrane lets sound reach the material:</b> the small duct was never run with a solid wall.</li>
+<li><b>That Thinsulate 4 matched the inlet diameter:</b> needs the duct's inner diameter, the fitted layer thickness and the inlet throat diameter.</li>
+<li><b>That the duct acts less on the flow with the 5 in propeller:</b> no bare 5 in propeller was recorded on this motor. The lining costs the same 0.06–0.08 N with both propellers. Next run: the bare 5 in propeller on the same day as the unlined duct with the inlet.</li>
+</ul>'''
+open(HERE + '/timeline-onepager.html', 'w').write(html)
+subprocess.run(['/snap/bin/chromium', '--headless', '--disable-gpu', '--no-pdf-header-footer', f'--print-to-pdf={HERE}/timeline-onepager.pdf', f'file://{HERE}/timeline-onepager.html'], check=True, stderr=subprocess.DEVNULL)
