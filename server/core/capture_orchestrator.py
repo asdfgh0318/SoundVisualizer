@@ -382,47 +382,54 @@ class CaptureOrchestrator:
         # Tyto samples are computed values; we need the raw PollResponse list to build the CSV.
         # finish_meas_series returns calibrated ThrustStandMeasurement objects. Use raw window:
         n = len(tyto_samples)
-        raw_window: Sequence[PollResponse] = stand.samples_raw[-n:] if n else []
-        perf_saved = meas_store.create_measurement(
-            key_slug,
-            perf_meta,
-            telemetry_csv=_telemetry_to_csv(
-                raw_window, self._poll_period_s, self._stand_service.tare
-            ),
-        )
-        self._status.measurement_ids.append(perf_saved.id)
+        raw_window: Sequence[PollResponse] = list(stand.samples_raw[-n:]) if n else []
+        tare = self._stand_service.tare
 
-        audios = [r.audio for r in results]
-        if req.trigger.enabled:
-            audios = align_captures(
-                audios,
-                threshold_db=req.trigger.threshold_db,
-                block_size=req.trigger.block_size,
-                preroll_samples=req.trigger.preroll_samples,
+        # Alignment, BPF and ~12 SD-card writes take over a second on the Pi. On the event
+        # loop they starve the Tyto consumer past its 1 s stall timeout, which reads as a
+        # dropped link and aborts the run (2026-11-20). So they run in a worker thread.
+        def write_step() -> list[str]:
+            ids = []
+            perf_saved = meas_store.create_measurement(
+                key_slug,
+                perf_meta,
+                telemetry_csv=_telemetry_to_csv(raw_window, self._poll_period_s, tare),
             )
+            ids.append(perf_saved.id)
 
-        bpf_hz = _arc_bpf(audios, req.sample_rate)
-        for mic, audio in zip(req.mics, audios, strict=True):
-            meta = AcousticMeasurementMeta(
-                t_start=t_start,
-                t_end=t_end,
-                pwm_setpoint=step.pwm_us,
-                mic_serial=mic.serial,
-                elevation_deg=mic.elevation_deg,
-                half=req.half,
-                sample_rate=req.sample_rate,
-                calibration_file_id=mic.calibration_file_id,
-                bpf_hz=bpf_hz,
-                repeat=repeat,
-            )
-            saved = meas_store.create_measurement(key_slug, meta)
-            write_wav_float32(
-                measurement_dir(key_slug, saved.id) / "audio.wav",
-                audio,
-                req.sample_rate,
-            )
-            self._status.measurement_ids.append(saved.id)
+            audios = [r.audio for r in results]
+            if req.trigger.enabled:
+                audios = align_captures(
+                    audios,
+                    threshold_db=req.trigger.threshold_db,
+                    block_size=req.trigger.block_size,
+                    preroll_samples=req.trigger.preroll_samples,
+                )
 
+            bpf_hz = _arc_bpf(audios, req.sample_rate)
+            for mic, audio in zip(req.mics, audios, strict=True):
+                meta = AcousticMeasurementMeta(
+                    t_start=t_start,
+                    t_end=t_end,
+                    pwm_setpoint=step.pwm_us,
+                    mic_serial=mic.serial,
+                    elevation_deg=mic.elevation_deg,
+                    half=req.half,
+                    sample_rate=req.sample_rate,
+                    calibration_file_id=mic.calibration_file_id,
+                    bpf_hz=bpf_hz,
+                    repeat=repeat,
+                )
+                saved = meas_store.create_measurement(key_slug, meta)
+                write_wav_float32(
+                    measurement_dir(key_slug, saved.id) / "audio.wav",
+                    audio,
+                    req.sample_rate,
+                )
+                ids.append(saved.id)
+            return ids
+
+        self._status.measurement_ids.extend(await asyncio.to_thread(write_step))
         await self._broadcast()
 
     async def _tare_before_spin_up(self) -> None:
